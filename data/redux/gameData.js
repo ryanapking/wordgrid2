@@ -7,6 +7,7 @@ import {
   generateLocalPiece
 } from '../utilities';
 import english from '../english';
+import { getUserName } from "../remote";
 
 // available actions
 // game actions
@@ -352,12 +353,21 @@ export function setLocalGameDataByID(gameID, userID, sourceData) {
   }
 }
 
-export function setOpponentName(gameID, opponentName) {
-  return {
-    type: SET_OPPONENT_NAME,
-    gameID,
-    opponentName
-  }
+export function setOpponentName(gameID) {
+  return (dispatch, getState) => {
+    const { gameData } = getState();
+    const opponentID = gameData.byID[gameID].opponentID;
+    if (!opponentID) return;
+
+    getUserName(opponentID)
+      .then( (opponentName) => {
+        dispatch({
+          type: SET_OPPONENT_NAME,
+          gameID,
+          opponentName,
+        });
+      })
+  };
 }
 
 export function removeLocalGameByID(gameID) {

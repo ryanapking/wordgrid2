@@ -1,4 +1,5 @@
 import firebase from 'react-native-firebase';
+import { startListeners } from "../remote";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -74,6 +75,7 @@ function userLoginFail() {
 }
 
 function userLoginSuccess(uid) {
+  startListeners(uid);
   return {
     type: LOGIN_SUCCESS,
     uid

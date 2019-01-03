@@ -17,7 +17,6 @@ import Challenge from "./routes/Challenge";
 
 // redirect all non-logged in users to the login screen
 import LoginRedirect from "./components/nondisplay/LoginRedirect";
-import FirebaseListeners from './components/nondisplay/FirebaseListeners';
 import NavMenu from './components/NavMenu';
 import TopBar from './components/TopBar';
 
@@ -52,7 +51,6 @@ export default class App extends Component {
               </View>
             </View>
             <LoginRedirect />
-            <FirebaseListeners />
           </Drawer>
         </NativeRouter>
       </Provider>
