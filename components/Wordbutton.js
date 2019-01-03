@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Container, Button } from 'native-base';
 import { withRouter } from 'react-router-native';
 
-import { userLogin } from '../ducks/login';
+import { userLogin } from '../data/redux/login';
 
 class Wordbutton extends Component {
   render() {

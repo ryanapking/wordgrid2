@@ -5,7 +5,7 @@ import connect from "react-redux/es/connect/connect";
 import BoardPathCreator from './BoardPathCreator';
 import DrawBoard from './DrawBoard';
 
-import { setBoardLocation } from "../ducks/gameDisplay";
+import { setBoardLocation } from "../data/redux/gameDisplay";
 import {SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED} from "../constants";
 
 class Board extends Component {

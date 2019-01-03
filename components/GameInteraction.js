@@ -7,8 +7,8 @@ import { Button, Container, Spinner } from "native-base";
 
 import DrawPieceSection from "./DrawPieceSection";
 
-import {calculateWordValue, getWinner, localToRemote} from "../utilities";
-import { setLocalGameDataByID, playWord } from "../ducks/gameData";
+import {calculateWordValue, getWinner, localToRemote} from "../data/utilities";
+import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
 
 class GameInteraction extends Component {
   constructor() {

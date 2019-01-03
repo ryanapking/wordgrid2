@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { List, ListItem } from 'native-base';
 
-import { boardStringToArray, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../utilities";
-import Boggle from '../utilities/boggle-solver';
+import { boardStringToArray, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
+import Boggle from '../data/utilities/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from "../components/BoardPathCreator";
 import DrawScoreBoard from "../components/GameScoreBoard";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
-import { wordPathStringToArray, calculateWordValue } from "../utilities";
+import { wordPathStringToArray, calculateWordValue } from "../data/utilities";
 
 class GameReview extends Component {
   constructor() {

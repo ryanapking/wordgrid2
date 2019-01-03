@@ -8,7 +8,7 @@ import Board from '../components/Board';
 import ChallengeInteraction from '../components/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
 import PieceOverlay from '../components/PieceOverlay';
-import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../ducks/challengeData";
+import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/challengeData";
 
 class Challenge extends Component {
   componentDidMount() {

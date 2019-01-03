@@ -8,8 +8,8 @@ import {
   setLocalGameIDs,
   removeLocalGameByID,
   setOpponentName
-} from "../../ducks/gameData";
-import { setSourceChallengeData } from "../../ducks/challengeData";
+} from "../../data/redux/gameData";
+import { setSourceChallengeData } from "../../data/redux/challengeData";
 
 class FirebaseListeners extends Component {
   constructor() {

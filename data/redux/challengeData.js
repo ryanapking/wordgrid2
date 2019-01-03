@@ -1,5 +1,5 @@
 import { challengeRemoteToLocal, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
-import english from '../utilities/english';
+import english from '../english';
 
 // available actions
 const CHALLENGE_SET_SOURCE_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_SOURCE_DATA';

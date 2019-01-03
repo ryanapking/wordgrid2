@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 
 import { store } from '../../App';
-import { setAttemptsHistory } from '../../ducks/challengeData';
+import { setAttemptsHistory } from '../redux/challengeData';
 
 const prefix = "userChallenge:";
 
@@ -65,7 +65,7 @@ export function retrieveChallengeAttempts(uid) {
       .then( (result) => {
 
         // let something = JSON.parse(result);
-        // store.dispatch(setAttemptsHistory(something));
+        // data.dispatch(setAttemptsHistory(something));
 
         resolve(JSON.parse(result));
       })

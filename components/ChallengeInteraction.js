@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { Button, Container } from "native-base";
 
 import DrawPieceSection from "./DrawPieceSection";
-import { calculateWordValue } from "../utilities";
-import { playWord } from '../ducks/challengeData';
+import { calculateWordValue } from "../data/utilities";
+import { playWord } from '../data/redux/challengeData';
 
 class ChallengeInteraction extends Component {
   render() {

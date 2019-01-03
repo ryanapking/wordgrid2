@@ -4,16 +4,16 @@ import {Button, Container, Spinner} from 'native-base';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import Boggle from '../utilities/boggle-solver';
+import Boggle from '../data/utilities/boggle-solver';
 import GameInfoDisplay from '../components/GameInfoDisplay';
 import Board from '../components/Board';
 import GameInteraction from '../components/GameInteraction';
 import GameMoveAnimation from '../components/GameMoveAnimation';
 import PieceOverlay from '../components/PieceOverlay';
-import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../ducks/gameData";
-import { calculateHighestWordValue, calculateLongestWordLength } from "../utilities";
+import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/gameData";
+import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities";
 
-import { checkPieceFit } from "../utilities";
+import { checkPieceFit } from "../data/utilities";
 import DrawPieceSection from "../components/DrawPieceSection";
 
 class Game extends Component {

@@ -3,7 +3,7 @@ import {StyleSheet, View, PanResponder, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { setPieceLocation } from "../ducks/gameDisplay";
+import { setPieceLocation } from "../data/redux/gameDisplay";
 import DrawPiece from './DrawPiece';
 
 class Piece extends Component {

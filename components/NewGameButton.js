@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 import { Button, Spinner } from 'native-base';
 import firebase from "react-native-firebase";
 
-import { generateGame } from "../utilities";
+import { generateGame } from "../data/utilities";
 
 class NewGameButton extends Component {
   constructor() {

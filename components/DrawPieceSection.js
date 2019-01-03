@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 import { connect } from 'react-redux';
 
 import Piece from './Piece';
-import { setPieceLocation, clearPieceLocations } from "../ducks/gameDisplay";
+import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
 
 class DrawPieceSection extends Component {
   constructor() {

@@ -3,8 +3,8 @@ import ReactNative, {Platform, StyleSheet, View, Text, LayoutAnimation, UIManage
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { markAnimationPlayed } from "../ducks/gameData";
-import { getAnimationData } from "../utilities";
+import { markAnimationPlayed } from "../data/redux/gameData";
+import { getAnimationData } from "../data/utilities";
 import { SPACE_EMPTY, SPACE_FILLED, SPACE_CONSUMED } from "../constants";
 import Piece from "./Piece";
 import BoardPathCreator from "./BoardPathCreator";

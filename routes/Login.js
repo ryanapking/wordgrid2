@@ -5,7 +5,7 @@ import { Button, Container } from "native-base";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { userLogin } from '../ducks/user';
+import { userLogin } from '../data/redux/user';
 
 
 class Login extends Component {

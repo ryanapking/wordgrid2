@@ -107,7 +107,7 @@ export function localToRemote(localData, userID) {
     wv: localData.wordValue, // word value
     wp: localData.wordPath, // word path
     pr: localData.placementRef, // piece placement ref point - piece index, row index, column index
-    p: userID, // will store the id of the use who created this history item
+    p: userID, // will data the id of the use who created this history item
   }
 }
 

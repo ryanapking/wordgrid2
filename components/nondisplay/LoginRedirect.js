@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { fetchUser } from "../../ducks/user";
+import { fetchUser } from "../../data/redux/user";
 
 class LoginRedirect extends Component {
   componentWillMount() {

@@ -6,7 +6,7 @@ import {
   wordPathArrayToString,
   generateLocalPiece
 } from '../utilities';
-import english from '../utilities/english';
+import english from '../english';
 
 // available actions
 // game actions

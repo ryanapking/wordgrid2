@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { NativeRouter, Route } from'react-router-native';
 import { Drawer } from 'native-base';
 
-import configureStore from './store/configureStore';
+import configureStore from './data/redux/configureStore';
 
 // routes
 import Home from "./routes/Home";

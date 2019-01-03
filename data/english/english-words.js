@@ -16992,7 +16992,7 @@ export default {
     "ducking",
     "duckling",
     "ducklings",
-    "ducks",
+    "redux",
     "duct",
     "ductile",
     "ductility",
