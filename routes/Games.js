@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import { List, ListItem } from 'native-base';
+import {Button, List, ListItem, Spinner} from 'native-base';
 
-import NewGameButton from "../components/NewGameButton";
+import { initiateGame } from "../data/remote";
 
 class Games extends Component {
   render() {
@@ -55,9 +55,25 @@ class Games extends Component {
             </View>
           }
         </List>
-        <NewGameButton />
+        { this.getNewGameButton() }
       </View>
     );
+  }
+
+  getNewGameButton() {
+    if (this.props.saving) {
+      return (
+        <Button full info disabled>
+          <Spinner color='blue'/>
+        </Button>
+      );
+    } else {
+      return (
+        <Button full info onPress={() => initiateGame(this.props.userID)}>
+          <Text>New Game</Text>
+        </Button>
+      );
+    }
   }
 
   getGameListItem(gameID, index, linkType = "none") {
@@ -93,6 +109,7 @@ const mapStateToProps = (state) => {
   return {
     userID: state.user.uid,
     gameData: state.gameData,
+    saving: state.login.saving,
   };
 };
 

@@ -4,12 +4,15 @@ import firebase from 'react-native-firebase';
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
 export const LOGIN_SUCCESS = 'wordgrid2/login/LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'wordgrid2/login/LOGIN_FAIL';
+export const SAVE_START = 'wordgrid2/login/SAVE_START';
+export const SAVE_END = 'wordgrid2/login/SAVE_END';
 
 // initial state
 const initialState = {
   loginStarted: false,
   loggedIn: false,
   username: "",
+  saving: false,
 };
 
 // reducer
@@ -21,6 +24,10 @@ export default function reducer(state = initialState, action) {
       return { ...state, username: "one logged in broseph", loggedIn: true, loginStarted: false };
     case LOGIN_FAIL:
       return { ...state, loginStarted: false };
+    case SAVE_START:
+      return { ...state, saving: true };
+    case SAVE_END:
+      return { ...state, saving: false };
     default:
       return state;
   }
@@ -60,5 +67,19 @@ function userLoginFail() {
 function userLoginSuccess() {
   return {
     type: LOGIN_SUCCESS
+  }
+}
+
+export function startSave() {
+  console.log('startSave()');
+  return {
+    type: SAVE_START,
+  }
+}
+
+export function endSave() {
+  console.log('endSave()');
+  return {
+    type: SAVE_END,
   }
 }
