@@ -2,29 +2,19 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import firebase from 'react-native-firebase';
 import { Button, Container, Spinner } from "native-base";
 
 import DrawPieceSection from "./DrawPieceSection";
 
-import {calculateWordValue, getWinner, localToRemote} from "../data/utilities";
+import { calculateWordValue, getWinner, localToRemote } from "../data/utilities";
 import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
+import { saveGame } from '../data/remote/saveGame';
 
 class GameInteraction extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      working: false
-    };
-
-    this.saveRemoteMove = this.saveRemoteMove.bind(this);
-  }
-
   render() {
     const wordPlayed = !!this.props.game.word;
 
-    if (this.state.working) {
+    if (this.props.saving) {
       return this._Spinner();
     } else if (!wordPlayed) {
       return this._playWordInteraction();
@@ -95,65 +85,36 @@ class GameInteraction extends Component {
 
   saveRemoteMove() {
 
-    this.setState({
-      working: true
-    });
+    const { gameID, uid, game } = this.props;
 
-    const gameID = this.props.gameID;
-    const userID = this.props.uid;
-    const localGameData = this.props.game;
+    const newMove = localToRemote(game, this.props.uid);
 
-    const gameDocRef = firebase.firestore().collection('games').doc(gameID);
-    const newMove = localToRemote(localGameData, this.props.uid);
+    // used to figure out if there's a winner
+    const tempGameObject = {
+      ...game,
+      history: [ ...game.history, newMove ]
+    };
+    const winner = getWinner(tempGameObject);
 
-    const newGameObject = {
-      ...localGameData,
-      history: [
-        ...localGameData.history, newMove
-      ]
+    // if there is no opponent yet, set the turn to "p2", which will be used for querying games when trying to join a new one
+    let turn = "p2";
+
+    // if there is an opponent, set the turn value to their uid
+    if (winner) {
+      turn = "over";
+    } else if ( game.p1 !== null && game.p1 !== uid ) {
+      turn = game.p1;
+    } else if ( game.p2 !== null && game.p2 !== uid ) {
+      turn = game.p2;
+    }
+
+    const gameObject = {
+      h: tempGameObject.history,
+      t: turn,
+      w: winner,
     };
 
-    const winner = getWinner(newGameObject);
-
-    // console.log('new game object', newGameObject);
-
-    firebase.firestore().runTransaction( (transaction) => {
-
-      return transaction.get(gameDocRef).then( (gameDoc) => {
-
-        if (!gameDoc.exists) return;
-
-        // if there is no opponent yet, set the turn to "p2", which will be used for querying games when trying to join a new one
-        let turn = "p2";
-
-        // if there is an opponent, set the turn value to their uid
-        if (winner) {
-          turn = "over";
-        } else if ( localGameData.p1 !== null && localGameData.p1 !== userID ) {
-          turn = localGameData.p1;
-        } else if ( localGameData.p2 !== null && localGameData.p2 !== userID ) {
-          turn = localGameData.p2;
-        }
-
-        transaction.update(gameDocRef, {
-          h: newGameObject.history,
-          t: turn,
-          w: winner,
-          m: firebase.firestore.FieldValue.serverTimestamp(), // timestamp modification time
-        });
-
-      });
-
-    }).then( () => {
-      console.log('game update succeeded');
-    }).catch( (err) => {
-      console.log('game update error:', err);
-    }).finally( () => {
-      this.setState({
-        working: false
-      })
-    });
-
+    saveGame(gameID, gameObject);
   }
 }
 
@@ -184,7 +145,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     gameID: gameID,
     game: state.gameData.byID[gameID],
-    uid: state.user.uid
+    uid: state.user.uid,
+    saving: state.login.saving,
   };
 };
 

@@ -2,7 +2,6 @@ import firebase from 'react-native-firebase';
 
 import { store } from '../../App';
 import { startSave, endSave } from "../redux/login";
-
 import { generateGame } from "../utilities";
 
 export async function initiateGame(userID) {
