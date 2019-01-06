@@ -13,7 +13,13 @@ const userTemplate = {
 };
 
 export function storeChallengeAttempt(uid, challengeData, challengeAttempt) {
-  const challengeID = challengeData.ID;
+
+  const strippedChallengeAttempt = {
+    history: challengeAttempt.history,
+    score: challengeAttempt.score,
+  };
+
+  const challengeID = String(challengeAttempt.id);
 
   AsyncStorage.getItem(prefix + uid, (error, result) => {
     // parse the results if they exist, use above template if they don't
@@ -22,16 +28,16 @@ export function storeChallengeAttempt(uid, challengeData, challengeAttempt) {
 
     // create the keys if needed
     if (!challengeIDs.includes(challengeID)) challengeIDs.push(challengeID);
-    if (!Object.keys(challengeDataByID).includes(challengeID)) challengeDataByID[challengeID] = challengeData;
-    if (!Object.keys(challengeAttemptsByID).includes(challengeID)) challengeAttemptsByID[challengeID] = [];
+    if (!(challengeID in challengeDataByID)) challengeDataByID[challengeID] = challengeData;
+    if (!(challengeID in challengeAttemptsByID)) challengeAttemptsByID[challengeID] = [];
 
     // add the challenge attempt
-    challengeAttemptsByID[challengeID].push(challengeAttempt);
+    challengeAttemptsByID[challengeID].push(strippedChallengeAttempt);
 
     let setValue = {
       challengeIDs,
       challengeDataByID,
-      challengeAttemptsByID
+      challengeAttemptsByID,
     };
     setValue = purgeOldAttempts(setValue);
 
@@ -63,14 +69,14 @@ export function retrieveChallengeAttempts(uid) {
   return new Promise( (resolve, reject) => {
     AsyncStorage.getItem(prefix + uid)
       .then( (result) => {
-
-        // let something = JSON.parse(result);
-        // data.dispatch(setAttemptsHistory(something));
-
         resolve(JSON.parse(result));
       })
       .catch( (err) => {
         reject(err);
       });
   });
+}
+
+export function clearUserData(uid) {
+  AsyncStorage.removeItem(prefix + uid);
 }

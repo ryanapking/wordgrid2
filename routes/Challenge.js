@@ -9,6 +9,7 @@ import ChallengeInteraction from '../components/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
 import PieceOverlay from '../components/PieceOverlay';
 import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/challengeData";
+import { storeChallengeAttempt, retrieveChallengeAttempts, clearUserData } from "../data/async-storage";
 
 class Challenge extends Component {
   componentDidMount() {
@@ -18,10 +19,16 @@ class Challenge extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { challenge, source } = this.props.challengeData;
+
+    if (challenge.gameOver) {
+      storeChallengeAttempt(this.props.userID, source, challenge);
+    }
+  }
+
   render() {
     const { challenge } = this.props.challengeData;
-
-    console.log('challenge data:', challenge);
 
     if (challenge) {
       let overlayZIndex = 0;
@@ -87,6 +94,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    userID: state.user.uid,
     challengeData: state.challengeData
   };
 };

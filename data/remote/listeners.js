@@ -20,7 +20,7 @@ export function startListeners(userID) {
 }
 
 function startChallengeListener() {
-  console.log('startChallengeListener()');
+  // console.log('startChallengeListener()');
   const challengeDocRef = firebase.firestore().collection('challenge').doc('daily');
 
   challengeListener = challengeDocRef.onSnapshot( (challengeDoc) => {
@@ -41,7 +41,7 @@ function stopChallengeListener() {
 
 
 function startUserListener(userID) {
-  console.log('startUserListener()', userID);
+  // console.log('startUserListener()', userID);
   userListener.userID = userID;
   const userDocRef = firebase.firestore().collection('users').doc(userID);
 
@@ -49,7 +49,7 @@ function startUserListener(userID) {
     if (!userDoc.exists) return;
     const gameIDs = userDoc.data().games ? userDoc.data().games : [];
 
-    console.log('gameIDs', gameIDs);
+    // console.log('gameIDs', gameIDs);
 
     const newGameIDs = gameIDs.filter( (gameID) => !gameListeners.ids.includes(gameID));
     newGameIDs.forEach( (gameID) => {
@@ -77,9 +77,9 @@ function stopUserListener() {
 
 
 function startGameListener(userID, gameID) {
-  console.log('startGameListener()');
-  console.log('user id:', userID);
-  console.log('game id:', gameID);
+  // console.log('startGameListener()');
+  // console.log('user id:', userID);
+  // console.log('game id:', gameID);
 
   const gameDocRef = firebase.firestore().collection('games').doc(gameID);
 
@@ -94,7 +94,7 @@ function startGameListener(userID, gameID) {
 }
 
 function stopGameListener(gameID) {
-  console.log('stopGameListener()', gameID);
+  // console.log('stopGameListener()', gameID);
 
   gameListeners.listeners[gameID]();
   delete gameListeners.listeners[gameID];

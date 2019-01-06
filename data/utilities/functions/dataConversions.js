@@ -76,6 +76,7 @@ export function challengeRemoteToLocal(remoteChallenge) {
 
     score: 0,
     gameOver: false,
+    id: remoteChallenge.id,
   };
 
   // add the starting condition as the first history object
