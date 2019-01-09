@@ -8,8 +8,7 @@ import Board from '../components/Board';
 import ChallengeInteraction from '../components/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
 import PieceOverlay from '../components/PieceOverlay';
-import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/challengeData";
-import { storeChallengeAttempt, retrieveChallengeAttempts, clearUserData } from "../data/async-storage";
+import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece, saveAttempt } from "../data/redux/challengeData";
 
 class Challenge extends Component {
   componentDidMount() {
@@ -22,8 +21,8 @@ class Challenge extends Component {
   componentDidUpdate() {
     const { challenge, source } = this.props.challengeData;
 
-    if (challenge.gameOver) {
-      storeChallengeAttempt(this.props.userID, source, challenge);
+    if (challenge.gameOver && !challenge.attemptSaved) {
+      this.props.saveAttempt(this.props.userID);
     }
   }
 
@@ -105,6 +104,7 @@ const mapDispatchToProps = {
   removeSquare,
   clearConsumedSquares,
   placePiece,
+  saveAttempt,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Challenge));

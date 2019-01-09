@@ -1,6 +1,8 @@
 import { challengeRemoteToLocal, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
 import english from '../english';
 
+import { storeChallengeAttempt } from "../async-storage";
+
 // available actions
 const CHALLENGE_SET_SOURCE_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_SOURCE_DATA';
 const CHALLENGE_SET_LOCAL_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_LOCAL_DATA';
@@ -10,6 +12,7 @@ const CHALLENGE_CLEAR_CONSUMED_SQUARES = 'wordgrid2/challengeData/CHALLENGE_CLEA
 const CHALLENGE_PLAY_WORD = 'wordgrid2/challengeData/CHALLENGE_PLAY_WORD';
 const CHALLENGE_PLACE_PIECE = 'wordgrid2/challengeData/CHALLENGE_PLACE_PIECE';
 const CHALLENGE_SET_ATTEMPTS_HISTORY = 'wordgrid2/challengeData/CHALLENGE_SET_ATTEMPTS_HISTORY';
+const CHALLENGE_MARK_SAVED = 'wordgrid2/challengeData/CHALLENGE_MARK_SAVED';
 
 const initialState = {
   source: null,
@@ -36,6 +39,8 @@ export default function reducer(state = initialState, action) {
       return placePieceReducer(state, action);
     case CHALLENGE_SET_ATTEMPTS_HISTORY:
       return setAttemptsHistoryReducer(state, action);
+    case CHALLENGE_MARK_SAVED:
+      return markSavedReducer(state, action);
     default:
       return state;
   }
@@ -111,6 +116,16 @@ function setAttemptsHistoryReducer(state, action) {
     ...state,
     attemptsHistory: action.attemptsHistory,
   }
+}
+
+function markSavedReducer(state, action) {
+  return {
+    ...state,
+    challenge: {
+      ...state.challenge,
+      attemptSaved: true,
+    }
+  };
 }
 
 // action creators
@@ -245,5 +260,25 @@ export function setAttemptsHistory(attemptsHistory) {
   return {
     type: CHALLENGE_SET_ATTEMPTS_HISTORY,
     attemptsHistory
+  };
+}
+
+export function markSaved() {
+  return {
+    type: CHALLENGE_MARK_SAVED
+  }
+}
+
+export function saveAttempt(userID) {
+  return (dispatch, getState) => {
+    dispatch(markSaved());
+
+    const { challengeData } = getState();
+    const { challenge, source } = challengeData;
+
+    storeChallengeAttempt(userID, source, challenge)
+      .then( (attemptsHistory) => {
+        dispatch(setAttemptsHistory(attemptsHistory));
+      });
   };
 }

@@ -1,5 +1,7 @@
 import firebase from 'react-native-firebase';
 import { startListeners } from "../remote";
+import { retrieveChallengeAttempts } from "../async-storage";
+import { setAttemptsHistory } from "./challengeData";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -75,10 +77,17 @@ function userLoginFail() {
 }
 
 function userLoginSuccess(uid) {
-  startListeners(uid);
-  return {
-    type: LOGIN_SUCCESS,
-    uid
+  console.log('userLoginSuccess()');
+  return (dispatch) => {
+    startListeners(uid);
+    retrieveChallengeAttempts(uid)
+      .then((history) => {
+        dispatch(setAttemptsHistory(history));
+      });
+    dispatch({
+      type: LOGIN_SUCCESS,
+      uid
+    });
   }
 }
 

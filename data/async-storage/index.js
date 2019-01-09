@@ -8,60 +8,64 @@ const prefix = "userChallenge:";
 // structure:
 const userTemplate = {
   challengeIDs: [], // array of challenge IDs (timestamp generated at daily challenge creation)
-  challengeDataByID: {}, // object containing challenge starting point
-  challengeAttemptsByID: {}, // user challenge attempts
+  challengesByID: {}, // object containing challenge starting point
+  attemptsByID: {}, // user challenge attempts
 };
 
 export function storeChallengeAttempt(uid, challengeData, challengeAttempt) {
+  return new Promise( (resolve) => {
 
-  const strippedChallengeAttempt = {
-    history: challengeAttempt.history,
-    score: challengeAttempt.score,
-  };
-
-  const challengeID = String(challengeAttempt.id);
-
-  AsyncStorage.getItem(prefix + uid, (error, result) => {
-    // parse the results if they exist, use above template if they don't
-    let userChallengeData = result ? JSON.parse(result) : {...userTemplate};
-    let { challengeIDs, challengeDataByID, challengeAttemptsByID } = userChallengeData;
-
-    // create the keys if needed
-    if (!challengeIDs.includes(challengeID)) challengeIDs.push(challengeID);
-    if (!(challengeID in challengeDataByID)) challengeDataByID[challengeID] = challengeData;
-    if (!(challengeID in challengeAttemptsByID)) challengeAttemptsByID[challengeID] = [];
-
-    // add the challenge attempt
-    challengeAttemptsByID[challengeID].push(strippedChallengeAttempt);
-
-    let setValue = {
-      challengeIDs,
-      challengeDataByID,
-      challengeAttemptsByID,
+    const strippedChallengeAttempt = {
+      history: challengeAttempt.history,
+      score: challengeAttempt.score,
     };
-    setValue = purgeOldAttempts(setValue);
 
-    AsyncStorage.setItem(prefix + uid, JSON.stringify(setValue));
+    const challengeID = String(challengeAttempt.id);
+
+    AsyncStorage.getItem(prefix + uid, (error, result) => {
+      // parse the results if they exist, use above template if they don't
+      let userChallengeData = result ? JSON.parse(result) : {...userTemplate};
+      let { challengeIDs, challengesByID, attemptsByID } = userChallengeData;
+
+      // create the keys if needed
+      if (!challengeIDs.includes(challengeID)) challengeIDs.push(challengeID);
+      if (!(challengeID in challengesByID)) challengesByID[challengeID] = challengeData;
+      if (!(challengeID in attemptsByID)) attemptsByID[challengeID] = [];
+
+      // add the challenge attempt
+      attemptsByID[challengeID].push(strippedChallengeAttempt);
+
+      let setValue = {
+        challengeIDs,
+        challengesByID,
+        attemptsByID,
+      };
+      setValue = purgeOldAttempts({...setValue});
+
+      resolve(setValue);
+      AsyncStorage.setItem(prefix + uid, JSON.stringify(setValue));
+    });
+
   });
 }
 
 function purgeOldAttempts(userChallengeData) {
-  let { challengeIDs, challengeDataByID, challengeAttemptsByID } = userChallengeData;
+  let { challengeIDs, challengesByID, attemptsByID } = userChallengeData;
 
   challengeIDs = challengeIDs.sort().slice(-10);
 
-  Object.keys(challengeDataByID).forEach( (key) => {
-    if (!challengeIDs.includes(key)) delete challengeDataByID[key];
+  Object.keys(challengesByID).forEach( (key) => {
+    if (!challengeIDs.includes(key)) delete challengesByID[key];
   });
 
-  Object.keys(challengeAttemptsByID).forEach( (key) => {
-    if (!challengeIDs.includes(key)) delete challengeAttemptsByID[key];
+  Object.keys(attemptsByID).forEach( (key) => {
+    if (!challengeIDs.includes(key)) delete attemptsByID[key];
   });
 
   return {
     challengeIDs,
-    challengeDataByID,
-    challengeAttemptsByID,
+    challengesByID,
+    attemptsByID,
   };
 }
 

@@ -76,6 +76,7 @@ export function challengeRemoteToLocal(remoteChallenge) {
 
     score: 0,
     gameOver: false,
+    attemptSaved: false,
     id: remoteChallenge.id,
   };
 
