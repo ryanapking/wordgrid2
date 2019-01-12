@@ -15,6 +15,7 @@ import Games from "./routes/Games";
 import Settings from "./routes/Settings";
 import Challenge from "./routes/Challenge";
 import ChallengeOverview from "./routes/ChallengeOverview";
+import ChallengeReview from "./routes/ChallengeReview";
 
 // redirect all non-logged in users to the login screen
 import LoginRedirect from "./components/nondisplay/LoginRedirect";
@@ -49,7 +50,8 @@ export default class App extends Component {
                 <Route path="/games" component={Games} />
                 <Route path="/settings" component={Settings} />
                 <Route path="/challenge" component={Challenge} />
-                <Route path="/challenge-overview" component={ChallengeOverview} />
+                <Route path="/challengeOverview/:challengeID" component={ChallengeOverview} />
+                <Route path="/challengeReview/:challengeID/:attemptIndex" component={ChallengeReview} />
               </View>
             </View>
             <LoginRedirect />
