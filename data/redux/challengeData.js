@@ -17,7 +17,11 @@ const CHALLENGE_MARK_SAVED = 'wordgrid2/challengeData/CHALLENGE_MARK_SAVED';
 const initialState = {
   source: null,
   challenge: null,
-  attemptsHistory: null,
+  attemptsHistory: {
+    challengeIDs: [],
+    attemptsByID: {},
+    challengesByID: {},
+  },
 };
 
 // reducer manager

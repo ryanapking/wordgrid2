@@ -82,7 +82,9 @@ function userLoginSuccess(uid) {
     startListeners(uid);
     retrieveChallengeAttempts(uid)
       .then((history) => {
-        dispatch(setAttemptsHistory(history));
+        if (history) {
+          dispatch(setAttemptsHistory(history));
+        }
       });
     dispatch({
       type: LOGIN_SUCCESS,
