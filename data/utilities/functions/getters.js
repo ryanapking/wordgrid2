@@ -1,8 +1,11 @@
-import settings from '../config';
-import { boardStringToArray, pieceStringToArray } from "./dataConversions";
+const config = require('../config');
+const { settings } = config;
+
+const dataConversions = require('./dataConversions');
+const { boardStringToArray, pieceStringToArray } = dataConversions;
 
 // return a dumb object of scores as if they are baseball innings
-export function getScoreBoard(game) {
+function getScoreBoard(game) {
 
   const emptyScoreObject = { p1: null, p2: null };
 
@@ -48,7 +51,7 @@ export function getScoreBoard(game) {
 
 }
 
-export function getAnimationData(game) {
+function getAnimationData(game) {
   if (game.history.length < 1) return false;
 
   const start = game.history[game.history.length -2];
@@ -116,7 +119,7 @@ function getBoardMinusPiece(boardArray, pieces, placementRef) {
 
 // searches the board for valid starting points (matching first letter)
 // uses recursive findNextLetter to find the remainder of the word
-export function getWordPath(word, boardState) {
+function getWordPath(word, boardState) {
   const wordLetters = word.toLowerCase().split("");
   const firstLetter = wordLetters[0];
   const remainingLetters = wordLetters.slice(1);
@@ -196,3 +199,9 @@ function findNextLetter(square, findLetters, boardState, path) {
   return newPath;
 
 }
+
+module.exports = {
+  getScoreBoard,
+  getAnimationData,
+  getWordPath,
+};

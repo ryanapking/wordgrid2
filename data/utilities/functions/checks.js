@@ -1,6 +1,7 @@
-import settings from '../config';
+const config = require('../config');
+const settings = config.settings;
 
-export function checkPieceFit(playerPieces, boardState) {
+function checkPieceFit(playerPieces, boardState) {
   // checks a player's pieces to see if any of them will fit on the board
   // loops until a piece that fits is found
   let spaceCheck = false;
@@ -46,7 +47,7 @@ export function checkPieceFit(playerPieces, boardState) {
   return spaceCheck;
 }
 
-export function gameOverCheck(game) {
+function gameOverCheck(game) {
   const turns = turnCounter(game);
   const scores = scoreTabulator(game);
 
@@ -71,7 +72,7 @@ function turnCounter(game) {
   }, {p1: 0, p2: 0});
 }
 
-export function scoreTabulator(game) {
+function scoreTabulator(game) {
   return game.history.reduce( (scoreTab, move) => {
     if (move.p === game.p1) {
       return {...scoreTab, p1: scoreTab.p1 + move.wv};
@@ -83,7 +84,7 @@ export function scoreTabulator(game) {
   }, {p1: 0, p2: 0});
 }
 
-export function getWinner(game) {
+function getWinner(game) {
   const gameOver = gameOverCheck(game);
   if (!gameOver) return null;
 
@@ -94,3 +95,10 @@ export function getWinner(game) {
     return "p2";
   }
 }
+
+module.exports = {
+  checkPieceFit,
+  gameOverCheck,
+  scoreTabulator,
+  getWinner,
+};

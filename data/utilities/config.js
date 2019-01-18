@@ -11,9 +11,7 @@ const settings = {
   maxPieceHeight: 4,
 };
 
-export default settings;
-
-export const letterValues = {
+const letterValues = {
   "a": 1,
   "b": 3,
   "c": 3,
@@ -78,7 +76,7 @@ const letterRangesStructure = {
   ranges: [],
 };
 
-export const letterRanges = letters.reduce( (result, letter) => {
+const letterRanges = letters.reduce( (result, letter) => {
   const newHigh = result.high + letterWeights[letter];
   const letterRange = { letter: letter, low: result.high, stop: newHigh };
   return {
@@ -87,3 +85,9 @@ export const letterRanges = letters.reduce( (result, letter) => {
     ranges: [...result.ranges, letterRange]
   };
 }, letterRangesStructure);
+
+module.exports = {
+  settings,
+  letterRanges,
+  letterValues,
+};

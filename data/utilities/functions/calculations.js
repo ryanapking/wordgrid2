@@ -1,12 +1,12 @@
-import { letterValues } from '../config';
+const config = require('../config');
 
-export function calculateWordValue(word) {
+function calculateWordValue(word) {
   return word.split("").reduce( (total, letter) => {
-    return total + letterValues[letter.toLowerCase()];
+    return total + config.letterValues[letter.toLowerCase()];
   }, 0);
 }
 
-export function calculateLongestWordLength(words) {
+function calculateLongestWordLength(words) {
   const longestWords = words.reduce( (currentLongestWords, word) => {
     if (word.length > currentLongestWords.length) {
       return {words: [word], length: word.length};
@@ -23,7 +23,7 @@ export function calculateLongestWordLength(words) {
   return longestWords;
 }
 
-export function calculateHighestWordValue(words) {
+function calculateHighestWordValue(words) {
   const mostValuableWords = words.reduce( (currentMostValuableWord, word) => {
     const wordValue = calculateWordValue(word);
     if (wordValue > currentMostValuableWord.value) {
@@ -41,7 +41,7 @@ export function calculateHighestWordValue(words) {
   return mostValuableWords;
 }
 
-export function calculateMoveRating(word, longestWord, mostValuableWord) {
+function calculateMoveRating(word, longestWord, mostValuableWord) {
   // return a value from 0 to 10 which will be displayed in half stars
   if (word.length < 4) return 0;
   const wordValue = calculateWordValue(word);
@@ -58,3 +58,10 @@ export function calculateMoveRating(word, longestWord, mostValuableWord) {
     return rating;
   }
 }
+
+module.exports = {
+  calculateWordValue,
+  calculateLongestWordLength,
+  calculateHighestWordValue,
+  calculateMoveRating,
+};

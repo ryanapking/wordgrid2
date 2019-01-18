@@ -1,8 +1,10 @@
-import settings, { letterRanges } from '../config';
+const config = require('../config');
+const { settings, letterRanges } = config;
 
-import { pieceStringToArray } from "./dataConversions";
+const dataConversions = require('./dataConversions');
+const { pieceStringToArray } = dataConversions;
 
-export function generateGame(userID = null) {
+function generateGame(userID = null) {
   return {
     p1: userID, // user ID of player 2
     p2: null, // user ID of player 1
@@ -29,7 +31,7 @@ export function generateGame(userID = null) {
 }
 
 // a board is a 100 character string, filled to the defined density with random characters
-export function generateBoard() {
+function generateBoard() {
   let randomSpaces = [];
   let boardSpaceCount = settings.boardWidth * settings.boardHeight;
   // get board spaces until we exceed the starting board density
@@ -113,12 +115,12 @@ function generatePiece(pieceSize = 4) {
   return piece;
 }
 
-export function generateLocalPiece(pieceSize = 4) {
+function generateLocalPiece(pieceSize = 4) {
   const piece = generatePiece(pieceSize);
   return pieceStringToArray(piece);
 }
 
-export function getRandomLetter() {
+function getRandomLetter() {
   const rando = Math.floor((Math.random() * letterRanges.high));
   let letter = 'e'; // default to e, just in case
 
@@ -131,7 +133,15 @@ export function getRandomLetter() {
   return letter;
 }
 
-export function setCharAt(str, index, chr) {
+function setCharAt(str, index, chr) {
   if(index > str.length-1) return str;
   return str.substr(0,index) + chr + str.substr(index+1);
 }
+
+module.exports = {
+  generateGame,
+  generateBoard,
+  generateLocalPiece,
+  getRandomLetter,
+  setCharAt,
+};

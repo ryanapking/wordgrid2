@@ -1,6 +1,7 @@
-import { getScoreBoard } from './getters';
+const getters = require('./getters');
+const { getScoreBoard } = getters;
 
-export function remoteToLocal(source, userID) {
+function remoteToLocal(source, userID) {
   const current = source.h[source.h.length - 1];
   const me = (source.p1 === userID) ? current.p1 : current.p2;
   const them = (source.p1 === userID) ? current.p2 : current.p1;
@@ -52,7 +53,7 @@ export function remoteToLocal(source, userID) {
   };
 }
 
-export function challengeRemoteToLocal(remoteChallenge) {
+function challengeRemoteToLocal(remoteChallenge) {
   let localPieceBank = remoteChallenge.pieceBank.map((pieceSet) => {
     let localPieceSet = {};
     Object.keys(pieceSet).forEach( (key) => {
@@ -86,7 +87,7 @@ export function challengeRemoteToLocal(remoteChallenge) {
   return challenge;
 }
 
-export function challengeMoveToHistory(challengeData, placementRef = null, placementValue = null) {
+function challengeMoveToHistory(challengeData, placementRef = null, placementValue = null) {
   return {
     b: arrayToString(challengeData.rows), // board state
     w: challengeData.word, // word played
@@ -97,7 +98,7 @@ export function challengeMoveToHistory(challengeData, placementRef = null, place
   };
 }
 
-export function localToRemote(localData, userID) {
+function localToRemote(localData, userID) {
   const p1Array = (localData.p1 === userID) ? localData.me : localData.them;
   const p2Array = (localData.p2 === userID) ? localData.me : localData.them;
   wordPathArrayToString(localData.consumedSquares);
@@ -113,7 +114,7 @@ export function localToRemote(localData, userID) {
   }
 }
 
-export function pieceStringToArray(pieceSource) {
+function pieceStringToArray(pieceSource) {
   if (!pieceSource) return [];
   return Array(4).fill(1).map( (val, index ) => {
     const start = index * 4;
@@ -125,7 +126,7 @@ export function pieceStringToArray(pieceSource) {
   });
 }
 
-export function boardStringToArray(boardSource) {
+function boardStringToArray(boardSource) {
   return Array(10).fill(1).map( (val, index) => {
     const start = index * 10;
     const end = start + 10;
@@ -136,13 +137,13 @@ export function boardStringToArray(boardSource) {
   });
 }
 
-export function arrayToString(array) {
+function arrayToString(array) {
   return array.map( (row) => {
     return row.map( letter => letter === "" ? " " : letter).join("");
   }).join("");
 }
 
-export function calculateScore(history, playerID) {
+function calculateScore(history, playerID) {
   return history.reduce( (totalScore, move) => {
     if (move.p && move.p === playerID) {
       return totalScore + move.wv;
@@ -152,13 +153,13 @@ export function calculateScore(history, playerID) {
   }, 0);
 }
 
-export function wordPathArrayToString(consumedSquares) {
+function wordPathArrayToString(consumedSquares) {
   return consumedSquares.map( (square) => {
     return `${square.rowIndex},${square.columnIndex}`;
   }).join("|");
 }
 
-export function wordPathStringToArray(wordPathString) {
+function wordPathStringToArray(wordPathString) {
   const wordPaths = wordPathString.split("|");
   return wordPaths.map( (coordinateSet) => {
     const squareCoordinates = coordinateSet.split(",");
@@ -168,3 +169,16 @@ export function wordPathStringToArray(wordPathString) {
     };
   });
 }
+
+module.exports = {
+  remoteToLocal,
+  challengeRemoteToLocal,
+  challengeMoveToHistory,
+  localToRemote,
+  pieceStringToArray,
+  boardStringToArray,
+  arrayToString,
+  calculateScore,
+  wordPathArrayToString,
+  wordPathStringToArray,
+};
