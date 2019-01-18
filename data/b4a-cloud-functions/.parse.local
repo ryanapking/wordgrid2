@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "_default": {
+      "link": "wordgrid2"
+    },
+    "wordgrid2": {
+      "applicationId": "lLAluN9aV5JZIiwiQPVsUNxZ6ses5IXgwoWpt2NX"
+    }
+  }
+}

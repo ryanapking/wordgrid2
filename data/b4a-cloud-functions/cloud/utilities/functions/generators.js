@@ -141,6 +141,7 @@ function setCharAt(str, index, chr) {
 module.exports = {
   generateGame,
   generateBoard,
+  generatePiece,
   generateLocalPiece,
   getRandomLetter,
   setCharAt,
