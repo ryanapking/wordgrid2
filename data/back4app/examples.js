@@ -1,14 +1,6 @@
 import { v1 } from 'uuid';
 
-import { AsyncStorage } from 'react-native';
-import Parse from 'parse/react-native';
-
-// import utilities from '../back4app/cloud/utilities';
-// console.log(utilities.someFunction());
-
-Parse.setAsyncStorage(AsyncStorage);
-Parse.serverURL = 'https://parseapi.back4app.com/';
-Parse.initialize("lLAluN9aV5JZIiwiQPVsUNxZ6ses5IXgwoWpt2NX", "Wf0JfHZM5E43d4OmJd1bsnDrvTYQNI1UNN29el5K");
+import Parse from './client-setup';
 
 // trigger cloud function
 Parse.Cloud.run("hello")

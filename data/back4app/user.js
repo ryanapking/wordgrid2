@@ -1,11 +1,6 @@
 import { v1 } from 'uuid';
 
-import { AsyncStorage } from 'react-native';
-import Parse from 'parse/react-native';
-
-Parse.setAsyncStorage(AsyncStorage);
-Parse.serverURL = 'https://parseapi.back4app.com/';
-Parse.initialize("lLAluN9aV5JZIiwiQPVsUNxZ6ses5IXgwoWpt2NX", "Wf0JfHZM5E43d4OmJd1bsnDrvTYQNI1UNN29el5K");
+import Parse from './client-setup';
 
 export function anonymousLogin() {
   return "anonymousLogin()";
@@ -35,4 +30,27 @@ export function standardLogin(username, password) {
         reject(err);
       });
   });
+}
+
+export function sampleQuery() {
+  const Comment = Parse.Object.extend("test");
+  const query = new Parse.Query(Comment);
+
+  query.get("jGGfST3cKc")
+    .then( (comment) => {
+      console.log('fetched content:', comment.get("content"));
+    })
+    .catch( (err) => {
+      console.log('fetch error:', err);
+    });
+}
+
+export function startGame() {
+  Parse.Cloud.run("startGame")
+    .then( (response) => {
+      console.log('startGame success:', response);
+    })
+    .catch( (err) => {
+      console.log('startGame error:', err);
+    });
 }
