@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {StyleSheet, Text, View} from "react-native";
-import Wordbutton from "../components/Wordbutton";
 import { Button, Container } from "native-base";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { userLogin } from '../data/redux/user';
+import { anonymousLogin } from "../data/back4app/user";
 
 
 class Login extends Component {
