@@ -5,12 +5,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { userLogin } from '../data/redux/user';
-import { anonymousLogin, logout, sampleQuery, startGame } from "../data/back4app/user";
-
-// sampleQuery();
-startGame();
-// anonymousLogin();
-// logout();
 
 class Login extends Component {
   render() {

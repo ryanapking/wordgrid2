@@ -1,10 +1,9 @@
-import firebase from 'react-native-firebase';
 import { startListeners } from "../remote";
 import { retrieveChallengeAttempts } from "../async-storage";
 import { setAttemptsHistory } from "./challengeData";
 import { setLocalGameDataByID } from "./gameData";
 
-import { checkUser } from "../back4app/client/user";
+import { checkUser, anonymousLogin } from "../back4app/client/user";
 import { startGamesLiveQuery } from "../back4app/client/listeners";
 
 // available actions
@@ -42,15 +41,12 @@ export function userLogin() {
   return (dispatch) => {
     dispatch(userLoginStart());
 
-    firebase.auth().signInAnonymously()
-      .then((user) => {
-        console.log("login success");
-        console.log('user:', user);
-        dispatch(userLoginSuccess(user.uid));
+    anonymousLogin()
+      .then( (userID) => {
+        dispatch(userLoginSuccess(userID));
       })
-      .catch((e) => {
-        console.log("login error, yo");
-        console.log(e);
+      .catch( (err) => {
+        console.log('anonymous login error:', err);
         dispatch(userLoginFail());
       });
   }
@@ -60,6 +56,7 @@ export function fetchUser() {
   return (dispatch) => {
     checkUser()
       .then( (userID) => {
+        console.log('user id:', userID);
         dispatch(userLoginSuccess(userID));
       })
       .catch( (err) => {

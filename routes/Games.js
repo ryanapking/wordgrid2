@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-native';
 import {Button, List, ListItem, Spinner} from 'native-base';
 
 import { initiateGame } from "../data/remote";
+import { startGame } from "../data/back4app/client/actions";
 
 class Games extends Component {
   render() {
@@ -69,7 +70,7 @@ class Games extends Component {
       );
     } else {
       return (
-        <Button full info onPress={() => initiateGame(this.props.userID)}>
+        <Button full info onPress={() => startGame()}>
           <Text>New Game</Text>
         </Button>
       );

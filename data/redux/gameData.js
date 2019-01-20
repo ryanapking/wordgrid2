@@ -232,8 +232,7 @@ function playWordReducer(state, action) {
   };
 
   const tempNextHistory = [...game.history, localToRemote(newGameState, action.userID)];
-  const tempClone = {...newGameState, h: tempNextHistory};
-  const scoreBoard = getScoreBoard(tempClone);
+  const scoreBoard = getScoreBoard(tempNextHistory, game.p1, game.p2);
 
   return {
     ...state,

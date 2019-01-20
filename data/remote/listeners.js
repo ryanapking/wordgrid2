@@ -15,8 +15,8 @@ let gameListeners = {
 };
 
 export function startListeners(userID) {
-  startChallengeListener();
-  startUserListener(userID);
+  // startChallengeListener();
+  // startUserListener(userID);
 }
 
 function startChallengeListener() {
