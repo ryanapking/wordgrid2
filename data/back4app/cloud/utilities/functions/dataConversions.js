@@ -2,13 +2,16 @@ const getters = require('./getters');
 const { getScoreBoard } = getters;
 
 function remoteToLocal(source, userID) {
-  const current = source.h[source.h.length - 1];
-  const me = (source.p1 === userID) ? current.p1 : current.p2;
-  const them = (source.p1 === userID) ? current.p2 : current.p1;
-  const opponentID = (source.p1 === userID) ? source.p2 : source.p1;
+  const { history, player1, player2, turn, winner, status } = source;
+  const p1 = player1.objectId;
+  const p2 = player2 ? player2.objectId : null;
+  const current = history[history.length - 1];
+  const me = (p1 === userID) ? current.p1 : current.p2;
+  const them = (p1 === userID) ? current.p2 : current.p1;
+  const opponentID = (p1 === userID) ? p2 : p1;
   const opponentName = "unknown opponent";
-  const won = (source.w) ? (source[source.w] === userID) : null;
-  return {
+  const won = winner;
+  const conversion = {
     // data that is converted and saved to firebase as a move
     rows: boardStringToArray(current.b),
     me: me.map( (piece) => pieceStringToArray(piece)),
@@ -25,12 +28,12 @@ function remoteToLocal(source, userID) {
     consumedSquares: [],
 
     // local data for display purposes
-    animationOver: (source.h.length < 2), // no animation until there have been at least two moves
+    animationOver: (history.length < 2), // no animation until there have been at least two moves
     piecePlaced: false,
     validatingWord: false,
-    myScore: calculateScore(source.h, userID),
-    theirScore: calculateScore(source.h, opponentID),
-    scoreBoard: getScoreBoard(source),
+    myScore: calculateScore(history, userID),
+    theirScore: calculateScore(history, opponentID),
+    scoreBoard: getScoreBoard(history, p1, p2),
     won,
     opponentID,
     opponentName,
@@ -43,14 +46,17 @@ function remoteToLocal(source, userID) {
     },
 
     // used when converting back to remote
-    history: source.h,
-    p1: source.p1,
-    p2: source.p2,
-    turn: source.t,
+    history: history,
+    p1: p1,
+    p2: p2,
+    turn: turn.objectId,
 
     // source data can be used to run this process again
     sourceData: source,
   };
+
+  console.log('after conversion:', conversion);
+  return conversion;
 }
 
 function challengeRemoteToLocal(remoteChallenge) {

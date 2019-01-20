@@ -2,35 +2,36 @@ import { v1 } from 'uuid';
 
 import Parse from './client-setup';
 
-export function anonymousLogin() {
-  // return "anonymousLogin()";
-  return new Promise( (resolve, reject) => {
-    let user = new Parse.User();
-    let authData = {
+export async function anonymousLogin() {
+    const authData = {
       "authData": {
         "id": v1()
       }
     };
 
-    console.log("auth data:", authData);
+    let user = await new Parse.User()
+      ._linkWith("anonymous", authData)
+      .catch((err) => {
+        throw new Error(err);
+      });
 
-    user._linkWith("anonymous", authData).then(function(user) {
-      console.log(user);
-    }).catch((err) => {
-      console.log(err);
-    });
-  });
+    return user.id;
 }
 
-export function logout() {
-  Parse.User.logOut();
+export async function logout() {
+  return await Parse.User.logOut()
+    .catch( (err) => {
+      throw new Error(err)
+    });
 }
 
-export function checkUser() {
-  Parse.User.currentAsync()
-    .then((something) => {
-      console.log('something:', something);
+export async function checkUser() {
+  let user = await Parse.User.currentAsync()
+    .catch((err) => {
+      throw new Error(err);
     });
+
+  return user.id;
 }
 
 export function standardLogin(username, password) {

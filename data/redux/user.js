@@ -2,6 +2,10 @@ import firebase from 'react-native-firebase';
 import { startListeners } from "../remote";
 import { retrieveChallengeAttempts } from "../async-storage";
 import { setAttemptsHistory } from "./challengeData";
+import { setLocalGameDataByID } from "./gameData";
+
+import { checkUser } from "../back4app/client/user";
+import { startGamesLiveQuery } from "../back4app/client/listeners";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -54,13 +58,13 @@ export function userLogin() {
 
 export function fetchUser() {
   return (dispatch) => {
-    firebase.auth().onAuthStateChanged( (user) => {
-      if (user) {
-        dispatch(userLoginSuccess(user.uid));
-      } else {
+    checkUser()
+      .then( (userID) => {
+        dispatch(userLoginSuccess(userID));
+      })
+      .catch( (err) => {
         dispatch(userLoggedOut());
-      }
-    })
+      });
   }
 }
 
@@ -80,12 +84,19 @@ function userLoginSuccess(uid) {
   console.log('userLoginSuccess()');
   return (dispatch) => {
     startListeners(uid);
-    retrieveChallengeAttempts(uid)
-      .then((history) => {
-        if (history) {
-          dispatch(setAttemptsHistory(history));
-        }
-      });
+
+    // convoluted, but redux and back4app have to interact somewhere
+    // callback is used whenever remote data is changed
+    // we call it here to limit it to 1 instance of the listeners
+    startGamesLiveQuery((source) => {
+        dispatch(setLocalGameDataByID(source.objectId, uid, source));
+    });
+    // retrieveChallengeAttempts(uid)
+    //   .then((history) => {
+    //     if (history) {
+    //       dispatch(setAttemptsHistory(history));
+    //     }
+    //   });
     dispatch({
       type: LOGIN_SUCCESS,
       uid

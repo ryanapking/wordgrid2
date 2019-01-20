@@ -5,11 +5,11 @@ const dataConversions = require('./dataConversions');
 const { boardStringToArray, pieceStringToArray } = dataConversions;
 
 // return a dumb object of scores as if they are baseball innings
-function getScoreBoard(game) {
+function getScoreBoard(history, p1, p2) {
 
   const emptyScoreObject = { p1: null, p2: null };
 
-  const scores = game.h.reduce( (scores, move) => {
+  const scores = history.reduce( (scores, move) => {
 
     let previousMove = scores[scores.length - 1];
 
@@ -18,9 +18,9 @@ function getScoreBoard(game) {
 
     if (!move.p) {
       return scores;
-    } else if (move.p === game.p1) {
+    } else if (move.p === p1) {
       player = "p1";
-    } else if (move.p === game.p2) {
+    } else if (move.p === p2) {
       player = "p2";
     } else {
       console.log('something is busted');
