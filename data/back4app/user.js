@@ -1,5 +1,5 @@
-// import { v1 } from 'uuid';
-const uuidv1 = require('uuid/v1');
+import { v1 } from 'uuid';
+// const uuidv1 = require('uuid/v1');
 
 import Parse from './client-setup';
 
@@ -9,7 +9,7 @@ export function anonymousLogin() {
     let user = new Parse.User();
     let authData = {
       "authData": {
-        "id": uuidv1()
+        "id": v1()
       }
     };
 
@@ -59,12 +59,72 @@ export function sampleQuery() {
     });
 }
 
-export function startGame() {
-  Parse.Cloud.run("startGame")
+export async function liveQuery() {
+  const user = await Parse.User.currentAsync();
+
+  const Games = Parse.Object.extend("Games");
+
+  const p1Games = new Parse.Query(Games).equalTo("player1", user).doesNotExist("winner");
+  const p2Games = new Parse.Query(Games).equalTo("player2", user).doesNotExist("winner");
+  const gamesQuery = Parse.Query.or(p1Games, p2Games);
+
+  const games = await gamesQuery.find();
+  games.forEach( (game) => {
+    console.log(`game ${game.id}:`, game.toJSON());
+  });
+
+
+  let subscription = gamesQuery.subscribe();
+
+  subscription.on('open', () => {
+    console.log('live query subscription opened');
+  });
+
+  subscription.on('enter', (object) => {
+    console.log('subscription enter: ', object);
+  });
+
+  subscription.on('create', (object) => {
+    console.log('subscription create: ', object);
+  });
+
+  subscription.on('update', (object) => {
+    console.log('subscription update: ', object);
+  });
+
+  subscription.on('leave', (object) => {
+    console.log('subscription leave: ', object);
+  });
+
+  subscription.on('delete', (object) => {
+    console.log('subscription delete: ', object);
+  });
+
+  subscription.on('close', () => {
+    console.log('subscription closed');
+  });
+
+}
+
+export async function startGame() {
+  let someValue = await Parse.Cloud.run("startGame")
     .then( (response) => {
       console.log('startGame success:', response);
     })
     .catch( (err) => {
       console.log('startGame error:', err);
     });
+
+  console.log('some value:', someValue);
+}
+
+export async function getSomething() {
+  let user = await Parse.User.currentAsync();
+  console.log('user:', user);
+
+  let gameList = await user.get("gameList");
+  console.log('game list:', gameList);
+
+  let fullGameList = await gameList.fetchWithInclude("ready");
+  console.log('full game list...', fullGameList.toJSON());
 }
