@@ -4,21 +4,22 @@ const generators = require ('./utilities/functions/generators.js');
 Parse.Cloud.define("startGame", async function(request) {
   if (!request.user) return;
 
+  // our classes
   const GameObject = Parse.Object.extend("Games");
   const GameLists = Parse.Object.extend("GameLists");
 
+  // values that will be saved at the end of function
   let saveUser = null;
   let newGame = null;
   let gameList = await request.user.get("gameList");
 
+  // create a new game list if the user doesn't already have one
   if (!gameList) {
-    // create a new game list
     gameList = new GameLists()
       .setACL( new Parse.ACL({
         '*': {},
         [request.user.id]: { "read": true }
       }));
-
     saveUser = request.user
       .set("gameList", gameList);
   }
@@ -31,18 +32,18 @@ Parse.Cloud.define("startGame", async function(request) {
     .limit(1)
     .find({ useMasterKey: true });
 
+  // join the existing game we just found
   if (existingGames.length > 0) {
-    // join the existing game we just found
-    let foundGame = results[0];
-    const ACL = foundGame.getACL()
+    newGame = existingGames[0];
+    const ACL = newGame.getACL()
       .setReadAccess(request.user.id, true);
-    newGame = await foundGame
+    newGame
       .set("player2Id", request.user.id)
       .set("turn", request.user.id)
       .setACL(ACL);
 
+  // start a new game
   } else {
-    // start a new game
     const gameData = generators.generateGame();
     newGame = new GameObject()
       .set("player1Id", request.user.id)
@@ -54,8 +55,10 @@ Parse.Cloud.define("startGame", async function(request) {
       }));
   }
 
+  // add the new game to the user's list as a pointer
   gameList.add("ready", newGame);
 
+  // save everything
   let returnValue = await Parse.Object.saveAll([newGame, gameList, saveUser], {
     useMasterKey: true,
     error: (err) => {
