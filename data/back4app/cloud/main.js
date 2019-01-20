@@ -1,34 +1,20 @@
 const utilities = require('./utilities');
 const generators = require ('./utilities/functions/generators.js');
 
+Parse.Cloud.define("saveMove", async function(request) {
+
+});
+
 Parse.Cloud.define("startGame", async function(request) {
   if (!request.user) return;
 
-  // our classes
   const GameObject = Parse.Object.extend("Games");
-  const GameLists = Parse.Object.extend("GameLists");
-
-  // values that will be saved at the end of function
-  let saveUser = null;
   let newGame = null;
-  let gameList = await request.user.get("gameList");
-
-  // create a new game list if the user doesn't already have one
-  if (!gameList) {
-    gameList = new GameLists()
-      .setACL( new Parse.ACL({
-        '*': {},
-        [request.user.id]: { "read": true }
-      }));
-    saveUser = request.user
-      .set("gameList", gameList);
-  }
 
   // search for an existing game to join
   let existingGames = await new Parse.Query(GameObject)
-    .doesNotExist("player2Id")
-    .equalTo("turn", "p2")
-    .notEqualTo("player1Id", request.user.id)
+    .equalTo("status", "waiting")
+    .notEqualTo("player1", request.user)
     .limit(1)
     .find({ useMasterKey: true });
 
@@ -38,33 +24,31 @@ Parse.Cloud.define("startGame", async function(request) {
     const ACL = newGame.getACL()
       .setReadAccess(request.user.id, true);
     newGame
-      .set("player2Id", request.user.id)
-      .set("turn", request.user.id)
+      .set("player2", request.user)
+      .set("turn", request.user)
+      .set("status", "in progress")
       .setACL(ACL);
 
   // start a new game
   } else {
     const gameData = generators.generateGame();
     newGame = new GameObject()
-      .set("player1Id", request.user.id)
-      .set("turn", request.user.id)
+      .set("player1", request.user)
+      .set("turn", request.user)
       .set("history", gameData.h)
+      .set("status", "new")
       .setACL(new Parse.ACL({
         '*': {},
         [request.user.id]: { "read": true }
       }));
   }
 
-  // add the new game to the user's list as a pointer
-  gameList.add("ready", newGame);
-
-  // save everything
-  let returnValue = await Parse.Object.saveAll([newGame, gameList, saveUser], {
-    useMasterKey: true,
-    error: (err) => {
+  // save the game
+  let returnValue = await newGame
+    .save(null, { useMasterKey: true})
+    .catch( (err) => {
       throw new Error(err);
-    }
-  });
+    });
 
   return returnValue;
 
