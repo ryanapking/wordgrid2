@@ -1,7 +1,7 @@
 const utilities = require('./utilities');
 const generators = require ('./utilities/functions/generators.js');
 
-Parse.Cloud.define("startGame", async function(request, response) {
+Parse.Cloud.define("startGame", async function(request) {
   if (!request.user) return;
 
   const GameObject = Parse.Object.extend("Games");
@@ -56,14 +56,13 @@ Parse.Cloud.define("startGame", async function(request, response) {
 
   gameList.add("ready", newGame);
 
-  Parse.Object.saveAll([newGame, gameList, saveUser], {
+  let returnValue = await Parse.Object.saveAll([newGame, gameList, saveUser], {
     useMasterKey: true,
-    success: (successResponse) => {
-      response.success(successResponse);
-    },
     error: (err) => {
-      response.error(err);
+      throw new Error(err);
     }
   });
+
+  return returnValue;
 
 });
