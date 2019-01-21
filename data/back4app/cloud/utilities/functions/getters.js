@@ -2,10 +2,12 @@ const config = require('../config');
 const { settings } = config;
 
 const dataConversions = require('./dataConversions');
-const { boardStringToArray, pieceStringToArray } = dataConversions;
+const { boardStringToArray, pieceStringToArray, placementRefStringToArray } = dataConversions;
 
 // return a dumb object of scores as if they are baseball innings
 function getScoreBoard(history, p1, p2) {
+
+  return [];
 
   const emptyScoreObject = { p1: null, p2: null };
 
@@ -63,12 +65,7 @@ function getAnimationData(game) {
     end: end[player].map( (piece) => pieceStringToArray(piece)),
   };
 
-  const pr = end.pr.split("|");
-  const placementRef = {
-    pieceIndex: parseInt(pr[0]),
-    rowIndex: parseInt(pr[1]),
-    columnIndex: parseInt(pr[2])
-  };
+  const placementRef = placementRefStringToArray(end.pr);
 
   let boardStates = {
     start: boardStringToArray(start.b),
@@ -98,6 +95,26 @@ function getAnimationData(game) {
 }
 
 function getBoardMinusPiece(boardArray, pieces, placementRef) {
+  const piece = pieces[placementRef.pieceIndex];
+
+  // create a copy of the board array
+  let newBoardArray = boardArray.map( (row) => row.slice() );
+
+  // remove each letter of the piece from the new board array
+  piece.forEach( (row, rowIndex) => {
+    row.forEach( (letter, columnIndex) => {
+      if (letter) {
+        const boardRowIndex = placementRef.rowIndex + rowIndex;
+        const boardColumnIndex = placementRef.columnIndex + columnIndex;
+        newBoardArray[boardRowIndex][boardColumnIndex] = "";
+      }
+    });
+  });
+
+  return newBoardArray;
+}
+
+function getBoardPlusPiece(boardArray, pieces, placementRef) {
   const piece = pieces[placementRef.pieceIndex];
 
   // create a copy of the board array
@@ -204,4 +221,6 @@ module.exports = {
   getScoreBoard,
   getAnimationData,
   getWordPath,
+  getBoardMinusPiece,
+  getBoardPlusPiece,
 };

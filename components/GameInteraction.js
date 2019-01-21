@@ -6,9 +6,10 @@ import { Button, Container, Spinner } from "native-base";
 
 import DrawPieceSection from "./DrawPieceSection";
 
-import { calculateWordValue, getWinner, localToRemote } from "../data/utilities";
+import { calculateWordValue, getWinner, localToRemote, remoteToLocal, validateMove } from "../data/utilities";
 import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
 import { saveGame } from '../data/remote/saveGame';
+import { saveMove } from "../data/back4app/client/actions";
 
 class GameInteraction extends Component {
   render() {
@@ -88,6 +89,13 @@ class GameInteraction extends Component {
     const { gameID, uid, game } = this.props;
 
     const newMove = localToRemote(game, this.props.uid);
+    const originalGameObject = remoteToLocal(game.sourceData, uid);
+
+    // validateMove(originalGameObject, newMove);
+
+    saveMove(gameID, newMove);
+
+    return;
 
     // used to figure out if there's a winner
     const tempGameObject = {

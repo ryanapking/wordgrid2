@@ -1,5 +1,6 @@
 const utilities = require('./utilities');
 const generators = require ('./utilities/functions/generators.js');
+const dataConversions = require('./utilities/functions/dataConversions');
 
 Parse.Cloud.define("saveMove", async function(request) {
   if (!request.user) throw new Error('invalid user');
@@ -8,17 +9,17 @@ Parse.Cloud.define("saveMove", async function(request) {
 
   // get the game data from the database
   const GameObject = Parse.Object.extend("Games");
-  let game = await new Parse.Query(GameObject)
+  let gameSourceData = await new Parse.Query(GameObject)
     .get(gameID, { useMasterKey: true })
     .catch( (err) => {
       throw new Error(err);
     });
   const players = {
-    p1: game.get("player1"),
-    p2: game.get("player2"),
+    p1: gameSourceData.get("player1"),
+    p2: gameSourceData.get("player2"),
   };
-  const turn = game.get("turn");
-  const status = game.get("status");
+  const turn = gameSourceData.get("turn");
+  const status = gameSourceData.get("status");
 
   // compare the current user's id to the database to confirm permissions
   const isTurn = (turn && request.user.id === turn.id);
@@ -48,10 +49,15 @@ Parse.Cloud.define("saveMove", async function(request) {
 
   // need to validate the move before saving it
 
-  let savedGame = await game
+  // const game = dataConversions.remoteToLocal(gameSourceData.toJSON(), request.user.id);
+  //
+  // return game;
+
+  let savedGame = await gameSourceData
     .set("turn", opponent)
     .set("status", newStatus)
     .add("history", move)
+    .add("moves", move)
     .save(null, { useMasterKey: true })
     .catch( (err) => {
       throw new Error(err);
@@ -93,6 +99,11 @@ Parse.Cloud.define("startGame", async function(request) {
       .set("turn", request.user)
       .set("history", gameData.h)
       .set("status", "new")
+
+      .set("player1Pieces", gameData.h[0].p1)
+      .set("player2Pieces", gameData.h[0].p2)
+      .set("startingBoard", gameData.h[0].b)
+
       .setACL(new Parse.ACL({
         '*': {},
         [request.user.id]: { "read": true }

@@ -231,8 +231,8 @@ function playWordReducer(state, action) {
     them: action.newPieces,
   };
 
-  const tempNextHistory = [...game.history, localToRemote(newGameState, action.userID)];
-  const scoreBoard = getScoreBoard(tempNextHistory, game.p1, game.p2);
+  // const tempNextHistory = [...game.history, localToRemote(newGameState, action.userID)];
+  // const scoreBoard = getScoreBoard(tempNextHistory, game.p1, game.p2);
 
   return {
     ...state,
@@ -240,7 +240,7 @@ function playWordReducer(state, action) {
       ...byID,
       [action.gameID]: {
         ...newGameState,
-        scoreBoard
+        // scoreBoard
       }
     }
   };

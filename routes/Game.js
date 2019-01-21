@@ -40,7 +40,8 @@ class Game extends Component {
     //   });
     // });
 
-    const currentBoardString = this.props.game.history.slice(-1)[0].b;
+    // will need to be fixed later. removing history reference.
+    const currentBoardString = this.props.game.sourceData.startingBoard;
     let boggle = new Boggle(currentBoardString);
 
     boggle.solve( (words) => {
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   const gameID = ownProps.match.params.gameID;
+  console.log('game id:', gameID);
   return {
     gameID: gameID,
     game: state.gameData.byID[gameID],

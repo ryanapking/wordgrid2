@@ -1,19 +1,38 @@
 const getters = require('./getters');
-const { getScoreBoard } = getters;
+const { getScoreBoard, getBoardMinusPiece } = getters;
 
-function remoteToLocal(source, userID) {
-  const { history, player1, player2, turn, winner, status } = source;
-  const p1 = player1.objectId;
-  const p2 = player2 ? player2.objectId : null;
-  const current = history[history.length - 1];
-  const me = (p1 === userID) ? current.p1 : current.p2;
-  const them = (p1 === userID) ? current.p2 : current.p1;
+function remoteToLocal(source, userID, move = null, phase = null) {
+  const { history, player1, player2, player1Pieces, player2Pieces, startingBoard, moves, turn, winner, status } = source;
+
+  let gameBoard = boardStringToArray(startingBoard);
+  moves.forEach( (move) => {
+
+  });
+
+  console.log('player1 pieces:', player1Pieces);
+  console.log('player2 pieces:', player2Pieces);
+  console.log('startingBoard:', startingBoard);
+  console.log('moves:', moves);
+
+  // console.log('player 1 obj:', player1);
+  // console.log('player 2 obj:', player2);
+  // console.log('turn obj:', turn);
+
+  const p1 = player1.objectId; // there is always a player1
+  const p2 = player2 ? player2.objectId : null; // there is NOT always a player2
+
+  const me = (p1 === userID) ? player1Pieces : player2Pieces;
+  const them = (p1 === userID) ? player2Pieces : player1Pieces;
+
+  // const current = history[history.length - 1];
+  // const me = (p1 === userID) ? current.p1 : current.p2;
+  // const them = (p1 === userID) ? current.p2 : current.p1;
   const opponentID = (p1 === userID) ? p2 : p1;
   const opponentName = "unknown opponent";
   const won = winner;
   const conversion = {
     // data that is converted and saved to firebase as a move
-    rows: boardStringToArray(current.b),
+    rows: boardStringToArray(startingBoard),
     me: me.map( (piece) => pieceStringToArray(piece)),
     them: them.map( (piece) => pieceStringToArray(piece)),
     word: "",
@@ -28,7 +47,7 @@ function remoteToLocal(source, userID) {
     consumedSquares: [],
 
     // local data for display purposes
-    animationOver: (history.length < 2), // no animation until there have been at least two moves
+    animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
     piecePlaced: false,
     validatingWord: false,
     myScore: calculateScore(history, userID),
@@ -46,7 +65,7 @@ function remoteToLocal(source, userID) {
     },
 
     // used when converting back to remote
-    history: history,
+    // history: history,
     p1: p1,
     p2: p2,
     turn: turn.objectId,
@@ -109,7 +128,7 @@ function localToRemote(localData, userID) {
   const p2Array = (localData.p2 === userID) ? localData.me : localData.them;
   wordPathArrayToString(localData.consumedSquares);
   return {
-    b: arrayToString(localData.rows), // board state
+    // b: arrayToString(localData.rows), // board state
     p1: p1Array.map( (piece) => arrayToString(piece) ), // p1 pieces
     p2: p2Array.map( (piece) => arrayToString(piece) ), // p2 pieces,
     w: localData.word, // word
@@ -176,6 +195,15 @@ function wordPathStringToArray(wordPathString) {
   });
 }
 
+function placementRefStringToArray(placementRefString) {
+  const pr = placementRefString.split("|");
+  return {
+    pieceIndex: parseInt(pr[0]),
+    rowIndex: parseInt(pr[1]),
+    columnIndex: parseInt(pr[2])
+  };
+}
+
 module.exports = {
   remoteToLocal,
   challengeRemoteToLocal,
@@ -187,4 +215,5 @@ module.exports = {
   calculateScore,
   wordPathArrayToString,
   wordPathStringToArray,
+  placementRefStringToArray,
 };

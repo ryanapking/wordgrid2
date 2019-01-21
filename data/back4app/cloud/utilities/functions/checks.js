@@ -1,6 +1,35 @@
 const config = require('../config');
 const settings = config.settings;
 
+function validateMove(originalGameObject, move) {
+  console.log('validateMove()');
+  console.log('original game object:', originalGameObject);
+  console.log('move:', move);
+}
+
+function validateWordPath(wordPath, boardState) {
+  // wordPath.split("|").forEach( ())
+}
+
+function validatePiecePlacement(pieces, placementRef, boardState) {
+
+}
+
+function getBoardMinusWordPath(wordPath, boardState) {
+  wordPath.split("}").forEach( (coordinate) => {
+    const coordinates = coordinate.split(",");
+    const row = coordinates[0];
+    const column = coordinates[1];
+    boardState[row][column] = "";
+  });
+
+  return boardState;
+}
+
+function getBoardWithPiecePlaced(pieces, placementRef, boardState) {
+
+}
+
 function checkPieceFit(playerPieces, boardState) {
   // checks a player's pieces to see if any of them will fit on the board
   // loops until a piece that fits is found
@@ -101,4 +130,7 @@ module.exports = {
   gameOverCheck,
   scoreTabulator,
   getWinner,
+  validateMove,
+  getBoardMinusWordPath,
+  getBoardWithPiecePlaced,
 };
