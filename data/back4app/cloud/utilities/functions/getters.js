@@ -94,60 +94,6 @@ function getAnimationData(game) {
 
 }
 
-function getBoardMinusPiece(boardArray, pieces, placementRef) {
-  const piece = pieces[placementRef.pieceIndex];
-
-  // create a copy of the board array
-  let newBoardArray = boardArray.map( (row) => row.slice() );
-
-  // remove each letter of the piece from the new board array
-  piece.forEach( (row, rowIndex) => {
-    row.forEach( (letter, columnIndex) => {
-      if (letter) {
-        const boardRowIndex = placementRef.rowIndex + rowIndex;
-        const boardColumnIndex = placementRef.columnIndex + columnIndex;
-        newBoardArray[boardRowIndex][boardColumnIndex] = "";
-      }
-    });
-  });
-
-  return newBoardArray;
-}
-
-function getBoardPlusPiece(boardArray, pieces, placementRef) {
-  const piece = pieces[placementRef.pieceIndex];
-
-  // create a copy of the board array
-  let newBoardArray = boardArray.map( (row) => row.slice() );
-
-  // add each letter of the piece from the new board array
-  piece.forEach( (row, rowIndex) => {
-    row.forEach( (letter, columnIndex) => {
-      if (letter) {
-        const boardRowIndex = placementRef.rowIndex + rowIndex;
-        const boardColumnIndex = placementRef.columnIndex + columnIndex;
-        newBoardArray[boardRowIndex][boardColumnIndex] = letter;
-      }
-    });
-  });
-
-  return newBoardArray;
-}
-
-function getBoardMinusWordPath(boardArray, wordPath) {
-  // create a copy of the board array
-  let newBoardArray = boardArray.map( (row) => row.slice() );
-
-  console.log('new board array:', newBoardArray);
-  console.log('word path:', wordPath);
-
-  wordPath.forEach( ({ rowIndex, columnIndex }) => {
-    newBoardArray[rowIndex][columnIndex] = "";
-  });
-
-  return newBoardArray;
-}
-
 // searches the board for valid starting points (matching first letter)
 // uses recursive findNextLetter to find the remainder of the word
 function getWordPath(word, boardState) {
@@ -235,7 +181,4 @@ module.exports = {
   getScoreBoard,
   getAnimationData,
   getWordPath,
-  getBoardMinusPiece,
-  getBoardPlusPiece,
-  getBoardMinusWordPath,
 };

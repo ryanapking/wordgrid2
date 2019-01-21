@@ -1,45 +1,43 @@
 const getters = require('./getters');
-const { getScoreBoard, getBoardPlusPiece, getBoardMinusWordPath } = getters;
+const applyMoves = require('./applyMoves');
 
 function remoteToLocal(source, userID, move = null, phase = null) {
   const { history, player1, player2, player1Pieces, player2Pieces, startingBoard, moves, turn, winner, status } = source;
 
-  // set the starting points from source data
-  let gameBoard = boardStringToArray(startingBoard);
-  let currentPlayer1Pieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
-  let currentPlayer2Pieces = player2Pieces.map( (piece) => pieceStringToArray(piece));
+  // set the initial game state based on remote data
+  const p1Pieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
+  const p2Pieces = player2Pieces.map( (piece) => pieceStringToArray(piece));
+  let gameState = {
+    player1Id: player1.objectId,
+    player1Score: 0,
+    player1RemotePieces: p1Pieces,
+    player1CurrentPieces: p1Pieces,
+    player2Id: player2 ? player2.objectId : null,
+    player2Score: 0,
+    player2RemotePieces: p2Pieces,
+    player2CurrentPieces: p2Pieces,
+    boardState: boardStringToArray(startingBoard),
+  };
 
-  // play out the moves
+  // apply all moves to the game state
   if (moves) {
     moves.forEach( (move) => {
-      // remove the played word
-      const wordPath = wordPathStringToArray(move.wp);
-      gameBoard = getBoardMinusWordPath(gameBoard, wordPath);
-
-      // add the placed piece
-      let pieces = (move.p === player1.objectId) ? currentPlayer1Pieces : currentPlayer2Pieces;
-      // pieces = pieces.map( (piece) => pieceStringToArray(piece));
-      const placementRef = placementRefStringToArray(move.pr);
-      gameBoard = getBoardPlusPiece(gameBoard, pieces, placementRef);
-
-      // remove the piece from player hand
-      pieces[placementRef.pieceIndex] = [];
-
+      const localMove = moveRemoteToLocal(move);
+      gameState = applyMoves.applyMove(gameState, localMove);
     });
   }
 
-  const p1 = player1.objectId; // there is always a player1
-  const p2 = player2 ? player2.objectId : null; // there is NOT always a player2
+  console.log('final game state:', gameState);
 
-  const me = (p1 === userID) ? currentPlayer1Pieces : currentPlayer2Pieces;
-  const them = (p1 === userID) ? currentPlayer2Pieces : currentPlayer1Pieces;
-
-  const opponentID = (p1 === userID) ? p2 : p1;
+  // convert the game state to a local object that works with our redux setup
+  const me = (gameState.player1Id === userID) ? gameState.player1CurrentPieces : gameState.player2CurrentPieces;
+  const them = (gameState.player1Id === userID) ? gameState.player2CurrentPieces : gameState.player1CurrentPieces;
+  const opponentID = (gameState.player1Id === userID) ? gameState.player2Id : gameState.player1Id;
   const opponentName = "unknown opponent";
-  const won = winner;
+
   const conversion = {
     // data that is converted and saved to firebase as a move
-    rows: gameBoard,
+    rows: gameState.boardState,
     me: me,
     meIndexes: [0, 1, 2], // bullshit array to use as ref between local pieceindex and remote pieceindexes. just an idea for now.
     them: them,
@@ -48,8 +46,8 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     wordPath: null,
     placementRef: null,
 
-    // converted and saved as part of the base game
-    winner: source.w,
+    // converted and saved as part of the base game - I don't know what this means anymore
+    winner: winner,
 
     // local data used during conversions
     consumedSquares: [],
@@ -58,10 +56,10 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
     piecePlaced: false,
     validatingWord: false,
-    myScore: calculateScore(history, userID),
-    theirScore: calculateScore(history, opponentID),
-    scoreBoard: getScoreBoard(history, p1, p2),
-    won,
+    myScore: (userID === gameState.player1Id) ? gameState.player1Score : gameState.player2Score,
+    theirScore: (userID === gameState.player1Id) ? gameState.player2Score : gameState.player1Score,
+    scoreBoard: getters.getScoreBoard(history, gameState.player1Id, gameState.player2Id),
+    won: winner, // probably setting this wrong.
     opponentID,
     opponentName,
 
@@ -74,8 +72,8 @@ function remoteToLocal(source, userID, move = null, phase = null) {
 
     // used when converting back to remote
     // history: history,
-    p1: p1,
-    p2: p2,
+    p1: gameState.player1Id,
+    p2: gameState.player2Id,
     turn: turn.objectId,
 
     // source data can be used to run this process again
@@ -145,6 +143,16 @@ function localToRemote(localData, userID) {
     pr: localData.placementRef, // piece placement ref point - piece index, row index, column index
     p: userID, // will data the id of the use who created this history item
   }
+}
+
+function moveRemoteToLocal(move) {
+  return {
+    word: move.w,
+    wordValue: move.wv,
+    wordPath: wordPathStringToArray(move.wp),
+    placementRef: placementRefStringToArray(move.pr),
+    playerID: move.p,
+  };
 }
 
 function pieceStringToArray(pieceSource) {
