@@ -15,21 +15,6 @@ function validatePiecePlacement(pieces, placementRef, boardState) {
 
 }
 
-function getBoardMinusWordPath(wordPath, boardState) {
-  wordPath.split("}").forEach( (coordinate) => {
-    const coordinates = coordinate.split(",");
-    const row = coordinates[0];
-    const column = coordinates[1];
-    boardState[row][column] = "";
-  });
-
-  return boardState;
-}
-
-function getBoardWithPiecePlaced(pieces, placementRef, boardState) {
-
-}
-
 function checkPieceFit(playerPieces, boardState) {
   // checks a player's pieces to see if any of them will fit on the board
   // loops until a piece that fits is found
@@ -131,6 +116,4 @@ module.exports = {
   scoreTabulator,
   getWinner,
   validateMove,
-  getBoardMinusWordPath,
-  getBoardWithPiecePlaced,
 };
