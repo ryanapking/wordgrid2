@@ -4,30 +4,21 @@ const { settings, letterRanges } = config;
 const dataConversions = require('./dataConversions');
 const { pieceStringToArray } = dataConversions;
 
-function generateGame(userID = null) {
+function generateGame() {
   return {
-    p1: userID, // user ID of player 2
-    p2: null, // user ID of player 1
-    t: userID, // user ID of next player to take a turn
-    w: null, // string declaring a winner - "p1" or "p2"
-    h: [ // move history
-      {
-        w: null, // word played
-        p: null, // user ID of player to make the move
-        b: generateBoard(), // board status at the end of the move
-        p1: [ // player 1 pieces at the end of the move
-          generatePiece(),
-          generatePiece(),
-          generatePiece(),
-        ],
-        p2: [ // player 2 pieces at the end of the move
-          generatePiece(),
-          generatePiece(),
-          generatePiece(),
-        ]
-      }
-    ]
-  }
+    startingBoard: generateBoard(),
+    nextPiece: generatePiece(16, true),
+    player1Pieces: [
+      generatePiece(),
+      generatePiece(),
+      generatePiece(),
+    ],
+    player2Pieces: [
+      generatePiece(),
+      generatePiece(),
+      generatePiece(),
+    ],
+  };
 }
 
 // a board is a 100 character string, filled to the defined density with random characters
@@ -48,7 +39,7 @@ function generateBoard() {
   return board;
 }
 
-function generatePiece(pieceSize = 4) {
+function generatePiece(pieceSize = 4, futurePiece = false) {
   // number of possible spaces
   let possibleSpaces = settings.maxPieceWidth * settings.maxPieceHeight;
 
@@ -112,7 +103,15 @@ function generatePiece(pieceSize = 4) {
     piece = setCharAt(piece, space.stringIndex, getRandomLetter());
   });
 
-  return piece;
+  if (futurePiece) {
+    let pieceOrder = randomSpaces.map( (space) => space.stringIndex).join(",");
+    return {
+      string: piece,
+      order: pieceOrder,
+    };
+  } else {
+    return piece;
+  }
 }
 
 function generateLocalPiece(pieceSize = 4) {

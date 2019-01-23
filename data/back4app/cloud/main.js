@@ -56,6 +56,7 @@ Parse.Cloud.define("saveMove", async function(request) {
   let savedGame = await gameSourceData
     .set("turn", opponent)
     .set("status", newStatus)
+    .set("nextPiece", generators.generatePiece(16, true))
     .add("history", move)
     .add("moves", move)
     .save(null, { useMasterKey: true })
@@ -97,13 +98,11 @@ Parse.Cloud.define("startGame", async function(request) {
     newGame = new GameObject()
       .set("player1", request.user)
       .set("turn", request.user)
-      .set("history", gameData.h)
       .set("status", "new")
-
-      .set("player1Pieces", gameData.h[0].p1)
-      .set("player2Pieces", gameData.h[0].p2)
-      .set("startingBoard", gameData.h[0].b)
-
+      .set("player1Pieces", gameData.player1Pieces)
+      .set("player2Pieces", gameData.player2Pieces)
+      .set("startingBoard", gameData.startingBoard)
+      .set("nextPiece", gameData.nextPiece)
       .setACL(new Parse.ACL({
         '*': {},
         [request.user.id]: { "read": true }

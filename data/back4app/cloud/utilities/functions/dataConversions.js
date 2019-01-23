@@ -220,6 +220,25 @@ function placementRefStringToArray(placementRefString) {
   };
 }
 
+function nextPieceStringToLocalPiece(nextPiece, size) {
+  const nextPieceString = nextPieceStringToRemotePiece(nextPiece, size);
+  return pieceStringToArray(nextPieceString);
+}
+
+function nextPieceStringToRemotePiece(nextPiece, size) {
+  const orderArray = nextPiece.order.split(",").map( (num) => parseInt(num));
+  let pieceString = " ".repeat(letterArray.length); // should always be 16. why don't I just set it to 16....
+  orderArray.slice(0, size).forEach( (letterIndex) => {
+    pieceString = setCharAt(pieceString, letterIndex, nextPiece.string.charAt(letterIndex));
+  });
+  return pieceString;
+}
+
+function setCharAt(str, index, chr) {
+  if(index > str.length-1) return str;
+  return str.substr(0,index) + chr + str.substr(index+1);
+}
+
 module.exports = {
   remoteToLocal,
   challengeRemoteToLocal,
@@ -232,4 +251,6 @@ module.exports = {
   wordPathArrayToString,
   wordPathStringToArray,
   placementRefStringToArray,
+  nextPieceStringToLocalPiece,
+  nextPieceStringToRemotePiece,
 };
