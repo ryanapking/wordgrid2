@@ -28,7 +28,7 @@ Parse.Cloud.define("saveMove", async function(request) {
   let opponentPiecesFieldName = null;
   if (players.p1 && request.user.id === players.p1.id) {
     currentPlayer = players.p1;
-    opponent = players.p2;
+    opponent = players.p2 ? players.p2 : null;
     opponentPiecesFieldName = "player2Pieces";
 
   } else if (players.p2 && request.user.id === players.p2.id) {

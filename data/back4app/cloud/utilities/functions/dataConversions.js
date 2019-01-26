@@ -108,7 +108,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     // history: history,
     p1: p1.id,
     p2: p2.id,
-    turn: turn.objectId,
+    turn: turn ? turn.objectId : null,
 
     // source data can be used to run this process again
     sourceData: source,
