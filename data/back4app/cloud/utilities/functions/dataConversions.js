@@ -2,20 +2,31 @@ const getters = require('./getters');
 const applyMoves = require('./applyMoves');
 
 function remoteToLocal(source, userID, move = null, phase = null) {
-  const { history, player1, player2, player1Pieces, player2Pieces, startingBoard, moves, turn, winner, status } = source;
+  console.log('game source:', source);
+  const { history, player1, player2, player1Pieces, player2Pieces, nextPiece, startingBoard, moves, turn, winner, status } = source;
 
   // set the initial game state based on remote data
-  const p1Pieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
-  const p2Pieces = player2Pieces.map( (piece) => pieceStringToArray(piece));
+  const player1AllPieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
+  const player1CurrentPiecesIndexes = applyMoves.filterConsumedPieces(player1AllPieces, []);
+  const player1CurrentPieces = applyMoves.getCurrentPiecesFromIndexes(player1AllPieces, player1CurrentPiecesIndexes);
+
+  const player2AllPieces = player2Pieces.map( (piece) => pieceStringToArray(piece));
+  const player2CurrentPiecesIndexes = applyMoves.filterConsumedPieces(player2AllPieces, []);
+  const player2CurrentPieces = applyMoves.getCurrentPiecesFromIndexes(player2AllPieces, player2CurrentPiecesIndexes);
+
   let gameState = {
     player1Id: player1.objectId,
     player1Score: 0,
-    player1RemotePieces: p1Pieces,
-    player1CurrentPieces: p1Pieces,
+    player1AllPieces,
+    player1CurrentPieces,
+    player1CurrentPiecesIndexes,
+    player1ConsumedPiecesIndexes: [],
     player2Id: player2 ? player2.objectId : null,
     player2Score: 0,
-    player2RemotePieces: p2Pieces,
-    player2CurrentPieces: p2Pieces,
+    player2AllPieces,
+    player2CurrentPieces,
+    player2CurrentPiecesIndexes,
+    player2ConsumedPiecesIndexes: [],
     boardState: boardStringToArray(startingBoard),
   };
 
@@ -30,17 +41,38 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   console.log('final game state:', gameState);
 
   // convert the game state to a local object that works with our redux setup
-  const me = (gameState.player1Id === userID) ? gameState.player1CurrentPieces : gameState.player2CurrentPieces;
-  const them = (gameState.player1Id === userID) ? gameState.player2CurrentPieces : gameState.player1CurrentPieces;
-  const opponentID = (gameState.player1Id === userID) ? gameState.player2Id : gameState.player1Id;
-  const opponentName = "unknown opponent";
+
+  const p1 = {
+    id: gameState.player1Id,
+    score: gameState.player1Score,
+    currentPieces: gameState.player1CurrentPieces,
+    currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
+    name: "unknown player", // doesn't make sense just yet...
+  };
+  const p2 = {
+    id: gameState.player2Id,
+    score: gameState.player2Score,
+    currentPieces: gameState.player2CurrentPieces,
+    currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
+    name: "unknown player", // doesn't make sense just yet...
+  };
+
+  let currentPlayer = null;
+  let opponent = null;
+  if (gameState.player1Id === userID) {
+    currentPlayer = p1;
+    opponent = p2;
+  } else {
+    currentPlayer = p2;
+    opponent = p1;
+  }
 
   const conversion = {
     // data that is converted and saved to firebase as a move
     rows: gameState.boardState,
-    me: me,
-    meIndexes: [0, 1, 2], // bullshit array to use as ref between local pieceindex and remote pieceindexes. just an idea for now.
-    them: them,
+    me: currentPlayer.currentPieces,
+    meIndexes: currentPlayer.currentPiecesIndexes, // bullshit array to use as ref between local pieceindex and remote pieceindexes. just an idea for now.
+    them: opponent.currentPieces,
     word: "",
     wordValue: 0,
     wordPath: null,
@@ -56,12 +88,12 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
     piecePlaced: false,
     validatingWord: false,
-    myScore: (userID === gameState.player1Id) ? gameState.player1Score : gameState.player2Score,
-    theirScore: (userID === gameState.player1Id) ? gameState.player2Score : gameState.player1Score,
+    myScore: currentPlayer.score,
+    theirScore: opponent.score,
     scoreBoard: getters.getScoreBoard(history, gameState.player1Id, gameState.player2Id),
     won: winner, // probably setting this wrong.
-    opponentID,
-    opponentName,
+    opponentID: opponent.id,
+    opponentName: opponent.name,
 
     // to be set when the game is loaded
     availableWords: {
@@ -70,10 +102,12 @@ function remoteToLocal(source, userID, move = null, phase = null) {
       availableWordCount: null,
     },
 
+    nextPiece, // used after a word is played
+
     // used when converting back to remote
     // history: history,
-    p1: gameState.player1Id,
-    p2: gameState.player2Id,
+    p1: p1.id,
+    p2: p2.id,
     turn: turn.objectId,
 
     // source data can be used to run this process again
@@ -227,7 +261,7 @@ function nextPieceStringToLocalPiece(nextPiece, size) {
 
 function nextPieceStringToRemotePiece(nextPiece, size) {
   const orderArray = nextPiece.order.split(",").map( (num) => parseInt(num));
-  let pieceString = " ".repeat(letterArray.length); // should always be 16. why don't I just set it to 16....
+  let pieceString = " ".repeat(nextPiece.string.length); // should always be 16. why don't I just set it to 16....
   orderArray.slice(0, size).forEach( (letterIndex) => {
     pieceString = setCharAt(pieceString, letterIndex, nextPiece.string.charAt(letterIndex));
   });

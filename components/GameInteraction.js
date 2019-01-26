@@ -93,7 +93,8 @@ class GameInteraction extends Component {
 
     // validateMove(originalGameObject, newMove);
 
-    saveMove(gameID, newMove);
+    saveMove(gameID, newMove)
+      .then(this.props.history.push("/"));
 
     return;
 

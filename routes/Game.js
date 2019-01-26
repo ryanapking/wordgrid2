@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   const gameID = ownProps.match.params.gameID;
-  console.log('game id:', gameID);
   return {
     gameID: gameID,
     game: state.gameData.byID[gameID],

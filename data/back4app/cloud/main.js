@@ -25,12 +25,16 @@ Parse.Cloud.define("saveMove", async function(request) {
   const isTurn = (turn && request.user.id === turn.id);
   let currentPlayer = null;
   let opponent = null;
+  let opponentPiecesFieldName = null;
   if (players.p1 && request.user.id === players.p1.id) {
     currentPlayer = players.p1;
     opponent = players.p2;
+    opponentPiecesFieldName = "player2Pieces";
+
   } else if (players.p2 && request.user.id === players.p2.id) {
     currentPlayer = players.p2;
     opponent = players.p1;
+    opponentPiecesFieldName = "player1Pieces";
   }
 
   // reject invalid move attempts
@@ -49,9 +53,8 @@ Parse.Cloud.define("saveMove", async function(request) {
 
   // need to validate the move before saving it
 
-  // const game = dataConversions.remoteToLocal(gameSourceData.toJSON(), request.user.id);
-  //
-  // return game;
+  const game = dataConversions.remoteToLocal(gameSourceData.toJSON(), request.user.id);
+  const opponentNextPiece = dataConversions.nextPieceStringToRemotePiece(game.nextPiece, move.w.length);
 
   let savedGame = await gameSourceData
     .set("turn", opponent)
@@ -59,6 +62,7 @@ Parse.Cloud.define("saveMove", async function(request) {
     .set("nextPiece", generators.generatePiece(16, true))
     .add("history", move)
     .add("moves", move)
+    .add(opponentPiecesFieldName, opponentNextPiece)
     .save(null, { useMasterKey: true })
     .catch( (err) => {
       throw new Error(err);

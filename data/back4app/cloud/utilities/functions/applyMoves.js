@@ -5,12 +5,16 @@
 const gameStateTemplate = {
   player1Id: null,
   player1Score: null,
-  player1RemotePieces: null,
+  player1AllPieces: null,
   player1CurrentPieces: null,
+  player1CurrentPiecesIndexes: null,
+  player1ConsumedPiecesIndexes: null,
   player2Id: null,
   player2Score: null,
-  player2RemotePieces: null,
+  player2AllPieces: null,
   player2CurrentPieces: null,
+  player2CurrentPiecesIndexes: null,
+  player2ConsumedPiecesIndexes: null,
   boardState: null,
 };
 
@@ -34,14 +38,18 @@ function applyMove(gameState, move) {
       id: gameState.player1Id,
       score: gameState.player1Score,
       currentPieces: gameState.player1CurrentPieces,
-      remotePieces: gameState.player1RemotePieces,
+      currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
+      consumedPiecesIndexes: gameState.player1ConsumedPiecesIndexes,
+      allPieces: gameState.player1AllPieces,
     };
   } else if (move.playerID === gameState.player2Id) {
     player = {
       id: gameState.player2Id,
       score: gameState.player2Score,
       currentPieces: gameState.player2CurrentPieces,
-      remotePieces: gameState.player2RemotePieces,
+      currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
+      consumedPiecesIndexes: gameState.player2ConsumedPiecesIndexes,
+      allPieces: gameState.player2AllPieces,
     };
   }
 
@@ -49,10 +57,12 @@ function applyMove(gameState, move) {
   newBoardState = getBoardMinusWordPath(newBoardState, move.wordPath);
 
   // add the placed piece
-  newBoardState = getBoardPlusPiece(newBoardState, player.currentPieces, move.placementRef);
+  newBoardState = getBoardPlusPiece(newBoardState, player.allPieces, move.placementRef);
 
   // remove the piece from player hand
-  player.currentPieces[move.placementRef.pieceIndex] = [];
+  player.consumedPiecesIndexes.push(move.placementRef.pieceIndex);
+  player.currentPiecesIndexes = filterConsumedPieces(player.allPieces, player.consumedPiecesIndexes);
+  player.currentPieces = getCurrentPiecesFromIndexes(player.allPieces, player.currentPiecesIndexes);
 
   // add the move score
   player.score += move.wordValue;
@@ -65,7 +75,8 @@ function applyMove(gameState, move) {
       player1Id: player.id,
       player1Score: player.score,
       player1CurrentPieces: player.currentPieces,
-      player1RemotePieces: player.remotePieces,
+      player1CurrentPiecesIndexes: player.currentPiecesIndexes,
+      player1ConsumedPiecesIndexes: player.consumedPiecesIndexes,
     };
   } else if (move.playerID === gameState.player2Id) {
     return {
@@ -74,10 +85,36 @@ function applyMove(gameState, move) {
       player2Id: player.id,
       player2Score: player.score,
       player2CurrentPieces: player.currentPieces,
-      player2RemotePieces: player.remotePieces,
+      player2CurrentPiecesIndexes: player.currentPiecesIndexes,
+      player2ConsumedPiecesIndexes: player.consumedPiecesIndexes,
     };
   }
 
+}
+
+// return the indexes of the first three available pieces ( not consumed )
+function filterConsumedPieces(pieces, consumedPiecesIndexes) {
+  return pieces
+    .filter( (piece, pieceIndex) => {
+      return !consumedPiecesIndexes.includes(pieceIndex);
+    })
+    .map( (piece, pieceIndex) => {
+      return pieceIndex;
+    })
+    .slice(0, 3);
+}
+
+function getCurrentPiecesFromIndexes(pieces, currentPiecesIndexes) {
+  let playerPieces = pieces.filter( (piece, pieceIndex) => {
+    return currentPiecesIndexes.includes(pieceIndex);
+  });
+  // sometimes a player only has two pieces
+  // push an empty array in such cases
+  // empty array used mainly for display purposes
+  while (playerPieces.length < 3) {
+    playerPieces.push([]);
+  }
+  return playerPieces;
 }
 
 function getBoardMinusPiece(boardArray, pieces, placementRef) {
@@ -139,4 +176,6 @@ module.exports = {
   getBoardMinusPiece,
   getBoardPlusPiece,
   getBoardMinusWordPath,
+  filterConsumedPieces,
+  getCurrentPiecesFromIndexes,
 };
