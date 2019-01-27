@@ -111,58 +111,41 @@ function checkPieceFit(playerPieces, boardState) {
 }
 
 function gameOverCheck(game) {
-  const turns = turnCounter(game);
-  const scores = scoreTabulator(game);
+  // check that each player has taken their 5 moves
+  const currentPlayerNaturalMovesReached = (game.currentPlayer.scoreBoard.length >= 5);
+  const opponentNaturalMovesReached = (game.opponent.scoreBoard.length >= 5);
+  const naturalMovesReached = (currentPlayerNaturalMovesReached && opponentNaturalMovesReached);
 
-  const turnsReached = (turns.p2 >= settings.naturalTurns && turns.p1 === turns.p2);
-  const gameTied = (scores.p1 === scores.p2);
+  // in case game is in overtime, check that both players have taken their additional moves
+  const equalMoves = (game.currentPlayer.scoreBoard.length === game.opponent.scoreBoard.length);
 
-  const gameOver = (turnsReached && !gameTied);
-  console.log('game over?', gameOver);
+  // check if one player is leading
+  const gameTied = (game.currentPlayer.score === game.opponent.score);
 
-  return gameOver;
-}
-
-function turnCounter(game) {
-  return game.history.reduce( (turnCount, move) => {
-    if (move.p === game.p1) {
-      return {...turnCount, p1: turnCount.p1 + 1};
-    } else if (move.p === game.p2) {
-      return {...turnCount, p2: turnCount.p2 + 1};
-    } else {
-      return turnCount;
-    }
-  }, {p1: 0, p2: 0});
-}
-
-function scoreTabulator(game) {
-  return game.history.reduce( (scoreTab, move) => {
-    if (move.p === game.p1) {
-      return {...scoreTab, p1: scoreTab.p1 + move.wv};
-    } else if (move.p === game.p2) {
-      return {...scoreTab, p2: scoreTab.p2 + move.wv};
-    } else {
-      return scoreTab;
-    }
-  }, {p1: 0, p2: 0});
-}
-
-function getWinner(game) {
-  const gameOver = gameOverCheck(game);
-  if (!gameOver) return null;
-
-  const scores = scoreTabulator(game);
-  if (scores.p1 > scores.p2) {
-    return "p1";
+  if (gameTied || !equalMoves || !naturalMovesReached) {
+    return false;
   } else {
-    return "p2";
+    return true;
+  }
+}
+
+// returns false or the id of the winner
+function getWinner(game) {
+  if (!gameOverCheck(game)) return false;
+
+  if (game.currentPlayer.score > game.opponent.score) {
+    return game.currentPlayer.id;
+  } else if (game.opponent.score > game.currentPlayer.score) {
+    return game.opponent.id;
+  } else {
+    // in case we make it here without a winner, which shouldn't happen
+    return false;
   }
 }
 
 module.exports = {
   checkPieceFit,
   gameOverCheck,
-  scoreTabulator,
   getWinner,
   validateMove,
 };
