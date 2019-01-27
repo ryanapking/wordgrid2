@@ -91,7 +91,7 @@ class Games extends Component {
       <ListItem style={styles.listItem} key={index} onPress={link}>
         <Text>{ game.opponent.name }</Text>
         { game.winner &&
-          <Text style={{textAlign: 'right'}}>{ this.props.gameData.byID[gameID].won ? "won" : "lost" }</Text>
+          <Text style={{textAlign: 'right'}}>{ this.props.gameData.byID[gameID].winner === this.props.userID ? "won" : "lost" }</Text>
         }
       </ListItem>
     );

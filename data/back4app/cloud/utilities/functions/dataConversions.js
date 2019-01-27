@@ -73,7 +73,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   }
 
   const conversion = {
-    // local game data used for display
+    // local game data used for display and later converted to a move
     rows: gameState.boardState,
     word: "",
     wordValue: 0,
@@ -81,35 +81,28 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     placementRef: null,
     consumedSquares: [],
 
-    // player data
+    // player data, used for local display
     currentPlayer,
     opponent,
+
+    // user IDs used primarily for display purposes
     p1: p1.id,
     p2: p2.id,
-
-    // converted and saved as part of the base game - I don't know what this means anymore
-    winner: winner,
+    turn: turn ? turn.objectId : null,
+    winner: winner ? winner.objectId : null,
 
     // local data for display purposes
     animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
-    piecePlaced: false,
-    validatingWord: false,
-    scoreBoard: {
-      p1: gameState.player1ScoreBoard,
-      p2: gameState.player2ScoreBoard,
-    },
-    won: winner, // probably setting this wrong.
+    piecePlaced: false, // determines what action is available to the user
 
-    // to be set when the game is loaded
+    // to be set when the game is loaded; used when rating a move
     availableWords: {
       longest: null,
       mostValuable: null,
       availableWordCount: null,
     },
 
-    nextPiece, // used after a word is played
-
-    turn: turn ? turn.objectId : null,
+    nextPiece, // used after a word is played to generate the opponent's next piece
 
     // source data can be used to run this process again
     sourceData: source,
