@@ -5,12 +5,20 @@ import { withRouter } from 'react-router-native';
 
 class GameScoreBoard extends Component {
   render() {
-    const { p1, p2, scoreBoard, uid, highlight } = this.props;
+    const { p1, p2, uid, currentPlayerScoreBoard, opponentScoreBoard, highlight } = this.props;
 
-    const scoreBoardArray = this.convertPlayerScoresToArray(scoreBoard.p1, scoreBoard.p2);
-
-    const topLabel = (p1 === uid) ? "You: " : "Them: ";
-    const bottomLabel = (p2 === uid) ? "You: " : "Them: ";
+    let scoreBoardArray = null;
+    let topLabel = null;
+    let bottomLabel = null;
+    if (uid === p1) {
+      scoreBoardArray = this.convertPlayerScoresToArray(currentPlayerScoreBoard, opponentScoreBoard);
+      topLabel = "You: ";
+      bottomLabel = "Them: ";
+    } else if (uid === p2) {
+      scoreBoardArray = this.convertPlayerScoresToArray(opponentScoreBoard, currentPlayerScoreBoard);
+      topLabel = "Them: ";
+      bottomLabel = "You: ";
+    }
 
     const totalScores = scoreBoardArray.reduce( (totals, turn) => {
       const p1 = totals.p1 + turn.p1;

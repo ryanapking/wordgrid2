@@ -229,7 +229,11 @@ function playWordReducer(state, action) {
     consumedSquares: [],
     rows: action.newRows,
     // them: action.newPieces,
-    scoreBoard: action.scoreBoard,
+    // scoreBoard: action.scoreBoard,
+    currentPlayer: {
+      ...game.currentPlayer,
+      scoreBoard: action.newScoreBoard,
+    }
   };
 
   return {
@@ -420,16 +424,10 @@ export function playWord(gameID, userID) {
       // }
 
 
-      let scoreBoard = {
-        p1: [...game.scoreBoard.p1],
-        p2: [...game.scoreBoard.p2]
-      };
-
-      if (userID === game.p1) {
-        scoreBoard.p1.push(wordValue);
-      } else if (userID === game.p2) {
-        scoreBoard.p2.push(wordValue);
-      }
+      let newScoreBoard = [
+        ...game.currentPlayer.scoreBoard,
+        wordValue,
+      ];
 
       dispatch({
         type: PLAY_WORD,
@@ -440,7 +438,7 @@ export function playWord(gameID, userID) {
         wordValue,
         newRows,
         // newPieces,
-        scoreBoard,
+        newScoreBoard,
       });
     }
   };

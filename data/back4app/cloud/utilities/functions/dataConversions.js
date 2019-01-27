@@ -2,7 +2,7 @@ const applyMoves = require('./applyMoves');
 
 function remoteToLocal(source, userID, move = null, phase = null) {
   console.log('game source:', source);
-  const { history, player1, player2, player1Pieces, player2Pieces, nextPiece, startingBoard, moves, turn, winner, status } = source;
+  const { player1, player2, player1Pieces, player2Pieces, nextPiece, startingBoard, moves, turn, winner, status } = source;
 
   // set the initial game state based on remote data
   const player1AllPieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
@@ -46,6 +46,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   let p1 = {
     id: gameState.player1Id,
     score: gameState.player1Score,
+    scoreBoard: gameState.player1ScoreBoard,
     currentPieces: gameState.player1CurrentPieces,
     currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
     allPieces: gameState.player1AllPieces,
@@ -54,6 +55,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   let p2 = {
     id: gameState.player2Id,
     score: gameState.player2Score,
+    scoreBoard: gameState.player2ScoreBoard,
     currentPieces: gameState.player2CurrentPieces,
     currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
     allPieces: gameState.player2AllPieces,
@@ -82,6 +84,8 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     // player data
     currentPlayer,
     opponent,
+    p1: p1.id,
+    p2: p2.id,
 
     // converted and saved as part of the base game - I don't know what this means anymore
     winner: winner,
@@ -105,9 +109,6 @@ function remoteToLocal(source, userID, move = null, phase = null) {
 
     nextPiece, // used after a word is played
 
-    // used when converting back to remote
-    p1: p1.id,
-    p2: p2.id,
     turn: turn ? turn.objectId : null,
 
     // source data can be used to run this process again

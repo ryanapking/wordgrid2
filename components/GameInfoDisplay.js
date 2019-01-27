@@ -5,11 +5,11 @@ import { Text, StyleSheet, View } from "react-native";
 
 import GamePhaseDisplay from "./GamePhaseDisplay";
 import DrawPieceSection from "./DrawPieceSection";
-import DrawScoreBoard from './GameScoreBoard';
+import GameScoreBoard from './GameScoreBoard';
 
 class GameInfoDisplay extends Component {
   render() {
-    const { p1, p2, scoreBoard, opponent } = this.props.game;
+    const { p1, p2, currentPlayer, opponent } = this.props.game;
     return(
       <View style={[this.props.style, styles.main]}>
         <View style={[styles.leftSide, {padding: 5}]}>
@@ -17,7 +17,7 @@ class GameInfoDisplay extends Component {
           <DrawPieceSection pieces={opponent.currentPieces} allowDrag={false} />
         </View>
         <View style={[styles.rightSide, {padding: 5}]}>
-          <DrawScoreBoard style={styles.scoreBoard} p1={p1} p2={p2} scoreBoard={scoreBoard}/>
+          <GameScoreBoard style={styles.scoreBoard} p1={p1} p2={p2} currentPlayerScoreBoard={currentPlayer.scoreBoard} opponentScoreBoard={opponent.scoreBoard}/>
           <GamePhaseDisplay style={styles.phaseDisplay} />
         </View>
       </View>
