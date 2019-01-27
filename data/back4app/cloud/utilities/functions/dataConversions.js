@@ -1,4 +1,3 @@
-const getters = require('./getters');
 const applyMoves = require('./applyMoves');
 
 function remoteToLocal(source, userID, move = null, phase = null) {
@@ -49,6 +48,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     score: gameState.player1Score,
     currentPieces: gameState.player1CurrentPieces,
     currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
+    allPieces: gameState.player1AllPieces,
     name: "unknown player", // doesn't make sense just yet...
   };
   const p2 = {
@@ -56,6 +56,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     score: gameState.player2Score,
     currentPieces: gameState.player2CurrentPieces,
     currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
+    allPieces: gameState.player2AllPieces,
     name: "unknown player", // doesn't make sense just yet...
   };
 
@@ -74,6 +75,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     rows: gameState.boardState,
     me: currentPlayer.currentPieces,
     meIndexes: currentPlayer.currentPiecesIndexes, // bullshit array to use as ref between local pieceindex and remote pieceindexes. just an idea for now.
+    meAllPieces: currentPlayer.allPieces,
     them: opponent.currentPieces,
     word: "",
     wordValue: 0,

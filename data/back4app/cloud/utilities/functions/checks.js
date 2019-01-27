@@ -1,17 +1,66 @@
 const config = require('../config');
+const dataConversions = require('./dataConversions');
+const applyMoves = require('./applyMoves');
+
 const settings = config.settings;
 
-function validateMove(originalGameObject, move) {
-  console.log('validateMove()');
-  console.log('original game object:', originalGameObject);
-  console.log('move:', move);
+function validateMove(uid, sourceData, move) {
+  let gameState = dataConversions.remoteToLocal(sourceData, uid);
+
+  const wordPath = dataConversions.wordPathStringToArray(move.wp);
+  const wordPathValid = validateWordPath(wordPath, gameState.rows, move.w);
+
+  if (!wordPathValid) return false;
+
+  gameState.rows = applyMoves.getBoardMinusWordPath(gameState.rows, wordPath);
+
+  const placementRef = dataConversions.placementRefStringToArray(move.pr);
+  return validatePlacementRef(gameState.meAllPieces, placementRef, gameState.rows);
 }
 
-function validateWordPath(wordPath, boardState) {
-  // wordPath.split("|").forEach( ())
+
+function validateWordPath(wordPath, boardState, moveWord) {
+  // function confirms that the word path spells the given word
+  if ( moveWord.length !== wordPath.length ) return false;
+
+  let pathWord = "";
+  wordPath.forEach( ({ rowIndex, columnIndex }) => {
+    pathWord += boardState[rowIndex][columnIndex];
+  });
+
+  return (moveWord === pathWord);
 }
 
-function validatePiecePlacement(pieces, placementRef, boardState) {
+function validatePlacementRef(playerPieces, placementRef, boardState) {
+  // function confirms that the placement ref fits on the board
+  const piece = playerPieces[placementRef.pieceIndex];
+
+  // grab each space that we should check
+  let boardSpaces = [];
+  piece.forEach( (row, pieceRowIndex) => {
+    row.forEach( (letter, pieceColumnIndex) => {
+      if (letter) {
+        const rowIndex = pieceRowIndex + placementRef.rowIndex;
+        const columnIndex = pieceColumnIndex + placementRef.columnIndex;
+        boardSpaces.push({rowIndex, columnIndex});
+      }
+    });
+  });
+
+  // check the spaces to make sure they're in bounds and don't contain a letter
+  let placementValid = true;
+  boardSpaces.forEach( ({rowIndex, columnIndex}) => {
+    if (!placementValid) return;
+    if (rowIndex < 0 || rowIndex >= 10 || columnIndex < 0 || columnIndex >= 10) {
+      placementValid = false;
+      return;
+    }
+    if (boardState[rowIndex][columnIndex]) {
+      placementValid = false;
+    }
+  });
+
+  return placementValid;
 
 }
 
