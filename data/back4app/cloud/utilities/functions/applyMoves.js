@@ -5,12 +5,14 @@
 const gameStateTemplate = {
   player1Id: null,
   player1Score: null,
+  player1ScoreBoard: null,
   player1AllPieces: null,
   player1CurrentPieces: null,
   player1CurrentPiecesIndexes: null,
   player1ConsumedPiecesIndexes: null,
   player2Id: null,
   player2Score: null,
+  player2ScoreBoard: null,
   player2AllPieces: null,
   player2CurrentPieces: null,
   player2CurrentPiecesIndexes: null,
@@ -37,6 +39,7 @@ function applyMove(gameState, move) {
     player = {
       id: gameState.player1Id,
       score: gameState.player1Score,
+      scoreBoard: gameState.player1ScoreBoard,
       currentPieces: gameState.player1CurrentPieces,
       currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
       consumedPiecesIndexes: gameState.player1ConsumedPiecesIndexes,
@@ -46,6 +49,7 @@ function applyMove(gameState, move) {
     player = {
       id: gameState.player2Id,
       score: gameState.player2Score,
+      scoreBoard: gameState.player2ScoreBoard,
       currentPieces: gameState.player2CurrentPieces,
       currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
       consumedPiecesIndexes: gameState.player2ConsumedPiecesIndexes,
@@ -66,6 +70,7 @@ function applyMove(gameState, move) {
 
   // add the move score
   player.score += move.wordValue;
+  player.scoreBoard.push(move.wordValue);
 
   // assign the values to the appropriate player
   if (move.playerID === gameState.player1Id) {
@@ -74,6 +79,7 @@ function applyMove(gameState, move) {
       boardState: newBoardState,
       player1Id: player.id,
       player1Score: player.score,
+      player1ScoreBoard: player.scoreBoard,
       player1CurrentPieces: player.currentPieces,
       player1CurrentPiecesIndexes: player.currentPiecesIndexes,
       player1ConsumedPiecesIndexes: player.consumedPiecesIndexes,
@@ -84,6 +90,7 @@ function applyMove(gameState, move) {
       boardState: newBoardState,
       player2Id: player.id,
       player2Score: player.score,
+      player2ScoreBoard: player.scoreBoard,
       player2CurrentPieces: player.currentPieces,
       player2CurrentPiecesIndexes: player.currentPiecesIndexes,
       player2ConsumedPiecesIndexes: player.consumedPiecesIndexes,

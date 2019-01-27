@@ -7,17 +7,19 @@ class GameScoreBoard extends Component {
   render() {
     const { p1, p2, scoreBoard, uid, highlight } = this.props;
 
+    const scoreBoardArray = this.convertPlayerScoresToArray(scoreBoard.p1, scoreBoard.p2);
+
     const topLabel = (p1 === uid) ? "You: " : "Them: ";
     const bottomLabel = (p2 === uid) ? "You: " : "Them: ";
 
-    const totalScores = scoreBoard.reduce( (totals, turn) => {
+    const totalScores = scoreBoardArray.reduce( (totals, turn) => {
       const p1 = totals.p1 + turn.p1;
       const p2 = totals.p2 + turn.p2;
       return {p1, p2};
     }, { p1: 0, p2: 0});
 
     // add some dummy highlight data
-    let drawScoreBoard = scoreBoard.map( (turn) => {
+    let drawScoreBoard = scoreBoardArray.map( (turn) => {
       return {
         ...turn,
         p1Highlight: null,
@@ -49,6 +51,31 @@ class GameScoreBoard extends Component {
         </View>
       </View>
     );
+  }
+
+  convertPlayerScoresToArray(player1Scores, player2Scores) {
+    const emptyMove = {p1: null, p2: null};
+    let scoreBoardArray = [];
+
+    player2Scores.forEach( (score, scoreIndex) => {
+      if (scoreIndex > (scoreBoardArray.length - 1)) {
+        scoreBoardArray.push({...emptyMove});
+      }
+      scoreBoardArray[scoreIndex].p1 = score;
+    });
+
+    player2Scores.forEach( (score, scoreIndex) => {
+      if (scoreIndex > (scoreBoardArray.length - 1)) {
+        scoreBoardArray.push(emptyMove);
+      }
+      scoreBoardArray[scoreIndex].p2 = score;
+    });
+
+    while (scoreBoardArray.length < 5) {
+      scoreBoardArray.push({...emptyMove});
+    }
+
+    return scoreBoardArray;
   }
 }
 

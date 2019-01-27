@@ -17,12 +17,14 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   let gameState = {
     player1Id: player1.objectId,
     player1Score: 0,
+    player1ScoreBoard: [],
     player1AllPieces,
     player1CurrentPieces,
     player1CurrentPiecesIndexes,
     player1ConsumedPiecesIndexes: [],
     player2Id: player2 ? player2.objectId : null,
     player2Score: 0,
+    player2ScoreBoard: [],
     player2AllPieces,
     player2CurrentPieces,
     player2CurrentPiecesIndexes,
@@ -90,7 +92,10 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     validatingWord: false,
     myScore: currentPlayer.score,
     theirScore: opponent.score,
-    scoreBoard: getters.getScoreBoard(history, gameState.player1Id, gameState.player2Id),
+    scoreBoard: {
+      p1: gameState.player1ScoreBoard,
+      p2: gameState.player2ScoreBoard,
+    },
     won: winner, // probably setting this wrong.
     opponentID: opponent.id,
     opponentName: opponent.name,
