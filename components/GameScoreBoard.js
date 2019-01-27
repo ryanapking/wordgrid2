@@ -57,7 +57,7 @@ class GameScoreBoard extends Component {
     const emptyMove = {p1: null, p2: null};
     let scoreBoardArray = [];
 
-    player2Scores.forEach( (score, scoreIndex) => {
+    player1Scores.forEach( (score, scoreIndex) => {
       if (scoreIndex > (scoreBoardArray.length - 1)) {
         scoreBoardArray.push({...emptyMove});
       }

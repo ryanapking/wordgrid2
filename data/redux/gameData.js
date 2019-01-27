@@ -1,7 +1,5 @@
 import {
   remoteToLocal,
-  localToRemote,
-  getScoreBoard,
   calculateWordValue,
   wordPathArrayToString,
   generateLocalPiece
@@ -229,10 +227,8 @@ function playWordReducer(state, action) {
     consumedSquares: [],
     rows: action.newRows,
     them: action.newPieces,
+    scoreBoard: action.scoreBoard,
   };
-
-  // const tempNextHistory = [...game.history, localToRemote(newGameState, action.userID)];
-  // const scoreBoard = getScoreBoard(tempNextHistory, game.p1, game.p2);
 
   return {
     ...state,
@@ -240,7 +236,6 @@ function playWordReducer(state, action) {
       ...byID,
       [action.gameID]: {
         ...newGameState,
-        // scoreBoard
       }
     }
   };
@@ -421,6 +416,18 @@ export function playWord(gameID, userID) {
         newPieces = [...opponentPieces, generateLocalPiece(word.length)];
       }
 
+
+      let scoreBoard = {
+        p1: [...game.scoreBoard.p1],
+        p2: [...game.scoreBoard.p2]
+      };
+
+      if (userID === game.p1) {
+        scoreBoard.p1.push(wordValue);
+      } else if (userID === game.p2) {
+        scoreBoard.p2.push(wordValue);
+      }
+
       dispatch({
         type: PLAY_WORD,
         gameID,
@@ -431,6 +438,7 @@ export function playWord(gameID, userID) {
         newScore,
         newRows,
         newPieces,
+        scoreBoard,
       });
     }
   };
