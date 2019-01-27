@@ -85,9 +85,11 @@ class GameInteraction extends Component {
 
   saveRemoteMove() {
     const {gameID, uid, game} = this.props;
-    const newMove = localToRemote(game, this.props.uid);
+    const newMove = localToRemote(game, uid);
 
-    // validateMove(originalGameObject, newMove);
+    // nothing currently happens with the validation
+    // mainly here to trigger the function for now
+    validateMove(uid, game.sourceData, newMove);
 
     saveMove(gameID, newMove)
       .then((savedGameObject) => {
