@@ -288,7 +288,8 @@ export function placePiece(gameID, pieceIndex, rowRef, columnRef) {
     const { gameData } = getState();
     const game = gameData.byID[gameID];
     const piece = game.me[pieceIndex];
-    const placementRef = [pieceIndex, rowRef, columnRef].join("|");
+    const remotePieceIndex = game.meIndexes[pieceIndex];
+    const placementRef = [remotePieceIndex, rowRef, columnRef].join("|");
 
     // make a full copy of the existing rows to manipulate
     let newRows = game.rows.map( (row) => [...row] );

@@ -95,10 +95,13 @@ function applyMove(gameState, move) {
 // return the indexes of the first three available pieces ( not consumed )
 function filterConsumedPieces(pieces, consumedPiecesIndexes) {
   return pieces
-    .filter( (piece, pieceIndex) => {
+    .map( (piece, pieceIndex) => {
+      return pieceIndex;
+    })
+    .filter( (pieceIndex) => {
       return !consumedPiecesIndexes.includes(pieceIndex);
     })
-    .map( (piece, pieceIndex) => {
+    .map( (pieceIndex) => {
       return pieceIndex;
     })
     .slice(0, 3);
