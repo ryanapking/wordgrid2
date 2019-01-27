@@ -89,7 +89,7 @@ class Games extends Component {
 
     return (
       <ListItem style={styles.listItem} key={index} onPress={link}>
-        <Text>{ game.opponentName }</Text>
+        <Text>{ game.opponent.name }</Text>
         { game.winner &&
           <Text style={{textAlign: 'right'}}>{ this.props.gameData.byID[gameID].won ? "won" : "lost" }</Text>
         }

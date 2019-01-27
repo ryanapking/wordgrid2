@@ -41,7 +41,7 @@ class GameInteraction extends Component {
     return (
       <Container style={this.props.style}>
         <Container style={[styles.flex]}>
-          <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.game.me} />
+          <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.game.currentPlayer.currentPieces} />
           <View style={styles.twoColumns}>
             <Text style={{padding: 20, textAlign: 'center'}}>{displayWord ? displayWord : startMessage}</Text>
             { longEnough ? this._playWordButton(displayWord) : null }
@@ -63,7 +63,7 @@ class GameInteraction extends Component {
   _placePieceInteraction() {
     return (
       <Container style={this.props.style}>
-        <DrawPieceSection pieces={this.props.game.me} allowDrag />
+        <DrawPieceSection pieces={this.props.game.currentPlayer.currentPieces} allowDrag />
       </Container>
     );
   }

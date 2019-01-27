@@ -43,7 +43,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
 
   // convert the game state to a local object that works with our redux setup
 
-  const p1 = {
+  let p1 = {
     id: gameState.player1Id,
     score: gameState.player1Score,
     currentPieces: gameState.player1CurrentPieces,
@@ -51,7 +51,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     allPieces: gameState.player1AllPieces,
     name: "unknown player", // doesn't make sense just yet...
   };
-  const p2 = {
+  let p2 = {
     id: gameState.player2Id,
     score: gameState.player2Score,
     currentPieces: gameState.player2CurrentPieces,
@@ -71,36 +71,30 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   }
 
   const conversion = {
-    // data that is converted and saved to firebase as a move
+    // local game data used for display
     rows: gameState.boardState,
-    me: currentPlayer.currentPieces,
-    meIndexes: currentPlayer.currentPiecesIndexes, // bullshit array to use as ref between local pieceindex and remote pieceindexes. just an idea for now.
-    meAllPieces: currentPlayer.allPieces,
-    them: opponent.currentPieces,
     word: "",
     wordValue: 0,
     wordPath: null,
     placementRef: null,
+    consumedSquares: [],
+
+    // player data
+    currentPlayer,
+    opponent,
 
     // converted and saved as part of the base game - I don't know what this means anymore
     winner: winner,
-
-    // local data used during conversions
-    consumedSquares: [],
 
     // local data for display purposes
     animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
     piecePlaced: false,
     validatingWord: false,
-    myScore: currentPlayer.score,
-    theirScore: opponent.score,
     scoreBoard: {
       p1: gameState.player1ScoreBoard,
       p2: gameState.player2ScoreBoard,
     },
     won: winner, // probably setting this wrong.
-    opponentID: opponent.id,
-    opponentName: opponent.name,
 
     // to be set when the game is loaded
     availableWords: {
@@ -112,7 +106,6 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     nextPiece, // used after a word is played
 
     // used when converting back to remote
-    // history: history,
     p1: p1.id,
     p2: p2.id,
     turn: turn ? turn.objectId : null,

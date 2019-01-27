@@ -9,12 +9,12 @@ import DrawScoreBoard from './GameScoreBoard';
 
 class GameInfoDisplay extends Component {
   render() {
-    const { p1, p2, scoreBoard, them } = this.props.game;
+    const { p1, p2, scoreBoard, opponent } = this.props.game;
     return(
       <View style={[this.props.style, styles.main]}>
         <View style={[styles.leftSide, {padding: 5}]}>
           <Text>Opponent Pieces:</Text>
-          <DrawPieceSection pieces={them} allowDrag={false} />
+          <DrawPieceSection pieces={opponent.currentPieces} allowDrag={false} />
         </View>
         <View style={[styles.rightSide, {padding: 5}]}>
           <DrawScoreBoard style={styles.scoreBoard} p1={p1} p2={p2} scoreBoard={scoreBoard}/>

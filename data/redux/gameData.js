@@ -71,8 +71,8 @@ function placePieceReducer(state, action) {
   const game = state.byID[action.gameID];
   const rows = action.rows;
 
-  const remainingPieces = game.me.filter( (piece, pieceIndex) => pieceIndex !== parseInt(action.pieceIndex));
-  const me = [...remainingPieces, []];
+  const remainingPieces = game.currentPlayer.currentPieces.filter( (piece, pieceIndex) => pieceIndex !== parseInt(action.pieceIndex));
+  const newCurrentPieces = [...remainingPieces, []];
 
   return {
     ...state,
@@ -81,9 +81,12 @@ function placePieceReducer(state, action) {
       [action.gameID]: {
         ...game,
         rows,
-        me,
         piecePlaced: true,
-        placementRef: action.placementRef
+        placementRef: action.placementRef,
+        currentPlayer: {
+          ...game.currentPlayer,
+          currentPieces: newCurrentPieces,
+        }
       },
     }
   };
@@ -223,10 +226,9 @@ function playWordReducer(state, action) {
     word: action.word,
     wordPath: action.wordPath,
     wordValue: action.wordValue,
-    myScore: action.newScore,
     consumedSquares: [],
     rows: action.newRows,
-    them: action.newPieces,
+    // them: action.newPieces,
     scoreBoard: action.scoreBoard,
   };
 
@@ -282,8 +284,8 @@ export function placePiece(gameID, pieceIndex, rowRef, columnRef) {
   return (dispatch, getState) => {
     const { gameData } = getState();
     const game = gameData.byID[gameID];
-    const piece = game.me[pieceIndex];
-    const remotePieceIndex = game.meIndexes[pieceIndex];
+    const piece = game.currentPlayer.currentPieces[pieceIndex];
+    const remotePieceIndex = game.currentPlayer.currentPiecesIndexes[pieceIndex];
     const placementRef = [remotePieceIndex, rowRef, columnRef].join("|");
 
     // make a full copy of the existing rows to manipulate
@@ -351,7 +353,7 @@ export function setLocalGameDataByID(gameID, userID, sourceData) {
 export function setOpponentName(gameID) {
   return (dispatch, getState) => {
     const { gameData } = getState();
-    const opponentID = gameData.byID[gameID].opponentID;
+    const opponentID = gameData.byID[gameID].opponent.id;
     if (!opponentID) return;
 
     getUserName(opponentID)
@@ -399,7 +401,6 @@ export function playWord(gameID, userID) {
     if (word.length >= 4 && english.contains(word)) {
       const wordValue = calculateWordValue(word);
       const wordPath = wordPathArrayToString(game.consumedSquares);
-      const newScore = game.myScore + wordValue;
 
       const newRows = game.rows.map( (row, rowIndex ) => {
         return row.map( (letter, columnIndex) => {
@@ -408,13 +409,15 @@ export function playWord(gameID, userID) {
         });
       });
 
-      const opponentPieces = game.them.filter( (piece) => piece.length);
-      let newPieces = game.them;
+      // this needs to be reworked to function with the piece being generated remotely
 
-      // add a new piece if needed
-      if (opponentPieces.length < 3) {
-        newPieces = [...opponentPieces, generateLocalPiece(word.length)];
-      }
+      // const opponentPieces = game.them.filter( (piece) => piece.length);
+      // let newPieces = game.them;
+      //
+      // // add a new piece if needed
+      // if (opponentPieces.length < 3) {
+      //   newPieces = [...opponentPieces, generateLocalPiece(word.length)];
+      // }
 
 
       let scoreBoard = {
@@ -435,9 +438,8 @@ export function playWord(gameID, userID) {
         word,
         wordPath,
         wordValue,
-        newScore,
         newRows,
-        newPieces,
+        // newPieces,
         scoreBoard,
       });
     }

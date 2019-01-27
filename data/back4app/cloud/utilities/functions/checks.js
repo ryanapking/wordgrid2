@@ -15,7 +15,7 @@ function validateMove(uid, sourceData, move) {
   gameState.rows = applyMoves.getBoardMinusWordPath(gameState.rows, wordPath);
 
   const placementRef = dataConversions.placementRefStringToArray(move.pr);
-  return validatePlacementRef(gameState.meAllPieces, placementRef, gameState.rows);
+  return validatePlacementRef(gameState.currentPlayer.allPieces, placementRef, gameState.rows);
 }
 
 
