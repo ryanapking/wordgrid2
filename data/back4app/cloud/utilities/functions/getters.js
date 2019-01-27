@@ -126,7 +126,6 @@ function findNextLetter(square, findLetters, boardState, path) {
 }
 
 module.exports = {
-  getScoreBoard,
   getAnimationData,
   getWordPath,
 };

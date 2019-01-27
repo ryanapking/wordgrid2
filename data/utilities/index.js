@@ -5,5 +5,5 @@ export { generateBoard, generatePiece, generateLocalPiece, generateGame, getRand
 export { remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, pieceStringToArray, wordPathStringToArray, challengeRemoteToLocal, challengeMoveToHistory, nextPieceStringToLocalPiece, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
 export { calculateWordValue, calculateHighestWordValue, calculateLongestWordLength, calculateMoveRating } from '../back4app/cloud/utilities/functions/calculations';
 export { checkPieceFit, scoreTabulator, getWinner, validateMove } from '../back4app/cloud/utilities/functions/checks';
-export { getScoreBoard, getAnimationData, getWordPath } from '../back4app/cloud/utilities/functions/getters';
+export { getAnimationData, getWordPath } from '../back4app/cloud/utilities/functions/getters';
 export { letterValues } from '../back4app/cloud/utilities/config';
