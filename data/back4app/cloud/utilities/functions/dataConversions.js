@@ -169,13 +169,7 @@ function challengeMoveToHistory(challengeData, placementRef = null, placementVal
 }
 
 function localToRemote(localData, userID) {
-  const p1Array = (localData.p1 === userID) ? localData.me : localData.them;
-  const p2Array = (localData.p2 === userID) ? localData.me : localData.them;
-  wordPathArrayToString(localData.consumedSquares);
   return {
-    // b: arrayToString(localData.rows), // board state
-    p1: p1Array.map( (piece) => arrayToString(piece) ), // p1 pieces
-    p2: p2Array.map( (piece) => arrayToString(piece) ), // p2 pieces,
     w: localData.word, // word
     wv: localData.wordValue, // word value
     wp: localData.wordPath, // word path

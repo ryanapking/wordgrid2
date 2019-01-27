@@ -6,9 +6,8 @@ import { Button, Container, Spinner } from "native-base";
 
 import DrawPieceSection from "./DrawPieceSection";
 
-import { calculateWordValue, getWinner, localToRemote, remoteToLocal, validateMove } from "../data/utilities";
+import { calculateWordValue, localToRemote, validateMove } from "../data/utilities";
 import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
-import { saveGame } from '../data/remote/saveGame';
 import { saveMove } from "../data/back4app/client/actions";
 
 class GameInteraction extends Component {
@@ -85,45 +84,16 @@ class GameInteraction extends Component {
   }
 
   saveRemoteMove() {
-
-    const { gameID, uid, game } = this.props;
-
+    const {gameID, uid, game} = this.props;
     const newMove = localToRemote(game, this.props.uid);
-    const originalGameObject = remoteToLocal(game.sourceData, uid);
 
     // validateMove(originalGameObject, newMove);
 
     saveMove(gameID, newMove)
-      .then(this.props.history.push("/"));
+      .then((savedGameObject) => {
+        this.props.history.push("/")
+      });
 
-    return;
-
-    // used to figure out if there's a winner
-    const tempGameObject = {
-      ...game,
-      history: [ ...game.history, newMove ]
-    };
-    const winner = getWinner(tempGameObject);
-
-    // if there is no opponent yet, set the turn to "p2", which will be used for querying games when trying to join a new one
-    let turn = "p2";
-
-    // if there is an opponent, set the turn value to their uid
-    if (winner) {
-      turn = "over";
-    } else if ( game.p1 !== null && game.p1 !== uid ) {
-      turn = game.p1;
-    } else if ( game.p2 !== null && game.p2 !== uid ) {
-      turn = game.p2;
-    }
-
-    const gameObject = {
-      h: tempGameObject.history,
-      t: turn,
-      w: winner,
-    };
-
-    saveGame(gameID, gameObject);
   }
 }
 
