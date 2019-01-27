@@ -1,6 +1,8 @@
 const utilities = require('./utilities');
 const generators = require ('./utilities/functions/generators.js');
 const dataConversions = require('./utilities/functions/dataConversions');
+const validators = require('./utilities/functions/checks');
+const applyMoves = require('./utilities/functions/applyMoves');
 
 Parse.Cloud.define("saveMove", async function(request) {
   if (!request.user) throw new Error('invalid user');
@@ -51,9 +53,28 @@ Parse.Cloud.define("saveMove", async function(request) {
 
   let newStatus = (status === "new") ? "waiting" : "in progress";
 
-  // need to validate the move before saving it
-
   const game = dataConversions.remoteToLocal(gameSourceData.toJSON(), request.user.id);
+
+  // validate the move before saving it
+  const moveValid = validators.validateMove(request.user.id, game.sourceData, move);
+  if (!moveValid) {
+    throw new Error('invalid move!');
+  }
+
+  // repack the object provided with the request to prevent any data stuffing
+  const moveToSave = {
+    "w": move.w,
+    "wv": move.wv,
+    "wp": move.wp,
+    "pr": move.pr,
+    "p": request.user.id,
+  };
+  const moveLocalVersion = dataConversions.moveRemoteToLocal(moveToSave);
+
+  const nextGameState = applyMoves.applyMove(game.gameState, moveLocalVersion);
+
+  const winner = validators.getWinner(nextGameState);
+
   const opponentNextPiece = dataConversions.nextPieceStringToRemotePiece(game.nextPiece, move.w.length);
 
   let savedGame = await gameSourceData

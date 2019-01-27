@@ -106,6 +106,8 @@ function remoteToLocal(source, userID, move = null, phase = null) {
 
     // source data can be used to run this process again
     sourceData: source,
+    moves,
+    gameState,
   };
 
   console.log('after conversion:', conversion);
@@ -275,4 +277,5 @@ module.exports = {
   placementRefStringToArray,
   nextPieceStringToLocalPiece,
   nextPieceStringToRemotePiece,
+  moveRemoteToLocal,
 };

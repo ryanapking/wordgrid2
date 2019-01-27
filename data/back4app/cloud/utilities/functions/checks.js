@@ -110,17 +110,18 @@ function checkPieceFit(playerPieces, boardState) {
   return spaceCheck;
 }
 
-function gameOverCheck(game) {
+function gameOverCheck(gameState) {
+  const player1MoveCount = gameState.player1ScoreBoard.length;
+  const player2MoveCount = gameState.player2ScoreBoard.length;
+
   // check that each player has taken their 5 moves
-  const currentPlayerNaturalMovesReached = (game.currentPlayer.scoreBoard.length >= 5);
-  const opponentNaturalMovesReached = (game.opponent.scoreBoard.length >= 5);
-  const naturalMovesReached = (currentPlayerNaturalMovesReached && opponentNaturalMovesReached);
+  const naturalMovesReached = (player1MoveCount >= 5 && player2MoveCount >= 5);
 
   // in case game is in overtime, check that both players have taken their additional moves
-  const equalMoves = (game.currentPlayer.scoreBoard.length === game.opponent.scoreBoard.length);
+  const equalMoves = (player1MoveCount === player2MoveCount);
 
   // check if one player is leading
-  const gameTied = (game.currentPlayer.score === game.opponent.score);
+  const gameTied = (gameState.player1Score === gameState.player2Score);
 
   if (gameTied || !equalMoves || !naturalMovesReached) {
     return false;
@@ -130,13 +131,13 @@ function gameOverCheck(game) {
 }
 
 // returns false or the id of the winner
-function getWinner(game) {
-  if (!gameOverCheck(game)) return false;
+function getWinner(gameState) {
+  if (!gameOverCheck(gameState)) return false;
 
-  if (game.currentPlayer.score > game.opponent.score) {
-    return game.currentPlayer.id;
-  } else if (game.opponent.score > game.currentPlayer.score) {
-    return game.opponent.id;
+  if (gameState.player1Score > gameState.player2Score) {
+    return gameState.player1Id;
+  } else if (gameState.player2Score > gameState.player1Score) {
+    return gameState.player2Id;
   } else {
     // in case we make it here without a winner, which shouldn't happen
     return false;
