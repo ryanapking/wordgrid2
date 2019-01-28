@@ -32,7 +32,6 @@ Parse.Cloud.define("saveMove", async function(request) {
     currentPlayer = players.p1;
     opponent = players.p2 ? players.p2 : null;
     opponentPiecesFieldName = "player2Pieces";
-
   } else if (players.p2 && request.user.id === players.p2.id) {
     currentPlayer = players.p2;
     opponent = players.p1;
@@ -71,11 +70,25 @@ Parse.Cloud.define("saveMove", async function(request) {
   };
   const moveLocalVersion = dataConversions.moveRemoteToLocal(moveToSave);
 
+  // apply the move to see if there's a winner
   const nextGameState = applyMoves.applyMove(game.gameState, moveLocalVersion);
 
+  // set a winner if there is one
   const winner = validators.getWinner(nextGameState);
+  if (winner && players.p1.id === winner) {
+    gameSourceData.set("winner", players.p1);
+  } else if (winner && players.p2.id === winner) {
+    gameSourceData.set("winner", players.p2);
+  }
 
-  const opponentNextPiece = dataConversions.nextPieceStringToRemotePiece(game.nextPiece, move.w.length);
+  const opponentNeedsPiece = (
+    (opponent && opponent.id === nextGameState.player1Id && nextGameState.player1CurrentPiecesIndexes.length < 3)
+    || (opponent && opponent.id === nextGameState.player2Id && nextGameState.player2CurrentPiecesIndexes.length < 3)
+  );
+  if (opponentNeedsPiece) {
+    const opponentNextPiece = dataConversions.nextPieceStringToRemotePiece(game.nextPiece, moveToSave.w.length);
+    gameSourceData.add(opponentPiecesFieldName, opponentNextPiece);
+  }
 
   let savedGame = await gameSourceData
     .set("turn", opponent)
@@ -83,7 +96,6 @@ Parse.Cloud.define("saveMove", async function(request) {
     .set("nextPiece", generators.generatePiece(16, true))
     .add("history", move)
     .add("moves", move)
-    .add(opponentPiecesFieldName, opponentNextPiece)
     .save(null, { useMasterKey: true })
     .catch( (err) => {
       throw new Error(err);

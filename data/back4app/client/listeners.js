@@ -7,8 +7,8 @@ export async function startGamesLiveQuery(onChange) {
 
   const Games = Parse.Object.extend("Games");
 
-  const p1Games = new Parse.Query(Games).equalTo("player1", user).doesNotExist("winner");
-  const p2Games = new Parse.Query(Games).equalTo("player2", user).doesNotExist("winner");
+  const p1Games = new Parse.Query(Games).equalTo("player1", user);
+  const p2Games = new Parse.Query(Games).equalTo("player2", user);
   const gamesQuery = Parse.Query.or(p1Games, p2Games);
 
   const games = await gamesQuery.find();
