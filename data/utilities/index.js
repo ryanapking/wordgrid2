@@ -2,7 +2,7 @@
 // exported here for convenience
 
 export { generateBoard, generatePiece, generateLocalPiece, generateGame, getRandomLetter } from '../back4app/cloud/utilities/functions/generators';
-export { remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, pieceStringToArray, wordPathStringToArray, challengeRemoteToLocal, challengeMoveToHistory, nextPieceStringToLocalPiece, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
+export { remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, arrayToString, pieceStringToArray, wordPathStringToArray, challengeRemoteToLocal, challengeMoveToHistory, nextPieceStringToLocalPiece, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
 export { calculateWordValue, calculateHighestWordValue, calculateLongestWordLength, calculateMoveRating } from '../back4app/cloud/utilities/functions/calculations';
 export { checkPieceFit, getWinner, validateMove } from '../back4app/cloud/utilities/functions/checks';
 export { getAnimationData, getWordPath } from '../back4app/cloud/utilities/functions/getters';

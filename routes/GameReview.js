@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { List, ListItem } from 'native-base';
 
-import { boardStringToArray, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
+import { boardStringToArray, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
 import Boggle from '../data/utilities/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
@@ -20,6 +20,9 @@ class GameReview extends Component {
     this.state = {
       // current move info being reviewed
       moveIndex: 1,
+
+      startingGameState: null,
+      displayingGameState: null,
 
       // the pieces of the list view
       playerMovePath: [],
@@ -48,9 +51,10 @@ class GameReview extends Component {
   render() {
     const { moveIndex, boardLocation } = this.state;
     const { game } = this.props;
-    const move = game.history[moveIndex];
-    const boardString = game.history[moveIndex-1].b;
-    const boardState = boardStringToArray(boardString);
+    const move = game.moves[moveIndex];
+    // const boardString = game.history[moveIndex-1].b;
+    // const boardState = boardStringToArray(boardString);
+    const boardState = game.gameState.boardState;
     const moveInning = Math.floor((moveIndex - 1) / 2);
     const moveLabel = (move.p === this.props.uid) ? "Your move:" : "Their move:";
 
@@ -66,7 +70,7 @@ class GameReview extends Component {
       });
     });
 
-    const hideNextButton = (moveIndex >= game.history.length - 1);
+    const hideNextButton = (moveIndex >= game.moves.length - 1);
     const hidePrevButton = (moveIndex <= 1);
 
     return (
@@ -106,7 +110,7 @@ class GameReview extends Component {
                     <Text>{ move.w.toUpperCase() }</Text>
                   </View>
                   <View>
-                    <DrawScoreBoard p1={game.p1} p2={game.p2} scoreBoard={game.scoreBoard} highlight={{player: move.p, inning: moveInning}}/>
+                    <DrawScoreBoard p1={game.p1} p2={game.p2} currentPlayerScoreBoard={game.currentPlayer.scoreBoard} opponentScoreBoard={game.opponent.scoreBoard} highlight={{player: move.p, inning: moveInning}}/>
                   </View>
                 </ListItem>
               </TouchableWithoutFeedback>
@@ -195,9 +199,11 @@ class GameReview extends Component {
 
   _getReviewResults(moveIndex) {
     const { game } = this.props;
-    const move = game.history[moveIndex];
+    const move = game.moves[moveIndex];
     const playerMovePath = wordPathStringToArray(move.wp);
-    const boardString = game.history[moveIndex - 1].b;
+    // const boardString = game.moves[moveIndex - 1].b;
+
+    const boardString = arrayToString(game.gameState.boardState);
 
     let boggle = new Boggle(boardString);
     boggle.solve( (words) => {
