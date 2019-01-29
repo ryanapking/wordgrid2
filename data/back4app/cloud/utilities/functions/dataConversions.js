@@ -1,8 +1,7 @@
 const applyMoves = require('./applyMoves');
 
-function remoteToLocal(source, userID, move = null, phase = null) {
-  console.log('game source:', source);
-  const { player1, player2, player1Pieces, player2Pieces, nextPiece, startingBoard, moves, turn, winner, status } = source;
+function remoteToStartingGameState(source) {
+  const { player1, player2, player1Pieces, player2Pieces, startingBoard } = source;
 
   // set the initial game state based on remote data
   const player1AllPieces = player1Pieces.map( (piece) => pieceStringToArray(piece));
@@ -13,7 +12,7 @@ function remoteToLocal(source, userID, move = null, phase = null) {
   const player2CurrentPiecesIndexes = applyMoves.filterConsumedPieces(player2AllPieces, []);
   const player2CurrentPieces = applyMoves.getCurrentPiecesFromIndexes(player2AllPieces, player2CurrentPiecesIndexes);
 
-  let gameState = {
+  return {
     player1Id: player1.objectId,
     player1Score: 0,
     player1ScoreBoard: [],
@@ -30,6 +29,13 @@ function remoteToLocal(source, userID, move = null, phase = null) {
     player2ConsumedPiecesIndexes: [],
     boardState: boardStringToArray(startingBoard),
   };
+}
+
+function remoteToLocal(source, userID, movesToApply = null, phase = null) {
+  console.log('game source:', source);
+  const { nextPiece, moves, turn, winner } = source;
+
+  let gameState = remoteToStartingGameState(source);
 
   // apply all moves to the game state
   if (moves) {
@@ -264,6 +270,7 @@ function setCharAt(str, index, chr) {
 }
 
 module.exports = {
+  remoteToStartingGameState,
   remoteToLocal,
   challengeRemoteToLocal,
   challengeMoveToHistory,

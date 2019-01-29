@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { List, ListItem } from 'native-base';
 
-import { boardStringToArray, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
+import { moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
 import Boggle from '../data/utilities/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
@@ -45,17 +45,20 @@ class GameReview extends Component {
   }
 
   componentDidMount() {
-    this._getReviewResults(this.state.moveIndex);
+    const startingGameState = remoteToStartingGameState(this.props.game.sourceData);
+    this.setState({
+      startingGameState: startingGameState,
+    });
+    this._getReviewResults(this.state.moveIndex, startingGameState);
   }
 
   render() {
-    const { moveIndex, boardLocation } = this.state;
+    if (!this.state.displayingGameState) return null;
+    const { moveIndex, boardLocation, displayingGameState } = this.state;
     const { game } = this.props;
     const move = game.moves[moveIndex];
-    // const boardString = game.history[moveIndex-1].b;
-    // const boardState = boardStringToArray(boardString);
-    const boardState = game.gameState.boardState;
-    const moveInning = Math.floor((moveIndex - 1) / 2);
+    const boardState = displayingGameState.boardState;
+    const moveInning = Math.floor((moveIndex) / 2);
     const moveLabel = (move.p === this.props.uid) ? "Your move:" : "Their move:";
 
     const displayBoardState = boardState.map( (row, rowIndex) => {
@@ -71,7 +74,7 @@ class GameReview extends Component {
     });
 
     const hideNextButton = (moveIndex >= game.moves.length - 1);
-    const hidePrevButton = (moveIndex <= 1);
+    const hidePrevButton = (moveIndex <= 0);
 
     return (
       <View style={styles.reviewContainer}>
@@ -167,7 +170,7 @@ class GameReview extends Component {
 
     this._availableMoves.scrollTo({y: 0, animated: false});
     this._availableMoves.flashScrollIndicators();
-    this._getReviewResults(moveIndex);
+    this._getReviewResults(moveIndex, this.state.startingGameState);
   }
 
   _clearDisplayPath() {
@@ -197,13 +200,18 @@ class GameReview extends Component {
     }, true);
   }
 
-  _getReviewResults(moveIndex) {
+  _getReviewResults(moveIndex, startingGameState) {
     const { game } = this.props;
-    const move = game.moves[moveIndex];
-    const playerMovePath = wordPathStringToArray(move.wp);
-    // const boardString = game.moves[moveIndex - 1].b;
+    const { moves } = game;
 
-    const boardString = arrayToString(game.gameState.boardState);
+    let currentGameState = startingGameState;
+    for (let i = 0; i < moveIndex; i++) {
+      currentGameState = applyMove(currentGameState, moveRemoteToLocal(moves[i]));
+    }
+
+    const move = moveRemoteToLocal(moves[moveIndex]);
+
+    const boardString = arrayToString(currentGameState.boardState);
 
     let boggle = new Boggle(boardString);
     boggle.solve( (words) => {
@@ -222,12 +230,13 @@ class GameReview extends Component {
         });
 
       this.setState({
+        displayingGameState: currentGameState,
         availableWords: allWordsWithValues,
         longestWords: longest.words,
         longestLetterCount: longest.length,
         mostValuableWords: mostValuable.words,
         mostValuablePoints: mostValuable.value,
-        playerMovePath,
+        playerMovePath: move.wordPath,
       });
     });
   }
