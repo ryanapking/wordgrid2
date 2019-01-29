@@ -19,7 +19,7 @@ class GameReview extends Component {
 
     this.state = {
       // current move info being reviewed
-      moveIndex: 1,
+      moveIndex: 0,
 
       startingGameState: null,
       displayingGameState: null,

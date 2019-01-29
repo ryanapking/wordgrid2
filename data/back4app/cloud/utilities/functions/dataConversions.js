@@ -50,6 +50,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   // convert the game state to a local object that works with our redux setup
 
   let p1 = {
+    label: "p1",
     id: gameState.player1Id,
     score: gameState.player1Score,
     scoreBoard: gameState.player1ScoreBoard,
@@ -59,6 +60,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     name: "unknown player", // doesn't make sense just yet...
   };
   let p2 = {
+    label: "p2",
     id: gameState.player2Id,
     score: gameState.player2Score,
     scoreBoard: gameState.player2ScoreBoard,
@@ -98,7 +100,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     winner: winner ? winner.objectId : null,
 
     // local data for display purposes
-    animationOver: true, //(history.length < 2), // no animation until there have been at least two moves
+    animationOver: (moves.length <= 0), // no animation unless there has been a move
     piecePlaced: false, // determines what action is available to the user
 
     // to be set when the game is loaded; used when rating a move

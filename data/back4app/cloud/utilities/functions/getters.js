@@ -1,43 +1,42 @@
 const dataConversions = require('./dataConversions');
-const { boardStringToArray, pieceStringToArray, placementRefStringToArray } = dataConversions;
+const applyMoves = require('./applyMoves');
 
 function getAnimationData(game) {
-  if (game.history.length < 1) return false;
+  const move = dataConversions.moveRemoteToLocal(game.moves[game.moves.length - 1]);
 
-  const start = game.history[game.history.length -2];
-  const end = game.history[game.history.length - 1];
-  const player = (end.p === game.p1) ? "p1" : "p2";
+  let gameStateBeforeMove = dataConversions.remoteToStartingGameState(game.sourceData);
+  for (let i = 0; i < (game.moves.length - 1); i++) {
+    gameStateBeforeMove = applyMoves.applyMove(gameStateBeforeMove, dataConversions.moveRemoteToLocal(game.moves[i]));
+  }
 
-  const pieceStates = {
-    start: start[player].map( (piece) => pieceStringToArray(piece)),
-    end: end[player].map( (piece) => pieceStringToArray(piece)),
-  };
+  const gameStateAfterMove = game.gameState;
 
-  const placementRef = placementRefStringToArray(end.pr);
+  let pieceStates = null;
+  if (game.opponent.label === "p1") {
+    pieceStates = {
+      start: gameStateBeforeMove.player1CurrentPieces,
+      end: gameStateAfterMove.player1CurrentPieces,
+    };
+  } else if (game.opponent.label === "p2") {
+    pieceStates = {
+      start: gameStateBeforeMove.player2CurrentPieces,
+      end: gameStateAfterMove.player2CurrentPieces,
+    };
+  }
 
   let boardStates = {
-    start: boardStringToArray(start.b),
-    end: boardStringToArray(end.b),
+    start: gameStateBeforeMove.boardState,
+    between: applyMoves.getBoardMinusPiece(gameStateAfterMove.boardState, game.opponent.allPieces, move.placementRef),
+    end: gameStateAfterMove.boardState,
   };
-
-  boardStates.between = getBoardMinusPiece(boardStates.end, pieceStates.start, placementRef);
-
-  const wp = end.wp.split("|");
-  const wordPath = wp.map( (coordinateSet) => {
-    const squareCoordinates = coordinateSet.split(",");
-    return {
-      rowIndex: parseInt(squareCoordinates[0]),
-      columnIndex: parseInt(squareCoordinates[1])
-    };
-  });
 
   return {
     boardStates,
     pieceStates,
-    placementRef,
-    wordPath,
-    word: end.w,
-    points: end.wv,
+    placementRef: move.placementRef,
+    wordPath: move.wordPath,
+    word: move.word,
+    points: move.wordValue,
   };
 
 }
