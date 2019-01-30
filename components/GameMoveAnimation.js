@@ -110,9 +110,11 @@ class GameMoveAnimation extends Component {
 
         { !overlay.location ? null : <Piece piece={pieces[overlay.pieceIndex].letters} style={[styles.gamePiece, overlay.styles, this.state.moveTo]} allowDrag={false} baseSize={overlay.pieceSize}/> }
 
-        <View style={styles.boardSection} ref={(view) => this._board = view} onLayout={() => this._measureBoard()}>
-          <DrawBoard boardState={displayBoardState} boardSize={boardSize}/>
-          <BoardPathCreator squares={displayWordPath} boardLocation={boardLocation}/>
+        <View style={styles.boardSection}>
+          <View style={styles.board} ref={(view) => this._board = view} onLayout={() => this._measureBoard()}>
+            <DrawBoard boardState={displayBoardState} boardSize={boardSize}/>
+            <BoardPathCreator squares={displayWordPath} boardLocation={boardLocation}/>
+          </View>
         </View>
 
         <View style={styles.moveInfoSection}>
@@ -274,10 +276,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   boardSection: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    aspectRatio: 1,
     flex: 14,
+    justifyContent: 'center',
+  },
+  board: {
+    aspectRatio: 1,
+    maxWidth: '100%',
+    maxHeight: '100%',
   },
   moveInfoSection: {
     flex: 5,
