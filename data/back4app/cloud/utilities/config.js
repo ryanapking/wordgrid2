@@ -9,6 +9,10 @@ const settings = {
   playerPieceSize: 4, // maybe this should be a range,
   maxPieceWidth: 4,
   maxPieceHeight: 4,
+
+  challengeMoves: 5,
+  challengeMinPieceSize: 4,
+  challengeMaxPieceSize: 16,
 };
 
 const letterValues = {

@@ -21,6 +21,31 @@ function generateGame() {
   };
 }
 
+function generateChallenge() {
+  let pieceBank = [];
+  for (let moveCount = 0; moveCount < (settings.challengeMoves - 1); moveCount++) {
+    let pieceSet = {};
+    for (let pieceSize = settings.challengeMinPieceSize; pieceSize <= settings.challengeMaxPieceSize; pieceSize++) {
+      pieceSet[pieceSize] = generatePiece(pieceSize);
+    }
+    pieceBank.push(pieceSet);
+  }
+
+  const challenge = {
+    startingBoard: generateBoard(),
+    startingPieces: [
+      generatePiece(),
+      generatePiece(),
+      generatePiece(),
+    ],
+    pieceBank,
+  };
+
+  console.log('challenge:', challenge);
+
+  return challenge;
+}
+
 // a board is a 100 character string, filled to the defined density with random characters
 function generateBoard() {
   let randomSpaces = [];
@@ -139,6 +164,7 @@ function setCharAt(str, index, chr) {
 
 module.exports = {
   generateGame,
+  generateChallenge,
   generateBoard,
   generatePiece,
   generateLocalPiece,
