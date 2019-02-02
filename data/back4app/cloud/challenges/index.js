@@ -2,14 +2,38 @@ let moment = require("moment");
 
 const generators = require("../utilities/functions/generators");
 
-const createNewChallenge = async function() {
+const createChallengesForWeek = async function() {
+  let today = moment();
+
+  let challengesCreated = [];
+
+  // create today's challenge
+  challengesCreated.push(await createChallengeByDate(today));
+
+  // create challenges for the next six days
+  for (let i = 0; i < 6; i++) {
+    challengesCreated.push(await createChallengeByDate(today.add(1, "day")));
+  }
+
+  return challengesCreated;
+
+};
+
+const createChallengeByDate = async function(date) {
+  let existingChallenge = await getChallengeByDate(date.toDate());
+  if (existingChallenge) {
+    return {
+      msg: "challenge already exists",
+      challenge: existingChallenge,
+    };
+  }
+
   const challenge = generators.generateChallenge();
-  let now = moment();
 
   const ChallengesObject = Parse.Object.extend("Challenges");
   let challengeObject = await new ChallengesObject()
-    .set("startDate", now.toDate())
-    .set("endDate", now.add(1, "day").toDate())
+    .set("startDate", date.startOf('day').toDate())
+    .set("endDate", date.endOf('day').toDate())
     .set("startingBoard", challenge.startingBoard)
     .set("startingPieces", challenge.startingPieces)
     .set("pieceBank", challenge.pieceBank)
@@ -21,6 +45,22 @@ const createNewChallenge = async function() {
   return challengeObject;
 };
 
+const getChallengeByDate = async function(date) {
+  const ChallengesObject = Parse.Object.extend("Challenges");
+
+  let foundChallenge = await new Parse.Query(ChallengesObject)
+    .lessThanOrEqualTo("startDate", date)
+    .greaterThanOrEqualTo("endDate", date)
+    .limit(1)
+    .find({ useMasterKey: true });
+
+  if (foundChallenge.length > 0) {
+    return foundChallenge[0];
+  } else {
+    return null;
+  }
+};
+
 module.exports = {
-  createNewChallenge
+  createChallengesForWeek,
 };

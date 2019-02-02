@@ -1,8 +1,8 @@
 const challenges = require('./challenges');
 const games = require('./games');
 
-Parse.Cloud.job("createNewChallenge", async function(request) {
-  return await challenges.createNewChallenge();
+Parse.Cloud.job("createNewChallenge", async function() {
+  return await challenges.createChallengesForWeek();
 });
 
 Parse.Cloud.define("saveMove", async function(request) {
