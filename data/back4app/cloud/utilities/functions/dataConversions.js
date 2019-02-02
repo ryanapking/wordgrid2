@@ -123,7 +123,8 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
 }
 
 function challengeRemoteToLocal(remoteChallenge) {
-  let localPieceBank = remoteChallenge.pieceBank.map((pieceSet) => {
+
+  let localPieceBank = remoteChallenge.get('pieceBank').map((pieceSet) => {
     let localPieceSet = {};
     Object.keys(pieceSet).forEach( (key) => {
       localPieceSet[key] = pieceStringToArray(pieceSet[key]);
@@ -133,10 +134,10 @@ function challengeRemoteToLocal(remoteChallenge) {
 
   // create challenge item
   let challenge = {
-    rows: boardStringToArray(remoteChallenge.board),
+    rows: boardStringToArray(remoteChallenge.get('startingBoard')),
     pieceBank: localPieceBank,
     pieceSet: localPieceBank[0],
-    pieces: remoteChallenge.pieces.map( (piece) => pieceStringToArray(piece)),
+    pieces: remoteChallenge.get('startingPieces').map( (piece) => pieceStringToArray(piece)),
     history: [],
 
     word: null,

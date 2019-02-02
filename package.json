@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "create-react-class": "^15.6.3",
+    "moment": "^2.24.0",
     "native-base": "^2.6.1",
     "parse": "^2.1.0",
     "prop-types": "^15.6.2",

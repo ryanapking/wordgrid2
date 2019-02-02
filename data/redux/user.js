@@ -5,6 +5,7 @@ import { setLocalGameDataByID } from "./gameData";
 
 import { checkUser, anonymousLogin } from "../back4app/client/user";
 import { startGamesLiveQuery } from "../back4app/client/listeners";
+import { getUpcomingChallengesByDate } from "../back4app/client/getters";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -80,7 +81,8 @@ function userLoginFail() {
 function userLoginSuccess(uid) {
   console.log('userLoginSuccess()');
   return (dispatch) => {
-    startListeners(uid);
+    // startListeners(uid);
+
 
     // convoluted, but redux and back4app have to interact somewhere
     // callback is used whenever remote data is changed
@@ -88,6 +90,12 @@ function userLoginSuccess(uid) {
     startGamesLiveQuery((source) => {
         dispatch(setLocalGameDataByID(source.objectId, uid, source));
     });
+
+    getUpcomingChallengesByDate()
+      .then( (challenges) => {
+        console.log('upcoming challenges data:', challenges);
+      });
+
     // retrieveChallengeAttempts(uid)
     //   .then((history) => {
     //     if (history) {
