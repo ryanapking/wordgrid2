@@ -32,7 +32,7 @@ function remoteToStartingGameState(source) {
 }
 
 function remoteToLocal(source, userID, movesToApply = null, phase = null) {
-  console.log('game source:', source);
+  // console.log('game source:', source);
   const { nextPiece, moves, turn, winner } = source;
 
   let gameState = remoteToStartingGameState(source);
@@ -45,7 +45,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     });
   }
 
-  console.log('final game state:', gameState);
+  // console.log('final game state:', gameState);
 
   // convert the game state to a local object that works with our redux setup
 
@@ -118,7 +118,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     gameState,
   };
 
-  console.log('after conversion:', conversion);
+  // console.log('after conversion:', conversion);
   return conversion;
 }
 

@@ -37,6 +37,9 @@ const createChallengeByDate = async function(date) {
     .set("startingBoard", challenge.startingBoard)
     .set("startingPieces", challenge.startingPieces)
     .set("pieceBank", challenge.pieceBank)
+    .setACL(new Parse.ACL({
+      '*': { "read": true },
+    }))
     .save(null, { useMasterKey: true})
     .catch( (err) => {
       throw new Error(err);
