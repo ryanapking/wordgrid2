@@ -1,6 +1,3 @@
-import { startListeners } from "../remote";
-import { retrieveChallengeAttempts } from "../async-storage";
-import { setAttemptsHistory } from "./challengeData";
 import { setLocalGameDataByID } from "./gameData";
 
 import { checkUser, anonymousLogin } from "../back4app/client/user";
@@ -81,9 +78,6 @@ function userLoginFail() {
 function userLoginSuccess(uid) {
   console.log('userLoginSuccess()');
   return (dispatch) => {
-    // startListeners(uid);
-
-
     // convoluted, but redux and back4app have to interact somewhere
     // callback is used whenever remote data is changed
     // we call it here to limit it to 1 instance of the listeners
@@ -96,12 +90,6 @@ function userLoginSuccess(uid) {
         console.log('upcoming challenges data:', challenges);
       });
 
-    // retrieveChallengeAttempts(uid)
-    //   .then((history) => {
-    //     if (history) {
-    //       dispatch(setAttemptsHistory(history));
-    //     }
-    //   });
     dispatch({
       type: LOGIN_SUCCESS,
       uid

@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
-import { clearUserData } from "../data/async-storage";
-
 class ChallengeOverview extends Component {
   render() {
     const { displayChallengeID } = this.props;
@@ -19,7 +17,6 @@ class ChallengeOverview extends Component {
       displayList = this.getAttemptsList(displayChallengeID);
     }
 
-    // clearUserData(this.props.userID);
     console.log('render()');
     console.log('attempts history:', this.props.attemptsHistory);
     console.log('display ID:', displayChallengeID);

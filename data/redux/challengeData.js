@@ -1,8 +1,6 @@
 import { challengeRemoteToLocal, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
 import english from '../english';
 
-import { storeChallengeAttempt } from "../async-storage";
-
 // available actions
 const CHALLENGE_SET_SOURCE_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_SOURCE_DATA';
 const CHALLENGE_SET_LOCAL_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_LOCAL_DATA';
@@ -280,9 +278,5 @@ export function saveAttempt(userID) {
     const { challengeData } = getState();
     const { challenge, source } = challengeData;
 
-    storeChallengeAttempt(userID, source, challenge)
-      .then( (attemptsHistory) => {
-        dispatch(setAttemptsHistory(attemptsHistory));
-      });
   };
 }
