@@ -122,9 +122,19 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   return conversion;
 }
 
-function challengeRemoteToLocal(remoteChallenge) {
+function challengeRemoteToLocalStorageObject(remoteChallenge) {
+  return {
+    id: remoteChallenge.id,
+    startingBoard: remoteChallenge.get('startingBoard'),
+    startingPieces: remoteChallenge.get('startingPieces'),
+    pieceBank: remoteChallenge.get('pieceBank'),
+    startTime: remoteChallenge.get('startDate').getTime(),
+    endTime: remoteChallenge.get('endDate').getTime(),
+  };
+}
 
-  let localPieceBank = remoteChallenge.get('pieceBank').map((pieceSet) => {
+function challengeLocalStorageObjectToPlayableObject(localChallengeObject) {
+  let localPieceBank = localChallengeObject.pieceBank.map((pieceSet) => {
     let localPieceSet = {};
     Object.keys(pieceSet).forEach( (key) => {
       localPieceSet[key] = pieceStringToArray(pieceSet[key]);
@@ -134,10 +144,10 @@ function challengeRemoteToLocal(remoteChallenge) {
 
   // create challenge item
   let challenge = {
-    rows: boardStringToArray(remoteChallenge.get('startingBoard')),
+    rows: boardStringToArray(localChallengeObject.startingBoard),
     pieceBank: localPieceBank,
     pieceSet: localPieceBank[0],
-    pieces: remoteChallenge.get('startingPieces').map( (piece) => pieceStringToArray(piece)),
+    pieces: localChallengeObject.startingPieces.map( (piece) => pieceStringToArray(piece)),
     history: [],
 
     word: null,
@@ -148,7 +158,7 @@ function challengeRemoteToLocal(remoteChallenge) {
     score: 0,
     gameOver: false,
     attemptSaved: false,
-    id: remoteChallenge.id,
+    id: localChallengeObject.id,
   };
 
   // add the starting condition as the first history object
@@ -275,7 +285,8 @@ function setCharAt(str, index, chr) {
 module.exports = {
   remoteToStartingGameState,
   remoteToLocal,
-  challengeRemoteToLocal,
+  challengeRemoteToLocalStorageObject,
+  challengeLocalStorageObjectToPlayableObject,
   challengeMoveToHistory,
   localToRemote,
   pieceStringToArray,

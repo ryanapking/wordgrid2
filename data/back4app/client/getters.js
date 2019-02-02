@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import Parse from './client-setup';
-import { challengeRemoteToLocal } from '../cloud/utilities/functions/dataConversions';
+import { challengeRemoteToLocalStorageObject } from '../cloud/utilities/functions/dataConversions';
 
 export async function getUpcomingChallengesByDate() {
   let now = moment().toDate();
@@ -15,8 +15,10 @@ export async function getUpcomingChallengesByDate() {
   let challengesByDate = {};
   upcomingChallenges.forEach( (challenge) => {
     const challengeDate = moment(challenge.get("startDate")).format("D-M-YYYY");
-    challengesByDate[challengeDate] = challengeRemoteToLocal(challenge);
+    challengesByDate[challengeDate] = challengeRemoteToLocalStorageObject(challenge);
   });
+
+  console.log('upcoming challenges by date:', challengesByDate);
 
   return challengesByDate;
 }
