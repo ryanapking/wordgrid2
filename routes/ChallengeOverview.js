@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
@@ -34,7 +34,7 @@ class ChallengeOverview extends Component {
           <Text>Past Challenges:</Text>
         </ListItem>
         { pastChallengeDates.map( (date, index) =>
-          <ListItem key={index}>
+          <ListItem key={index} onPress={() => this.props.history.push(`/challengeAttempts/${date}`)}>
             <Text>{ date }</Text>
           </ListItem>
         )}
