@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
@@ -23,65 +23,23 @@ class ChallengeOverview extends Component {
   }
 
   render() {
-    const { displayChallengeID } = this.props;
-    const { challengeIDs, attemptsByID, challengesByID } = this.props.attemptsHistory;
-
-
-    let displayList = null;
-    if (displayChallengeID === "main") {
-      displayList = this.getChallengesList();
-    } else {
-      displayList = this.getAttemptsList(displayChallengeID);
-    }
+    const { currentChallenge, pastChallengeDates } = this.state;
 
     return (
       <List>
         <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
-          <Text>Play Now: { this.state.currentChallenge ? this.state.currentChallenge.date : "nada" }</Text>
+          <Text>{ currentChallenge ? "Play Now" : "Searching for Current Challenge" }</Text>
         </ListItem>
-        {this.state.pastChallengeDates.map( (date, index) =>
+        <ListItem itemDivider >
+          <Text>Past Challenges:</Text>
+        </ListItem>
+        { pastChallengeDates.map( (date, index) =>
           <ListItem key={index}>
             <Text>{ date }</Text>
           </ListItem>
         )}
-        { displayList }
       </List>
     )
-  }
-
-  getChallengesList() {
-    const { challengeIDs } = this.props.attemptsHistory;
-
-    return (
-      <View>
-        <ListItem itemDivider >
-          <Text>Challenges:</Text>
-        </ListItem>
-        { challengeIDs.map( (challengeID, index) =>
-          <ListItem style={styles.listItem} key={index} onPress={() => this.props.history.push(`/challengeOverview/${challengeID}`)}>
-            <Text>{ challengeID }</Text>
-          </ListItem>
-        )}
-      </View>
-    );
-  }
-
-  getAttemptsList(challengeID) {
-    const { attemptsByID } = this.props.attemptsHistory;
-    const attempts = attemptsByID[challengeID];
-
-    return (
-      <View>
-        <ListItem itemDivider >
-          <Text>Attempts:</Text>
-        </ListItem>
-        { attempts.map( (attempt, index) =>
-          <ListItem style={styles.listItem} key={index} onPress={() => this.props.history.push(`/challengeReview/${challengeID}/${index}`)}>
-            <Text>{ attempt.score } points</Text>
-          </ListItem>
-        )}
-      </View>
-    );
   }
 
   // queries async-storage for the current challenge, queries Parse if not found
@@ -93,13 +51,13 @@ class ChallengeOverview extends Component {
             currentChallenge: challenge,
           });
         } else {
-          this._getUpcomingChallenges();
+          this._getUpcomingChallengesByDate();
         }
       });
   }
 
   // queries Parse server for upcoming challenges and saves to local storage
-  _getUpcomingChallenges() {
+  _getUpcomingChallengesByDate() {
     getUpcomingChallengesByDate()
       .then( async (challenges) => {
         const dates = Object.keys(challenges);
@@ -114,6 +72,7 @@ class ChallengeOverview extends Component {
       });
   }
 
+  // get array of attempt dates
   _getChallengeAttemptDates() {
     getChallengeAttemptDates(this.props.userID)
       .then( (dates) => {
@@ -131,10 +90,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    displayChallengeID: ownProps.match.params.challengeID,
-    attemptsHistory: state.challengeData.attemptsHistory,
     userID: state.user.uid,
   };
 };
