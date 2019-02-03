@@ -7,7 +7,7 @@ import { List, ListItem } from "native-base";
 import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
-import { boardStringToArray, wordPathStringToArray } from "../data/utilities";
+import { boardStringToArray, wordPathStringToArray, challengeAttemptToReviewObject } from "../data/utilities";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 
 class ChallengeAttemptReview extends Component {
@@ -18,38 +18,41 @@ class ChallengeAttemptReview extends Component {
       challenge: null,
       attempt: null,
 
-      moveIndex: 1,
+      reviewObject: null,
+
+      moveIndex: 0,
       displayPath: [],
       boardLocation: {},
     };
   }
 
   componentDidMount() {
+    this._getAttemptData();
+  }
+
+  _getAttemptData() {
     getChallengeAttemptByDateAndIndex(this.props.userID, this.props.challengeDate, this.props.attemptIndex)
       .then( (attemptObject) => {
         console.log('found attempt:', attemptObject);
+
+        const reviewObject = challengeAttemptToReviewObject(attemptObject.challenge, attemptObject.attempt);
+
         this.setState({
+          reviewObject,
           challenge: attemptObject.challenge,
           attempt: attemptObject.attempt,
-        })
+        });
       });
   }
 
   render() {
-    console.log('state:', this.state);
+    const { attempt, reviewObject, boardLocation, moveIndex } = this.state;
 
-    return <Text>ChallengeAttemptReview.js</Text>;
+    if (!reviewObject || !boardLocation) return null;
 
-    const { attempt } = this.props;
-    const { boardLocation, moveIndex } = this.state;
-
-    console.log('attempt:', attempt);
-
-    const move = attempt.history[moveIndex];
-    const boardString = attempt.history[moveIndex-1].b;
-    const boardState = boardStringToArray(boardString);
-
-    const displayPath = wordPathStringToArray(move.wp);
+    const reviewing = reviewObject[moveIndex];
+    const boardState = reviewing.initialState.boardState;
+    const displayPath = reviewing.wordPath;
 
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
@@ -78,8 +81,8 @@ class ChallengeAttemptReview extends Component {
             <ListItem itemDivider style={styles.spaceBetween}>
               <Text>Moves</Text>
             </ListItem>
-            {attempt.history.slice(1).map( (move, index) =>
-              <TouchableWithoutFeedback key={index} onPressIn={() => this.setState({moveIndex: index+1})} >
+            {attempt.moves.map( (move, index) =>
+              <TouchableWithoutFeedback key={index} onPressIn={() => this.setState({ moveIndex: index })} >
                 <ListItem style={styles.spaceBetween}>
                   <View>
                     <Text>{ move.w.toUpperCase() }</Text>

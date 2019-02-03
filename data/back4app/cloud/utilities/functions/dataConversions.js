@@ -185,6 +185,51 @@ function challengeStateToAttempt(challengeData) {
   }
 }
 
+function challengeAttemptToReviewObject(challengeLocalObject, challengeAttempt) {
+  let challenge = challengeLocalStorageObjectToPlayableObject(challengeLocalObject);
+
+  let states = [];
+
+  challengeAttempt.moves.forEach( (move, moveIndex) => {
+
+    const initialState = {
+      boardState: challenge.rows.map( (row) => row.slice() ),
+      pieces: challenge.pieces.map( (row) => row.slice()),
+    };
+
+    const wordPath = wordPathStringToArray(move.wp);
+
+    challenge = applyMoves.challengePlayWord(challenge, wordPath, moveIndex);
+
+    const secondState = {
+      boardState: challenge.rows.map( (row) => row.slice() ),
+      pieces: challenge.pieces.map( (row) => row.slice()),
+    };
+
+    const placementRef = placementRefStringToArray(move.pr);
+
+    challenge = applyMoves.challengePlacePiece(challenge, placementRef);
+
+    const thirdState = {
+      boardState: challenge.rows.map( (row) => row.slice() ),
+      pieces: challenge.pieces.map( (row) => row.slice()),
+    };
+
+    states.push({
+      placementRef,
+      wordPath,
+      initialState,
+      secondState,
+      thirdState,
+    });
+
+  });
+
+  // console.log('review object:', states);
+
+  return states;
+}
+
 function localToRemote(localData, userID) {
   return {
     w: localData.word, // word
@@ -296,6 +341,7 @@ module.exports = {
   challengeLocalStorageObjectToPlayableObject,
   challengeStateToMove,
   challengeStateToAttempt,
+  challengeAttemptToReviewObject,
   localToRemote,
   pieceStringToArray,
   boardStringToArray,

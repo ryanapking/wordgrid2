@@ -99,6 +99,32 @@ function applyMove(gameState, move) {
 
 }
 
+function challengePlayWord(challenge, wordPath, moveIndex) {
+  challenge.rows = getBoardMinusWordPath(challenge.rows, wordPath);
+
+  const currentPieces = challenge.pieces
+    .filter( (piece) => {
+      return (piece.length > 0)
+    });
+  const nextPiece = challenge.pieceSet[wordPath.length];
+  challenge.pieces = [...currentPieces, nextPiece];
+
+  challenge.pieceSet = challenge.pieceBank[moveIndex + 1];
+
+  return challenge;
+}
+
+function challengePlacePiece(challenge, placementRef) {
+  challenge.rows = getBoardPlusPiece(challenge.rows, challenge.pieces, placementRef);
+
+  const nextPieces = challenge.pieces.filter( (piece, pieceIndex) => {
+    return (pieceIndex !== placementRef.pieceIndex);
+  });
+  challenge.pieces = [...nextPieces, []];
+
+  return challenge;
+}
+
 // return the indexes of the first three available pieces ( not consumed )
 function filterConsumedPieces(pieces, consumedPiecesIndexes) {
   return pieces
@@ -183,6 +209,8 @@ function getBoardMinusWordPath(boardArray, wordPath) {
 
 module.exports = {
   applyMove,
+  challengePlayWord,
+  challengePlacePiece,
   getBoardMinusPiece,
   getBoardPlusPiece,
   getBoardMinusWordPath,
