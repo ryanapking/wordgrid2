@@ -40,6 +40,26 @@ export async function storeChallengeByDate(uid, challenge, date) {
     });
 }
 
+export async function getCurrentChallenge(uid) {
+  let userStorageObject = await getUserStorageObject(uid)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  const now = Date.now();
+
+  const currentChallengeKey = Object.keys(userStorageObject.challengesByDate).filter( (date) => {
+    const challenge = userStorageObject.challengesByDate[date];
+    return (challenge.startTime && challenge.startTime < now && challenge.endTime && challenge.endTime > now);
+  });
+
+  if (currentChallengeKey.length > 0) {
+    return userStorageObject.challengesByDate[currentChallengeKey[0]];
+  } else {
+    return null;
+  }
+}
+
 export async function getChallengeByDate(uid, date) {
   let userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {
