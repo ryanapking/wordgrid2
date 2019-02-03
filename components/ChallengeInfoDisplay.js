@@ -5,10 +5,10 @@ import ChallengePieceSetDisplay from './ChallengePieceSetDisplay';
 
 class ChallengeInfoDisplay extends Component {
   render() {
-    const { history, score, word } = this.props;
+    const { moves, score, word } = this.props;
 
     // const drawHistory
-    const movesRemaining = 6 - history.length;
+    const movesRemaining = 5 - moves.length;
     const message = word ? "place a piece" : "spell a word";
 
     return (

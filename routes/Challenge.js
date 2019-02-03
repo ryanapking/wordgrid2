@@ -39,7 +39,7 @@ class Challenge extends Component {
           <View style={[styles.underlay, {zIndex: 2}]}>
             <View style={styles.info}>
               <ChallengeInfoDisplay
-                history={challenge.history}
+                moves={challenge.moves}
                 score={challenge.score}
                 word={challenge.word}
                 style={{height: '100%', width: '100%'}}

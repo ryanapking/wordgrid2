@@ -148,8 +148,8 @@ function challengeLocalStorageObjectToPlayableObject(localChallengeObject) {
     rows: boardStringToArray(localChallengeObject.startingBoard),
     pieceBank: localPieceBank,
     pieceSet: localPieceBank[0],
-    pieces: localChallengeObject.startingPieces.map( (piece) => pieceStringToArray(piece)),
-    history: [],
+    pieces: [...localChallengeObject.startingPieces, ""].map( (piece) => pieceStringToArray(piece)),
+    moves: [],
 
     word: null,
     wordValue: null,
@@ -162,21 +162,17 @@ function challengeLocalStorageObjectToPlayableObject(localChallengeObject) {
     id: localChallengeObject.id,
   };
 
-  // add the starting condition as the first history object
-  challenge.history = [challengeMoveToHistory(challenge)];
-
   return challenge;
 }
 
-function challengeMoveToHistory(challengeData, placementRef = null, placementValue = null) {
+function challengeStateToMove(challengeData, placementRef = null, placementValue = null) {
   return {
-    b: arrayToString(challengeData.rows), // board state
     w: challengeData.word, // word played
     wv: challengeData.wordValue, // word value
     wp: challengeData.wordPath, // path of word played
     pr: placementRef, // reference info for piece placement
-    pv: placementValue, // placed tile value (1 per letter)
-  };
+    pv: placementValue, // place tile value (1 per letter)
+  }
 }
 
 function localToRemote(localData, userID) {
@@ -288,7 +284,7 @@ module.exports = {
   remoteToLocal,
   challengeRemoteToLocalStorageObject,
   challengeLocalStorageObjectToPlayableObject,
-  challengeMoveToHistory,
+  challengeStateToMove,
   localToRemote,
   pieceStringToArray,
   boardStringToArray,

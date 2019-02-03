@@ -1,4 +1,4 @@
-import { challengeLocalStorageObjectToPlayableObject, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
+import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, calculateWordValue, wordPathArrayToString } from "../utilities";
 import english from '../english';
 
 // available actions
@@ -97,7 +97,7 @@ function placePieceReducer(state, action) {
       wordValue: null,
       pieces: action.pieces,
       pieceSet: action.pieceSet,
-      history: action.history,
+      moves: action.moves,
       rows: action.rows,
       gameOver: action.gameOver,
       score: action.score,
@@ -220,14 +220,15 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
     // remove the played piece and add the next piece
     const remainingPieces = challenge.pieces.filter( (piece, currentPieceIndex) => currentPieceIndex !== parseInt(pieceIndex));
     const pieces = [...remainingPieces, []];
-    const pieceSet = challenge.pieceBank[challenge.history.length];
 
-    // create new item to save to history
+
+    // convert the data into a move to be saved
     const placementRef = [pieceIndex, rowRef, columnRef].join("|");
-    const newHistoryItem = challengeMoveToHistory({...challenge, rows: newRows}, placementRef, placementValue);
-    const history = [...challenge.history, newHistoryItem];
+    const newMoveItem = challengeStateToMove(challenge, placementRef, placementValue);
+    const moves = [...challenge.moves, newMoveItem];
 
-    const gameOver = history.length >= 6 ? true : false;
+    const pieceSet = challenge.pieceBank[moves.length];
+    const gameOver = (moves.length >= 5);
 
     dispatch({
       type: CHALLENGE_PLACE_PIECE,
@@ -236,7 +237,7 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
       placementRef,
       pieces,
       pieceSet,
-      history,
+      moves,
       gameOver,
       score,
     });

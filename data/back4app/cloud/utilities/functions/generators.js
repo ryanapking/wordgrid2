@@ -23,7 +23,7 @@ function generateGame() {
 
 function generateChallenge() {
   let pieceBank = [];
-  for (let moveCount = 0; moveCount < (settings.challengeMoves - 1); moveCount++) {
+  for (let moveCount = 0; moveCount < (settings.challengeMoves); moveCount++) {
     let pieceSet = {};
     for (let pieceSize = settings.challengeMinPieceSize; pieceSize <= settings.challengeMaxPieceSize; pieceSize++) {
       pieceSet[pieceSize] = generatePiece(pieceSize);
@@ -34,7 +34,6 @@ function generateChallenge() {
   const challenge = {
     startingBoard: generateBoard(),
     startingPieces: [
-      generatePiece(),
       generatePiece(),
       generatePiece(),
     ],
