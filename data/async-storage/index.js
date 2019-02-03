@@ -95,6 +95,25 @@ export async function getChallengeAttemptsByDate(uid, date) {
   }
 }
 
+export async function getChallengeAttemptByDateAndIndex(uid, challengeDate, attemptIndex) {
+  const userStorageObject = await getUserStorageObject(uid)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  if (userStorageObject.attemptsByDate.hasOwnProperty(challengeDate) && userStorageObject.challengesByDate.hasOwnProperty(challengeDate)) {
+    const challenge = userStorageObject.challengesByDate[challengeDate];
+    const attempt = userStorageObject.attemptsByDate[challengeDate][attemptIndex];
+    return {
+      challenge,
+      attempt,
+    };
+  } else {
+    throw new Error("challenge or attempt not found!");
+  }
+
+}
+
 export async function deleteChallengeDataByDate(uid, date) {
   let userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {

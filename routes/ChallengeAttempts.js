@@ -17,49 +17,35 @@ class ChallengeAttempts extends Component {
   }
 
   componentDidMount() {
-    this._getChallenge();
     this._getAttempts();
   }
 
   render() {
-    const { challenge, attempts } = this.state;
+    const { attempts } = this.state;
 
-    console.log('state:', {
-      challenge, attempts
-    });
-
-    // return <Text>ChallengeAttempts.js: {this.props.challengeDate} something</Text>;
+    console.log('attempts: ', attempts);
 
     return (
       <List>
         <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
-          <Text>{ challenge ? challenge.date : null}</Text>
+          <Text>Challenge from { this.props.challengeDate }</Text>
         </ListItem>
         <ListItem itemDivider >
           <Text>Attempts:</Text>
         </ListItem>
         { attempts.map( (attempt, index) =>
-          <ListItem key={index}>
-            <Text>attempt identifier here</Text>
+          <ListItem key={index} onPress={() => this.props.history.push(`/challengeAttemptReview/${this.props.challengeDate}/${index}`)}>
+            <Text>{ attempt.score } points</Text>
           </ListItem>
         )}
       </List>
     )
   }
 
-  // queries async-storage for the current challenge, queries Parse if not found
-  _getChallenge() {
-    getChallengeByDate(this.props.userID, this.props.date)
-      .then( (challenge) => {
-        this.setState({
-          challenge: challenge,
-        });
-      });
-  }
-
-  // get array of attempt dates
+  // get array of attempts
   _getAttempts() {
-    getChallengeAttemptsByDate(this.props.userID, this.props.date)
+    console.log('_getAttempts()');
+    getChallengeAttemptsByDate(this.props.userID, this.props.challengeDate)
       .then( (attempts) => {
         this.setState({
           attempts: attempts,

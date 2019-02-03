@@ -4,23 +4,42 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { List, ListItem } from "native-base";
 
+import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
 import { boardStringToArray, wordPathStringToArray } from "../data/utilities";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 
-class ChallengeReview extends Component {
+class ChallengeAttemptReview extends Component {
   constructor() {
     super();
 
     this.state = {
+      challenge: null,
+      attempt: null,
+
       moveIndex: 1,
       displayPath: [],
       boardLocation: {},
     };
   }
 
+  componentDidMount() {
+    getChallengeAttemptByDateAndIndex(this.props.userID, this.props.challengeDate, this.props.attemptIndex)
+      .then( (attemptObject) => {
+        console.log('found attempt:', attemptObject);
+        this.setState({
+          challenge: attemptObject.challenge,
+          attempt: attemptObject.attempt,
+        })
+      });
+  }
+
   render() {
+    console.log('state:', this.state);
+
+    return <Text>ChallengeAttemptReview.js</Text>;
+
     const { attempt } = this.props;
     const { boardLocation, moveIndex } = this.state;
 
@@ -134,11 +153,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, ownProps) => {
-  const { challengeID, attemptIndex } = ownProps.match.params;
-  const attempt = state.challengeData.attemptsHistory.attemptsByID[challengeID][attemptIndex];
+  const { challengeDate, attemptIndex } = ownProps.match.params;
   return {
-    attempt
+    challengeDate,
+    attemptIndex,
+    userID: state.user.uid,
   };
 };
 
-export default withRouter(connect(mapStateToProps)(ChallengeReview));
+export default withRouter(connect(mapStateToProps)(ChallengeAttemptReview));
