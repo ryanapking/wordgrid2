@@ -4,7 +4,24 @@ import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
+import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates } from "../data/async-storage";
+import { getUpcomingChallengesByDate } from "../data/back4app/client/getters";
+
 class ChallengeOverview extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentChallenge: null,
+      pastChallengeDates: [],
+    };
+  }
+
+  componentDidMount() {
+    this._getCurrentChallenge();
+    this._getChallengeAttemptDates();
+  }
+
   render() {
     const { displayChallengeID } = this.props;
     const { challengeIDs, attemptsByID, challengesByID } = this.props.attemptsHistory;
@@ -17,14 +34,16 @@ class ChallengeOverview extends Component {
       displayList = this.getAttemptsList(displayChallengeID);
     }
 
-    console.log('render()');
-    console.log('attempts history:', this.props.attemptsHistory);
-    console.log('display ID:', displayChallengeID);
     return (
       <List>
         <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
-          <Text>Play Now</Text>
+          <Text>Play Now: { this.state.currentChallenge ? this.state.currentChallenge.date : "nada" }</Text>
         </ListItem>
+        {this.state.pastChallengeDates.map( (date, index) =>
+          <ListItem key={index}>
+            <Text>{ date }</Text>
+          </ListItem>
+        )}
         { displayList }
       </List>
     )
@@ -63,6 +82,45 @@ class ChallengeOverview extends Component {
         )}
       </View>
     );
+  }
+
+  // queries async-storage for the current challenge, queries Parse if not found
+  _getCurrentChallenge() {
+    getCurrentChallenge(this.props.userID)
+      .then( (challenge) => {
+        if (challenge) {
+          this.setState({
+            currentChallenge: challenge,
+          });
+        } else {
+          this._getUpcomingChallenges();
+        }
+      });
+  }
+
+  // queries Parse server for upcoming challenges and saves to local storage
+  _getUpcomingChallenges() {
+    getUpcomingChallengesByDate()
+      .then( async (challenges) => {
+        const dates = Object.keys(challenges);
+        for (let i = 0; i < dates.length; i++) {
+          const date = dates[i];
+          await storeChallengeByDate(this.props.userID, challenges[date], date)
+            .catch( (err) => {
+              console.log('error:', err);
+            });
+        }
+        this._getCurrentChallenge();
+      });
+  }
+
+  _getChallengeAttemptDates() {
+    getChallengeAttemptDates(this.props.userID)
+      .then( (dates) => {
+        this.setState({
+          pastChallengeDates: dates,
+        })
+      });
   }
 }
 

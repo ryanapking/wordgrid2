@@ -122,7 +122,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   return conversion;
 }
 
-function challengeRemoteToLocalStorageObject(remoteChallenge) {
+function challengeRemoteToLocalStorageObject(remoteChallenge, challengeDate) {
   return {
     id: remoteChallenge.id,
     startingBoard: remoteChallenge.get('startingBoard'),
@@ -130,6 +130,7 @@ function challengeRemoteToLocalStorageObject(remoteChallenge) {
     pieceBank: remoteChallenge.get('pieceBank'),
     startTime: remoteChallenge.get('startDate').getTime(),
     endTime: remoteChallenge.get('endDate').getTime(),
+    date: challengeDate,
   };
 }
 

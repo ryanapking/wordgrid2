@@ -41,7 +41,7 @@ export async function storeChallengeByDate(uid, challenge, date) {
 }
 
 export async function getCurrentChallenge(uid) {
-  let userStorageObject = await getUserStorageObject(uid)
+  const userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {
       throw new Error(err);
     });
@@ -61,7 +61,7 @@ export async function getCurrentChallenge(uid) {
 }
 
 export async function getChallengeByDate(uid, date) {
-  let userStorageObject = await getUserStorageObject(uid)
+  const userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {
       throw new Error(err);
     });
@@ -73,8 +73,17 @@ export async function getChallengeByDate(uid, date) {
   }
 }
 
+export async function getChallengeAttemptDates(uid) {
+  const userStorageObject = await getUserStorageObject(uid)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  return Object.keys(userStorageObject.attemptsByDate);
+}
+
 export async function getChallengeAttemptsByDate(uid, date) {
-  let userStorageObject = await getUserStorageObject(uid)
+  const userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {
       throw new Error(err);
     });
