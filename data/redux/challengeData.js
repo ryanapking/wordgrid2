@@ -1,4 +1,5 @@
-import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, calculateWordValue, wordPathArrayToString } from "../utilities";
+import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, calculateWordValue, wordPathArrayToString } from "../utilities";
+import { storeChallengeAttemptByDate } from "../async-storage";
 import english from '../english';
 
 // available actions
@@ -252,10 +253,12 @@ export function markSaved() {
 
 export function saveAttempt(userID) {
   return (dispatch, getState) => {
-    dispatch(markSaved());
-
     const { challengeData } = getState();
-    const { challenge, source } = challengeData;
-
+    const { challenge } = challengeData;
+    const challengeAttempt = challengeStateToAttempt(challenge);
+    storeChallengeAttemptByDate(userID, challengeAttempt, challenge.date)
+      .then( () => {
+        dispatch(markSaved());
+      });
   };
 }

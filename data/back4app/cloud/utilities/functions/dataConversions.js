@@ -160,6 +160,7 @@ function challengeLocalStorageObjectToPlayableObject(localChallengeObject) {
     gameOver: false,
     attemptSaved: false,
     id: localChallengeObject.id,
+    date: localChallengeObject.date,
   };
 
   return challenge;
@@ -172,6 +173,15 @@ function challengeStateToMove(challengeData, placementRef = null, placementValue
     wp: challengeData.wordPath, // path of word played
     pr: placementRef, // reference info for piece placement
     pv: placementValue, // place tile value (1 per letter)
+  }
+}
+
+function challengeStateToAttempt(challengeData) {
+  return {
+    score: challengeData.score,
+    challengeId: challengeData.id,
+    challengeDate: challengeData.date,
+    moves: challengeData.moves,
   }
 }
 
@@ -285,6 +295,7 @@ module.exports = {
   challengeRemoteToLocalStorageObject,
   challengeLocalStorageObjectToPlayableObject,
   challengeStateToMove,
+  challengeStateToAttempt,
   localToRemote,
   pieceStringToArray,
   boardStringToArray,
