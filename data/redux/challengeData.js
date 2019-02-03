@@ -9,17 +9,11 @@ const CHALLENGE_REMOVE_SQUARE = 'wordgrid2/challengeData/CHALLENGE_REMOVE_SQUARE
 const CHALLENGE_CLEAR_CONSUMED_SQUARES = 'wordgrid2/challengeData/CHALLENGE_CLEAR_CONSUMED_SQUARES';
 const CHALLENGE_PLAY_WORD = 'wordgrid2/challengeData/CHALLENGE_PLAY_WORD';
 const CHALLENGE_PLACE_PIECE = 'wordgrid2/challengeData/CHALLENGE_PLACE_PIECE';
-const CHALLENGE_SET_ATTEMPTS_HISTORY = 'wordgrid2/challengeData/CHALLENGE_SET_ATTEMPTS_HISTORY';
 const CHALLENGE_MARK_SAVED = 'wordgrid2/challengeData/CHALLENGE_MARK_SAVED';
 
 const initialState = {
   source: null,
   challenge: null,
-  attemptsHistory: {
-    challengeIDs: [],
-    attemptsByID: {},
-    challengesByID: {},
-  },
 };
 
 // reducer manager
@@ -39,8 +33,6 @@ export default function reducer(state = initialState, action) {
       return playWordReducer(state, action);
     case CHALLENGE_PLACE_PIECE:
       return placePieceReducer(state, action);
-    case CHALLENGE_SET_ATTEMPTS_HISTORY:
-      return setAttemptsHistoryReducer(state, action);
     case CHALLENGE_MARK_SAVED:
       return markSavedReducer(state, action);
     default:
@@ -110,13 +102,6 @@ function placePieceReducer(state, action) {
       gameOver: action.gameOver,
       score: action.score,
     }
-  }
-}
-
-function setAttemptsHistoryReducer(state, action) {
-  return {
-    ...state,
-    attemptsHistory: action.attemptsHistory,
   }
 }
 
@@ -255,13 +240,6 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
       gameOver,
       score,
     });
-  };
-}
-
-export function setAttemptsHistory(attemptsHistory) {
-  return {
-    type: CHALLENGE_SET_ATTEMPTS_HISTORY,
-    attemptsHistory
   };
 }
 
