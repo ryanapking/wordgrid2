@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-native';
 
 import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates } from "../data/async-storage";
 import { getUpcomingChallengesByDate } from "../data/back4app/client/getters";
+import { setSourceChallengeData } from "../data/redux/challengeData";
 
 class ChallengeOverview extends Component {
   constructor() {
@@ -50,6 +51,7 @@ class ChallengeOverview extends Component {
           this.setState({
             currentChallenge: challenge,
           });
+          this.props.setSourceChallengeData(challenge);
         } else {
           this._getUpcomingChallengesByDate();
         }
@@ -96,4 +98,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(ChallengeOverview));
+const mapDispatchToProps = {
+  setSourceChallengeData,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeOverview));

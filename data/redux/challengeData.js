@@ -1,4 +1,4 @@
-import { challengeRemoteToLocal, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
+import { challengeLocalStorageObjectToPlayableObject, challengeMoveToHistory, calculateWordValue, wordPathArrayToString } from "../utilities";
 import english from '../english';
 
 // available actions
@@ -141,7 +141,7 @@ export function setSourceChallengeData(sourceChallengeData) {
 export function setLocalChallengeData(sourceChallengeData) {
   return {
     type: CHALLENGE_SET_LOCAL_DATA,
-    challenge: challengeRemoteToLocal(sourceChallengeData),
+    challenge: challengeLocalStorageObjectToPlayableObject(sourceChallengeData),
   };
 }
 
