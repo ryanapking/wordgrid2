@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
+import {View, StyleSheet, Text, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { List, ListItem } from "native-base";
@@ -7,6 +7,7 @@ import { List, ListItem } from "native-base";
 import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
+import Piece from '../components/Piece';
 import { boardStringToArray, wordPathStringToArray, challengeAttemptToReviewObject } from "../data/utilities";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 
@@ -21,6 +22,7 @@ class ChallengeAttemptReview extends Component {
       reviewObject: null,
 
       moveIndex: 0,
+      phaseIndex: null,
       displayPath: [],
       boardLocation: {},
     };
@@ -50,6 +52,10 @@ class ChallengeAttemptReview extends Component {
 
     if (!reviewObject || !boardLocation) return null;
 
+    console.log('challenge object:', this.state.challenge);
+    console.log('attempt:', attempt);
+    console.log('review object:', reviewObject);
+
     const reviewing = reviewObject[moveIndex];
     const boardState = reviewing.initialState.boardState;
     const displayPath = reviewing.wordPath;
@@ -77,23 +83,31 @@ class ChallengeAttemptReview extends Component {
         </View>
 
         <View style={styles.movesSection}>
-          <List>
-            <ListItem itemDivider style={styles.spaceBetween}>
-              <Text>Moves</Text>
-            </ListItem>
-            {attempt.moves.map( (move, index) =>
-              <TouchableWithoutFeedback key={index} onPressIn={() => this.setState({ moveIndex: index })} >
-                <ListItem style={styles.spaceBetween}>
-                  <View>
-                    <Text>{ move.w.toUpperCase() }</Text>
-                  </View>
-                  <View>
-                    <Text>{ move.wv }</Text>
-                  </View>
-                </ListItem>
-              </TouchableWithoutFeedback>
-            )}
-          </List>
+          <ScrollView ref={(scrollView) => this._availableMoves = scrollView}>
+            <List>
+              <ListItem itemDivider style={styles.spaceBetween}>
+                <Text>Moves</Text>
+              </ListItem>
+              {reviewObject.map( (move, index) =>
+                <View key={index}>
+                  <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 0 })} >
+                    <ListItem style={styles.spaceBetween}>
+                      <Text>{ move.word.toUpperCase() }</Text>
+                      <Text>{ move.wordValue } points</Text>
+                    </ListItem>
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
+                    <ListItem style={styles.spaceBetween}>
+                      <View style={styles.gamePieceContainer}>
+                        <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} allowDrag={false}/>
+                      </View>
+                      <Text>{ move.placementValue} points</Text>
+                    </ListItem>
+                  </TouchableWithoutFeedback>
+                </View>
+              )}
+            </List>
+          </ScrollView>
         </View>
 
       </View>
@@ -153,6 +167,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  gamePieceContainer: {
+    // flex: 1,
+    // margin: 2,
+    // display: 'flex',
+    // flexDirection: 'column',
+    // justifyContent: 'center',
+    // maxHeight: '100%',
+    // maxWidth: '100%',
+    width: '20%',
+    aspectRatio: 1,
+  },
+  gamePiece: {
+    backgroundColor: 'gray',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    aspectRatio: 1,
+  }
 });
 
 const mapStateToProps = (state, ownProps) => {

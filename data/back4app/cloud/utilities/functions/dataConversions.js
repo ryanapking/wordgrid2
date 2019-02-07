@@ -217,10 +217,15 @@ function challengeAttemptToReviewObject(challengeLocalObject, challengeAttempt) 
 
     states.push({
       placementRef,
+      piece: secondState.pieces[placementRef.pieceIndex],
       wordPath,
       initialState,
       secondState,
       thirdState,
+      wordValue: move.wv,
+      placementValue: move.pv,
+      totalValue: move.wv + move.pv,
+      word: move.w,
     });
 
   });
