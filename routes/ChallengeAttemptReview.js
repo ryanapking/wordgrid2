@@ -23,7 +23,6 @@ class ChallengeAttemptReview extends Component {
 
       moveIndex: 0,
       phaseIndex: null,
-      displayPath: [],
       boardLocation: {},
     };
   }
@@ -48,7 +47,7 @@ class ChallengeAttemptReview extends Component {
   }
 
   render() {
-    const { attempt, reviewObject, boardLocation, moveIndex } = this.state;
+    const { attempt, reviewObject, boardLocation, moveIndex, phaseIndex } = this.state;
 
     if (!reviewObject || !boardLocation) return null;
 
@@ -57,14 +56,26 @@ class ChallengeAttemptReview extends Component {
     console.log('review object:', reviewObject);
 
     const reviewing = reviewObject[moveIndex];
-    const boardState = reviewing.initialState.boardState;
-    const displayPath = reviewing.wordPath;
+
+    let boardState = reviewing.initialState.boardState;
+    let highlightPath = [];
+    let wordPath = [];
+
+    if (phaseIndex === 0) {
+      wordPath = reviewing.wordPath;
+      highlightPath = reviewing.wordPath;
+    } else if (phaseIndex === 1) {
+      boardState = reviewing.thirdState.boardState;
+      highlightPath = reviewing.pieceBoardSquares;
+    }
+
+    console.log('highlighting:', highlightPath);
 
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
         if (!letter) {
           return {letter, status: SPACE_EMPTY};
-        } else if (!this._checkSquareAvailable({rowIndex, columnIndex}, displayPath)) {
+        } else if (!this._checkSquareAvailable({rowIndex, columnIndex}, highlightPath)) {
           return {letter, status: SPACE_CONSUMED};
         } else {
           return {letter, status: SPACE_FILLED};
@@ -72,13 +83,15 @@ class ChallengeAttemptReview extends Component {
       });
     });
 
+    const pieceSize = boardLocation ? boardLocation.width * .2 : null;
+
     return (
       <View style={styles.reviewContainer}>
 
         <View style={styles.boardSection}>
           <View style={styles.board} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
             <DrawBoard boardState={displayBoardState} boardSize={boardLocation.width}/>
-            <BoardPathCreator squares={displayPath} boardLocation={boardLocation}/>
+            <BoardPathCreator squares={wordPath} boardLocation={boardLocation}/>
           </View>
         </View>
 
@@ -99,7 +112,7 @@ class ChallengeAttemptReview extends Component {
                   <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
                     <ListItem style={styles.spaceBetween}>
                       <View style={styles.gamePieceContainer}>
-                        <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} allowDrag={false}/>
+                        <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} baseSize={pieceSize} allowDrag={false}/>
                       </View>
                       <Text>{ move.placementValue} points</Text>
                     </ListItem>
@@ -114,8 +127,8 @@ class ChallengeAttemptReview extends Component {
     );
   }
 
-  _checkSquareAvailable(square, displayPath) {
-    return displayPath.reduce( (squareAvailable, pathSquare) => {
+  _checkSquareAvailable(square, wordPath) {
+    return wordPath.reduce( (squareAvailable, pathSquare) => {
       if (square.rowIndex === pathSquare.rowIndex && square.columnIndex === pathSquare.columnIndex) {
         return false;
       } else {
@@ -166,6 +179,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: 0,
+    paddingLeft: 15,
   },
   gamePieceContainer: {
     // flex: 1,

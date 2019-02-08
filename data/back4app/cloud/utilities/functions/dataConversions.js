@@ -207,6 +207,8 @@ function challengeAttemptToReviewObject(challengeLocalObject, challengeAttempt) 
     };
 
     const placementRef = placementRefStringToArray(move.pr);
+    const piece = secondState.pieces[placementRef.pieceIndex];
+    const pieceBoardSquares = placementRefToBoardSquares(placementRef, piece);
 
     challenge = applyMoves.challengePlacePiece(challenge, placementRef);
 
@@ -217,7 +219,8 @@ function challengeAttemptToReviewObject(challengeLocalObject, challengeAttempt) 
 
     states.push({
       placementRef,
-      piece: secondState.pieces[placementRef.pieceIndex],
+      piece,
+      pieceBoardSquares,
       wordPath,
       initialState,
       secondState,
@@ -318,6 +321,21 @@ function placementRefStringToArray(placementRefString) {
     rowIndex: parseInt(pr[1]),
     columnIndex: parseInt(pr[2])
   };
+}
+
+function placementRefToBoardSquares(placementRef, piece) {
+  let squares = [];
+  piece.forEach( (row, rowIndex) => {
+    row.forEach( (letter, columnIndex) => {
+      if (letter) {
+        squares.push({
+          rowIndex: placementRef.rowIndex + rowIndex,
+          columnIndex: placementRef.columnIndex + columnIndex,
+        });
+      }
+    });
+  });
+  return squares;
 }
 
 function nextPieceStringToLocalPiece(nextPiece, size) {
