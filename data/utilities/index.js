@@ -2,9 +2,9 @@
 // exported here for convenience
 
 export { generateBoard, generatePiece, generateLocalPiece, generateGame, getRandomLetter } from '../back4app/cloud/utilities/functions/generators';
-export { remoteToStartingGameState, remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, arrayToString, pieceStringToArray, wordPathStringToArray, challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, challengeAttemptToReviewObject, moveRemoteToLocal, nextPieceStringToLocalPiece, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
-export { calculateWordValue, calculateHighestWordValue, calculateLongestWordLength, calculateMoveRating } from '../back4app/cloud/utilities/functions/calculations';
-export { checkPieceFit, getWinner, validateMove } from '../back4app/cloud/utilities/functions/checks';
+export { remoteToStartingGameState, remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, arrayToString, pieceStringToArray, wordPathStringToArray, challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, challengeAttemptToReviewObject, moveRemoteToLocal, nextPieceStringToLocalPiece, placementRefStringToArray, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
+export { calculateWordValue, calculatePiecePlacementValue, calculateHighestWordValue, calculateLongestWordLength, calculateMoveRating } from '../back4app/cloud/utilities/functions/calculations';
+export { checkPieceFit, getWinner, validateMove, validateChallengeAttempt } from '../back4app/cloud/utilities/functions/checks';
 export { getAnimationData, getWordPath } from '../back4app/cloud/utilities/functions/getters';
-export { applyMove } from '../back4app/cloud/utilities/functions/applyMoves';
+export { applyMove, getBoardPlusPiece } from '../back4app/cloud/utilities/functions/applyMoves';
 export { letterValues } from '../back4app/cloud/utilities/config';

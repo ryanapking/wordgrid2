@@ -1,8 +1,80 @@
 const config = require('../config');
 const dataConversions = require('./dataConversions');
 const applyMoves = require('./applyMoves');
+const calculations = require('./calculations');
 
 const settings = config.settings;
+
+
+function validateChallengeAttempt(remoteChallengeObject, challengeAttempt) {
+  // function does not validate words, as that will happen differently on the device and on parse server
+
+  // const challengeLocalStorageObject = dataConversions.challengeRemoteToLocalStorageObject(remoteChallengeObject);
+  const challenge = dataConversions.challengeLocalStorageObjectToPlayableObject(remoteChallengeObject);
+
+  if (challengeAttempt.challengeId !== challenge.id) return false;
+
+  let attemptValid = true;
+  let attemptScore = 0;
+
+  challengeAttempt.moves.forEach( (move, moveIndex) => {
+    if (!attemptValid) return;
+
+    const wordPath = dataConversions.wordPathStringToArray(move.wp);
+    const word = move.w;
+    const wordPathValid = validateWordPath(wordPath, challenge.rows, word);
+
+    if (wordPathValid) {
+      // update game board
+      challenge.rows = applyMoves.getBoardMinusWordPath(challenge.rows, wordPath);
+
+      // update score
+      attemptScore += calculations.calculateWordValue(word);
+
+      // assign new pieces
+      const nextPieceSet = challenge.pieceBank[moveIndex];
+      const nextPiece = nextPieceSet[wordPath.length];
+      const currentPieces = challenge.pieces.filter( (piece) => {
+        return (piece.length > 0);
+      });
+      challenge.pieces = [...currentPieces, nextPiece];
+
+    } else {
+      attemptValid = false;
+      return;
+    }
+
+    const placementRef = dataConversions.placementRefStringToArray(move.pr);
+    const placementRefValid = validatePlacementRef(challenge.pieces, placementRef, challenge.rows);
+
+    if (attemptValid && placementRefValid) {
+      // update game board
+      challenge.rows = applyMoves.getBoardPlusPiece(challenge.rows, challenge.pieces, placementRef);
+
+      // update score
+      const placedPiece = challenge.pieces[placementRef.pieceIndex];
+      attemptScore += calculations.calculatePiecePlacementValue(placedPiece);;
+
+      // remove placed piece from available pieces
+      challenge.pieces = challenge.pieces.filter( (piece, pieceIndex) => {
+        return (pieceIndex !== placementRef.pieceIndex);
+      });
+
+    } else {
+      attemptValid = false;
+    }
+
+  });
+
+  attemptValid = (attemptValid && challengeAttempt.score === attemptScore);
+
+  // console.log('challenge:', challenge);
+  // console.log('challenge attempt:', challengeAttempt);
+  // console.log('attempt valid:', attemptValid);
+  // console.log('attempt score:', attemptScore);
+
+  return attemptValid;
+}
 
 function validateMove(uid, sourceData, move) {
   let gameState = dataConversions.remoteToLocal(sourceData, uid);
@@ -21,7 +93,7 @@ function validateMove(uid, sourceData, move) {
 
 function validateWordPath(wordPath, boardState, moveWord) {
   // function confirms that the word path spells the given word
-  if ( moveWord.length !== wordPath.length ) return false;
+  if ( moveWord.length !== wordPath.length || wordPath.length < 4 ) return false;
 
   let pathWord = "";
   wordPath.forEach( ({ rowIndex, columnIndex }) => {
@@ -145,6 +217,7 @@ function getWinner(gameState) {
 }
 
 module.exports = {
+  validateChallengeAttempt,
   checkPieceFit,
   gameOverCheck,
   getWinner,

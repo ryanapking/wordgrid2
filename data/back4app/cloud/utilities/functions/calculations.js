@@ -6,6 +6,18 @@ function calculateWordValue(word) {
   }, 0);
 }
 
+function calculatePiecePlacementValue(pieceArray) {
+  let placementValue = 0;
+  pieceArray.forEach((row) => {
+    row.forEach((letter) => {
+      if (letter) {
+        placementValue++; // each letter on tile placed worth one point
+      }
+    });
+  });
+  return placementValue;
+}
+
 function calculateLongestWordLength(words) {
   const longestWords = words.reduce( (currentLongestWords, word) => {
     if (word.length > currentLongestWords.length) {
@@ -61,6 +73,7 @@ function calculateMoveRating(word, longestWord, mostValuableWord) {
 
 module.exports = {
   calculateWordValue,
+  calculatePiecePlacementValue,
   calculateLongestWordLength,
   calculateHighestWordValue,
   calculateMoveRating,

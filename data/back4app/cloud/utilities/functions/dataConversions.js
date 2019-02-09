@@ -1,3 +1,5 @@
+let moment = require('moment');
+
 const applyMoves = require('./applyMoves');
 
 function remoteToStartingGameState(source) {
@@ -122,7 +124,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   return conversion;
 }
 
-function challengeRemoteToLocalStorageObject(remoteChallenge, challengeDate) {
+function challengeRemoteToLocalStorageObject(remoteChallenge) {
   return {
     id: remoteChallenge.id,
     startingBoard: remoteChallenge.get('startingBoard'),
@@ -130,7 +132,7 @@ function challengeRemoteToLocalStorageObject(remoteChallenge, challengeDate) {
     pieceBank: remoteChallenge.get('pieceBank'),
     startTime: remoteChallenge.get('startDate').getTime(),
     endTime: remoteChallenge.get('endDate').getTime(),
-    date: challengeDate,
+    date: moment(remoteChallenge.get("startDate")).format("M-D-YYYY"),
   };
 }
 

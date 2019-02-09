@@ -1,4 +1,4 @@
-import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, calculateWordValue, wordPathArrayToString } from "../utilities";
+import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, calculateWordValue, calculatePiecePlacementValue, wordPathArrayToString, placementRefStringToArray, getBoardPlusPiece, validateChallengeAttempt } from "../utilities";
 import { storeChallengeAttemptByDate } from "../async-storage";
 import english from '../english';
 
@@ -201,21 +201,11 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
     const { challenge } = challengeData;
     const piece = challenge.pieces[pieceIndex];
 
-    // make a full copy of the current rows to manipulate
-    let newRows = challenge.rows.map( (row) => [...row] );
+    const placementRefString = [pieceIndex, rowRef, columnRef].join("|");
+    const placementRefArray = placementRefStringToArray(placementRefString);
 
-    // add the letters to the rows copy
-    let placementValue = 0;
-    piece.forEach((row, rowIndex) => {
-      row.forEach((letter, columnIndex) => {
-        const boardRow = rowRef + rowIndex;
-        const boardColumn = columnRef + columnIndex;
-        if (letter) {
-          placementValue++; // each letter on tile placed worth one point
-          newRows[boardRow][boardColumn] = letter;
-        }
-      });
-    });
+    const newRows = getBoardPlusPiece(challenge.rows, challenge.pieces, placementRefArray);
+    const placementValue = calculatePiecePlacementValue(piece);
     const score = challenge.score + placementValue;
 
     // remove the played piece and add the next piece
@@ -224,8 +214,7 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
 
 
     // convert the data into a move to be saved
-    const placementRef = [pieceIndex, rowRef, columnRef].join("|");
-    const newMoveItem = challengeStateToMove(challenge, placementRef, placementValue);
+    const newMoveItem = challengeStateToMove(challenge, placementRefString, placementValue);
     const moves = [...challenge.moves, newMoveItem];
 
     const pieceSet = challenge.pieceBank[moves.length];
@@ -235,7 +224,7 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
       type: CHALLENGE_PLACE_PIECE,
       rows: newRows,
       pieceIndex,
-      placementRef,
+      placementRef: placementRefString,
       pieces,
       pieceSet,
       moves,

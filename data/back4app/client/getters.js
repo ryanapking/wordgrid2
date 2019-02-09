@@ -14,8 +14,8 @@ export async function getUpcomingChallengesByDate() {
 
   let challengesByDate = {};
   upcomingChallenges.forEach( (challenge) => {
-    const challengeDate = moment(challenge.get("startDate")).format("D-M-YYYY");
-    challengesByDate[challengeDate] = challengeRemoteToLocalStorageObject(challenge, challengeDate);
+    const challengeLocalStorageObject = challengeRemoteToLocalStorageObject(challenge);
+    challengesByDate[challengeLocalStorageObject.date] = challengeLocalStorageObject;
   });
 
   console.log('upcoming challenges by date:', challengesByDate);
