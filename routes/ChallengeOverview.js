@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
-import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates } from "../data/async-storage";
+import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate } from "../data/async-storage";
 import { getUpcomingChallengesByDate } from "../data/back4app/client/getters";
 import { setSourceChallengeData } from "../data/redux/challengeData";
 
@@ -14,6 +14,7 @@ class ChallengeOverview extends Component {
 
     this.state = {
       currentChallenge: null,
+      currentChallengeAttempts: [],
       pastChallengeDates: [],
     };
   }
@@ -24,13 +25,28 @@ class ChallengeOverview extends Component {
   }
 
   render() {
-    const { currentChallenge, pastChallengeDates } = this.state;
+    const { currentChallenge, currentChallengeAttempts, pastChallengeDates } = this.state;
+
+    console.log('current challenge:', currentChallenge);
+    console.log('current attempts:', currentChallengeAttempts);
 
     return (
       <List>
         <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
           <Text>{ currentChallenge ? "Play Now" : "Searching for Current Challenge" }</Text>
         </ListItem>
+        { currentChallengeAttempts.length > 0 ?
+          <ListItem itemDivider >
+            <Text>Attempts:</Text>
+          </ListItem>
+          : null
+        }
+        { currentChallengeAttempts.map( (attempt, index) =>
+          <ListItem key={index} style={styles.listItem} onPress={() => this.props.history.push(`/challengeAttemptReview/${currentChallenge.date}/${attempt.attemptIndex}`)}>
+            <Text>{ attempt.score } points</Text>
+            <Text>{ attempt.savedRemotely.toString() }</Text>
+          </ListItem>
+        )}
         <ListItem itemDivider >
           <Text>Past Challenges:</Text>
         </ListItem>
@@ -51,10 +67,35 @@ class ChallengeOverview extends Component {
           this.setState({
             currentChallenge: challenge,
           });
+          this._getCurrentChallengeAttempts(challenge.date);
           this.props.setSourceChallengeData(challenge);
         } else {
           this._getUpcomingChallengesByDate();
         }
+      });
+  }
+
+  // queries async-storage for attempts based on the current challenge date
+  _getCurrentChallengeAttempts(date) {
+    getChallengeAttemptsByDate(this.props.userID, date)
+      .then( (attempts) => {
+
+        // mark each attempt's index, then sort based on score
+        // index is used when retrieving specific attempts
+        const markedAttempts = attempts.map( (attempt, attemptIndex) => {
+          return {
+            ...attempt,
+            attemptIndex
+          };
+        }).sort( (a, b) => {
+          if (a.score > b.score) return -1;
+          if (a.score < b.score) return 1;
+          return 0;
+        });
+
+        this.setState({
+          currentChallengeAttempts: markedAttempts
+        });
       });
   }
 
@@ -80,7 +121,7 @@ class ChallengeOverview extends Component {
       .then( (dates) => {
         this.setState({
           pastChallengeDates: dates,
-        })
+        });
       });
   }
 }

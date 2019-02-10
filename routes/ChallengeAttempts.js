@@ -25,7 +25,7 @@ class ChallengeAttempts extends Component {
 
     return (
       <List>
-        <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
+        <ListItem style={styles.listItem}>
           <Text>Challenge from { this.props.challengeDate }</Text>
         </ListItem>
         <ListItem itemDivider >

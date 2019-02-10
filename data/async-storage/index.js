@@ -137,7 +137,21 @@ export async function clearUserChallengeData(uid) {
     })
     .catch( (err) => {
       throw new Error(err);
-    })
+    });
+}
+
+export async function markChallengeAttemptSavedRemotely(uid, date, attemptIndex) {
+  let userStorageObject = await getUserStorageObject(uid)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  userStorageObject.attemptsByDate[date][attemptIndex].savedRemotely = true;
+
+  return await saveUserStorageObject(uid, userStorageObject)
+    .catch( (err) => {
+      throw new Error(err);
+    });
 }
 
 async function getUserStorageObject(uid) {

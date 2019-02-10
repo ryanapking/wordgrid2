@@ -184,6 +184,7 @@ function challengeStateToAttempt(challengeData) {
     challengeId: challengeData.id,
     challengeDate: challengeData.date,
     moves: challengeData.moves,
+    savedRemotely: false,
   }
 }
 
