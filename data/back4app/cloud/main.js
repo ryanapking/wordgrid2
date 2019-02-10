@@ -5,6 +5,10 @@ Parse.Cloud.job("createNewChallenge", async function() {
   return await challenges.createChallengesForWeek();
 });
 
+Parse.Cloud.define("saveChallengeAttempt", async function(request) {
+  return await challenges.saveChallengeAttempt(request);
+});
+
 Parse.Cloud.define("saveMove", async function(request) {
   return await games.saveMove(request);
 });

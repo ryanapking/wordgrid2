@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
-import { getChallengeByDate, getChallengeAttemptsByDate } from "../data/async-storage";
+import { getChallengeAttemptsByDate } from "../data/async-storage";
 
 class ChallengeAttempts extends Component {
   constructor() {
@@ -22,8 +22,6 @@ class ChallengeAttempts extends Component {
 
   render() {
     const { attempts } = this.state;
-
-    console.log('attempts: ', attempts);
 
     return (
       <List>
@@ -44,7 +42,6 @@ class ChallengeAttempts extends Component {
 
   // get array of attempts
   _getAttempts() {
-    console.log('_getAttempts()');
     getChallengeAttemptsByDate(this.props.userID, this.props.challengeDate)
       .then( (attempts) => {
         this.setState({

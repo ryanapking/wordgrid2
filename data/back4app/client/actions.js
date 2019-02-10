@@ -19,3 +19,14 @@ export async function saveMove(gameID, move) {
 
   return savedMove;
 }
+
+export async function saveChallengeAttempt(challengeAttempt) {
+  let savedAttempt = await Parse.Cloud.run("saveChallengeAttempt", {challengeAttempt})
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  console.log('saved attempt:', savedAttempt);
+
+  return savedAttempt;
+}
