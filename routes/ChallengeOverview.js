@@ -5,8 +5,8 @@ import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
 import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
-import { getUpcomingChallengesByDate } from "../data/back4app/client/getters";
-import { saveChallengeAttempt } from "../data/back4app/client/actions";
+import { getUpcomingChallengesByDate } from "../data/parse-client/getters";
+import { saveChallengeAttempt } from "../data/parse-client/actions";
 import { setSourceChallengeData } from "../data/redux/challengeData";
 
 class ChallengeOverview extends Component {

@@ -8,7 +8,7 @@ import DrawPieceSection from "./DrawPieceSection";
 
 import { calculateWordValue, localToRemote, validateMove } from "../data/utilities";
 import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
-import { saveMove } from "../data/back4app/client/actions";
+import { saveMove } from "../data/parse-client/actions";
 
 class GameInteraction extends Component {
   render() {

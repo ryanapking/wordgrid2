@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import {Button, List, ListItem, Spinner} from 'native-base';
 
-import { initiateGame } from "../data/remote";
-import { startGame } from "../data/back4app/client/actions";
+import { startGame } from "../data/parse-client/actions";
 
 class Games extends Component {
   render() {

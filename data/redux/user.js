@@ -1,8 +1,8 @@
 import { setLocalGameDataByID } from "./gameData";
 
-import { checkUser, anonymousLogin } from "../back4app/client/user";
-import { startGamesLiveQuery } from "../back4app/client/listeners";
-import { getUpcomingChallengesByDate } from "../back4app/client/getters";
+import { checkUser, anonymousLogin } from "../parse-client/user";
+import { startGamesLiveQuery } from "../parse-client/listeners";
+import { getUpcomingChallengesByDate } from "../parse-client/getters";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
