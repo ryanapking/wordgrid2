@@ -4,7 +4,7 @@ import {Button, Container, Spinner} from 'native-base';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import Boggle from '../data/utilities/boggle-solver';
+import Boggle from '../data/boggle-solver';
 import GameInfoDisplay from '../components/GameInfoDisplay';
 import Board from '../components/Board';
 import GameInteraction from '../components/GameInteraction';

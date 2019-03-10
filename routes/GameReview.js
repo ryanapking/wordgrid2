@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 import { List, ListItem } from 'native-base';
 
 import { moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
-import Boggle from '../data/utilities/boggle-solver';
+import Boggle from '../data/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from "../components/BoardPathCreator";

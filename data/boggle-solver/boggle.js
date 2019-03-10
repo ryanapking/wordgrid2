@@ -1,5 +1,5 @@
 import DICE from './dice';
-import english from '../../english';
+import english from '../english';
 
 /** Class representing a Boggle board. */
 export default class Boggle {
