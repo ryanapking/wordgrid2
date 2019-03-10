@@ -1,10 +1,17 @@
-// logic has been moved into the back4app directory to prevent the need for duplicated code
-// exported here for convenience
+const config = require('./config');
+const applyMoves = require('./functions/applyMoves');
+const calculations = require('./functions/calculations');
+const checks = require('./functions/checks');
+const dataConversions = require('./functions/dataConversions');
+const generators = require('./functions/generators');
+const getters = require('./functions/getters');
 
-export { generateBoard, generatePiece, generateLocalPiece, generateGame, getRandomLetter } from '../back4app/cloud/utilities/functions/generators';
-export { remoteToStartingGameState, remoteToLocal, localToRemote, wordPathArrayToString, boardStringToArray, arrayToString, pieceStringToArray, wordPathStringToArray, challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, challengeAttemptToReviewObject, moveRemoteToLocal, nextPieceStringToLocalPiece, placementRefStringToArray, nextPieceStringToRemotePiece } from '../back4app/cloud/utilities/functions/dataConversions';
-export { calculateWordValue, calculatePiecePlacementValue, calculateHighestWordValue, calculateLongestWordLength, calculateMoveRating } from '../back4app/cloud/utilities/functions/calculations';
-export { checkPieceFit, getWinner, validateMove, validateChallengeAttempt } from '../back4app/cloud/utilities/functions/checks';
-export { getAnimationData, getWordPath } from '../back4app/cloud/utilities/functions/getters';
-export { applyMove, getBoardPlusPiece } from '../back4app/cloud/utilities/functions/applyMoves';
-export { letterValues } from '../back4app/cloud/utilities/config';
+module.exports = {
+  ...config,
+  ...applyMoves,
+  ...calculations,
+  ...checks,
+  ...dataConversions,
+  ...generators,
+  ...getters,
+};

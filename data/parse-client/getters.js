@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import Parse from './client-setup';
-import { challengeRemoteToLocalStorageObject } from '../back4app/cloud/utilities/functions/dataConversions';
+import { challengeRemoteToLocalStorageObject } from '../utilities/functions/dataConversions';
 
 export async function getUpcomingChallengesByDate() {
   let now = moment().toDate();

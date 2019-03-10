@@ -1,6 +1,6 @@
 import Parse from './client-setup';
 
-import { remoteToLocal } from '../back4app/cloud/utilities/functions/dataConversions';
+import { remoteToLocal } from '../utilities/functions/dataConversions';
 
 export async function startGamesLiveQuery(onChange) {
   const user = await Parse.User.currentAsync();
