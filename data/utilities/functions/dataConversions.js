@@ -1,5 +1,3 @@
-let moment = require('moment');
-
 const applyMoves = require('./applyMoves');
 
 function remoteToStartingGameState(source) {
@@ -124,7 +122,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   return conversion;
 }
 
-function challengeRemoteToLocalStorageObject(remoteChallenge) {
+function challengeRemoteToLocalStorageObject(remoteChallenge, date = null) {
   return {
     id: remoteChallenge.id,
     startingBoard: remoteChallenge.get('startingBoard'),
@@ -132,7 +130,8 @@ function challengeRemoteToLocalStorageObject(remoteChallenge) {
     pieceBank: remoteChallenge.get('pieceBank'),
     startTime: remoteChallenge.get('startDate').getTime(),
     endTime: remoteChallenge.get('endDate').getTime(),
-    date: moment(remoteChallenge.get("startDate")).format("M-D-YYYY"),
+    // date is probably not needed. if it is, just send it in to avoid an unwanted dependency in our bit repo
+    date: date,
   };
 }
 
