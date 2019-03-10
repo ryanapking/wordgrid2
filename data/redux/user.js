@@ -85,11 +85,6 @@ function userLoginSuccess(uid) {
         dispatch(setLocalGameDataByID(source.objectId, uid, source));
     });
 
-    getUpcomingChallengesByDate()
-      .then( (challenges) => {
-        console.log('upcoming challenges data:', challenges);
-      });
-
     dispatch({
       type: LOGIN_SUCCESS,
       uid

@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { List, ListItem } from "native-base";
 import { withRouter } from 'react-router-native';
 
-import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate } from "../data/async-storage";
+import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
 import { getUpcomingChallengesByDate } from "../data/back4app/client/getters";
+import { saveChallengeAttempt } from "../data/back4app/client/actions";
 import { setSourceChallengeData } from "../data/redux/challengeData";
 
 class ChallengeOverview extends Component {
@@ -27,8 +28,8 @@ class ChallengeOverview extends Component {
   render() {
     const { currentChallenge, currentChallengeAttempts, pastChallengeDates } = this.state;
 
-    console.log('current challenge:', currentChallenge);
-    console.log('current attempts:', currentChallengeAttempts);
+    // console.log('current challenge:', currentChallenge);
+    // console.log('current attempts:', currentChallengeAttempts);
 
     return (
       <List>
@@ -90,12 +91,31 @@ class ChallengeOverview extends Component {
         }).sort( (a, b) => {
           if (a.score > b.score) return -1;
           if (a.score < b.score) return 1;
+          if (a.savedRemotely) return -1;
           return 0;
         });
+
+        // should try to save the first game remotely, if it isn't already saved
+        // doing it here will make it fairly automatic while not repeating too frequently in case there's an error
+        if (markedAttempts.length > 0 && !markedAttempts[0].savedRemotely) {
+          console.log('trying to save attempt:', markedAttempts[0]);
+          this._saveChallengeAttempt(markedAttempts[0], date, markedAttempts[0].attemptIndex);
+        }
 
         this.setState({
           currentChallengeAttempts: markedAttempts
         });
+      });
+  }
+
+  // saves an attempt remotely
+  _saveChallengeAttempt(attempt, currentChallengeDate, attemptIndex) {
+    saveChallengeAttempt(attempt)
+      .then( () => {
+        markChallengeAttemptSavedRemotely(this.props.userID, currentChallengeDate, attemptIndex)
+          .then( () => {
+            this._getCurrentChallengeAttempts(currentChallengeDate);
+          });
       });
   }
 

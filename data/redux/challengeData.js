@@ -250,10 +250,5 @@ export function saveAttempt(userID) {
       .then( () => {
         dispatch(markSaved());
       });
-
-    saveChallengeAttempt(challengeAttempt)
-      .then( (returnValue) => {
-        console.log('saved challenge attempt remotely:', returnValue);
-      });
   };
 }
