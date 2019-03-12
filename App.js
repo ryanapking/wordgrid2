@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { NativeRouter, Route } from'react-router-native';
-import { Drawer } from 'native-base';
+import { Overlay } from 'react-native-elements';
 
 import configureStore from './data/redux/configureStore';
 
@@ -29,19 +29,24 @@ StatusBar.setHidden(true);
 console.disableYellowBox = true;
 
 export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      menuOverlayVisible: false
+    }
+  }
   render() {
     return (
       <Provider store={store}>
         <NativeRouter>
-          <Drawer
-            ref={(ref) => { this.drawer = ref; }}
-            content={<NavMenu closeDrawer={() => this.closeDrawer()}/>}
-            onClose={() => this.closeDrawer()}
-            acceptPan={false}
-          >
+          <View>
+            <Overlay isVisible={this.state.menuOverlayVisible} onBackdropPress={() => this.setState({ menuOverlayVisible: false })}>
+              <NavMenu />
+            </Overlay>
             <View style={styles.mainContainer}>
               <View style={styles.topBarSection} >
-                <TopBar openDrawer={() => this.openDrawer()} />
+                <TopBar openDrawer={() => this.setState({ menuOverlayVisible: true })} />
               </View>
               <View style={styles.mainSection}>
                 <Route exact path="/" component={Home} />
@@ -57,17 +62,10 @@ export default class App extends Component {
               </View>
             </View>
             <LoginRedirect />
-          </Drawer>
+          </View>
         </NativeRouter>
       </Provider>
     );
-  }
-  closeDrawer() {
-    this.drawer._root.close()
-  }
-
-  openDrawer() {
-    this.drawer._root.open()
   }
 }
 
