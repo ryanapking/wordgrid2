@@ -72,7 +72,7 @@ class Games extends Component {
     return (
       <ListItem
         title={ game.opponent.name }
-        subtitle={ winner }
+        rightTitle={ winner }
         key={index} onPress={link}>
       </ListItem>
     );

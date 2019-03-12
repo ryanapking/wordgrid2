@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import { List, ListItem } from 'native-base';
+import { ListItem } from 'react-native-elements';
 
 import { moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
 import Boggle from '../data/boggle-solver';
@@ -101,61 +101,54 @@ class GameReview extends Component {
 
         <View style={styles.availableMovesSection}>
           <ScrollView ref={(scrollView) => this._availableMoves = scrollView}>
-            <List>
 
-              <ListItem itemDivider style={styles.spaceBetween}>
-                <Text>{ moveLabel }</Text>
-                <Text>{ move.wv } points</Text>
-              </ListItem>
-              <TouchableWithoutFeedback onPressIn={() => this._setDisplayPath(this.state.playerMovePath)} onPressOut={() => this._clearDisplayPath()}>
-                <ListItem style={styles.spaceBetween}>
-                  <View>
-                    <Text>{ move.w.toUpperCase() }</Text>
-                  </View>
-                  <View>
-                    <DrawScoreBoard p1={game.p1} p2={game.p2} currentPlayerScoreBoard={game.currentPlayer.scoreBoard} opponentScoreBoard={game.opponent.scoreBoard} highlight={{player: move.p, inning: moveInning}}/>
-                  </View>
-                </ListItem>
+            <ListItem
+              title={ moveLabel }
+              rightTitle={ move.wv + " points" }
+              containerStyle={styles.divider}
+            />
+            <TouchableWithoutFeedback onPressIn={() => this._setDisplayPath(this.state.playerMovePath)} onPressOut={() => this._clearDisplayPath()}>
+              <ListItem
+                title={ move.w.toUpperCase() }
+                rightTitle={
+                  <DrawScoreBoard p1={game.p1} p2={game.p2} currentPlayerScoreBoard={game.currentPlayer.scoreBoard} opponentScoreBoard={game.opponent.scoreBoard} highlight={{player: move.p, inning: moveInning}}/>
+                }
+              />
+            </TouchableWithoutFeedback>
+
+            <ListItem
+              title="Most Valuable Words"
+              rightTitle={ this.state.mostValuablePoints + " points" }
+              containerStyle={styles.divider}
+            />
+            {this.state.mostValuableWords.map( (word, index) =>
+              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
+                <ListItem title={ word } />
               </TouchableWithoutFeedback>
+            )}
 
-              <ListItem itemDivider style={styles.spaceBetween}>
-                <Text>Most Valuable Words:</Text>
-                <Text>{ this.state.mostValuablePoints } points</Text>
-              </ListItem>
-              {this.state.mostValuableWords.map( (word, index) =>
-                <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                  <ListItem>
-                    <Text>{word}</Text>
-                  </ListItem>
-                </TouchableWithoutFeedback>
-              )}
+            <ListItem
+              title="Longest Words"
+              rightTitle={ this.state.longestLetterCount + " letters"}
+              containerStyle={styles.divider}
+            />
+            {this.state.longestWords.map( (word, index) =>
+              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
+                <ListItem title={word} />
+              </TouchableWithoutFeedback>
+            )}
 
-              <ListItem itemDivider style={styles.spaceBetween}>
-                <Text>Longest Words:</Text>
-                <Text>{ this.state.longestLetterCount } letters</Text>
-              </ListItem>
-              {this.state.longestWords.map( (word, index) =>
-                <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                  <ListItem>
-                    <Text>{word}</Text>
-                  </ListItem>
-                </TouchableWithoutFeedback>
-              )}
+            <ListItem
+              title="All Available Words"
+              rightTitle={ this.state.availableWords.length + " words" }
+              containerStyle={styles.divider}
+            />
+            {this.state.availableWords.map( (word, index) =>
+              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word.word, boardState)} onPressOut={() => this._clearDisplayPath()}>
+                <ListItem title={word.word} rightTitle={ word.value + " points" } />
+              </TouchableWithoutFeedback>
+            )}
 
-              <ListItem itemDivider style={styles.spaceBetween}>
-                <Text>All Available Words:</Text>
-                <Text>{ this.state.availableWords.length } words</Text>
-              </ListItem>
-              {this.state.availableWords.map( (word, index) =>
-                <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word.word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                  <ListItem style={styles.spaceBetween}>
-                    <Text>{ word.word }</Text>
-                    <Text>{ word.value } points</Text>
-                  </ListItem>
-                </TouchableWithoutFeedback>
-              )}
-
-            </List>
           </ScrollView>
         </View>
 
@@ -300,6 +293,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  divider: {
+    backgroundColor: 'lightgray',
+  }
 });
 
 const mapStateToProps = (state, ownProps) => {
