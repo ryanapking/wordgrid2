@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { withRouter } from 'react-router-native';
-import { Icon } from "native-base";
+import { Icon } from 'react-native-elements';
 
 class TopBar extends Component {
   render() {

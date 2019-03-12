@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {StyleSheet, View} from 'react-native';
-import { Container } from 'native-base';
 import { connect } from 'react-redux';
 
 import Piece from './Piece';
@@ -20,11 +19,11 @@ class DrawPieceSection extends Component {
   render() {
     const { pieces, allowDrag } = this.props;
     return (
-      <Container style={[this.props.style, styles.container]}>
+      <View style={[this.props.style, styles.container]}>
         { pieces.map( (piece, pieceIndex) => {
           const baseSize = this.state.pieceLocations[pieceIndex] ? this.state.pieceLocations[pieceIndex].width : 0;
           return (
-            <Container style={styles.gamePieceContainer} key={pieceIndex}>
+            <View style={styles.gamePieceContainer} key={pieceIndex}>
               <View
                 ref={pieceView => this.pieceViews[pieceIndex] = pieceView}
                 onLayout={ () => this._onLayout(pieceIndex) }
@@ -32,10 +31,10 @@ class DrawPieceSection extends Component {
               >
                 { allowDrag ? null : <Piece piece={piece} pieceIndex={pieceIndex} style={styles.gamePiece} allowDrag={allowDrag} baseSize={baseSize}/>}
               </View>
-            </Container>
+            </View>
           );
         })}
-      </Container>
+      </View>
     );
   }
 
@@ -72,7 +71,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   gamePieceContainer: {
     flex: 1,

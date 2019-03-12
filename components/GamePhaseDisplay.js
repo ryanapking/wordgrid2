@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import { Container, Icon} from 'native-base';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
+import { Icon } from 'react-native-elements';
 
 class GamePhaseDisplay extends Component {
   render() {
     const wordPlayed = !!this.props.game.word;
 
     const checkIcon = <Icon type='MaterialCommunityIcons' name='check' style={styles.icon} onPress={() => this.props.history.push('/')} />;
-    const arrowIcon = <Icon type='MaterialCommunityIcons' name='arrow-right' style={styles.icon} onPress={() => this.props.history.push('/')} />;
+    const arrowIcon = <Icon type='MaterialCommunityIcons' name='keyboard-arrow-right' style={styles.icon} onPress={() => this.props.history.push('/')} />;
 
     let playStyles = styles.disabled;
     let placeStyles = styles.disabled;
@@ -33,8 +33,8 @@ class GamePhaseDisplay extends Component {
     }
 
     return (
-      <Container style={this.props.style}>
-        <Container style={[styles.centered]}>
+      <View style={this.props.style}>
+        <View style={[styles.centered]}>
           <View style={[styles.row]}>
             { playIcon }
             <Text style={playStyles}>
@@ -47,8 +47,8 @@ class GamePhaseDisplay extends Component {
               Place Piece
             </Text>
           </View>
-        </Container>
-      </Container>
+        </View>
+      </View>
     );
   }
 }

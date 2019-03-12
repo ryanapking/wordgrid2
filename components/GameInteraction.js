@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import { Button, Container, Spinner } from "native-base";
+import { Button } from 'react-native-elements';
 
 import DrawPieceSection from "./DrawPieceSection";
 
@@ -28,9 +28,7 @@ class GameInteraction extends Component {
 
   _Spinner() {
     return (
-      <Container style={this.props.style}>
-        <Spinner color='blue' />
-      </Container>
+      <Text>Loading...</Text>
     );
   }
 
@@ -39,43 +37,44 @@ class GameInteraction extends Component {
     const longEnough = (displayWord.length >= 4);
     const startMessage = "Drag to spell a word";
     return (
-      <Container style={this.props.style}>
-        <Container style={[styles.flex]}>
+      <View style={this.props.style}>
+        <View style={[styles.flex]}>
           <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.game.currentPlayer.currentPieces} />
           <View style={styles.twoColumns}>
             <Text style={{padding: 20, textAlign: 'center'}}>{displayWord ? displayWord : startMessage}</Text>
             { longEnough ? this._playWordButton(displayWord) : null }
           </View>
-        </Container>
-      </Container>
+        </View>
+      </View>
     );
   }
 
 
   _playWordButton(word) {
     return (
-      <Button block info onPress={() => this.props.playWord(this.props.gameID, this.props.uid)}>
-        <Text>Play word for {calculateWordValue(word)} points</Text>
-      </Button>
+      <Button
+        title={`Play word for ${calculateWordValue(word)} points`}
+        onPress={() => this.props.playWord(this.props.gameID, this.props.uid)}
+      />
     );
   }
 
   _placePieceInteraction() {
     return (
-      <Container style={this.props.style}>
+      <View style={this.props.style}>
         <DrawPieceSection pieces={this.props.game.currentPlayer.currentPieces} allowDrag />
-      </Container>
+      </View>
     );
   }
 
   _confirmMoveInteraction() {
     return (
-      <Container style={this.props.style}>
+      <View style={this.props.style}>
         <View style={styles.confirmMoveSection}>
-          <Button full info onPress={() => this.saveRemoteMove()}><Text>Submit Move</Text></Button>
-          <Button full info onPress={() => this.clearLocalMoveData()}><Text>Reset Move</Text></Button>
+          <Button title="Submit Move" onPress={() => this.saveRemoteMove()} />
+          <Button title="Reset Move" onPress={() => this.clearLocalMoveData()} />
         </View>
-      </Container>
+      </View>
     );
   }
 

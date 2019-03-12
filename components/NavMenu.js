@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { List, ListItem, Container } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
 class NavMenu extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <List>
-          <ListItem onPress={() => this.navigateTo(`/games`)}>
-            <Text>Games</Text>
-          </ListItem>
-          <ListItem onPress={() => this.navigateTo('/settings')}>
-            <Text>Settings</Text>
-          </ListItem>
-        </List>
-      </Container>
+      <View style={styles.container}>
+        <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
+        <ListItem title="Settings" onPress={() => this.navigateTo('/settings')} />
+      </View>
     );
   }
 
@@ -32,7 +26,9 @@ const styles = StyleSheet.create({
 
   },
   container: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
   }
 });
 

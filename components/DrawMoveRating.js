@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Icon } from "native-base";
+import { Icon } from 'react-native-elements';
 
 export default class DrawMoveRating extends Component {
   render() {

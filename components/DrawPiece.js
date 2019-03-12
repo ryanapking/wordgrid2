@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import DrawLetter from "./DrawLetter";
-import { Container } from "native-base";
 import PropTypes from "prop-types";
 
 export default class DrawPiece extends Component {
@@ -10,7 +9,7 @@ export default class DrawPiece extends Component {
     const letterHeight = (pieceSize > 0) ? (pieceSize / 4) : 0;
     const dragStyles = canDrop ? styles.canDrop : null;
     return (
-      <Container style={styles.grid} pointerEvents={'none'}>
+      <View style={styles.grid} pointerEvents={'none'}>
         {pieceState.map( (row, rowIndex) =>
           <View style={styles.row} key={rowIndex}>
             {row.map( (square, columnIndex) =>
@@ -20,7 +19,7 @@ export default class DrawPiece extends Component {
             )}
           </View>
         )}
-      </Container>
+      </View>
     );
   }
 
@@ -49,7 +48,9 @@ const styles = StyleSheet.create({
   },
   grid: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
   },
   row: {
     display: 'flex',

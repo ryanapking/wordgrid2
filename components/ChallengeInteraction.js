@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import { Button, Container } from "native-base";
+import { Button } from 'react-native-elements';
 
 import DrawPieceSection from "./DrawPieceSection";
 import { calculateWordValue } from "../data/utilities";
@@ -27,9 +27,9 @@ class ChallengeInteraction extends Component {
 
   _gameOver() {
     return (
-      <Container style={[styles.gameOver, this.props.style]}>
+      <View style={[styles.gameOver, this.props.style]}>
         <Text>Game Over</Text>
-      </Container>
+      </View>
     );
   }
 
@@ -38,31 +38,32 @@ class ChallengeInteraction extends Component {
     const longEnough = (displayWord.length >= 4);
     const startMessage = "Drag to spell a word";
     return (
-      <Container style={this.props.style}>
-        <Container style={[styles.flex]}>
+      <View style={this.props.style}>
+        <View style={[styles.flex]}>
           <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.challenge.pieces} />
           <View style={styles.twoColumns}>
             <Text style={{padding: 20, textAlign: 'center'}}>{displayWord ? displayWord : startMessage}</Text>
             { longEnough ? this._playWordButton(displayWord) : null }
           </View>
-        </Container>
-      </Container>
+        </View>
+      </View>
     );
   }
 
   _placePieceInteraction() {
     return (
-      <Container style={this.props.style}>
+      <View style={this.props.style}>
         <DrawPieceSection pieces={this.props.challenge.pieces} allowDrag />
-      </Container>
+      </View>
     );
   }
 
   _playWordButton(word) {
     return (
-      <Button block info onPress={() => this.props.playWord()}>
-        <Text>Play word for {calculateWordValue(word)} points</Text>
-      </Button>
+      <Button
+        title={`Play word for ${calculateWordValue(word)} points`}
+        onPress={() => this.props.playWord()}
+      />
     );
   }
 
