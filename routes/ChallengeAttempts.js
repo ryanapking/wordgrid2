@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { List, ListItem } from "native-base";
+import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
 import { getChallengeAttemptsByDate } from "../data/async-storage";
@@ -24,19 +24,17 @@ class ChallengeAttempts extends Component {
     const { attempts } = this.state;
 
     return (
-      <List>
-        <ListItem style={styles.listItem}>
-          <Text>Challenge from { this.props.challengeDate }</Text>
-        </ListItem>
-        <ListItem itemDivider >
-          <Text>Attempts:</Text>
-        </ListItem>
+      <View>
+        <ListItem title={ "Challenge from " + this.props.challengeDate } />
+        <ListItem title="Attempts" containerStyle={styles.divider} />
         { attempts.map( (attempt, index) =>
-          <ListItem key={index} onPress={() => this.props.history.push(`/challengeAttemptReview/${this.props.challengeDate}/${index}`)}>
-            <Text>{ attempt.score } points</Text>
-          </ListItem>
+          <ListItem
+            key={index}
+            title={ attempts.score + " points" }
+            onPress={() => this.props.history.push(`/challengeAttemptReview/${this.props.challengeDate}/${index}`)}
+          />
         )}
-      </List>
+      </View>
     )
   }
 
@@ -55,6 +53,9 @@ const styles = StyleSheet.create({
   listItem: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  divider: {
+    backgroundColor: "lightgray",
   }
 });
 

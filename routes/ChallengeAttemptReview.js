@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {View, StyleSheet, Text, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import { List, ListItem } from "native-base";
+import { ListItem } from 'react-native-elements';
 
 import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
 import DrawBoard from '../components/DrawBoard';
@@ -97,29 +97,27 @@ class ChallengeAttemptReview extends Component {
 
         <View style={styles.movesSection}>
           <ScrollView ref={(scrollView) => this._availableMoves = scrollView}>
-            <List>
-              <ListItem itemDivider style={styles.spaceBetween}>
-                <Text>Moves</Text>
-              </ListItem>
-              {reviewObject.map( (move, index) =>
-                <View key={index}>
-                  <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 0 })} >
-                    <ListItem style={styles.spaceBetween}>
-                      <Text>{ move.word.toUpperCase() }</Text>
-                      <Text>{ move.wordValue } points</Text>
-                    </ListItem>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
-                    <ListItem style={styles.spaceBetween}>
+            <ListItem title="Moves" containerStyle={styles.divider} />
+            {reviewObject.map( (move, index) =>
+              <View key={index}>
+                <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 0 })} >
+                  <ListItem
+                    title={ move.word.toUpperCase() }
+                    rightTitle={ move.wordValue + " points"}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
+                  <ListItem
+                    title={
                       <View style={styles.gamePieceContainer}>
                         <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} baseSize={pieceSize} allowDrag={false}/>
                       </View>
-                      <Text>{ move.placementValue} points</Text>
-                    </ListItem>
-                  </TouchableWithoutFeedback>
-                </View>
-              )}
-            </List>
+                    }
+                    rightTitle={ move.placementValue + " points"}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            )}
           </ScrollView>
         </View>
 
@@ -198,6 +196,9 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     maxHeight: '100%',
     aspectRatio: 1,
+  },
+  divider: {
+    backgroundColor: 'lightgray',
   }
 });
 

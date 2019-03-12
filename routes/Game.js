@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Button, Container, Spinner} from 'native-base';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
@@ -63,13 +62,13 @@ class Game extends Component {
 
     if (!this.props.game.animationOver) {
       return (
-        <Container style={{}}>
+        <View style={styles.container}>
           <GameMoveAnimation />
-        </Container>
+        </View>
       );
     } else {
       return (
-        <Container>
+        <View style={styles.container}>
           <View style={[styles.underlay, {zIndex: 2}]}>
             <GameInfoDisplay style={styles.info} gameID={this.props.gameID}/>
             <Board
@@ -89,7 +88,7 @@ class Game extends Component {
             boardRows={game.rows}
             placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(this.props.gameID, pieceIndex, rowRef, columnRef)}
           />
-        </Container>
+        </View>
       );
     }
 
@@ -106,8 +105,10 @@ class Game extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column'
+    // display: 'flex',
+    // flexDirection: 'column'
+    width: '100%',
+    height: '100%',
   },
   underlay: {
     position: 'absolute',

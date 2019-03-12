@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { List, ListItem } from "native-base";
+import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
 import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
@@ -32,31 +32,31 @@ class ChallengeOverview extends Component {
     // console.log('current attempts:', currentChallengeAttempts);
 
     return (
-      <List>
-        <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challenge`)}>
-          <Text>{ currentChallenge ? "Play Now" : "Searching for Current Challenge" }</Text>
-        </ListItem>
+      <View>
+        <ListItem onPress={() => this.props.history.push(`/challenge`)}
+          title={ currentChallenge ? "Play Now" : "Searching for Current Challenge" }
+        />
         { currentChallengeAttempts.length > 0 ?
-          <ListItem itemDivider >
-            <Text>Attempts:</Text>
-          </ListItem>
+          <ListItem title="Attempts" containerStyle={styles.divider} />
           : null
         }
         { currentChallengeAttempts.map( (attempt, index) =>
-          <ListItem key={index} style={styles.listItem} onPress={() => this.props.history.push(`/challengeAttemptReview/${currentChallenge.date}/${attempt.attemptIndex}`)}>
-            <Text>{ attempt.score } points</Text>
-            <Text>{ attempt.savedRemotely.toString() }</Text>
-          </ListItem>
+          <ListItem
+            key={index} style={styles.listItem}
+            title={ attempt.score + " points" }
+            rightTitle={ attempt.savedRemotely.toString() }
+            onPress={() => this.props.history.push(`/challengeAttemptReview/${currentChallenge.date}/${attempt.attemptIndex}`)}
+          />
         )}
-        <ListItem itemDivider >
-          <Text>Past Challenges:</Text>
-        </ListItem>
+        <ListItem title="Past Challenges" containerStyle={styles.divider} />
         { pastChallengeDates.map( (date, index) =>
-          <ListItem key={index} onPress={() => this.props.history.push(`/challengeAttempts/${date}`)}>
-            <Text>{ date }</Text>
-          </ListItem>
+          <ListItem
+            title={ date }
+            key={index}
+            onPress={() => this.props.history.push(`/challengeAttempts/${date}`)}
+          />
         )}
-      </List>
+      </View>
     )
   }
 
@@ -150,6 +150,9 @@ const styles = StyleSheet.create({
   listItem: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  divider: {
+    backgroundColor: 'lightgray',
   }
 });
 
