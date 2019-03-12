@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {StyleSheet, Text, View} from "react-native";
-import { Button, Container } from "native-base";
+import { Button } from "react-native-elements";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
@@ -9,21 +9,25 @@ import { userLogin } from '../data/redux/user';
 class Login extends Component {
   render() {
     return (
-      <Container style={loginStyles.container}>
-        <Button block danger onPress={this.props.userLogin}>
-          <Text>Login</Text>
-        </Button>
-      </Container>
+      <View style={loginStyles.container}>
+        <Button
+          title="Log In"
+          type="solid"
+          onPress={this.props.userLogin}
+        />
+      </View>
     );
   }
 }
 
 const loginStyles = StyleSheet.create({
   container: {
-    backgroundColor: '#5b7aff',
+    // backgroundColor: '#5b7aff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
+    width: '100%',
+    height: '100%',
   },
 });
 

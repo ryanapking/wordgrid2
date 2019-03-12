@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import { Container } from "native-base";
 
 import Board from '../components/Board';
 import ChallengeInteraction from '../components/ChallengeInteraction';
@@ -35,7 +34,7 @@ class Challenge extends Component {
         overlayZIndex = 3;
       }
       return (
-        <Container>
+        <View style={styles.container}>
           <View style={[styles.underlay, {zIndex: 2}]}>
             <View style={styles.info}>
               <ChallengeInfoDisplay
@@ -62,7 +61,7 @@ class Challenge extends Component {
             boardRows={challenge.rows}
             placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
           />
-        </Container>
+        </View>
       );
     } else {
       return null;
@@ -72,8 +71,10 @@ class Challenge extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column'
+    // display: 'flex',
+    // flexDirection: 'column',
+    width: '100%',
+    height: '100%',
   },
   underlay: {
     position: 'absolute',

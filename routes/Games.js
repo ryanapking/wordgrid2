@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import {Button, List, ListItem, Spinner} from 'native-base';
+import { ListItem, Button } from "react-native-elements";
 
 import { startGame } from "../data/parse-client/actions";
 
@@ -26,54 +26,32 @@ class Games extends Component {
 
     return (
       <View style={{width: '100%'}}>
-        <List>
-          <ListItem style={styles.listItem} onPress={() => this.props.history.push(`/challengeOverview/main`)}>
-            <Text>Daily Challenge</Text>
-          </ListItem>
-          {readyToPlay.length > 0 &&
-            <View>
-              <ListItem itemDivider >
-                <Text>Ready to Play:</Text>
-              </ListItem>
-              { readyToPlay.map( (gameID, index) => this.getGameListItem(gameID, index, "game"))}
-            </View>
-          }
-          {waitingOnOpponent.length > 0 &&
-            <View>
-              <ListItem itemDivider>
-                <Text>Opponent's Move:</Text>
-              </ListItem>
-              { waitingOnOpponent.map( (gameID, index) => this.getGameListItem(gameID, index))}
-            </View>
-          }
-          {over.length > 0 &&
-            <View>
-              <ListItem itemDivider>
-                <Text>Ended:</Text>
-              </ListItem>
-              { over.map( (gameID, index) => this.getGameListItem(gameID, index, "review"))}
-            </View>
-          }
-        </List>
-        { this.getNewGameButton() }
+        <ListItem title="Daily Challenge" onPress={() => this.props.history.push(`/challengeOverview/main`)} />
+        {readyToPlay.length > 0 &&
+          <View>
+            <ListItem title="Ready to Play:" containerStyle={styles.divider} />
+            { readyToPlay.map( (gameID, index) => this.getGameListItem(gameID, index, "game"))}
+          </View>
+        }
+        {waitingOnOpponent.length > 0 &&
+          <View>
+            <ListItem title="Opponent's Move:" containerStyle={styles.divider} />
+            { waitingOnOpponent.map( (gameID, index) => this.getGameListItem(gameID, index))}
+          </View>
+        }
+        {over.length > 0 &&
+          <View>
+            <ListItem title="Ended:" containerStyle={styles.divider} />
+            { over.map( (gameID, index) => this.getGameListItem(gameID, index, "review"))}
+          </View>
+        }
+        <Button
+          title="New Game"
+          loading={ this.props.saving }
+          onPress={ () => startGame() }
+        />
       </View>
     );
-  }
-
-  getNewGameButton() {
-    if (this.props.saving) {
-      return (
-        <Button full info disabled>
-          <Spinner color='blue'/>
-        </Button>
-      );
-    } else {
-      return (
-        <Button full info onPress={() => startGame()}>
-          <Text>New Game</Text>
-        </Button>
-      );
-    }
   }
 
   getGameListItem(gameID, index, linkType = "none") {
@@ -86,12 +64,16 @@ class Games extends Component {
       link = () => this.props.history.push(`/gameReview/${gameID}`);
     }
 
+    let winner = null;
+    if (game.winner) {
+      winner = this.props.userID === game.winner ? "won" : "lost";
+    }
+
     return (
-      <ListItem style={styles.listItem} key={index} onPress={link}>
-        <Text>{ game.opponent.name }</Text>
-        { game.winner &&
-          <Text style={{textAlign: 'right'}}>{ this.props.gameData.byID[gameID].winner === this.props.userID ? "won" : "lost" }</Text>
-        }
+      <ListItem
+        title={ game.opponent.name }
+        subtitle={ winner }
+        key={index} onPress={link}>
       </ListItem>
     );
   }
@@ -102,6 +84,9 @@ const styles = StyleSheet.create({
   listItem: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  divider: {
+    backgroundColor: 'lightgray',
   }
 });
 

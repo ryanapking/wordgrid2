@@ -11,4 +11,6 @@ target 'wordgrid2' do
   pod 'Firebase/Firestore', '~> 5.3.0'
   pod 'Firebase/Auth', '~> 5.3.0'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end
