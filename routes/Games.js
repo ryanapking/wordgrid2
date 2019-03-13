@@ -47,7 +47,6 @@ class Games extends Component {
         }
         <Button
           title="New Game"
-          loading={ this.props.saving }
           onPress={ () => startGame() }
         />
       </View>
@@ -94,7 +93,6 @@ const mapStateToProps = (state) => {
   return {
     userID: state.user.uid,
     gameData: state.gameData,
-    saving: state.login.saving,
   };
 };
 

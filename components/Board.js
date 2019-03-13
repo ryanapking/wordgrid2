@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {PanResponder, StyleSheet, View} from 'react-native';
-import connect from "react-redux/es/connect/connect";
+import { connect } from 'react-redux';
 
 import BoardPathCreator from './BoardPathCreator';
 import DrawBoard from './DrawBoard';

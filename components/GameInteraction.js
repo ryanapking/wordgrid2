@@ -14,9 +14,7 @@ class GameInteraction extends Component {
   render() {
     const wordPlayed = !!this.props.game.word;
 
-    if (this.props.saving) {
-      return this._Spinner();
-    } else if (!wordPlayed) {
+    if (!wordPlayed) {
       return this._playWordInteraction();
     } else if (!this.props.game.piecePlaced) {
       return this._placePieceInteraction();
@@ -126,7 +124,6 @@ const mapStateToProps = (state, ownProps) => {
     gameID: gameID,
     game: state.gameData.byID[gameID],
     uid: state.user.uid,
-    saving: state.login.saving,
   };
 };
 

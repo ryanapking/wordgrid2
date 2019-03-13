@@ -100,7 +100,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     winner: winner ? winner.objectId : null,
 
     // local data for display purposes
-    animationOver: !moves, // no animation unless there has been a move
+    animationOver: true, //!moves, // no animation unless there has been a move
     piecePlaced: false, // determines what action is available to the user
 
     // to be set when the game is loaded; used when rating a move
