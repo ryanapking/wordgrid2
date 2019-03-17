@@ -9,6 +9,7 @@ import configureStore from './data/redux/configureStore';
 // routes
 import Home from "./routes/Home";
 import Login from "./routes/Login";
+import Account from "./routes/Account";
 import Game from "./routes/Game";
 import GameReview from './routes/GameReview';
 import Games from "./routes/Games";
@@ -42,7 +43,7 @@ export default class App extends Component {
         <NativeRouter>
           <View>
             <Overlay isVisible={this.state.menuOverlayVisible} onBackdropPress={() => this.setState({ menuOverlayVisible: false })}>
-              <NavMenu />
+              <NavMenu closeNavMenu={ () => this.setState({ menuOverlayVisible: false }) }/>
             </Overlay>
             <View style={styles.mainContainer}>
               <View style={styles.topBarSection} >
@@ -51,6 +52,7 @@ export default class App extends Component {
               <View style={styles.mainSection}>
                 <Route exact path="/" component={Home} />
                 <Route path="/login" component={Login} />
+                <Route path="/account" component={Account} />
                 <Route path="/game/:gameID" component={Game} />
                 <Route path="/gameReview/:gameID" component={GameReview} />
                 <Route path="/games" component={Games} />
