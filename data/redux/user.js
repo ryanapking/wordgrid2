@@ -1,8 +1,7 @@
 import { setLocalGameDataByID } from "./gameData";
 
-import { checkUser, anonymousLogin } from "../parse-client/user";
+import { checkUser, anonymousLogin, standardLogin } from "../parse-client/user";
 import { startGamesLiveQuery } from "../parse-client/listeners";
-import { getUpcomingChallengesByDate } from "../parse-client/getters";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -35,7 +34,7 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function userLogin() {
+export function userAnonymousLogin() {
   return (dispatch) => {
     dispatch(userLoginStart());
 
@@ -45,6 +44,26 @@ export function userLogin() {
       })
       .catch( (err) => {
         console.log('anonymous login error:', err);
+        dispatch(userLoginFail());
+      });
+  }
+}
+
+export function userStandardLogin(username, password) {
+  return (dispatch) => {
+
+    console.log('standardLogin action creator');
+    console.log({username, password});
+
+    dispatch(userLoginStart());
+
+    standardLogin(username, password)
+      .then( (user) => {
+        console.log('returned after login:', user);
+        dispatch(userLoginSuccess(user.id));
+      })
+      .catch( (err) => {
+        console.log('standard login error:', err);
         dispatch(userLoginFail());
       });
   }

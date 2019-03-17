@@ -2,17 +2,44 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
+import { Input } from 'react-native-elements';
 
-import { userLogin } from '../data/redux/user';
+import { userAnonymousLogin, userStandardLogin } from '../data/redux/user';
 
 class Login extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      username: "",
+      password: "",
+    };
+  }
+
   render() {
+
+    console.log('state:', this.state);
+
     return (
       <View style={loginStyles.container}>
         <Button
-          title="Log In"
-          type="solid"
-          onPress={this.props.userLogin}
+          title="Login Anonymously"
+          onPress={ () => this.props.userAnonymousLogin() }
+        />
+        <Input
+          label="Username"
+          autoCapitalize="none"
+          onChangeText={ (username) => this.setState({username}) }
+        />
+        <Input
+          label="Password"
+          autoCapitalize="none"
+          secureTextEntry={true}
+          onChangeText={ (password) => this.setState({password}) }
+        />
+        <Button
+          title="Login with Username and Password"
+          onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password) }
         />
       </View>
     );
@@ -37,7 +64,8 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = {
-  userLogin
+  userAnonymousLogin,
+  userStandardLogin,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
