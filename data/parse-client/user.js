@@ -22,31 +22,29 @@ export async function createLogin(username, password, email) {
 
 }
 
-export async function linkAnonymousAccount() {
+export async function convertAnonymousAccount(username, password) {
   let user = await getCurrentUser();
 
-  console.log('anonymous user:', user);
+  if (!user._isLinked('anonymous')) {
+    throw new Error('Not an anonymous user');
+  }
 
-  user.set("username", "jimjim");
-  user.set("password", "password");
-  user.set("email", "jimjim@somefakeemail.com");
-
-  console.log('anonymous with password:', user);
-
+  user.set("username", username);
+  user.set("password", password);
 
   user = await user.save()
     .catch((err) => {
       throw new Error(err);
     });
 
-  console.log('after password save:', user);
-
-  user = user._unlinkFrom("anonymous")
-    .catch((err) => {
+  // remove the anonymous login
+  user = await user._linkWith('anonymous', { authData: null })
+    .catch( (err) => {
+      console.log('error unlinking:', err);
       throw new Error(err);
     });
 
-  console.log('after unlink', user);
+  console.log('user after unlink', user);
 
   return user;
 }
@@ -79,14 +77,14 @@ export async function getCurrentUser() {
   return user;
 }
 
-export function standardLogin(username, password) {
-  return new Promise( (resolve, reject) => {
-    new Parse.User.logIn(username, password)
-      .then( (response) => {
-        resolve(response);
-      })
-      .catch( (err) => {
-        reject(err);
-      });
-  });
+export async function standardLogin(username, password) {
+  let user = await new Parse.User.logIn(username, password)
+    .catch( (err) => {
+      console.log('login error', err);
+      throw new Error(err);
+    });
+
+  console.log('user logged in:', user);
+
+  return user;
 }
