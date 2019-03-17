@@ -35,9 +35,8 @@ class Piece extends Component {
     this._onPanResponderMove = this._onPanResponderMove.bind(this);
     this._onPanResponderRelease = this._onPanResponderRelease.bind(this);
     this._getSquaresBelowPiece = this._getSquaresBelowPiece.bind(this);
-  }
+    this._setCurrentSize = this._setCurrentSize.bind(this);
 
-  componentWillMount() {
     // Add a listener for the delta value change
     this.state.scale.addListener((value) => this._setCurrentSize(value));
 

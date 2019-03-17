@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
 
 import DrawPieceSection from "./DrawPieceSection";
 

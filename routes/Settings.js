@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
-import { Text, View } from "react-native";
-import { Button, Input } from 'react-native-elements';
+import { Text, View, Button } from "react-native";
+import { Input } from 'react-native-elements';
 
 class Settings extends Component {
   constructor() {

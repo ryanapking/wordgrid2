@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import { ListItem, Button } from "react-native-elements";
+import { ListItem } from "react-native-elements";
 
 import { startGame } from "../data/parse-client/actions";
 

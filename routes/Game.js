@@ -55,10 +55,15 @@ class Game extends Component {
   render() {
     const { game, gameID } = this.props;
 
-    let overlayZIndex = 0;
-    if (game.word && !game.piecePlaced) {
-      overlayZIndex = 3;
-    }
+    // zindex doesn't work on android, so we need to move the overlay before or after the other visual elements
+    const overlayActive = (game.word && !game.piecePlaced);
+
+    const pieceOverlay =
+      <PieceOverlay
+        pointerEvents={'none'}
+        boardRows={game.rows}
+        placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(this.props.gameID, pieceIndex, rowRef, columnRef)}
+      />;
 
     if (!this.props.game.animationOver) {
       return (
@@ -69,7 +74,8 @@ class Game extends Component {
     } else {
       return (
         <View style={styles.container}>
-          <View style={[styles.underlay, {zIndex: 2}]}>
+          { overlayActive ? null : pieceOverlay }
+          <View style={styles.underlay}>
             <GameInfoDisplay style={styles.info} gameID={this.props.gameID}/>
             <Board
               style={styles.board}
@@ -82,12 +88,7 @@ class Game extends Component {
             />
             <GameInteraction style={styles.interaction} gameID={this.props.gameID}/>
           </View>
-          <PieceOverlay
-            style={{zIndex: overlayZIndex}}
-            pointerEvents={'none'}
-            boardRows={game.rows}
-            placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(this.props.gameID, pieceIndex, rowRef, columnRef)}
-          />
+          { overlayActive ? pieceOverlay : null }
         </View>
       );
     }

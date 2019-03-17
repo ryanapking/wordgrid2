@@ -29,13 +29,19 @@ class Challenge extends Component {
     const { challenge } = this.props.challengeData;
 
     if (challenge) {
-      let overlayZIndex = 0;
-      if (challenge.word) {
-        overlayZIndex = 3;
-      }
+
+      // zindex doesn't work on android. must move the overlay before or after the other elements, depending on need.
+      const pieceOverlay =
+        <PieceOverlay
+          pointerEvents={'none'}
+          boardRows={challenge.rows}
+          placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
+        />;
+
       return (
         <View style={styles.container}>
-          <View style={[styles.underlay, {zIndex: 2}]}>
+          { challenge.word ? null : pieceOverlay }
+          <View style={styles.underlay}>
             <View style={styles.info}>
               <ChallengeInfoDisplay
                 moves={challenge.moves}
@@ -55,12 +61,7 @@ class Challenge extends Component {
             />
             <ChallengeInteraction style={styles.interaction}></ChallengeInteraction>
           </View>
-          <PieceOverlay
-            style={{zIndex: overlayZIndex}}
-            pointerEvents={'none'}
-            boardRows={challenge.rows}
-            placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
-          />
+          { challenge.word ? pieceOverlay : null }
         </View>
       );
     } else {

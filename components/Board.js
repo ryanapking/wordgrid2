@@ -17,9 +17,7 @@ class Board extends Component {
     this._onPanResponderGrant = this._onPanResponderGrant.bind(this);
     this._onPanResponderMove = this._onPanResponderMove.bind(this);
     this._onPanResponderRelease = this._onPanResponderRelease.bind(this);
-  }
 
-  componentWillMount() {
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponderCapture: this._onStartShouldSetPanResponderCapture,
       onMoveShouldSetPanResponderCapture: this._onMoveShouldSetPanResponderCapture,
@@ -54,7 +52,7 @@ class Board extends Component {
     return(
       <View style={[this.props.style, styles.gameBoardView]}>
         <View style={styles.base} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-          <View {...this.panResponder.panHandlers} pointerEvents={pointerEvents}>
+          <View style={{width: '100%', height: '100%'}} {...this.panResponder.panHandlers} pointerEvents={pointerEvents}>
             <DrawBoard boardState={displayBoardState} boardSize={display.boardLocation.width}/>
           </View>
           <BoardPathCreator squares={consumedSquares} boardLocation={display.boardLocation}/>

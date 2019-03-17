@@ -1,37 +1,27 @@
 {
-  "name": "wordgrid2",
-  "version": "0.1.0",
-  "private": true,
-  "devDependencies": {
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "^23.5.0",
-    "jest-react-native": "^18.0.0",
-    "react-test-renderer": "16.3.1"
-  },
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "react-native"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject"
   },
   "dependencies": {
-    "create-react-class": "^15.6.3",
+    "expo": "^32.0.0",
     "moment": "^2.24.0",
-    "native-base": "^2.6.1",
-    "parse": "^2.1.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.3.1",
-    "react-native": "~0.55.2",
-    "react-native-easy-grid": "^0.2.0",
+    "parse": "^2.2.1",
+    "prop-types": "^15.7.2",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
-    "react-native-firebase": "^4.3.8",
-    "react-native-vector-icons": "^6.4.0",
-    "react-redux": "^5.0.7",
+    "react-native-maps": "^0.23.0",
+    "react-redux": "^6.0.1",
     "react-router-native": "^4.3.0",
-    "redux": "^4.0.0",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
-  }
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.0.0"
+  },
+  "private": true
 }

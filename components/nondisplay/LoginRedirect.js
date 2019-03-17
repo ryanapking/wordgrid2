@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 import { fetchUser } from "../../data/redux/user";
 
 class LoginRedirect extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchUser();
   }
   componentDidUpdate() {
