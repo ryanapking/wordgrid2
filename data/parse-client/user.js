@@ -18,8 +18,20 @@ export async function anonymousLogin() {
   return user.id;
 }
 
-export async function createLogin(username, password, email) {
+export async function createAccount(email, username, password) {
+  let user = new Parse.User();
 
+  user.set('email', email);
+  user.set('username', username);
+  user.set('password', password);
+
+  user = await user.signUp()
+    .catch((err) => {
+      console.log('error creating account:', err);
+      throw new Error(err);
+    });
+
+  return user;
 }
 
 export async function convertAnonymousAccount(username, password) {

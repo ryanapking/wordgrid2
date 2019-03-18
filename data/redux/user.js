@@ -1,6 +1,6 @@
 import { setLocalGameDataByID } from "./gameData";
 
-import { checkUser, anonymousLogin, standardLogin } from "../parse-client/user";
+import { checkUser, anonymousLogin, standardLogin, createAccount } from "../parse-client/user";
 import { startGamesLiveQuery } from "../parse-client/listeners";
 
 // available actions
@@ -64,6 +64,25 @@ export function userStandardLogin(username, password) {
       })
       .catch( (err) => {
         console.log('standard login error:', err);
+        dispatch(userLoginFail());
+      });
+  }
+}
+
+export function userCreateAccount(email, username, password) {
+  return (dispatch) => {
+    console.log('creating account');
+    console.log({email, username, password});
+
+    dispatch(userLoginStart());
+
+    createAccount(email, username, password)
+      .then( (user) => {
+        console.log('user account created:', user);
+        dispatch(userLoginSuccess(user.id));
+      })
+      .catch( (err) => {
+        console.log('account creation error:', err);
         dispatch(userLoginFail());
       });
   }
