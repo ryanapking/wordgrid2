@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-native';
 import { Input } from 'react-native-elements';
 
 import { userAnonymousLogin, userStandardLogin } from '../data/redux/user';
+import AccountLoginForm from '../components/AccountLoginForm';
 
 class Login extends Component {
   constructor() {
@@ -26,21 +27,7 @@ class Login extends Component {
           title="Login Anonymously"
           onPress={ () => this.props.userAnonymousLogin() }
         />
-        <Input
-          label="Username"
-          autoCapitalize="none"
-          onChangeText={ (username) => this.setState({username}) }
-        />
-        <Input
-          label="Password"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          onChangeText={ (password) => this.setState({password}) }
-        />
-        <Button
-          title="Login with Username and Password"
-          onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password) }
-        />
+        <AccountLoginForm />
       </View>
     );
   }
