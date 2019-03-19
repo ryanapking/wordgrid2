@@ -23,6 +23,7 @@ import ChallengeAttemptReview from "./routes/ChallengeAttemptReview";
 import LoginRedirect from "./components/nondisplay/LoginRedirect";
 import NavMenu from './components/NavMenu';
 import TopBar from './components/TopBar';
+import MessageOverlay from './components/MessageOverlay';
 
 export const store = configureStore();
 
@@ -45,6 +46,7 @@ export default class App extends Component {
             <Overlay isVisible={this.state.menuOverlayVisible} onBackdropPress={() => this.setState({ menuOverlayVisible: false })}>
               <NavMenu closeNavMenu={ () => this.setState({ menuOverlayVisible: false }) }/>
             </Overlay>
+            <MessageOverlay />
             <View style={styles.mainContainer}>
               <View style={styles.topBarSection} >
                 <TopBar openDrawer={() => this.setState({ menuOverlayVisible: true })} />

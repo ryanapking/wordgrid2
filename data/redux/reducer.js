@@ -4,6 +4,7 @@ import user from './user';
 import gameData from './gameData';
 import gameDisplay from './gameDisplay';
 import challengeData from './challengeData';
+import messages from './messages';
 
 // reducer
 export default combineReducers({
@@ -11,4 +12,5 @@ export default combineReducers({
   gameDisplay: gameDisplay,
   gameData: gameData,
   challengeData: challengeData,
+  messages: messages,
 });
