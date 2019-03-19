@@ -61,6 +61,32 @@ export async function convertAnonymousAccount(username, password) {
   return user;
 }
 
+export async function updateExistingAccount(email = null, username = null, password = null) {
+  let user = await getCurrentUser();
+
+  let saveNeeded = false;
+  if (email && email !== user.get('email')) {
+    user.setEmail(email);
+    saveNeeded = true;
+  }
+  if (username && username !== user.get('username')) {
+    user.setUsername(username);
+    saveNeeded = true;
+  }
+  if (password) {
+    user.setPassword(password);
+    saveNeeded = true;
+  }
+  if (saveNeeded) {
+    return await user.save()
+      .catch( (err) => {
+        console.log('error saving:', err);
+      });
+  } else {
+    return user;
+  }
+}
+
 export async function logout() {
   return await Parse.User.logOut()
     .catch( (err) => {

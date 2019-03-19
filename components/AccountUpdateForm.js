@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import validator from 'validator';
 
-import { userCreateAccount } from "../data/redux/user";
+import { updateExistingAccount } from "../data/parse-client/user";
 
-class AccountUpdateForm extends Component {
+export default class AccountUpdateForm extends Component {
   constructor() {
     super();
 
@@ -121,14 +122,31 @@ class AccountUpdateForm extends Component {
     );
   }
 
+  saveChanges() {
+    const { newEmail, newUsername, newPassword, newRetypePassword } = this.state;
+
+    if (newEmail && !validator.isEmail(newEmail)) return;
+    if (newPassword && newPassword !== newRetypePassword) return;
+
+    this.setState({ saving: true });
+
+    updateExistingAccount(newEmail, newUsername, newPassword)
+      .then( () => {
+        // trigger parent element to get user data, which should be updated
+        this.props.accountUpdated();
+      })
+      .catch( (err) => {
+        // we should output this error somewhere. maybe an overlay at the app level.
+      })
+      .finally( () => {
+        this.setState({ saving: false });
+      });
+
+  }
+
+  static propTypes = {
+    email: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    accountUpdated: PropTypes.func.isRequired,
+  }
 }
-
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = {
-  userCreateAccount,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountUpdateForm);

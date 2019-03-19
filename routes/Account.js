@@ -13,16 +13,9 @@ export default class Account extends Component {
       fetchingUser: true,
     };
 
-    getCurrentUser()
-      .then( (user) => {
-        this.setState({ user, fetchingUser: false });
-      })
-      .catch( (err) => {
-        console.log('error getting current user:', err);
-        // we should just redirect here. the user is not logged in.
-        // fetching is a local process, so it's not a matter of internet connectivity
-      });
+    this.fetchAccountInfo();
   }
+
   render() {
     const { user, fetchingUser } = this.state;
 
@@ -39,7 +32,11 @@ export default class Account extends Component {
     const { user } = this.state;
     return (
       <View>
-        <AccountUpdateForm email={user.get('email')} username={user.get('username')} />
+        <AccountUpdateForm
+          email={user.get('email')}
+          username={user.get('username')}
+          accountUpdated={ () => this.fetchAccountInfo() }
+        />
         <Text>Username: { user.get('username') }</Text>
         <Text>Email: { user.get('email') }</Text>
         <Button
@@ -68,5 +65,18 @@ export default class Account extends Component {
         <Text>Fetching user info...</Text>
       </View>
     );
+  }
+
+  fetchAccountInfo() {
+    console.log('fetching account info');
+    getCurrentUser()
+      .then( (user) => {
+        this.setState({ user, fetchingUser: false });
+      })
+      .catch( (err) => {
+        console.log('error getting current user:', err);
+        // we should just redirect here. the user is not logged in.
+        // fetching is a local process, so it's not a matter of internet connectivity
+      });
   }
 }
