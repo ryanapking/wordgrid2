@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
 import { connect } from 'react-redux';
 
@@ -17,6 +17,7 @@ class AccountLoginForm extends Component {
   }
 
   render() {
+    const { username, password } = this.state;
     return (
       <View style={{width: '100%'}}>
         <Input
@@ -24,13 +25,16 @@ class AccountLoginForm extends Component {
           autoCapitalize="none"
           onChangeText={ (username) => this.setState({username}) }
         />
-        <Input
-          label="Password"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          onChangeText={ (password) => this.setState({password}) }
-        />
+        <View style={{ marginTop: 10, marginBottom: 10 }}>
+          <Input
+            label="Password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            onChangeText={ (password) => this.setState({password}) }
+          />
+        </View>
         <Button
+          disabled={!username || !password}
           title="Login"
           onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password) }
         />

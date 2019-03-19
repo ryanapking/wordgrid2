@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
 
 import { getCurrentUser } from "../data/parse-client/user";
+import AccountUpdateForm from '../components/AccountUpdateForm';
 
 export default class Account extends Component {
   constructor() {
@@ -38,6 +39,7 @@ export default class Account extends Component {
     const { user } = this.state;
     return (
       <View>
+        <AccountUpdateForm email={user.get('email')} username={user.get('username')} />
         <Text>Username: { user.get('username') }</Text>
         <Text>Email: { user.get('email') }</Text>
         <Button
@@ -52,7 +54,9 @@ export default class Account extends Component {
     return (
       <View>
         <Text>You are logged in anonymously. All data is stored on this phone, and if you are logged out, you will have no way to retrieve it. Consider registering your account. Your existing games will come with you.</Text>
-        <Button title="Log Out" onPress={ () => console.log('this is where a message will pop up warning the user') } />
+        <View style={{ marginTop: 10, marginBottom: 10 }}>
+          <Button title="Log Out" onPress={ () => console.log('this is where a message will pop up warning the user') } />
+        </View>
         <Button title="Register Account" onPress={ () => console.log('This will direct the user to the register screen') } />
       </View>
     );
