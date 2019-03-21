@@ -14,12 +14,12 @@ class MessageOverlay extends Component {
     let clearMessage = null;
     let errorNotice = null;
 
-    if (error) {
+    if (error.length) {
       let index = error.length - 1;
       message = error[index];
       clearMessage = () => this.props.clearErrorMessage(index);
       errorNotice = <Text>Error:</Text>
-    } else if (info) {
+    } else if (info.length) {
       let index = info.length - 1;
       message = info[index];
       clearMessage = () => this.props.clearInfoMessage(index);
