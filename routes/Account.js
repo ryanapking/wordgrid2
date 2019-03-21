@@ -31,19 +31,11 @@ export default class Account extends Component {
   userInfo() {
     const { user } = this.state;
     return (
-      <View>
-        <AccountUpdateForm
-          email={user.get('email')}
-          username={user.get('username')}
-          accountUpdated={ () => this.fetchAccountInfo() }
-        />
-        <Text>Username: { user.get('username') }</Text>
-        <Text>Email: { user.get('email') }</Text>
-        <Button
-          title="Log Out"
-          onPress={ () => console.log('this button would log the user out...') }
-        />
-      </View>
+      <AccountUpdateForm
+        email={user.get('email')}
+        username={user.get('username')}
+        accountUpdated={ () => this.fetchAccountInfo() }
+      />
     );
   }
 

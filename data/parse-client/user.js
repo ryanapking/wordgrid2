@@ -80,7 +80,9 @@ export async function updateExistingAccount(email = null, username = null, passw
   if (saveNeeded) {
     return await user.save()
       .catch( (err) => {
-        console.log('error saving:', err);
+        // if the save failed, the local object is corrupted by the above sets that don't match the server
+        user.fetch();
+        throw new Error(err);
       });
   } else {
     return user;

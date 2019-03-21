@@ -25,6 +25,11 @@ class MessageOverlay extends Component {
       clearMessage = () => this.props.clearInfoMessage(index);
     }
 
+    // I assume we are mostly sending strings, but just in case, we should convert Error objects to strings
+    if (message instanceof Error) {
+      message = message.toString();
+    }
+
     return (
       <Overlay
         isVisible={!!message}

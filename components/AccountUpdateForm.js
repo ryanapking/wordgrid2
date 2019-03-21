@@ -1,123 +1,135 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import { Input } from "react-native-elements";
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 
+import { setErrorMessage, setInfoMessage } from "../data/redux/messages";
 import { updateExistingAccount } from "../data/parse-client/user";
 
-export default class AccountUpdateForm extends Component {
+class AccountUpdateForm extends Component {
   constructor() {
     super();
 
     this.state = {
-      updateUsername: false,
-      updateEmail: false,
-      updatePassword: false,
-
-      newUsername: "",
-      newEmail: "",
-      newPassword: "",
-      newRetypePassword: "",
-
-      saving: false,
+      ...this.getInitialState()
     };
 
   }
   render() {
-    const { updateUsername, updateEmail, updatePassword } = this.state;
+    const { updateUsername, updateEmail, updatePassword, newUsername, newEmail, newPassword, newRetypePassword } = this.state;
+    const { username, email } = this.props;
+
+    const newEmailValid = (newEmail && validator.isEmail(newEmail));
+    const newPasswordValid = (newPassword && newPassword === newRetypePassword);
+
+    const formReady = (newEmail || newPassword || newUsername) && (!newEmail || newEmailValid) && (!newPassword || newPasswordValid);
+
+    const lockIcons = {
+      username: {
+        type: 'MaterialCommunityIcons',
+        name: updateUsername ? 'lock-open' : 'lock',
+        onPress: () => {
+          this.setState({ updateUsername: true });
+        },
+      },
+      email: {
+        type: 'MaterialCommunityIcons',
+        name: updateEmail ? 'lock-open' : 'lock',
+        onPress: () => {
+          this.setState({ updateEmail: true });
+        },
+      },
+      password: {
+        type: 'MaterialCommunityIcons',
+        name: updatePassword ? 'lock-open' : 'lock',
+        onPress: () => {
+          this.setState({ updatePassword: true });
+        },
+      }
+    };
 
     return (
-      <View style={{width: '100%'}}>
-        { this.emailField(updateEmail) }
-        { this.usernameField(updateUsername) }
-        { this.passwordField(updatePassword) }
-        <Button
-          disabled={true}
-          title="Update Account"
-          onPress={ () => console.log('button pressed') }
-        />
-      </View>
-    );
-  }
-
-  enableField(fieldName) {
-    this.setState({
-      updateUsername: (fieldName === 'username'),
-      updateEmail: (fieldName === 'email'),
-      updatePassword: (fieldName === 'password'),
-    });
-  }
-
-  emailField(enabled = false) {
-    const { email } = this.props;
-    return (
-      <View>
-        <Input
-          value={email}
-          editable={false}
-          label="Email Address"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          onChangeText={ (newEmail) => this.setState({newEmail}) }
-        />
-        { enabled ?
-          <Button title={"Save Email Address"} onPress={ () => console.log('saving email address...') }/>
-          :
-          <Button title="Update Email Address" onPress={ () => this.enableField("email") } />
-        }
-      </View>
-    );
-  }
-
-  usernameField(enabled = false) {
-    const { username } = this.props;
-    return (
-      <View>
-        <Input
-          label="Username"
-          value={username}
-          editable={false}
-          textContentType="username"
-          autoCapitalize="none"
-          onChangeText={ (newUsername) => this.setState({newUsername}) }
-        />
-        { enabled ?
-          <Button title={"Save Username"} onPress={ () => console.log('saving username...') }/>
-          :
-          <Button title="Update Username" onPress={ () => this.enableField("username") } />
-        }
-      </View>
-    );
-  }
-
-  passwordField(enabled = false) {
-    return (
-      <View>
-        <Input
-          label="Password"
-          textContentType="password"
-          autoCapitalize="none"
-          editable={false}
-          secureTextEntry={true}
-          onChangeText={ (newPassword) => this.setState({newPassword}) }
-        />
-        { enabled ?
-          <View>
+      <View style={styles.mainView}>
+        <View style={styles.fieldGroup}>
+          <Input
+            label='Username'
+            value={username}
+            editable={false}
+            rightIcon={lockIcons.username}
+          />
+          { updateUsername ?
             <Input
-              label="Retype Password"
+              label='New Username'
+              editable={true}
+              textContentType="username"
+              autoCapitalize="none"
+              onChangeText={ (newUsername) => this.setState({newUsername}) }
+            />
+            : null
+          }
+        </View>
+        <View style={styles.fieldGroup}>
+          <Input
+            label='Email Address'
+            value={email}
+            editable={false}
+            rightIcon={lockIcons.email}
+          />
+          { updateEmail ?
+            <Input
+              label='New Email Address'
+              errorMessage={ (newEmail && !validator.isEmail(newEmail)) ? 'Invalid email address' : null }
+              editable={true}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={ (newEmail) => this.setState({newEmail}) }
+            />
+            : null
+          }
+        </View>
+        <View style={styles.fieldGroup}>
+          <Input
+            label={ updatePassword ? "New Password" : "Password" }
+            placeholder={ updatePassword ? null : "*********" }
+            textContentType="password"
+            autoCapitalize="none"
+            editable={updatePassword}
+            secureTextEntry={true}
+            rightIcon={lockIcons.password}
+            onChangeText={ (newPassword) => this.setState({newPassword}) }
+          />
+          { updatePassword ?
+            <Input
+              label="Retype New Password"
               textContentType="password"
               autoCapitalize="none"
-              editable={false}
+              editable={true}
               secureTextEntry={true}
               onChangeText={ (newRetypePassword) => this.setState({newRetypePassword}) }
             />
-            <Button title={"Save Password"} onPress={ () => console.log('saving password...') }/>
+            : null
+          }
+        </View>
+        { (updateUsername || updateEmail || updatePassword) ?
+          <View style={styles.saveButton}>
+            <Button
+              disabled={!formReady}
+              title="Save Changes"
+              onPress={ () => this.saveChanges() }
+            />
           </View>
-          :
-          <Button title="Change Password" onPress={ () => this.enableField("password") } />
+          : null
         }
+        <View style={styles.button}>
+          <Button
+            title="Log Out"
+            onPress={ () => console.log('this button would log the user out...') }
+          />
+        </View>
+
       </View>
     );
   }
@@ -134,14 +146,31 @@ export default class AccountUpdateForm extends Component {
       .then( () => {
         // trigger parent element to get user data, which should be updated
         this.props.accountUpdated();
+        this.props.setInfoMessage('Account updated successfully.');
+        this.setState({ ...this.getInitialState() });
       })
       .catch( (err) => {
-        // we should output this error somewhere. maybe an overlay at the app level.
+        this.props.setErrorMessage(err);
       })
       .finally( () => {
         this.setState({ saving: false });
       });
 
+  }
+
+  getInitialState() {
+    return {
+      updateUsername: false,
+      updateEmail: false,
+      updatePassword: false,
+
+      newUsername: "",
+      newEmail: "",
+      newPassword: "",
+      newRetypePassword: "",
+
+      saving: false,
+    };
   }
 
   static propTypes = {
@@ -150,3 +179,34 @@ export default class AccountUpdateForm extends Component {
     accountUpdated: PropTypes.func.isRequired,
   }
 }
+
+styles = StyleSheet.create({
+  mainView: {
+    width: '100%',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  fieldGroup: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: 'lightgray',
+    borderRadius: 5,
+  },
+  button: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+});
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  setErrorMessage,
+  setInfoMessage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountUpdateForm);

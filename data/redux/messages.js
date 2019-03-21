@@ -6,7 +6,7 @@ export const CLEAR_INFO_MESSAGE =  'wordgrid2/messages/CLEAR_INFO_MESSAGE';
 
 // initial state
 const initialState = {
-  error: ["hello", "there"],
+  error: [],
   info: [],
 };
 
