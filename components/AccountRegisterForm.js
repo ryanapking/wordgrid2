@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
 import validator from 'validator';
+import PropTypes from 'prop-types';
 
 export default class AccountRegisterForm extends Component {
   constructor() {
@@ -62,6 +63,11 @@ export default class AccountRegisterForm extends Component {
         />
       </View>
     );
+  }
+
+  static propTypes = {
+    buttonText: PropTypes.string.isRequired,
+    formAction: PropTypes.func.isRequired,
   }
 
 }

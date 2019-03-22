@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { logout } from "../data/parse-client/user";
 import { userLoggedOut } from "../data/redux/user";
@@ -25,6 +26,11 @@ class AccountLogoutButton extends Component {
       .then( () => {
         this.props.userLoggedOut();
       });
+  }
+
+  static propTypes = {
+    title: PropTypes.string,
+    onPress: PropTypes.func,
   }
 }
 
