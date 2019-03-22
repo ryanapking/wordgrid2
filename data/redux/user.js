@@ -130,7 +130,7 @@ function userLoginSuccess(uid) {
   }
 }
 
-function userLoggedOut() {
+export function userLoggedOut() {
   return {
     type: LOGIN_LOST
   }

@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
+import { connect } from 'react-redux';
 
+import { setInfoMessage, setErrorMessage } from "../data/redux/messages";
 import { getCurrentUser } from "../data/parse-client/user";
 import AccountUpdateForm from '../components/AccountUpdateForm';
+import AccountLogoutButton from '../components/AccountLogoutButton';
+import AccountRegisterForm from '../components/AccountRegisterForm';
 
-export default class Account extends Component {
+import { convertAnonymousAccount } from "../data/parse-client/user";
+
+class Account extends Component {
   constructor() {
     super();
 
     this.state = {
       user: null,
       fetchingUser: true,
+      logoutConfirmationDisplayed: false,
+      registerAccount: false,
     };
 
     this.fetchAccountInfo();
@@ -21,10 +29,12 @@ export default class Account extends Component {
 
     if (fetchingUser) {
       return this.fetchingMessage();
-    } else if (user._isLinked('anonymous')) {
+    } else if (user && user._isLinked('anonymous')) {
       return this.anonymousUserMessage();
-    } else {
+    } else if (user) {
       return this.userInfo();
+    } else {
+      return null;
     }
   }
 
@@ -40,15 +50,38 @@ export default class Account extends Component {
   }
 
   anonymousUserMessage() {
-    return (
-      <View>
-        <Text>You are logged in anonymously. All data is stored on this phone, and if you are logged out, you will have no way to retrieve it. Consider registering your account. Your existing games will come with you.</Text>
-        <View style={{ marginTop: 10, marginBottom: 10 }}>
-          <Button title="Log Out" onPress={ () => console.log('this is where a message will pop up warning the user') } />
+    const { logoutConfirmationDisplayed, registerAccount } = this.state;
+
+    const logoutConfirmMessage = 'Your account has not been registered. Logging out now will lose all game data. You will not have any way to log back in. Please register your account. After dismissing this message, either cancel your logout request or confirm.';
+
+    const confirmLogout = () => {
+      this.props.setInfoMessage(logoutConfirmMessage);
+      this.setState({ logoutConfirmationDisplayed: true });
+    };
+
+    if (registerAccount) {
+      return (
+        <AccountRegisterForm
+          buttonText="Register Account"
+          formAction={ (email, username, password) => this.convertAnonymousAccount(email, username, password) }
+        />
+      );
+    } else {
+      return (
+        <View>
+          <Text>You are logged in anonymously. All data is stored on this phone, and if you are logged out, you will have no way to retrieve it. Consider registering your account. Your existing games will come with you.</Text>
+          <View style={{ marginTop: 10, marginBottom: 10 }}>
+            <AccountLogoutButton title={ logoutConfirmationDisplayed ? "Logout and Lose Data" : null } onPress={ logoutConfirmationDisplayed ? null : confirmLogout }/>
+          </View>
+          { logoutConfirmationDisplayed
+            ? <Button title="Cancel Logout" onPress={ () => this.setState({ logoutConfirmationDisplayed: false })} />
+            : <Button title="Register Account" onPress={ () => this.setState({ registerAccount: true }) } />
+          }
         </View>
-        <Button title="Register Account" onPress={ () => console.log('This will direct the user to the register screen') } />
-      </View>
-    );
+      );
+    }
+
+
   }
 
   fetchingMessage() {
@@ -71,4 +104,26 @@ export default class Account extends Component {
         // fetching is a local process, so it's not a matter of internet connectivity
       });
   }
+
+  convertAnonymousAccount(email, username, password) {
+    convertAnonymousAccount(email, username, password)
+      .then( () => {
+        this.setState({ fetchingUser: true });
+        this.fetchAccountInfo();
+      })
+      .catch( (err) => {
+        this.props.setErrorMessage(err.toString());
+      });
+  }
 }
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  setInfoMessage,
+  setErrorMessage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

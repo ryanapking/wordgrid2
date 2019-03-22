@@ -34,13 +34,14 @@ export async function createAccount(email, username, password) {
   return user;
 }
 
-export async function convertAnonymousAccount(username, password) {
+export async function convertAnonymousAccount(email, username, password) {
   let user = await getCurrentUser();
 
   if (!user._isLinked('anonymous')) {
     throw new Error('Not an anonymous user');
   }
 
+  user.set("email", email);
   user.set("username", username);
   user.set("password", password);
 
@@ -55,8 +56,6 @@ export async function convertAnonymousAccount(username, password) {
       console.log('error unlinking:', err);
       throw new Error(err);
     });
-
-  console.log('user after unlink', user);
 
   return user;
 }

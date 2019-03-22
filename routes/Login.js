@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { connect } from 'react-redux';
 
-import { userAnonymousLogin } from '../data/redux/user';
+import { userAnonymousLogin, userCreateAccount } from '../data/redux/user';
 import AccountLoginForm from '../components/AccountLoginForm';
 import AccountRegisterForm from '../components/AccountRegisterForm';
 
@@ -43,7 +43,7 @@ class Login extends Component {
   createAccountForm() {
     return (
       <View style={loginStyles.container}>
-        <AccountRegisterForm />
+        <AccountRegisterForm buttonText="Create Account" formAction={ (email, username, password) => this.props.userCreateAccount(email, username, password)} />
         <View style={{ marginTop: 10, marginBottom: 10 }}>
           <Button title="Cancel" onPress={ () => this.setState({ displayForm: null })} />
         </View>
@@ -102,6 +102,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = {
   userAnonymousLogin,
+  userCreateAccount,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
-import { connect } from 'react-redux';
 import validator from 'validator';
 
-import { userCreateAccount } from "../data/redux/user";
-
-class AccountRegisterForm extends Component {
+export default class AccountRegisterForm extends Component {
   constructor() {
     super();
 
@@ -18,6 +15,9 @@ class AccountRegisterForm extends Component {
     };
   }
   render() {
+
+    // form action will either be to create an account or update existing anonymous account with new data
+    const { formAction, buttonText } = this.props;
 
     const { email, username, password, retypePassword } = this.state;
 
@@ -57,21 +57,11 @@ class AccountRegisterForm extends Component {
         />
         <Button
           disabled={!passwordsMatch || !username || !email || !emailValid}
-          title="Create Account"
-          onPress={ () => this.props.userCreateAccount(email, username, password) }
+          title={buttonText}
+          onPress={ () => formAction(email, username, password) }
         />
       </View>
     );
   }
 
 }
-
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = {
-  userCreateAccount,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountRegisterForm);

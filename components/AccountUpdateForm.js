@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 
+import AccountLogoutButton from './AccountLogoutButton';
+
 import { setErrorMessage, setInfoMessage } from "../data/redux/messages";
 import { updateExistingAccount } from "../data/parse-client/user";
 
@@ -124,10 +126,7 @@ class AccountUpdateForm extends Component {
           : null
         }
         <View style={styles.button}>
-          <Button
-            title="Log Out"
-            onPress={ () => console.log('this button would log the user out...') }
-          />
+          <AccountLogoutButton />
         </View>
 
       </View>
