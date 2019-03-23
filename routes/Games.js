@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from "react-native-elements";
 
-import { startGame } from "../data/parse-client/actions";
+import StartGameOverlay from '../components/StartGameOverlay';
 
 class Games extends Component {
   render() {
@@ -45,10 +45,7 @@ class Games extends Component {
             { over.map( (gameID, index) => this.getGameListItem(gameID, index, "review"))}
           </View>
         }
-        <Button
-          title="New Game"
-          onPress={ () => startGame() }
-        />
+        <StartGameOverlay />
       </View>
     );
   }

@@ -27,7 +27,7 @@ export async function getUpcomingChallengesByDate() {
 }
 
 export async function getUsersByPartialString(searchString) {
-  if (searchString.length < 3) return null;
+  if (searchString.length < 3) return [];
 
   return await new Parse.Query(Parse.User)
     .exists('email')
