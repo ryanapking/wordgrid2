@@ -6,7 +6,8 @@ import { fetchUser } from "../../data/redux/user";
 
 class LoginRedirect extends Component {
   componentDidMount() {
-    this.props.fetchUser();
+    // we send the history object so the user can be routed to newly created games
+    this.props.fetchUser(this.props.history);
   }
   componentDidUpdate() {
     const uid = this.props.user.uid;

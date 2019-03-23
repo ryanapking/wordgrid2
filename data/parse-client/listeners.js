@@ -2,7 +2,7 @@ import Parse from './client-setup';
 
 import { remoteToLocal } from '../utilities/functions/dataConversions';
 
-export async function startGamesLiveQuery(onChange) {
+export async function startGamesLiveQuery(onChange, onCreate) {
   const user = await Parse.User.currentAsync();
 
   const Games = Parse.Object.extend("Games");
@@ -29,7 +29,7 @@ export async function startGamesLiveQuery(onChange) {
 
   subscription.on('create', (object) => {
     console.log('subscription create: ', object);
-    onChange(object.toJSON());
+    onCreate(object.toJSON());
   });
 
   subscription.on('update', (object) => {

@@ -88,12 +88,12 @@ export function userCreateAccount(email, username, password) {
   }
 }
 
-export function fetchUser() {
+export function fetchUser(routerHistory) {
   return (dispatch) => {
     checkUser()
       .then( (userID) => {
         console.log('user id:', userID);
-        dispatch(userLoginSuccess(userID));
+        dispatch(userLoginSuccess(userID, routerHistory));
       })
       .catch( (err) => {
         dispatch(userLoggedOut());
@@ -113,15 +113,25 @@ function userLoginFail() {
   }
 }
 
-function userLoginSuccess(uid) {
+function userLoginSuccess(uid, routerHistory) {
   console.log('userLoginSuccess()');
   return (dispatch) => {
-    // convoluted, but redux and back4app have to interact somewhere
-    // callback is used whenever remote data is changed
-    // we call it here to limit it to 1 instance of the listeners
-    startGamesLiveQuery((source) => {
-        dispatch(setLocalGameDataByID(source.objectId, uid, source));
-    });
+
+    // we start the listener here to limit it to 1 instance
+    // callbacks are used when query gets new or updated remote data
+
+    // updates the local data
+    const onChange = (source) => {
+      dispatch(setLocalGameDataByID(source.objectId, uid, source));
+    };
+
+    // updates the local data and redirects the user to the newly created game
+    const onCreate = (source) => {
+      dispatch(setLocalGameDataByID(source.objectId, uid, source));
+      routerHistory.push(`/game/${source.objectId}`);
+    };
+
+    startGamesLiveQuery(onChange, onCreate);
 
     dispatch({
       type: LOGIN_SUCCESS,
