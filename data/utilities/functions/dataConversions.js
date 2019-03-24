@@ -14,6 +14,7 @@ function remoteToStartingGameState(source) {
 
   return {
     player1Id: player1.objectId,
+    player1Username: player1.username,
     player1Score: 0,
     player1ScoreBoard: [],
     player1AllPieces,
@@ -21,6 +22,7 @@ function remoteToStartingGameState(source) {
     player1CurrentPiecesIndexes,
     player1ConsumedPiecesIndexes: [],
     player2Id: player2 ? player2.objectId : null,
+    player2Username: player2 ? player2.username : "Waiting for Opponent",
     player2Score: 0,
     player2ScoreBoard: [],
     player2AllPieces,
@@ -57,7 +59,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     currentPieces: gameState.player1CurrentPieces,
     currentPiecesIndexes: gameState.player1CurrentPiecesIndexes,
     allPieces: gameState.player1AllPieces,
-    name: "unknown player", // doesn't make sense just yet...
+    name: gameState.player1Username,
   };
   let p2 = {
     label: "p2",
@@ -67,7 +69,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     currentPieces: gameState.player2CurrentPieces,
     currentPiecesIndexes: gameState.player2CurrentPiecesIndexes,
     allPieces: gameState.player2AllPieces,
-    name: "unknown player", // doesn't make sense just yet...
+    name: gameState.player2Username,
   };
 
   let currentPlayer = null;

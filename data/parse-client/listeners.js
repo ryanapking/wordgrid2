@@ -9,7 +9,7 @@ export async function startGamesLiveQuery(onChange, onCreate) {
 
   const p1Games = new Parse.Query(Games).equalTo("player1", user);
   const p2Games = new Parse.Query(Games).equalTo("player2", user);
-  const gamesQuery = Parse.Query.or(p1Games, p2Games);
+  const gamesQuery = Parse.Query.or(p1Games, p2Games).include('*');
 
   const games = await gamesQuery.find();
   games.forEach( (game) => {

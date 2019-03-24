@@ -141,7 +141,7 @@ function userLoginSuccess(uid, routerHistory) {
         } else if (intervalCounter > 10) {
           clearInterval(waitInterval);
         }
-      }, 100);
+      }, 250);
 
     };
 
