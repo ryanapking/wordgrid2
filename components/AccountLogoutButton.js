@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { logout } from "../data/parse-client/user";
 import { userLoggedOut } from "../data/redux/user";
+import { removeAllLocalGames } from "../data/redux/gameData";
 
 class AccountLogoutButton extends Component {
   render() {
@@ -25,6 +26,7 @@ class AccountLogoutButton extends Component {
     logout()
       .then( () => {
         this.props.userLoggedOut();
+        this.props.removeAllLocalGames();
       });
   }
 
@@ -40,6 +42,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = {
   userLoggedOut,
+  removeAllLocalGames,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLogoutButton);

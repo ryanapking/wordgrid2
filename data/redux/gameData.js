@@ -22,6 +22,7 @@ export const SET_AVAILABLE_WORDS_DATA = 'wordgrid2/gameData/SET_AVAILABLE_WORDS_
 // syncing actions
 export const SET_LOCAL_GAME_BY_ID = 'wordgrid2/gameData/SET_LOCAL_GAME_BY_ID';
 export const REMOVE_LOCAL_GAME_BY_ID = 'wordgrid2/gameData/REMOVE_LOCAL_GAME_BY_ID';
+export const REMOVE_ALL_LOCAL_GAMES = 'wordgrid2/gameData/REMOVE_ALL_LOCAL_GAMES';
 
 // initial state
 const initialState = {
@@ -45,6 +46,8 @@ export default function reducer(state = initialState, action) {
       return setOpponentNameReducer(state, action);
     case REMOVE_LOCAL_GAME_BY_ID:
       return removeLocalGameByIDReducer(state, action);
+    case REMOVE_ALL_LOCAL_GAMES:
+      return removeAllLocalGamesReducer(state);
     case ADD_OPPONENT_PIECE:
       return addOpponentPieceReducer(state, action);
     case SET_BOARD_ROWS:
@@ -171,6 +174,13 @@ function removeLocalGameByIDReducer(state, action) {
   return {
     ...state,
     byID
+  }
+}
+
+function removeAllLocalGamesReducer(state) {
+  return {
+    ...state,
+    byID: {},
   }
 }
 
@@ -355,6 +365,12 @@ export function removeLocalGameByID(gameID) {
   return {
     type: REMOVE_LOCAL_GAME_BY_ID,
     gameID
+  }
+}
+
+export function removeAllLocalGames() {
+  return {
+    type: REMOVE_ALL_LOCAL_GAMES,
   }
 }
 
