@@ -20,14 +20,12 @@ export const MARK_ANIMATION_PLAYED = 'wordgrid2/gameData/MARK_ANIMATION_PLAYED';
 export const SET_AVAILABLE_WORDS_DATA = 'wordgrid2/gameData/SET_AVAILABLE_WORDS_DATA';
 
 // syncing actions
-export const SET_LOCAL_GAME_IDS = 'wordgrid2/gameData/SET_LOCAL_GAME_IDS';
 export const SET_LOCAL_GAME_BY_ID = 'wordgrid2/gameData/SET_LOCAL_GAME_BY_ID';
 export const REMOVE_LOCAL_GAME_BY_ID = 'wordgrid2/gameData/REMOVE_LOCAL_GAME_BY_ID';
 
 // initial state
 const initialState = {
   byID: {},
-  allIDs: [],
 };
 
 // reducer manager
@@ -41,8 +39,6 @@ export default function reducer(state = initialState, action) {
       return removeSquareReducer(state, action);
     case CLEAR_CONSUMED_SQUARES:
       return clearConsumedSquareReducer(state, action);
-    case SET_LOCAL_GAME_IDS:
-      return setLocalGameIDsReducer(state, action);
     case SET_LOCAL_GAME_BY_ID:
       return setLocalGameDataReducer(state, action);
     case SET_OPPONENT_NAME:
@@ -137,14 +133,6 @@ function clearConsumedSquareReducer(state, action) {
       }
     }
   };
-}
-
-function setLocalGameIDsReducer(state, action) {
-  const allIDs = action.gameIDs;
-  return {
-    ...state,
-    allIDs
-  }
 }
 
 function setLocalGameDataReducer(state, action) {
@@ -334,13 +322,6 @@ export function clearConsumedSquares(gameID) {
   return {
     type: CLEAR_CONSUMED_SQUARES,
     gameID
-  }
-}
-
-export function setLocalGameIDs(gameIDs) {
-  return {
-    type: SET_LOCAL_GAME_IDS,
-    gameIDs
   }
 }
 

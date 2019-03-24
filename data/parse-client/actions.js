@@ -1,7 +1,7 @@
 import Parse from "./client-setup";
 
-export async function startGame() {
-  let newGame = await Parse.Cloud.run("startGame")
+export async function startGame(opponentID = null) {
+  let newGame = await Parse.Cloud.run("startGame", {opponentID})
     .catch( (err) => {
       throw new Error(err);
     });
@@ -15,8 +15,6 @@ export async function saveMove(gameID, move) {
       throw new Error(err);
     });
 
-  console.log('saved move:', savedMove);
-
   return savedMove;
 }
 
@@ -25,8 +23,6 @@ export async function saveChallengeAttempt(challengeAttempt) {
     .catch( (err) => {
       throw new Error(err);
     });
-
-  console.log('saved attempt:', savedAttempt);
 
   return savedAttempt;
 }

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { Overlay, Input, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import { startGame } from "../data/parse-client/actions";
 import { getUsersByPartialString } from "../data/parse-client/getters";
+import { setErrorMessage } from "../data/redux/messages";
 
-export default class StartGameOverlay extends Component {
+class StartGameOverlay extends Component {
   constructor() {
     super();
 
@@ -31,7 +33,7 @@ export default class StartGameOverlay extends Component {
           <View>
             {(searchByUserID || viewFriends) ? null :
               <View style={styles.buttonSection}>
-                <Button title="Random Opponent" onPress={ () => startGame() } />
+                <Button title="Random Opponent" onPress={ () => this.startGame() } />
                 <View style={styles.buttonSpacer}>
                   <Button title="Play a Friend" onPress={ () => this.setState({ viewFriends: true })} />
                 </View>
@@ -53,7 +55,8 @@ export default class StartGameOverlay extends Component {
             { possibleOpponents.map( (user, index) =>
               <ListItem
                 title={ user.username }
-                key={index} onPress={() => console.log('pressed...', user.username)}
+                key={index}
+                onPress={ () => this.startGame(user.id) }
               />
             )}
           </View>
@@ -78,6 +81,13 @@ export default class StartGameOverlay extends Component {
         console.log('error searching:', err);
       });
   }
+
+  startGame(opponentID = null) {
+    startGame(opponentID)
+      .catch( (err) => {
+        setErrorMessage(err);
+      });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -91,3 +101,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  setErrorMessage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartGameOverlay);
