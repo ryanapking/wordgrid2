@@ -1,7 +1,39 @@
 import Parse from './client-setup';
 
+let currentUser = {
+  uid: null,
+  subscription: null,
+};
+
+export function stopGamesLiveQuery() {
+  if (currentUser.subscription) {
+    console.log('unsubscribing!');
+    currentUser.subscription.unsubscribe()
+      .then( () => {
+        console.log('unsubscribe succeeded!');
+        currentUser = {
+          uid: null,
+          subscription: null,
+        };
+      })
+      .catch( (err) => {
+        console.log('unsubscribe error!', err);
+      });
+  }
+}
+
 export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, removeGame, removeAllGames) {
   const user = await Parse.User.currentAsync();
+
+  if (currentUser.subscription) {
+    console.log('unsubscribing previous user!');
+    removeAllGames(); // this might break stuff if things happen in the wrong order
+    currentUser.subscription.unsubscribe();
+    currentUser = {
+      uid: null,
+      subscription: null,
+    };
+  }
 
   const Games = Parse.Object.extend("Games");
 
@@ -14,41 +46,43 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
     storeGame(game.toJSON());
   });
 
-  let subscription = gamesQuery.subscribe();
+  currentUser = {
+    uid: user.id,
+    subscription: gamesQuery.subscribe(),
+  };
 
-  subscription.on('open', () => {
+  currentUser.subscription.on('open', () => {
     console.log('live query subscription opened');
   });
 
-  subscription.on('enter', (gameObject) => {
+  currentUser.subscription.on('enter', (gameObject) => {
     console.log('subscription enter:', gameObject);
     storeGame(gameObject.toJSON());
   });
 
-  subscription.on('create', (gameObject) => {
+  currentUser.subscription.on('create', (gameObject) => {
     console.log('subscription create: ', gameObject);
     storeGameThenRedirect(gameObject.toJSON());
   });
 
-  subscription.on('update', (gameObject) => {
+  currentUser.subscription.on('update', (gameObject) => {
     console.log('subscription update: ', gameObject);
     storeGame(gameObject.toJSON());
   });
 
-  subscription.on('leave', (gameObject) => {
+  currentUser.subscription.on('leave', (gameObject) => {
     console.log('subscription leave: ', gameObject);
     removeGame(gameObject.id);
   });
 
-  subscription.on('delete', (gameObject) => {
+  currentUser.subscription.on('delete', (gameObject) => {
     console.log('subscription delete: ', gameObject);
     removeGame(gameObject.id);
   });
 
-  subscription.on('close', () => {
+  currentUser.subscription.on('close', () => {
     console.log('subscription closed');
   });
 
   return games;
-
 }

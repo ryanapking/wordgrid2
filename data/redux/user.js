@@ -1,7 +1,7 @@
 import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
 
 import { checkUser, anonymousLogin, standardLogin, createAccount } from "../parse-client/user";
-import { startGamesLiveQuery } from "../parse-client/listeners";
+import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
@@ -172,6 +172,7 @@ function userLoginSuccess(uid, routerHistory) {
 }
 
 export function userLoggedOut() {
+  stopGamesLiveQuery();
   return {
     type: LOGIN_LOST
   }
