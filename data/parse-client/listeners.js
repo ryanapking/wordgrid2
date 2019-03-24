@@ -1,16 +1,6 @@
 import Parse from './client-setup';
 
-import { store } from '../../App';
-import { setLocalGameDataByID, removeLocalGameByID } from '../redux/gameData';
-
-const gameObjectToLocalStorage = (gameObject) => {
-  const game = gameObject.toJSON();
-  const uid = store.getState().user.uid;
-  const action = setLocalGameDataByID(game.objectId, uid, game);
-  store.dispatch(action);
-};
-
-export async function startGamesLiveQuery(routerHistory) {
+export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, removeGame, removeAllGames) {
   const user = await Parse.User.currentAsync();
 
   const Games = Parse.Object.extend("Games");
@@ -21,7 +11,7 @@ export async function startGamesLiveQuery(routerHistory) {
 
   const games = await gamesQuery.find();
   games.forEach( (game) => {
-    gameObjectToLocalStorage(game);
+    storeGame(game.toJSON());
   });
 
   let subscription = gamesQuery.subscribe();
@@ -32,40 +22,27 @@ export async function startGamesLiveQuery(routerHistory) {
 
   subscription.on('enter', (gameObject) => {
     console.log('subscription enter:', gameObject);
-    gameObjectToLocalStorage(gameObject);
+    storeGame(gameObject.toJSON());
   });
 
   subscription.on('create', (gameObject) => {
     console.log('subscription create: ', gameObject);
-    gameObjectToLocalStorage(gameObject);
-
-    // redirect to the new game once it's saved to local storage
-    let intervalCounter = 0;
-    let waitInterval = setInterval(() => {
-      intervalCounter++;
-      const gameIDs = Object.keys(store.getState().gameData.byID);
-      if (gameIDs.includes(gameObject.id)) {
-        routerHistory.push(`/game/${gameObject.id}`);
-        clearInterval(waitInterval);
-      } else if (intervalCounter > 10) {
-        clearInterval(waitInterval);
-      }
-    }, 250);
+    storeGameThenRedirect(gameObject.toJSON());
   });
 
   subscription.on('update', (gameObject) => {
     console.log('subscription update: ', gameObject);
-    gameObjectToLocalStorage(gameObject);
+    storeGame(gameObject.toJSON());
   });
 
   subscription.on('leave', (gameObject) => {
     console.log('subscription leave: ', gameObject);
-    store.dispatch(removeLocalGameByID(gameObject.id));
+    removeGame(gameObject.id);
   });
 
   subscription.on('delete', (gameObject) => {
     console.log('subscription delete: ', gameObject);
-    store.dispatch(removeLocalGameByID(gameObject.id));
+    removeGame(gameObject.id);
   });
 
   subscription.on('close', () => {

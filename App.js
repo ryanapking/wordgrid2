@@ -25,7 +25,7 @@ import NavMenu from './components/NavMenu';
 import TopBar from './components/TopBar';
 import MessageOverlay from './components/MessageOverlay';
 
-export const store = configureStore();
+const store = configureStore();
 
 StatusBar.setHidden(true);
 console.disableYellowBox = true;

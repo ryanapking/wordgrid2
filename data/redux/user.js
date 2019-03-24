@@ -1,4 +1,4 @@
-import { setLocalGameDataByID } from "./gameData";
+import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
 
 import { checkUser, anonymousLogin, standardLogin, createAccount } from "../parse-client/user";
 import { startGamesLiveQuery } from "../parse-client/listeners";
@@ -117,9 +117,49 @@ function userLoginSuccess(uid, routerHistory) {
   console.log('userLoginSuccess()');
   return (dispatch, getState) => {
 
+    // these functions are passed to the listener so it can manipulate the state when games are updated
+    // (importing the store directing into the listener creates a require cycle)
+    // it happens here so only one listener is created
+    const storeGame = (game) => {
+      dispatch(
+        setLocalGameDataByID(game.objectId, getState().user.uid, game)
+      );
+    };
+
+    const storeGameThenRedirect = (game) => {
+      dispatch(
+        setLocalGameDataByID(game.objectId, getState().user.uid, game)
+      );
+
+      // redirect to the new game once it's saved to local storage
+      let intervalCounter = 0;
+      let waitInterval = setInterval(() => {
+        intervalCounter++;
+        const gameIDs = Object.keys(getState().gameData.byID);
+        if (gameIDs.includes(game.objectId)) {
+          routerHistory.push(`/game/${game.objectId}`);
+          clearInterval(waitInterval);
+        } else if (intervalCounter > 10) {
+          clearInterval(waitInterval);
+        }
+      }, 250);
+    };
+
+    const removeGame = (gameID) => {
+      dispatch(
+        removeLocalGameByID(gameID)
+      );
+    };
+
+    const removeAllGames = () => {
+      dispatch(
+        removeAllLocalGames()
+      );
+    };
+
     // start the parse live query
     // send router history so it has the ability to redirect the app
-    startGamesLiveQuery(routerHistory)
+    startGamesLiveQuery(storeGame, storeGameThenRedirect, removeGame, removeAllGames)
       .catch( (err) => {
         console.log('error starting live query:', err);
       });
