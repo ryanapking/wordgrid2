@@ -101,7 +101,8 @@ export async function checkUser() {
       throw new Error(err);
     });
 
-  return user.id;
+  if (user) return user.id;
+  else return null;
 }
 
 export async function getCurrentUser() {

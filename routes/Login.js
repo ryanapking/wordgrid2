@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, ActivityIndicator } from "react-native";
 import { connect } from 'react-redux';
 
 import { userAnonymousLogin, userCreateAccount } from '../data/redux/user';
@@ -17,8 +17,11 @@ class Login extends Component {
 
   render() {
     const { displayForm } = this.state;
+    const { fetchingUser } = this.props;
 
-    if ( displayForm === "standard" ) {
+    if ( fetchingUser ) {
+      return this.activityIndicator();
+    } else if ( displayForm === "standard" ) {
       return this.standardLoginForm();
     } else if ( displayForm === "createAccount") {
       return this.createAccountForm();
@@ -69,17 +72,28 @@ class Login extends Component {
         <Button
           title="Login with Username & Password"
           onPress={ () => this.setState({ displayForm: "standard" })}
+          disabled={fetchingUser}
         />
         <View style={{ marginTop: 10, marginBottom: 10 }}>
           <Button
             title="Create Account"
             onPress={ () => this.setState({ displayForm: "createAccount" })}
+            disabled={fetchingUser}
           />
         </View>
         <Button
           title="Login Anonymously"
           onPress={ () => this.setState({ displayForm: "anonymous" })}
+          disabled={fetchingUser}
         />
+      </View>
+    );
+  }
+
+  activityIndicator() {
+    return (
+      <View style={loginStyles.indicator}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
@@ -94,10 +108,17 @@ const loginStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  indicator: {
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  }
 });
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return {
+    fetchingUser: state.user.fetchingUser,
+  };
 };
 
 const mapDispatchToProps = {

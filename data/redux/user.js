@@ -2,15 +2,19 @@ import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "
 
 import { checkUser, anonymousLogin, standardLogin, createAccount } from "../parse-client/user";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
+import { setErrorMessage } from "./messages";
 
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
 export const LOGIN_SUCCESS = 'wordgrid2/login/LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'wordgrid2/login/LOGIN_FAIL';
 export const LOGIN_LOST = 'wordgrid2/login/LOGIN_LOST';
+export const START_FETCHING_USER = 'wordgrid2/login/START_FETCHING_USER';
+export const END_FETCHING_USER = 'wordgrid2/login/END_FETCHING_USER';
 
 // initial state
 const initialState = {
+  fetchingUser: false,
   loginStarted: false,
   loggedIn: false,
   username: "",
@@ -28,6 +32,10 @@ export default function reducer(state = initialState, action) {
       return { ...state, loginStarted: false };
     case LOGIN_LOST:
       return { ...state, uid: null };
+    case START_FETCHING_USER:
+      return { ...state, fetchingUser: true };
+    case END_FETCHING_USER:
+      return { ...state, fetchingUser: false };
     default:
       return state;
   }
@@ -90,14 +98,32 @@ export function userCreateAccount(email, username, password) {
 
 export function fetchUser(routerHistory) {
   return (dispatch) => {
+    dispatch(startFetchingUser());
     checkUser()
       .then( (userID) => {
-        console.log('user id:', userID);
-        dispatch(userLoginSuccess(userID, routerHistory));
+        if (userID) dispatch(userLoginSuccess(userID, routerHistory));
       })
       .catch( (err) => {
+        dispatch(setErrorMessage(err));
         dispatch(userLoggedOut());
+      })
+      .finally(() => {
+        dispatch(endFetchingUser());
       });
+  }
+}
+
+export function startFetchingUser() {
+  console.log('startFetchingUser()');
+  return {
+    type: START_FETCHING_USER,
+  }
+}
+
+export function endFetchingUser() {
+  console.log('endFetchingUser()');
+  return {
+    type: END_FETCHING_USER,
   }
 }
 
