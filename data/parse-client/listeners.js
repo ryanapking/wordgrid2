@@ -1,8 +1,16 @@
 import Parse from './client-setup';
 
-import { remoteToLocal } from '../utilities/functions/dataConversions';
+import { store } from '../../App';
+import { setLocalGameDataByID, removeLocalGameByID } from '../redux/gameData';
 
-export async function startGamesLiveQuery(onChange, onCreate) {
+const gameObjectToLocalStorage = (gameObject) => {
+  const game = gameObject.toJSON();
+  const uid = store.getState().user.uid;
+  const action = setLocalGameDataByID(game.objectId, uid, game);
+  store.dispatch(action);
+};
+
+export async function startGamesLiveQuery(routerHistory) {
   const user = await Parse.User.currentAsync();
 
   const Games = Parse.Object.extend("Games");
@@ -13,7 +21,7 @@ export async function startGamesLiveQuery(onChange, onCreate) {
 
   const games = await gamesQuery.find();
   games.forEach( (game) => {
-    onChange(game.toJSON());
+    gameObjectToLocalStorage(game);
   });
 
   let subscription = gamesQuery.subscribe();
@@ -22,31 +30,48 @@ export async function startGamesLiveQuery(onChange, onCreate) {
     console.log('live query subscription opened');
   });
 
-  subscription.on('enter', (object) => {
-    console.log('subscription enter: ', object);
-    onChange(object.toJSON());
+  subscription.on('enter', (gameObject) => {
+    console.log('subscription enter:', gameObject);
+    gameObjectToLocalStorage(gameObject);
   });
 
-  subscription.on('create', (object) => {
-    console.log('subscription create: ', object);
-    onCreate(object.toJSON());
+  subscription.on('create', (gameObject) => {
+    console.log('subscription create: ', gameObject);
+    gameObjectToLocalStorage(gameObject);
+
+    // redirect to the new game once it's saved to local storage
+    let intervalCounter = 0;
+    let waitInterval = setInterval(() => {
+      intervalCounter++;
+      const gameIDs = Object.keys(store.getState().gameData.byID);
+      if (gameIDs.includes(gameObject.id)) {
+        routerHistory.push(`/game/${gameObject.id}`);
+        clearInterval(waitInterval);
+      } else if (intervalCounter > 10) {
+        clearInterval(waitInterval);
+      }
+    }, 250);
   });
 
-  subscription.on('update', (object) => {
-    console.log('subscription update: ', object);
-    onChange(object.toJSON());
+  subscription.on('update', (gameObject) => {
+    console.log('subscription update: ', gameObject);
+    gameObjectToLocalStorage(gameObject);
   });
 
-  subscription.on('leave', (object) => {
-    console.log('subscription leave: ', object);
+  subscription.on('leave', (gameObject) => {
+    console.log('subscription leave: ', gameObject);
+    store.dispatch(removeLocalGameByID(gameObject.id));
   });
 
-  subscription.on('delete', (object) => {
-    console.log('subscription delete: ', object);
+  subscription.on('delete', (gameObject) => {
+    console.log('subscription delete: ', gameObject);
+    store.dispatch(removeLocalGameByID(gameObject.id));
   });
 
   subscription.on('close', () => {
     console.log('subscription closed');
   });
+
+  return games;
 
 }

@@ -117,35 +117,9 @@ function userLoginSuccess(uid, routerHistory) {
   console.log('userLoginSuccess()');
   return (dispatch, getState) => {
 
-    // we start the listener here to limit it to 1 instance
-    // callbacks are used when query gets new or updated remote data
-
-    // updates the local data
-    const onChange = (source) => {
-      dispatch(setLocalGameDataByID(source.objectId, uid, source));
-    };
-
-    // updates the local data and redirects the user to the newly created game
-    const onCreate = (source) => {
-      dispatch(setLocalGameDataByID(source.objectId, uid, source));
-
-      // check for the above to complete before trying to load the game
-      // then redirect the user to the new game
-      let intervalCounter = 0;
-      let waitInterval = setInterval(() => {
-        intervalCounter++;
-        const gameIDs = Object.keys(getState().gameData.byID);
-        if (gameIDs.includes(source.objectId)) {
-          routerHistory.push(`/game/${source.objectId}`);
-          clearInterval(waitInterval);
-        } else if (intervalCounter > 10) {
-          clearInterval(waitInterval);
-        }
-      }, 250);
-
-    };
-
-    startGamesLiveQuery(onChange, onCreate)
+    // start the parse live query
+    // send router history so it has the ability to redirect the app
+    startGamesLiveQuery(routerHistory)
       .catch( (err) => {
         console.log('error starting live query:', err);
       });

@@ -1,6 +1,15 @@
-import { challengeLocalStorageObjectToPlayableObject, challengeStateToMove, challengeStateToAttempt, calculateWordValue, calculatePiecePlacementValue, wordPathArrayToString, placementRefStringToArray, getBoardPlusPiece, validateChallengeAttempt } from "../utilities";
+import {
+  challengeLocalStorageObjectToPlayableObject,
+  challengeStateToMove,
+  challengeStateToAttempt,
+  calculateWordValue,
+  calculatePiecePlacementValue,
+  wordPathArrayToString,
+  placementRefStringToArray,
+  getBoardPlusPiece,
+  validateChallengeAttempt
+} from "../utilities";
 import { storeChallengeAttemptByDate } from "../async-storage";
-import { saveChallengeAttempt } from "../parse-client/actions";
 import english from '../english';
 
 // available actions
