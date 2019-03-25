@@ -66,7 +66,7 @@ class StartGameOverlay extends Component {
   }
 
   searchForUsers(searchString) {
-    getUsersByPartialString(searchString)
+    getUsersByPartialString(searchString, this.props.uid)
       .then( (users) => {
         console.log('user search response:', users);
         const simpleUsersObject = users.map( (user) => {
@@ -102,8 +102,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return {
+    uid: state.user.uid,
+  };
 };
 
 const mapDispatchToProps = {

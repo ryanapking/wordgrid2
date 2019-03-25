@@ -26,12 +26,13 @@ export async function getUpcomingChallengesByDate() {
   return challengesByDate;
 }
 
-export async function getUsersByPartialString(searchString) {
+export async function getUsersByPartialString(searchString, excludeID) {
   if (searchString.length < 3) return [];
 
   return await new Parse.Query(Parse.User)
     .exists('email')
     .startsWith('username', searchString)
+    .notEqualTo('objectId', excludeID)
     .limit(10)
     .find()
     .catch( (err) => {
