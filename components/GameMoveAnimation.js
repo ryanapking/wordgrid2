@@ -65,8 +65,11 @@ class GameMoveAnimation extends Component {
     const { animation, letterWidth, displayWordPath, boardState, boardSize, message, overlay } = this.state;
     if (!animation) return null;
 
-    const pieces = animation.pieceStates.start.map( (letters, index) => {
-      if (index === animation.placementRef.pieceIndex) {
+    const { pieceStates, placementRef } = animation;
+    const { startIndexes, startPieces } = pieceStates;
+
+    const pieces = startPieces.map( (letters, index) => {
+      if (startIndexes[index] === placementRef.pieceIndex) {
         let onLayout = () => this._measurePiece(index);
         return {letters, animationStyles: null, onLayout};
       } else {

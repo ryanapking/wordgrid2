@@ -14,13 +14,15 @@ function getAnimationData(game) {
   let pieceStates = null;
   if (game.opponent.label === "p1") {
     pieceStates = {
-      start: gameStateBeforeMove.player1CurrentPieces,
-      end: gameStateAfterMove.player1CurrentPieces,
+      startPieces: gameStateBeforeMove.player1CurrentPieces,
+      endPieces: gameStateAfterMove.player1CurrentPieces,
+      startIndexes: gameStateBeforeMove.player1CurrentPiecesIndexes,
     };
   } else if (game.opponent.label === "p2") {
     pieceStates = {
-      start: gameStateBeforeMove.player2CurrentPieces,
-      end: gameStateAfterMove.player2CurrentPieces,
+      startPieces: gameStateBeforeMove.player2CurrentPieces,
+      endPieces: gameStateAfterMove.player2CurrentPieces,
+      startIndexes: gameStateBeforeMove.player2CurrentPiecesIndexes,
     };
   }
 
