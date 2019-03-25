@@ -1,5 +1,14 @@
 import Parse from "./client-setup";
 
+export async function respondToRequest(gameID, accept) {
+  let response = await Parse.Cloud.run("requestResponse", {gameID, accept})
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  return response;
+}
+
 export async function startGame(opponentID = null) {
   let newGame = await Parse.Cloud.run("startGame", {opponentID})
     .catch( (err) => {

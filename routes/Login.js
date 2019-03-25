@@ -72,19 +72,16 @@ class Login extends Component {
         <Button
           title="Login with Username & Password"
           onPress={ () => this.setState({ displayForm: "standard" })}
-          disabled={fetchingUser}
         />
         <View style={{ marginTop: 10, marginBottom: 10 }}>
           <Button
             title="Create Account"
             onPress={ () => this.setState({ displayForm: "createAccount" })}
-            disabled={fetchingUser}
           />
         </View>
         <Button
           title="Login Anonymously"
           onPress={ () => this.setState({ displayForm: "anonymous" })}
-          disabled={fetchingUser}
         />
       </View>
     );

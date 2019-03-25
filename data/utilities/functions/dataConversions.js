@@ -113,6 +113,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     },
 
     nextPiece, // used after a word is played to generate the opponent's next piece
+    status: source.status, // status as currently saved in the DB
 
     // source data can be used to run this process again
     sourceData: source,
