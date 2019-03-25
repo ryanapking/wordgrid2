@@ -108,14 +108,14 @@ class GameMoveAnimation extends Component {
           </View>
         </View>
 
-        { !overlay.location ? null : <Piece piece={pieces[overlay.pieceIndex].letters} style={[styles.gamePiece, overlay.styles, this.state.moveTo]} allowDrag={false} baseSize={overlay.pieceSize}/> }
-
         <View style={styles.boardSection}>
           <View style={styles.board} ref={(view) => this._board = view} onLayout={() => this._measureBoard()}>
             <DrawBoard boardState={displayBoardState} boardSize={boardSize}/>
             <BoardPathCreator squares={displayWordPath} boardLocation={boardLocation}/>
           </View>
         </View>
+
+        { !overlay.location ? null : <Piece piece={pieces[overlay.pieceIndex].letters} style={[styles.gamePiece, overlay.styles, this.state.moveTo]} allowDrag={false} baseSize={overlay.pieceSize}/> }
 
         <View style={styles.moveInfoSection}>
           <Text style={{textAlign: 'center'}}>{ displayWord }</Text>

@@ -57,17 +57,31 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
 
   currentUser.subscription.on('enter', (gameObject) => {
     console.log('subscription enter:', gameObject);
-    storeGame(gameObject.toJSON());
+    // live queries do not support include, so we fetch the other player's name
+    gameObject.get('player1')
+      .fetch()
+      .finally( () => {
+        storeGame(gameObject.toJSON());
+      });
   });
 
   currentUser.subscription.on('create', (gameObject) => {
     console.log('subscription create: ', gameObject);
-    storeGameThenRedirect(gameObject.toJSON());
+    gameObject.get('player1')
+      .fetch()
+      .finally( () => {
+        storeGameThenRedirect(gameObject.toJSON());
+      });
+
   });
 
   currentUser.subscription.on('update', (gameObject) => {
     console.log('subscription update: ', gameObject);
-    storeGame(gameObject.toJSON());
+    gameObject.get('player1')
+      .fetch()
+      .finally( () => {
+        storeGame(gameObject.toJSON());
+      });
   });
 
   currentUser.subscription.on('leave', (gameObject) => {
