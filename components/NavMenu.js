@@ -10,7 +10,6 @@ class NavMenu extends Component {
     return (
       <View style={styles.container}>
         <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
-        <ListItem title="Settings" onPress={() => this.navigateTo('/settings')} />
         <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
       </View>
     );

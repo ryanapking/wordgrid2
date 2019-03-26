@@ -13,7 +13,6 @@ import Account from "./routes/Account";
 import Game from "./routes/Game";
 import GameReview from './routes/GameReview';
 import Games from "./routes/Games";
-import Settings from "./routes/Settings";
 import Challenge from "./routes/Challenge";
 import ChallengeOverview from "./routes/ChallengeOverview";
 import ChallengeAttempts from "./routes/ChallengeAttempts";
@@ -58,7 +57,6 @@ export default class App extends Component {
                 <Route path="/game/:gameID" component={Game} />
                 <Route path="/gameReview/:gameID" component={GameReview} />
                 <Route path="/games" component={Games} />
-                <Route path="/settings" component={Settings} />
                 <Route path="/challenge" component={Challenge} />
                 <Route path="/challengeOverview" component={ChallengeOverview} />
                 <Route path="/challengeAttempts/:challengeDate" component={ChallengeAttempts} />
