@@ -35,24 +35,19 @@ class GameInteraction extends Component {
           <View style={styles.twoColumns}>
             <TouchableOpacity style={styles.wordDisplaySection} onPress={ () => this.props.clearConsumedSquares(gameID) } >
               <Text>{displayWord ? displayWord : startMessage}</Text>
-              { !displayWord ? null :
+              { displayWord.length > 0 &&
                 <Text style={styles.clearMessage}>(tap to clear word)</Text>
               }
             </TouchableOpacity>
-            { longEnough ? this._playWordButton(displayWord) : null }
+            { longEnough &&
+              <Button
+                title={`Play word for ${calculateWordValue(displayWord)} points`}
+                onPress={ () => this.props.playWord(this.props.gameID, this.props.uid) }
+              />
+            }
           </View>
         </View>
       </View>
-    );
-  }
-
-
-  _playWordButton(word) {
-    return (
-      <Button
-        title={`Play word for ${calculateWordValue(word)} points`}
-        onPress={() => this.props.playWord(this.props.gameID, this.props.uid)}
-      />
     );
   }
 
@@ -85,7 +80,7 @@ class GameInteraction extends Component {
 
     saveMove(gameID, newMove)
       .then((savedGameObject) => {
-        this.props.history.push("/")
+        this.props.history.push("/");
       });
 
   }

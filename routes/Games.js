@@ -28,7 +28,6 @@ class Games extends Component {
 
     Object.keys(gamesByID).forEach( (gameID) => {
       const game = gamesByID[gameID];
-      console.log('game:', game);
 
       if ((game.status === "rp-new" || game.status === "rp") && this.props.userID === game.p2) {
         requests.push(gameID);

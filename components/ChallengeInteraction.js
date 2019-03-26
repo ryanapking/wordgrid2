@@ -43,11 +43,16 @@ class ChallengeInteraction extends Component {
           <View style={styles.twoColumns}>
             <TouchableOpacity style={styles.wordDisplaySection} onPress={ () => this.props.clearConsumedSquares() } >
               <Text>{displayWord ? displayWord : startMessage}</Text>
-              { !displayWord ? null :
+              { displayWord.length > 0 &&
                 <Text style={styles.clearMessage}>(tap to clear word)</Text>
               }
             </TouchableOpacity>
-            { longEnough ? this._playWordButton(displayWord) : null }
+            { longEnough &&
+              <Button
+                title={`Play word for ${calculateWordValue(displayWord)} points`}
+                onPress={ () => this.props.playWord() }
+              />
+            }
           </View>
         </View>
       </View>
@@ -59,15 +64,6 @@ class ChallengeInteraction extends Component {
       <View style={this.props.style}>
         <DrawPieceSection pieces={this.props.challenge.pieces} allowDrag />
       </View>
-    );
-  }
-
-  _playWordButton(word) {
-    return (
-      <Button
-        title={`Play word for ${calculateWordValue(word)} points`}
-        onPress={() => this.props.playWord()}
-      />
     );
   }
 
