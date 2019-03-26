@@ -8,7 +8,7 @@ class TopBar extends Component {
     return (
       <View style={styles.view}>
         <Icon type='MaterialCommunityIcons' name='menu' style={styles.menuButton} onPress={() => this.props.openDrawer()} />
-        <Text style={styles.title} >Title</Text>
+        <Text style={styles.title} >Wordgrid 2</Text>
         <Icon type='MaterialCommunityIcons' name='home' style={styles.homeButton} onPress={() => this.props.history.push('/')} />
       </View>
     );

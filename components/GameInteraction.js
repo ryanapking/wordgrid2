@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
 import DrawPieceSection from "./DrawPieceSection";
 
 import { calculateWordValue, localToRemote, validateMove } from "../data/utilities";
-import { setLocalGameDataByID, playWord } from "../data/redux/gameData";
+import { setLocalGameDataByID, playWord, clearConsumedSquares } from "../data/redux/gameData";
 import { saveMove } from "../data/parse-client/actions";
 
 class GameInteraction extends Component {
@@ -30,6 +30,7 @@ class GameInteraction extends Component {
   }
 
   _playWordInteraction() {
+    const { gameID } = this.props;
     const displayWord = this.props.game.consumedSquares.reduce( (word, square) => word + square.letter, "");
     const longEnough = (displayWord.length >= 4);
     const startMessage = "Drag to spell a word";
@@ -38,7 +39,12 @@ class GameInteraction extends Component {
         <View style={[styles.flex]}>
           <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.game.currentPlayer.currentPieces} />
           <View style={styles.twoColumns}>
-            <Text style={{padding: 20, textAlign: 'center'}}>{displayWord ? displayWord : startMessage}</Text>
+            <TouchableOpacity style={styles.wordDisplaySection} onPress={ () => this.props.clearConsumedSquares(gameID) } >
+              <Text>{displayWord ? displayWord : startMessage}</Text>
+              { !displayWord ? null :
+                <Text style={styles.clearMessage}>(tap to clear word)</Text>
+              }
+            </TouchableOpacity>
             { longEnough ? this._playWordButton(displayWord) : null }
           </View>
         </View>
@@ -114,7 +120,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
-  }
+  },
+  wordDisplaySection: {
+    alignItems: 'center',
+    padding: 20,
+    textAlign: 'center',
+  },
+  clearMessage: {
+    opacity: .2,
+  },
 });
 
 const mapStateToProps = (state, ownProps) => {
@@ -129,6 +143,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   setLocalGameDataByID,
   playWord,
+  clearConsumedSquares,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameInteraction));
