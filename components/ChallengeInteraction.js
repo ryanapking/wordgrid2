@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
 import DrawPieceSection from "./DrawPieceSection";
 import { calculateWordValue } from "../data/utilities";
-import { playWord } from '../data/redux/challengeData';
+import { playWord, clearConsumedSquares } from '../data/redux/challengeData';
 
 class ChallengeInteraction extends Component {
   render() {
@@ -41,7 +41,12 @@ class ChallengeInteraction extends Component {
         <View style={[styles.flex]}>
           <DrawPieceSection style={[styles.twoColumns]} pieces={this.props.challenge.pieces} />
           <View style={styles.twoColumns}>
-            <Text style={{padding: 20, textAlign: 'center'}}>{displayWord ? displayWord : startMessage}</Text>
+            <TouchableOpacity style={styles.wordDisplaySection} onPress={ () => this.props.clearConsumedSquares() } >
+              <Text>{displayWord ? displayWord : startMessage}</Text>
+              { !displayWord ? null :
+                <Text style={styles.clearMessage}>(tap to clear word)</Text>
+              }
+            </TouchableOpacity>
             { longEnough ? this._playWordButton(displayWord) : null }
           </View>
         </View>
@@ -87,6 +92,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  wordDisplaySection: {
+    alignItems: 'center',
+    padding: 20,
+    textAlign: 'center',
+  },
+  clearMessage: {
+    opacity: .2,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -96,7 +109,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  playWord
+  playWord,
+  clearConsumedSquares,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeInteraction));
