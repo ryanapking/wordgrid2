@@ -456,3 +456,13 @@ export function setAvailableWordsData(gameID, longest, mostValuable, availableWo
     availableWordCount,
   }
 }
+
+export function resetLocalGameDataByID(gameID) {
+  return (dispatch, getState) => {
+    const game = getState().gameData.byID[gameID];
+    const { uid } = getState().user;
+    dispatch(
+      setLocalGameDataByID(gameID, uid, game.sourceData)
+    );
+  };
+}

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import DrawPieceSection from "./DrawPieceSection";
 
 import { calculateWordValue, localToRemote, validateMove } from "../data/utilities";
-import { setLocalGameDataByID, playWord, clearConsumedSquares } from "../data/redux/gameData";
+import { playWord, clearConsumedSquares, resetLocalGameDataByID } from "../data/redux/gameData";
 import { saveMove } from "../data/parse-client/actions";
 
 class GameInteraction extends Component {
@@ -21,12 +21,6 @@ class GameInteraction extends Component {
       return this._confirmMoveInteraction();
     }
 
-  }
-
-  _Spinner() {
-    return (
-      <Text>Loading...</Text>
-    );
   }
 
   _playWordInteraction() {
@@ -75,14 +69,10 @@ class GameInteraction extends Component {
       <View style={this.props.style}>
         <View style={styles.confirmMoveSection}>
           <Button title="Submit Move" onPress={() => this.saveRemoteMove()} />
-          <Button title="Reset Move" onPress={() => this.clearLocalMoveData()} />
+          <Button title="Reset Move" onPress={() => this.props.resetLocalGameDataByID(this.props.gameID)} />
         </View>
       </View>
     );
-  }
-
-  clearLocalMoveData() {
-    this.props.setLocalGameDataByID(this.props.gameID, this.props.uid, this.props.game.sourceData);
   }
 
   saveRemoteMove() {
@@ -141,9 +131,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  setLocalGameDataByID,
   playWord,
   clearConsumedSquares,
+  resetLocalGameDataByID,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameInteraction));

@@ -20,7 +20,7 @@ import ChallengeAttemptReview from "./routes/ChallengeAttemptReview";
 
 // redirect all non-logged in users to the login screen
 import LoginRedirect from "./components/nondisplay/LoginRedirect";
-import NavMenu from './components/NavMenu';
+import Menu from './components/Menu';
 import TopBar from './components/TopBar';
 import MessageOverlay from './components/MessageOverlay';
 
@@ -43,7 +43,7 @@ export default class App extends Component {
         <NativeRouter>
           <View>
             <Overlay isVisible={this.state.menuOverlayVisible} onBackdropPress={() => this.setState({ menuOverlayVisible: false })}>
-              <NavMenu closeNavMenu={ () => this.setState({ menuOverlayVisible: false }) }/>
+              <Menu closeNavMenu={ () => this.setState({ menuOverlayVisible: false }) }/>
             </Overlay>
             <MessageOverlay />
             <View style={styles.mainContainer}>
