@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { resetLocalGameDataByID } from "../data/redux/gameData";
+import { setErrorMessage } from "../data/redux/messages";
+import { forfeitGame } from "../data/parse-client/actions";
 
 class Menu extends Component {
 
@@ -31,12 +33,20 @@ class Menu extends Component {
       return (
         <View>
           <ListItem title="Reset Move" onPress={ () => this.resetGameData(gameID) } />
+          <ListItem title="Forfeit Game" onPress={ () => this._forfeitGame(gameID) } />
         </View>
       );
     } else {
       return null;
     }
 
+  }
+
+  _forfeitGame(gameID) {
+    forfeitGame(gameID)
+      .catch( (err) => {
+        this.props.setErrorMessage(err.toString());
+      });
   }
 
   resetGameData(gameID) {
@@ -70,7 +80,8 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = {
-  resetLocalGameDataByID
+  resetLocalGameDataByID,
+  setErrorMessage,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));

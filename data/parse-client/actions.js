@@ -9,6 +9,15 @@ export async function respondToRequest(gameID, accept) {
   return response;
 }
 
+export async function forfeitGame(gameID) {
+  let forfeitResponse = await Parse.Cloud.run("forfeitGame", {gameID})
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  return forfeitResponse;
+}
+
 export async function startGame(opponentID = null) {
   let newGame = await Parse.Cloud.run("startGame", {opponentID})
     .catch( (err) => {
