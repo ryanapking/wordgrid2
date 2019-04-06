@@ -65,6 +65,7 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
       });
   });
 
+  // TODO: Redirect will not trigger when a game is joined as second player, because it is an enter event not a create event. Need to manage this some other way.
   currentUser.subscription.on('create', (gameObject) => {
     console.log('subscription create: ', gameObject);
     gameObject.get('player1')
