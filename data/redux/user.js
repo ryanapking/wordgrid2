@@ -42,13 +42,13 @@ export default function reducer(state = initialState, action) {
 }
 
 // action creators
-export function userAnonymousLogin() {
+export function userAnonymousLogin(routerHistory) {
   return (dispatch) => {
     dispatch(userLoginStart());
 
     anonymousLogin()
       .then( (userID) => {
-        dispatch(userLoginSuccess(userID));
+        dispatch(userLoginSuccess(userID, routerHistory));
       })
       .catch( (err) => {
         console.log('anonymous login error:', err);
@@ -57,7 +57,7 @@ export function userAnonymousLogin() {
   }
 }
 
-export function userStandardLogin(username, password) {
+export function userStandardLogin(username, password, routerHistory) {
   return (dispatch) => {
 
     console.log('standardLogin action creator');
@@ -68,7 +68,7 @@ export function userStandardLogin(username, password) {
     standardLogin(username, password)
       .then( (user) => {
         console.log('returned after login:', user);
-        dispatch(userLoginSuccess(user.id));
+        dispatch(userLoginSuccess(user.id, routerHistory));
       })
       .catch( (err) => {
         console.log('standard login error:', err);
@@ -77,7 +77,7 @@ export function userStandardLogin(username, password) {
   }
 }
 
-export function userCreateAccount(email, username, password) {
+export function userCreateAccount(email, username, password, routerHistory) {
   return (dispatch) => {
     console.log('creating account');
     console.log({email, username, password});
@@ -87,7 +87,7 @@ export function userCreateAccount(email, username, password) {
     createAccount(email, username, password)
       .then( (user) => {
         console.log('user account created:', user);
-        dispatch(userLoginSuccess(user.id));
+        dispatch(userLoginSuccess(user.id, routerHistory));
       })
       .catch( (err) => {
         console.log('account creation error:', err);

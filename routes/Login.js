@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, ActivityIndicator } from "react-native";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-native';
 
 import { userAnonymousLogin, userCreateAccount } from '../data/redux/user';
 import AccountLoginForm from '../components/AccountLoginForm';
@@ -46,7 +47,7 @@ class Login extends Component {
   createAccountForm() {
     return (
       <View style={loginStyles.container}>
-        <AccountRegisterForm buttonText="Create Account" formAction={ (email, username, password) => this.props.userCreateAccount(email, username, password)} />
+        <AccountRegisterForm buttonText="Create Account" formAction={ (email, username, password) => this.props.userCreateAccount(email, username, password, this.props.history)} />
         <View style={{ marginTop: 10, marginBottom: 10 }}>
           <Button title="Cancel" onPress={ () => this.setState({ displayForm: null })} />
         </View>
@@ -59,7 +60,7 @@ class Login extends Component {
       <View style={loginStyles.container}>
         <Text>Your games will be saved on this phone until your account is registered. Would you like to continue?</Text>
         <View style={{ marginTop: 10, marginBottom: 10 }}>
-          <Button title="Login Anonymously" onPress={ () => this.props.userAnonymousLogin()} />
+          <Button title="Login Anonymously" onPress={ () => this.props.userAnonymousLogin(this.props.history)} />
         </View>
         <Button title="Cancel" onPress={ () => this.setState({ displayForm: null })} />
       </View>
@@ -123,4 +124,4 @@ const mapDispatchToProps = {
   userCreateAccount,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

@@ -14,15 +14,15 @@ export default class DrawLetter extends Component {
 
     const textStyles = {
       textAlign: 'center',
-      fontSize: letterSize ? letterSize * .75 : 28,
+      fontSize: letterSize ? letterSize * .75 : 0,
     };
 
     const borderSize = {
-      borderWidth: letterSize ? letterSize * .015 : 1,
+      borderWidth: letterSize ? letterSize * .015 : 0,
     };
 
     const valueSize = {
-      fontSize: letterSize ? letterSize * .25 : 10,
+      fontSize: letterSize ? letterSize * .25 : 0,
       paddingBottom: letterSize ? letterSize * .025 : 1,
       paddingRight: letterSize ? letterSize * .05 : 2,
     };

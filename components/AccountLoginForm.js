@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-native';
 
 import { userStandardLogin } from "../data/redux/user";
 
@@ -36,7 +37,7 @@ class AccountLoginForm extends Component {
         <Button
           disabled={!username || !password}
           title="Login"
-          onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password) }
+          onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password, this.props.history) }
         />
       </View>
     );
@@ -51,4 +52,4 @@ const mapDispatchToProps = {
   userStandardLogin,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountLoginForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountLoginForm));
