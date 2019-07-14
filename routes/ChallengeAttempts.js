@@ -30,7 +30,7 @@ class ChallengeAttempts extends Component {
         { attempts.map( (attempt, index) =>
           <ListItem
             key={index}
-            title={ attempts.score + " points" }
+            title={ attempt.score + " points" }
             onPress={() => this.props.history.push(`/challengeAttemptReview/${this.props.challengeDate}/${index}`)}
           />
         )}

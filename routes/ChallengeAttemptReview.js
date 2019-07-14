@@ -83,7 +83,7 @@ class ChallengeAttemptReview extends Component {
       });
     });
 
-    const pieceSize = boardLocation ? boardLocation.width * .2 : null;
+    const pieceSize = boardLocation ? boardLocation.width * .12 : null;
 
     return (
       <View style={styles.reviewContainer}>
@@ -102,12 +102,14 @@ class ChallengeAttemptReview extends Component {
               <View key={index}>
                 <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 0 })} >
                   <ListItem
+                    containerStyle={(this.state.moveIndex === index && this.state.phaseIndex === 0) ? {backgroundColor: 'lightcoral'} : {}}
                     title={ move.word.toUpperCase() }
                     rightTitle={ move.wordValue + " points"}
                   />
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
                   <ListItem
+                    containerStyle={(this.state.moveIndex === index && this.state.phaseIndex === 1) ? {backgroundColor: 'lightcoral'} : {}}
                     title={
                       <View style={styles.gamePieceContainer}>
                         <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} baseSize={pieceSize} allowDrag={false}/>
