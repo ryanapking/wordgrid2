@@ -44,3 +44,14 @@ export async function saveChallengeAttempt(challengeAttempt) {
 
   return savedAttempt;
 }
+
+export async function addFriend(friendID) {
+  let newFriend = await Parse.Cloud.run("addFriend", {friendID})
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  console.log('addFriend returned:', newFriend);
+
+  return newFriend;
+}

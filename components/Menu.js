@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { resetLocalGameDataByID } from "../data/redux/gameData";
 import { setErrorMessage } from "../data/redux/messages";
-import { forfeitGame } from "../data/parse-client/actions";
+import { addFriend, forfeitGame } from "../data/parse-client/actions";
 
 class Menu extends Component {
 
@@ -22,18 +22,14 @@ class Menu extends Component {
   }
 
   gameMenuItems() {
-    const { pathname } = this.props.location;
+    const { game, gameID } = this.props;
 
-    let gameID = null;
-    if (pathname.startsWith('/game/')) {
-      gameID = pathname.replace('/game/', '');
-    }
-
-    if (gameID) {
+    if (game) {
       return (
         <View>
           <ListItem title="Reset Move" onPress={ () => this.resetGameData(gameID) } />
           <ListItem title="Forfeit Game" onPress={ () => this._forfeitGame(gameID) } />
+          <ListItem title="Add Friend" onPress={ () => this._addFriend(game.opponent.id) } />
         </View>
       );
     } else {
@@ -46,6 +42,16 @@ class Menu extends Component {
     forfeitGame(gameID)
       .catch( (err) => {
         this.props.setErrorMessage(err.toString());
+      });
+  }
+
+  _addFriend(friendID) {
+    addFriend(friendID)
+      .then((response) => {
+
+      })
+      .catch((err) => {
+        this.props.setErrorMessage(err);
       });
   }
 
@@ -75,8 +81,20 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state, ownProps) => {
+  const { pathname } = ownProps.location;
+  let gameID, game = null;
+  if (pathname.startsWith('/game/')) {
+    gameID = pathname.replace('/game/', '');
+    game = state.gameData.byID[gameID];
+  }
+
+  console.log('user:', state.user);
+
+  return {
+    gameID,
+    game,
+  };
 };
 
 const mapDispatchToProps = {
