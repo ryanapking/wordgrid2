@@ -4,7 +4,7 @@ import { Overlay, Input, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import { startGame } from "../data/parse-client/actions";
-import { getUsersByPartialString } from "../data/parse-client/getters";
+import { getUsersByPartialString, getFriendsByID } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 
 class StartGameOverlay extends Component {
@@ -17,11 +17,12 @@ class StartGameOverlay extends Component {
       viewFriends: false,
 
       possibleOpponents: [],
+      friends: [],
     };
   }
 
   render() {
-    const { showOverlay, searchByUserID, viewFriends, possibleOpponents } = this.state;
+    const { showOverlay, searchByUserID, viewFriends, possibleOpponents, friends } = this.state;
 
     return (
       <View>
@@ -33,9 +34,9 @@ class StartGameOverlay extends Component {
           <View>
             {(searchByUserID || viewFriends) ? null :
               <View style={styles.buttonSection}>
-                <Button title="Random Opponent" onPress={ () => this.startGame() } />
+                <Button title="Random Opponent" onPress={ () => this._startGame() } />
                 <View style={styles.buttonSpacer}>
-                  <Button title="Play a Friend" onPress={ () => this.setState({ viewFriends: true })} />
+                  <Button title="Play a Friend" onPress={ () => this._getFriendsByID() } />
                 </View>
                 <Button title="Find by Username" onPress={ () => this.setState({ searchByUserID: true })} />
               </View>
@@ -44,19 +45,28 @@ class StartGameOverlay extends Component {
               <Input
                 label="Username"
                 autoCapitalize="none"
-                onChangeText={ (searchString) => this.searchForUsers(searchString) }
+                onChangeText={ (searchString) => this._searchForUsers(searchString) }
               />
               : null
             }
             { viewFriends ?
-              <Text>Viewing friends here</Text>
+              <View>
+                <ListItem title="Your Friends" />
+                { friends.map( (friend, index) =>
+                  <ListItem
+                    title={ friend.username }
+                    key={ index }
+                    onPress={ () => this._startGame(friend.uid) }
+                  />
+                )}
+              </View>
               : null
             }
             { possibleOpponents.map( (user, index) =>
               <ListItem
                 title={ user.username }
                 key={index}
-                onPress={ () => this.startGame(user.id) }
+                onPress={ () => this._startGame(user.id) }
               />
             )}
           </View>
@@ -65,7 +75,28 @@ class StartGameOverlay extends Component {
     );
   }
 
-  searchForUsers(searchString) {
+  _getFriendsByID() {
+    this.setState({ viewFriends: true });
+    const { friendIDs } = this.props;
+    if (!friendIDs) return;
+
+    getFriendsByID(friendIDs)
+      .then((friends) => {
+        this.setState({
+          friends: friends.map((friend) => {
+            return {
+              uid: friend.id,
+              username: friend.get('username'),
+            };
+          }),
+        });
+      })
+      .catch((err) => {
+        this.props.setErrorMessage(err);
+      });
+  }
+
+  _searchForUsers(searchString) {
     getUsersByPartialString(searchString, this.props.uid)
       .then( (users) => {
         console.log('user search response:', users);
@@ -78,14 +109,14 @@ class StartGameOverlay extends Component {
         this.setState({ possibleOpponents: simpleUsersObject })
       })
       .catch( (err) => {
-        console.log('error searching:', err);
+        this.props.setErrorMessage(err);
       });
   }
 
-  startGame(opponentID = null) {
+  _startGame(opponentID = null) {
     startGame(opponentID)
       .catch( (err) => {
-        setErrorMessage(err);
+        this.props.setErrorMessage(err);
       });
   }
 }
@@ -105,6 +136,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     uid: state.user.uid,
+    friendIDs: state.user.friends,
   };
 };
 
