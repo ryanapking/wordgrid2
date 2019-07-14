@@ -15,7 +15,10 @@ export async function anonymousLogin() {
       throw new Error(err);
     });
 
-  return user.id;
+  return {
+    uid: user.id,
+    friends: user.get('friends'),
+  };
 }
 
 export async function createAccount(email, username, password) {
@@ -101,8 +104,14 @@ export async function checkUser() {
       throw new Error(err);
     });
 
-  if (user) return user.id;
-  else return null;
+  if (user) {
+    return {
+      uid: user.id,
+      friends: user.get('friends'),
+    };
+  } else {
+    return null;
+  }
 }
 
 export async function getCurrentUser() {
@@ -120,11 +129,30 @@ export async function getCurrentUser() {
 export async function standardLogin(username, password) {
   let user = await new Parse.User.logIn(username, password)
     .catch( (err) => {
-      console.log('login error', err);
       throw new Error(err);
     });
 
   console.log('user logged in:', user);
 
-  return user;
+  return {
+    uid: user.id,
+    friends: user.get('friends'),
+  };
+}
+
+export async function updateLocalUserDataFromParse() {
+  let user = await Parse.User.currentAsync()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  user = await user.fetch()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return {
+    uid: user.id,
+    friends: user.get('friends'),
+  };
 }

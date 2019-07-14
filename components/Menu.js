@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { resetLocalGameDataByID } from "../data/redux/gameData";
+import { refreshLocalUserInfo } from "../data/redux/user";
 import { setErrorMessage } from "../data/redux/messages";
 import { addFriend, forfeitGame } from "../data/parse-client/actions";
 
@@ -22,14 +23,19 @@ class Menu extends Component {
   }
 
   gameMenuItems() {
-    const { game, gameID } = this.props;
+    const { game, gameID, friends } = this.props;
 
     if (game) {
       return (
         <View>
           <ListItem title="Reset Move" onPress={ () => this.resetGameData(gameID) } />
           <ListItem title="Forfeit Game" onPress={ () => this._forfeitGame(gameID) } />
-          <ListItem title="Add Friend" onPress={ () => this._addFriend(game.opponent.id) } />
+          <ListItem
+            title="Add Friend"
+            titleStyle={game.opponent.id ? {} : styles.disabledTitle}
+            onPress={ () => this._addFriend(game.opponent.id) }
+            disabled={!game.opponent.id}
+          />
         </View>
       );
     } else {
@@ -45,10 +51,11 @@ class Menu extends Component {
       });
   }
 
+  // adds a friend to the remote list and triggers a local refresh
   _addFriend(friendID) {
     addFriend(friendID)
-      .then((response) => {
-
+      .then(() => {
+        this.props.refreshLocalUserInfo();
       })
       .catch((err) => {
         this.props.setErrorMessage(err);
@@ -78,7 +85,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '100%',
     height: '100%',
-  }
+  },
+  disabledTitle: {
+    color: 'lightgray',
+  },
 });
 
 const mapStateToProps = (state, ownProps) => {
@@ -94,12 +104,14 @@ const mapStateToProps = (state, ownProps) => {
   return {
     gameID,
     game,
+    friends: state.user.friends,
   };
 };
 
 const mapDispatchToProps = {
   resetLocalGameDataByID,
   setErrorMessage,
+  refreshLocalUserInfo,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));

@@ -1,6 +1,6 @@
 import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
 
-import { checkUser, anonymousLogin, standardLogin, createAccount } from "../parse-client/user";
+import { checkUser, anonymousLogin, standardLogin, createAccount, updateLocalUserDataFromParse } from "../parse-client/user";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
 import { setErrorMessage } from "./messages";
 
@@ -11,6 +11,7 @@ export const LOGIN_FAIL = 'wordgrid2/login/LOGIN_FAIL';
 export const LOGIN_LOST = 'wordgrid2/login/LOGIN_LOST';
 export const START_FETCHING_USER = 'wordgrid2/login/START_FETCHING_USER';
 export const END_FETCHING_USER = 'wordgrid2/login/END_FETCHING_USER';
+export const UPDATE_USER_INFO = 'wordgrid2/login/UPDATE_USER_INFO';
 
 // initial state
 const initialState = {
@@ -27,7 +28,7 @@ export default function reducer(state = initialState, action) {
     case LOGIN_START:
       return { ...state, username: "started", loginStarted: true };
     case LOGIN_SUCCESS:
-      return { ...state, username: "one logged in broseph", loggedIn: true, uid: action.uid, loginStarted: false };
+      return { ...state, username: "one logged in broseph", loggedIn: true, uid: action.uid, friends: action.friends, loginStarted: false };
     case LOGIN_FAIL:
       return { ...state, loginStarted: false };
     case LOGIN_LOST:
@@ -36,6 +37,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, fetchingUser: true };
     case END_FETCHING_USER:
       return { ...state, fetchingUser: false };
+    case UPDATE_USER_INFO:
+      return { ...state, uid: action.uid, friends: action.friends };
     default:
       return state;
   }
@@ -47,8 +50,8 @@ export function userAnonymousLogin(routerHistory) {
     dispatch(userLoginStart());
 
     anonymousLogin()
-      .then( (userID) => {
-        dispatch(userLoginSuccess(userID, routerHistory));
+      .then( (user) => {
+        dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
       })
       .catch( (err) => {
         console.log('anonymous login error:', err);
@@ -68,7 +71,7 @@ export function userStandardLogin(username, password, routerHistory) {
     standardLogin(username, password)
       .then( (user) => {
         console.log('returned after login:', user);
-        dispatch(userLoginSuccess(user.id, routerHistory));
+        dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
       })
       .catch( (err) => {
         console.log('standard login error:', err);
@@ -100,8 +103,11 @@ export function fetchUser(routerHistory) {
   return (dispatch) => {
     dispatch(startFetchingUser());
     checkUser()
-      .then( (userID) => {
-        if (userID) dispatch(userLoginSuccess(userID, routerHistory));
+      .then( (user) => {
+        if (user) {
+          dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
+          dispatch(refreshLocalUserInfo());
+        }
       })
       .catch( (err) => {
         dispatch(setErrorMessage(err));
@@ -139,7 +145,7 @@ function userLoginFail() {
   }
 }
 
-function userLoginSuccess(uid, routerHistory) {
+function userLoginSuccess(uid, friends, routerHistory) {
   console.log('userLoginSuccess()');
   return (dispatch, getState) => {
 
@@ -192,7 +198,8 @@ function userLoginSuccess(uid, routerHistory) {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      uid
+      uid,
+      friends,
     });
   }
 }
@@ -201,5 +208,23 @@ export function userLoggedOut() {
   stopGamesLiveQuery();
   return {
     type: LOGIN_LOST
+  }
+}
+
+export function refreshLocalUserInfo() {
+  console.log('refreshLocalUserInfo()');
+  return (dispatch) => {
+    updateLocalUserDataFromParse()
+      .then((user) => {
+        console.log('user after refresh:', user);
+        dispatch({
+          type: UPDATE_USER_INFO,
+          uid: user.uid,
+          friends: user.friends,
+        });
+      })
+      .catch((err) => {
+        dispatch(setErrorMessage(err));
+      });
   }
 }
