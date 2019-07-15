@@ -57,3 +57,40 @@ export async function getFriendsByID(friendIDs = []) {
     }
   });
 }
+
+export async function getGamesAgainstOpponent(opponentId, currentPlayerId) {
+  const GamesObject = Parse.Object.extend("Games");
+
+  const opponentPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: opponentId,
+  };
+
+  const currentPlayerPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: currentPlayerId,
+  };
+
+  const opponentP1Games = new Parse.Query(GamesObject).equalTo("player1", opponentPointer);
+  const opponentP2Games = new Parse.Query(GamesObject).equalTo("player2", opponentPointer);
+  const opponentQuery = new Parse.Query.or(opponentP1Games, opponentP2Games).include('*');
+
+  const currentPlayerP1Games = new Parse.Query(GamesObject).equalTo("player1", currentPlayerPointer);
+  const currentPlayerP2Games = new Parse.Query(GamesObject).equalTo("player2", currentPlayerPointer);
+  const currentPlayerQuery = new Parse.Query.or(currentPlayerP1Games, currentPlayerP2Games);
+
+  const foundGames = await new Parse.Query
+    .and(currentPlayerQuery, opponentQuery)
+    .find()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  if (!foundGames) return [];
+
+  return foundGames.map((game) => {
+    return game.toJSON();
+  });
+}
