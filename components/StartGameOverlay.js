@@ -4,8 +4,9 @@ import { Overlay, Input, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import { startGame } from "../data/parse-client/actions";
-import { getUsersByPartialString, getFriendsByID } from "../data/parse-client/getters";
+import { getUsersByPartialString } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
+import { refreshLocalFriendsData } from "../data/redux/user";
 
 class StartGameOverlay extends Component {
   constructor() {
@@ -17,12 +18,24 @@ class StartGameOverlay extends Component {
       viewFriends: false,
 
       possibleOpponents: [],
-      friends: [],
     };
   }
 
+  componentDidMount() {
+    // see if our local friends data contains all our friends, refresh if it doesn't
+    const { friends, friendsByID } = this.props;
+    const friendsByIDKeys = Object.keys(friendsByID);
+    let shouldRefreshFriends = false;
+    friends.forEach((friendID) => {
+      if (!shouldRefreshFriends && !friendsByIDKeys.includes(friendID)) shouldRefreshFriends = true;
+    });
+    if (shouldRefreshFriends) this.props.refreshLocalFriendsData();
+  }
+
   render() {
-    const { showOverlay, searchByUserID, viewFriends, possibleOpponents, friends } = this.state;
+    const { showOverlay, searchByUserID, viewFriends, possibleOpponents } = this.state;
+    const { friendsByID } = this.props;
+    const friendsByIDKeys = Object.keys(friendsByID);
 
     return (
       <View>
@@ -36,9 +49,9 @@ class StartGameOverlay extends Component {
               <View style={styles.buttonSection}>
                 <Button title="Random Opponent" onPress={ () => this._startGame() } />
                 <View style={styles.buttonSpacer}>
-                  <Button title="Play a Friend" onPress={ () => this._getFriendsByID() } />
+                  <Button title="Play a Friend" onPress={ () => this.setState({ viewFriends: true }) } />
                 </View>
-                <Button title="Find by Username" onPress={ () => this.setState({ searchByUserID: true })} />
+                <Button title="Find by Username" onPress={ () => this.setState({ searchByUserID: true }) } />
               </View>
             }
             { searchByUserID ?
@@ -52,11 +65,11 @@ class StartGameOverlay extends Component {
             { viewFriends ?
               <View>
                 <ListItem title="Your Friends" />
-                { friends.map( (friend, index) =>
+                { friendsByIDKeys.map( (friendID, index) =>
                   <ListItem
-                    title={ friend.username }
-                    key={ index }
-                    onPress={ () => this._startGame(friend.uid) }
+                    key={ friendID }
+                    title={ friendsByID[friendID].username }
+                    onPress={ () => this._startGame( friendsByID[friendID].uid ) }
                   />
                 )}
               </View>
@@ -73,27 +86,6 @@ class StartGameOverlay extends Component {
         </Overlay>
       </View>
     );
-  }
-
-  _getFriendsByID() {
-    this.setState({ viewFriends: true });
-    const { friendIDs } = this.props;
-    if (!friendIDs) return;
-
-    getFriendsByID(friendIDs)
-      .then((friends) => {
-        this.setState({
-          friends: friends.map((friend) => {
-            return {
-              uid: friend.id,
-              username: friend.get('username'),
-            };
-          }),
-        });
-      })
-      .catch((err) => {
-        this.props.setErrorMessage(err);
-      });
   }
 
   _searchForUsers(searchString) {
@@ -136,12 +128,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     uid: state.user.uid,
-    friendIDs: state.user.friends,
+    friends: state.user.friends,
+    friendsByID: state.user.friendsByID,
   };
 };
 
 const mapDispatchToProps = {
   setErrorMessage,
+  refreshLocalFriendsData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartGameOverlay);

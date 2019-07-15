@@ -18,6 +18,7 @@ class Menu extends Component {
         {this.gameMenuItems()}
         <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
         <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
+        <ListItem title="Friends" onPress={() => this.navigateTo('/friends')} />
       </View>
     );
   }

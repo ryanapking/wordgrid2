@@ -48,7 +48,12 @@ export async function getFriendsByID(friendIDs = []) {
       throw new Error(err);
     });
 
-  console.log('friends:', myFriends);
+  if (!myFriends) return [];
 
-  return myFriends;
+  return myFriends.map((friend) => {
+    return {
+      username: friend.get('username'),
+      id: friend.id,
+    }
+  });
 }

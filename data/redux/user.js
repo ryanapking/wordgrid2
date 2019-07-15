@@ -1,6 +1,7 @@
 import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
 
 import { checkUser, anonymousLogin, standardLogin, createAccount, updateLocalUserDataFromParse } from "../parse-client/user";
+import { getFriendsByID } from "../parse-client/getters";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
 import { setErrorMessage } from "./messages";
 
@@ -12,6 +13,7 @@ export const LOGIN_LOST = 'wordgrid2/login/LOGIN_LOST';
 export const START_FETCHING_USER = 'wordgrid2/login/START_FETCHING_USER';
 export const END_FETCHING_USER = 'wordgrid2/login/END_FETCHING_USER';
 export const UPDATE_USER_INFO = 'wordgrid2/login/UPDATE_USER_INFO';
+export const UPDATE_FRIENDS_DATA = 'wordgrid2/login/UPDATE_FRIENDS_DATA';
 
 // initial state
 const initialState = {
@@ -19,7 +21,9 @@ const initialState = {
   loginStarted: false,
   loggedIn: false,
   username: "",
-  uid: null
+  uid: null,
+  friends: [],
+  friendsByID: {},
 };
 
 // reducer
@@ -39,6 +43,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, fetchingUser: false };
     case UPDATE_USER_INFO:
       return { ...state, uid: action.uid, friends: action.friends };
+    case UPDATE_FRIENDS_DATA:
+      return { ...state, friendsByID: action.friendsByID };
     default:
       return state;
   }
@@ -212,19 +218,37 @@ export function userLoggedOut() {
 }
 
 export function refreshLocalUserInfo() {
-  console.log('refreshLocalUserInfo()');
   return (dispatch) => {
     updateLocalUserDataFromParse()
       .then((user) => {
-        console.log('user after refresh:', user);
         dispatch({
           type: UPDATE_USER_INFO,
           uid: user.uid,
-          friends: user.friends,
+          friends: user.friends ? user.friends : [],
         });
       })
       .catch((err) => {
         dispatch(setErrorMessage(err));
+      });
+  }
+}
+
+export function refreshLocalFriendsData() {
+  return (dispatch, getState) => {
+    const friendIDs = getState().user.friends;
+    getFriendsByID(friendIDs)
+      .then( (friends) => {
+        const friendsByID = {};
+        friends.forEach((friend) => {
+          friendsByID[friend.id] = friend;
+        });
+        dispatch({
+          type: UPDATE_FRIENDS_DATA,
+          friendsByID,
+        })
+      })
+      .catch(() => {
+        dispatch(setErrorMessage("Error refreshing friend data."));
       });
   }
 }

@@ -10,6 +10,7 @@ import configureStore from './data/redux/configureStore';
 import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Account from "./routes/Account";
+import Friends from "./routes/Friends";
 import Game from "./routes/Game";
 import GameReview from './routes/GameReview';
 import Games from "./routes/Games";
@@ -54,6 +55,7 @@ export default class App extends Component {
                 <Route exact path="/" component={Home} />
                 <Route path="/login" component={Login} />
                 <Route path="/account" component={Account} />
+                <Route path="/friends" component={Friends} />
                 <Route path="/game/:gameID" component={Game} />
                 <Route path="/gameReview/:gameID" component={GameReview} />
                 <Route path="/games" component={Games} />
