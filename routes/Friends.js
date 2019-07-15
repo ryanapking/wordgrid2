@@ -27,6 +27,7 @@ class Friends extends Component {
           <ListItem
             key={ friendID }
             title={ friendsByID[friendID].username }
+            onPress={ () => this.props.history.push(`/friend/${friendID}`) }
           />
         )}
       </View>
