@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log('friends:', state.user.friends);
   return {
     uid: state.user.uid,
     friends: state.user.friends,

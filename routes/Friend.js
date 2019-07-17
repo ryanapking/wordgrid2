@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
@@ -32,7 +32,6 @@ class Friend extends Component {
 
     getWinLossRecordAgainstOpponent(friendID, uid)
       .then((record) => {
-        console.log('record returned:', record);
         this.setState({ record });
       })
       .catch(() => {
@@ -67,9 +66,6 @@ class Friend extends Component {
     const { gamesByID, record } = this.state;
     const { friend } = this.props;
     const gamesByIDKeys = Object.keys(gamesByID);
-
-    console.log('games by id:', gamesByID);
-    console.log('friend:', friend);
 
     return (
       <View>
@@ -110,6 +106,11 @@ class Friend extends Component {
             hideOpponentName
           />
         )}
+        <Button
+          title={`View previous games against ${friend.username}`}
+          onPress={ () => this.props.history.push(`/friend/${friend.id}/archive`) }
+          color="blue"
+        />
       </View>
     );
   }

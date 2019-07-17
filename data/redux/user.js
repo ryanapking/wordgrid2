@@ -126,14 +126,12 @@ export function fetchUser(routerHistory) {
 }
 
 export function startFetchingUser() {
-  console.log('startFetchingUser()');
   return {
     type: START_FETCHING_USER,
   }
 }
 
 export function endFetchingUser() {
-  console.log('endFetchingUser()');
   return {
     type: END_FETCHING_USER,
   }
