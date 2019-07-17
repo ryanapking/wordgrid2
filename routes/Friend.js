@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, Button} from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { getGamesAgainstOpponent, getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
 import { remoteToLocal } from "../data/utilities/functions/dataConversions";
 import { setErrorMessage } from "../data/redux/messages";
+import { startGame } from "../data/parse-client/actions";
 import GameListItem from '../components/GameListItem';
 
 class Friend extends Component {
@@ -15,6 +16,7 @@ class Friend extends Component {
       games: [],
       gamesByID: {},
       record: null,
+      startingNewGame: false,
     }
   }
 
@@ -52,12 +54,22 @@ class Friend extends Component {
     });
   }
 
+  _startGame() {
+    this.setState({ startingNewGame: true })
+    startGame(this.props.friend.id)
+      .catch((err) => {
+        this.props.setErrorMessage(err);
+        this.setState({ startingNewGame: false })
+      });
+  }
+
   render() {
     const { gamesByID, record } = this.state;
     const { friend } = this.props;
     const gamesByIDKeys = Object.keys(gamesByID);
 
     console.log('games by id:', gamesByID);
+    console.log('friend:', friend);
 
     return (
       <View>
@@ -75,6 +87,14 @@ class Friend extends Component {
             <Text style={styles.recordLabel}>Active</Text>
             <Text style={styles.recordNumber}>{ record ? record.active : '0' }</Text>
           </View>
+        </View>
+        <View >
+          <Button
+            title={`Start a new game with ${friend.username}`}
+            onPress={ () => this._startGame(friend.id) }
+            color="blue"
+            disabled={ this.state.startingNewGame }
+          />
         </View>
         {gamesByIDKeys.map((gameID) =>
           <GameListItem
