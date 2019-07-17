@@ -205,7 +205,7 @@ function userLoginSuccess(uid, friends, routerHistory) {
     dispatch({
       type: LOGIN_SUCCESS,
       uid,
-      friends,
+      friends: friends ? friends : [],
     });
   }
 }
