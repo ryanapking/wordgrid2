@@ -61,28 +61,22 @@ export async function getFriendsByID(friendIDs = []) {
 export async function getGamesAgainstOpponent(opponentId, currentPlayerId) {
   const GamesObject = Parse.Object.extend("Games");
 
-  const opponentPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: opponentId,
-  };
+  const playerPointers = [
+    {
+      __type: 'Pointer',
+      className: '_User',
+      objectId: opponentId,
+    },
+    {
+      __type: 'Pointer',
+      className: '_User',
+      objectId: currentPlayerId,
+    }
+  ];
 
-  const currentPlayerPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: currentPlayerId,
-  };
-
-  const opponentP1Games = new Parse.Query(GamesObject).equalTo("player1", opponentPointer);
-  const opponentP2Games = new Parse.Query(GamesObject).equalTo("player2", opponentPointer);
-  const opponentQuery = new Parse.Query.or(opponentP1Games, opponentP2Games).include('*');
-
-  const currentPlayerP1Games = new Parse.Query(GamesObject).equalTo("player1", currentPlayerPointer);
-  const currentPlayerP2Games = new Parse.Query(GamesObject).equalTo("player2", currentPlayerPointer);
-  const currentPlayerQuery = new Parse.Query.or(currentPlayerP1Games, currentPlayerP2Games);
-
-  const foundGames = await new Parse.Query
-    .and(currentPlayerQuery, opponentQuery)
+  const foundGames = await new Parse.Query(GamesObject)
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
     .find()
     .catch((err) => {
       throw new Error(err);
@@ -93,4 +87,53 @@ export async function getGamesAgainstOpponent(opponentId, currentPlayerId) {
   return foundGames.map((game) => {
     return game.toJSON();
   });
+}
+
+export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerId) {
+  const GamesObject = Parse.Object.extend("Games");
+
+  const currentPlayerPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: currentPlayerId,
+  };
+
+  const opponentPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: opponentId,
+  };
+
+  const playerPointers = [opponentPointer, currentPlayerPointer];
+
+  const wins = await new Parse.Query(GamesObject)
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
+    .equalTo('winner', currentPlayerPointer)
+    .count()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  const losses = await new Parse.Query(GamesObject)
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
+    .equalTo('winner', opponentPointer)
+    .count()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  const active = await new Parse.Query(GamesObject)
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
+    .doesNotExist('winner')
+    .count()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  const total = wins + losses + active;
+
+  return { wins, losses, active, total };
 }

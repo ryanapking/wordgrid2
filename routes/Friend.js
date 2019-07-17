@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { getGamesAgainstOpponent } from "../data/parse-client/getters";
+import { getGamesAgainstOpponent, getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 
 class Friend extends Component {
@@ -13,9 +13,7 @@ class Friend extends Component {
     this.state = {
       games: [],
       gamesByID: {},
-      wins: 0,
-      losses: 0,
-      pending: 0,
+      record: null,
     }
   }
 
@@ -27,6 +25,15 @@ class Friend extends Component {
       })
       .catch(() => {
         this.props.setErrorMessage("Unable to retrieve games.");
+      });
+
+    getWinLossRecordAgainstOpponent(friendID, uid)
+      .then((record) => {
+        console.log('record returned:', record);
+        this.setState({ record });
+      })
+      .catch(() => {
+        this.props.setErrorMessage("Unable to retrieve record against opponent.");
       });
   }
 
@@ -45,13 +52,29 @@ class Friend extends Component {
   }
 
   render() {
-    const { gamesByID } = this.state;
+    const { gamesByID, record } = this.state;
     const { friend } = this.props;
     const gamesByIDKeys = Object.keys(gamesByID);
 
+    console.log('games by id:', gamesByID);
+
     return (
       <View>
-        <Text>{ friend.username }</Text>
+        <View style={ styles.topSection }>
+          <Text style={ styles.friendName }>{ friend ? friend.username : "" }</Text>
+          <View style={styles.recordLine}>
+            <Text style={styles.recordLabel}>Wins</Text>
+            <Text style={styles.recordNumber}>{ record ? record.wins : '0' }</Text>
+          </View>
+          <View style={styles.recordLine}>
+            <Text style={styles.recordLabel}>Losses</Text>
+            <Text style={styles.recordNumber}>{ record ? record.losses : '0' }</Text>
+          </View>
+          <View style={styles.recordLine}>
+            <Text style={styles.recordLabel}>Active</Text>
+            <Text style={styles.recordNumber}>{ record ? record.active : '0' }</Text>
+          </View>
+        </View>
         {gamesByIDKeys.map((gameID) =>
           <ListItem
             key={gameID}
@@ -62,6 +85,36 @@ class Friend extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  topSection: {
+    padding: 10,
+    backgroundColor: 'lightgray',
+  },
+  friendName: {
+    fontSize: 30,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
+  recordLine: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+  },
+  recordLabel: {
+    width: '50%',
+    flexGrow: 1,
+    textAlign: 'right',
+    paddingRight: 5,
+    fontSize: 20,
+  },
+  recordNumber: {
+    width: '50%',
+    flexGrow: 1,
+    paddingLeft: 5,
+    fontSize: 20,
+  }
+});
 
 const mapStateToProps = (state, ownProps) => {
   const friendID = ownProps.match.params.friendID;
