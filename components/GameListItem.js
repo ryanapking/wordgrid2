@@ -48,6 +48,7 @@ class GameListItem extends Component {
           subtitle={ hideOpponentName ? null : CTA }
           subtitleStyle={ styles.subtitle }
           rightTitle={ requestFrom === uid ? "request pending" : this.getRequestButtons() }
+          onPress={ this.getLink(calculatedGameStatus) }
         />
       );
     }
@@ -59,7 +60,7 @@ class GameListItem extends Component {
         subtitleStyle={ styles.subtitle }
         rightTitle={ this.getGameStatus(calculatedGameStatus) }
         rightSubtitle={ this.getScore() }
-        onPress={ this.getLink() }
+        onPress={ this.getLink(calculatedGameStatus) }
       />
     )
   }

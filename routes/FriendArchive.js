@@ -4,9 +4,10 @@ import { withRouter } from 'react-router-native';
 
 class FriendArchive extends Component {
   render() {
-    console.log('FriendArchive.js');
     return (
-      <Text>FriendArchive.js</Text>
+      <View>
+        <Text>FriendArchive.js</Text>
+      </View>
     );
   }
 }

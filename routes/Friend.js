@@ -67,6 +67,8 @@ class Friend extends Component {
     const { friend } = this.props;
     const gamesByIDKeys = Object.keys(gamesByID);
 
+    if (!friend) return null;
+
     return (
       <View>
         <View style={ styles.topSection }>

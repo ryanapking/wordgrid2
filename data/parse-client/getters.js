@@ -58,7 +58,7 @@ export async function getFriendsByID(friendIDs = []) {
   });
 }
 
-export async function getGamesAgainstOpponent(opponentId, currentPlayerId) {
+export async function getGamesAgainstOpponent(opponentId, currentPlayerId, active = true, offset = 0) {
   const GamesObject = Parse.Object.extend("Games");
 
   const playerPointers = [
@@ -74,10 +74,17 @@ export async function getGamesAgainstOpponent(opponentId, currentPlayerId) {
     }
   ];
 
-  const foundGames = await new Parse.Query(GamesObject)
+  const query = new Parse.Query(GamesObject)
     .containedIn('player1', playerPointers)
     .containedIn('player2', playerPointers)
-    .find()
+    .limit(10)
+    .skip(offset);
+
+  // returns either active games or inactive games
+  if (active) query.doesNotExist('winner');
+  else query.exists('winner');
+
+  const foundGames = await query.find()
     .catch((err) => {
       throw new Error(err);
     });
