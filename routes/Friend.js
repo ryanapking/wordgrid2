@@ -84,6 +84,7 @@ class Friend extends Component {
             gameStatus={"waiting"}
             playerScore={ gamesByID[gameID].currentPlayer.score }
             opponentScore={ gamesByID[gameID].opponent.score }
+            requestFrom={ gamesByID[gameID].status.includes('rp') ? gamesByID[gameID].p1 : null }
             hideOpponentName
           />
         )}

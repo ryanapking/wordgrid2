@@ -1,12 +1,37 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button, ActivityIndicator } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { respondToRequest } from "../data/parse-client/actions";
+import { setErrorMessage } from "../data/redux/messages";
+
 class GameListItem extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      responding: false,
+    };
+  }
+
   render() {
-    const { hideOpponentName, opponentName } = this.props;
+    const { hideOpponentName, opponentName, requestFrom, uid } = this.props;
+
+    if (requestFrom) {
+      console.log('first if');
+      return (
+        <ListItem
+          title={ hideOpponentName ? this.getCTA() : opponentName }
+          subtitle={ hideOpponentName ? null : this.getCTA() }
+          subtitleStyle={ styles.subtitle }
+          rightTitle={ requestFrom === uid ? "request pending" : this.getRequestButtons() }
+        />
+      );
+    }
+
     return (
       <ListItem
         title={ hideOpponentName ? this.getCTA() : opponentName }
@@ -65,6 +90,51 @@ class GameListItem extends Component {
     }
   }
 
+  getRequestButtons() {
+    if (this.state.responding) return <ActivityIndicator />;
+    const { gameID } = this.props;
+    return (
+      <View style={styles.requestButtons}>
+        <View style={styles.buttonSpacer}>
+          <Button
+            title="Accept"
+            onPress={ () => this._respondToRequest(gameID, true) }
+            color="green"
+          />
+        </View>
+        <View>
+          <Button
+            title="Reject"
+            onPress={ () => this._respondToRequest(gameID, false) }
+            color="red"
+          />
+        </View>
+      </View>
+    );
+  }
+
+  _respondToRequest(gameID, accept) {
+    this.setState({
+      responding: true,
+    });
+
+    respondToRequest(gameID, accept)
+      .then(() => {
+        if (accept) {
+          this.props.history.push(`/game/${gameID}`);
+        } else {
+          // dumb hack to reload current page
+          const currentLocation = this.props.location;
+          this.props.history.push('/');
+          this.props.history.push(currentLocation);
+        }
+      })
+      .catch( (err) => {
+        this.setState({ responding: false });
+        this.props.setErrorMessage(err.toString());
+      });
+  }
+
   static propTypes = {
     gameID: PropTypes.string.isRequired,
     gameStatus: PropTypes.oneOf(['ready', 'waiting', 'won', 'lost']).isRequired,
@@ -72,6 +142,7 @@ class GameListItem extends Component {
     playerScore: PropTypes.number.isRequired,
     opponentScore: PropTypes.number.isRequired,
     hideOpponentName: PropTypes.bool,
+    requestFrom: PropTypes.string, // this will be a player ID, either matching current player or not
   }
 }
 
@@ -83,6 +154,23 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     color: 'lightgray',
   },
+  requestButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  buttonSpacer: {
+    marginRight: 10,
+  },
 });
 
-export default withRouter(GameListItem);
+const mapStateToProps = (state) => {
+  return {
+    uid: state.user.uid,
+  };
+};
+
+const mapDispatchToProps = {
+  setErrorMessage,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameListItem));
