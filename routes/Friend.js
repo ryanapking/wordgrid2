@@ -78,13 +78,15 @@ class Friend extends Component {
         </View>
         {gamesByIDKeys.map((gameID) =>
           <GameListItem
-            key={gameID}
+            key={ gameID }
             opponentName={ friend.username }
             gameID={ gameID }
-            gameStatus={"waiting"}
+            gameStatus={ gamesByID[gameID].status }
+            turn={ gamesByID[gameID].turn }
+            winner={ gamesByID[gameID].winner }
+            player1={ gamesByID[gameID].p1 }
             playerScore={ gamesByID[gameID].currentPlayer.score }
             opponentScore={ gamesByID[gameID].opponent.score }
-            requestFrom={ gamesByID[gameID].status.includes('rp') ? gamesByID[gameID].p1 : null }
             hideOpponentName
           />
         )}

@@ -18,14 +18,34 @@ class GameListItem extends Component {
   }
 
   render() {
-    const { hideOpponentName, opponentName, requestFrom, uid } = this.props;
+    const { hideOpponentName, opponentName, turn, uid, winner, gameStatus, player1 } = this.props;
+
+    const requestFrom = gameStatus.includes('rp') ? player1 : null;
+
+    const gameOver = !!winner;
+    const gameWon = ( uid === winner );
+
+    let calculatedGameStatus, CTA;
+
+    if (gameOver && gameWon) {
+      calculatedGameStatus = "won";
+      CTA = "Tap to review the game";
+    } else if (gameOver && !gameWon) {
+      calculatedGameStatus = "lost";
+      CTA = "Tap to review the game";
+    } else if (!gameOver && uid === turn) {
+      calculatedGameStatus = "ready";
+      CTA = "Tap to make your move";
+    } else {
+      calculatedGameStatus = "waiting";
+      CTA = `Waiting on ${opponentName}`;
+    }
 
     if (requestFrom) {
-      console.log('first if');
       return (
         <ListItem
-          title={ hideOpponentName ? this.getCTA() : opponentName }
-          subtitle={ hideOpponentName ? null : this.getCTA() }
+          title={ hideOpponentName ? CTA : opponentName }
+          subtitle={ hideOpponentName ? null : CTA }
           subtitleStyle={ styles.subtitle }
           rightTitle={ requestFrom === uid ? "request pending" : this.getRequestButtons() }
         />
@@ -34,19 +54,18 @@ class GameListItem extends Component {
 
     return (
       <ListItem
-        title={ hideOpponentName ? this.getCTA() : opponentName }
-        subtitle={ hideOpponentName ? null : this.getCTA() }
+        title={ hideOpponentName ? CTA : opponentName }
+        subtitle={ hideOpponentName ? null : CTA }
         subtitleStyle={ styles.subtitle }
-        rightTitle={ this.getGameStatus() }
+        rightTitle={ this.getGameStatus(calculatedGameStatus) }
         rightSubtitle={ this.getScore() }
         onPress={ this.getLink() }
       />
     )
   }
 
-  getGameStatus() {
-    const { gameStatus } = this.props;
-    if (gameStatus === "won:" || gameStatus === "lost:") {
+  getGameStatus(gameStatus) {
+    if (gameStatus === "won" || gameStatus === "lost") {
       return gameStatus;
     } else {
       return "current score:";
@@ -63,22 +82,9 @@ class GameListItem extends Component {
     );
   }
 
-  getCTA() {
-    const { gameStatus, opponentName } = this.props;
-    switch(gameStatus) {
-      case "ready":
-        return "Tap to make your move";
-      case "won":
-      case "lost":
-        return "Tap to review the game";
-      case "waiting":
-        return `Waiting on ${opponentName}`;
-    }
-  }
-
-  getLink() {
-    const { gameID, gameStatus } = this.props;
-    switch(gameStatus) {
+  getLink(calculatedGameStatus) {
+    const { gameID } = this.props;
+    switch(calculatedGameStatus) {
       case "ready":
         return () => this.props.history.push(`/game/${gameID}`);
       case "won":
@@ -137,7 +143,9 @@ class GameListItem extends Component {
 
   static propTypes = {
     gameID: PropTypes.string.isRequired,
-    gameStatus: PropTypes.oneOf(['ready', 'waiting', 'won', 'lost']).isRequired,
+    player1: PropTypes.string.isRequired,
+    gameStatus: PropTypes.string.isRequired,
+    winner: PropTypes.string,
     opponentName: PropTypes.string.isRequired,
     playerScore: PropTypes.number.isRequired,
     opponentScore: PropTypes.number.isRequired,
