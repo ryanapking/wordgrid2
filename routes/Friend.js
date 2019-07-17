@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
-import { ListItem } from 'react-native-elements';
 
 import { getGamesAgainstOpponent, getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
+import { remoteToLocal } from "../data/utilities/functions/dataConversions";
 import { setErrorMessage } from "../data/redux/messages";
+import GameListItem from '../components/GameListItem';
 
 class Friend extends Component {
   constructor() {
@@ -43,7 +44,7 @@ class Friend extends Component {
     });
     const gamesByID = {};
     gamesData.forEach((game) => {
-      gamesByID[game.objectId] = game;
+      gamesByID[game.objectId] = remoteToLocal(game, this.props.uid);
     });
     this.setState({
       games,
@@ -76,9 +77,14 @@ class Friend extends Component {
           </View>
         </View>
         {gamesByIDKeys.map((gameID) =>
-          <ListItem
+          <GameListItem
             key={gameID}
-            title={gamesByID[gameID].winner}
+            opponentName={ friend.username }
+            gameID={ gameID }
+            gameStatus={"waiting"}
+            playerScore={ gamesByID[gameID].currentPlayer.score }
+            opponentScore={ gamesByID[gameID].opponent.score }
+            hideOpponentName
           />
         )}
       </View>
