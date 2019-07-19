@@ -3,7 +3,7 @@
     "name": "Wordgrid 2",
     "slug": "wordgrid2",
     "privacy": "unlisted",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
