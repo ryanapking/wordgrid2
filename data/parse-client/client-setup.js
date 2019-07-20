@@ -4,6 +4,7 @@ import { Constants } from 'expo';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize("RyanAppleKing");
+Parse.enableLocalDatastore();
 
 const ENV = {
   local: {

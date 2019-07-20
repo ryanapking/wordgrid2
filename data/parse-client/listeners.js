@@ -38,20 +38,31 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
   const Games = Parse.Object.extend("Games");
 
   // we are listening for games with no winner or games that are not yet archived
-  const p1Games = new Parse.Query(Games).equalTo("player1", user).doesNotExist("winner");
-  const p2Games = new Parse.Query(Games).equalTo("player2", user).doesNotExist("winner");
+  const p1ActiveGames = new Parse.Query(Games).equalTo("player1", user).doesNotExist("winner");
+  const p2ActiveGames = new Parse.Query(Games).equalTo("player2", user).doesNotExist("winner");
   const p1RecentGames = new Parse.Query(Games).equalTo("player1", user).notEqualTo("archived", true);
   const p2RecentGames = new Parse.Query(Games).equalTo("player2", user).notEqualTo("archived", true);
-  const gamesQuery = new Parse.Query.or(p1Games, p2Games, p1RecentGames, p2RecentGames).include('*');
+  const gamesQuery = new Parse.Query.or(p1ActiveGames, p2ActiveGames, p1RecentGames, p2RecentGames).include('*');
 
   const games = await gamesQuery.find();
+
+  // save games to Parse local data store
+  Parse.Object.pinAll(games)
+    .then(() => {
+      console.log('all games pinned');
+    })
+    .catch((err) => {
+      console.log('error pinning all games:', err);
+    });
+
+  // save games to redux
   games.forEach( (game) => {
     storeGame(game.toJSON());
   });
 
   currentUser = {
     uid: user.id,
-    subscription: gamesQuery.subscribe(),
+    subscription: await gamesQuery.subscribe(),
   };
 
   currentUser.subscription.on('open', () => {
@@ -64,16 +75,17 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
     gameObject.get('player1')
       .fetch()
       .finally( () => {
-        storeGame(gameObject.toJSON());
+        gameObject.pin().then(() => console.log('pinned')).catch();
+        storeGameThenRedirect(gameObject.toJSON());
       });
   });
 
-  // TODO: Redirect will not trigger when a game is joined as second player, because it is an enter event not a create event. Need to manage this some other way.
   currentUser.subscription.on('create', (gameObject) => {
     console.log('subscription create: ', gameObject);
     gameObject.get('player1')
       .fetch()
       .finally( () => {
+        gameObject.pin().then(() => console.log('pinned')).catch();
         storeGameThenRedirect(gameObject.toJSON());
       });
 
@@ -84,6 +96,7 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
     gameObject.get('player1')
       .fetch()
       .finally( () => {
+        gameObject.pin().then(() => console.log('pinned')).catch();
         storeGame(gameObject.toJSON());
       });
   });
