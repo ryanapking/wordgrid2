@@ -4,20 +4,23 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath } from "../data/utilities";
+import { remoteToLocal, moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath, wordPathStringToArray, calculateWordValue } from "../data/utilities";
+import { getGameSourceData } from "../data/parse-client/getters";
+import { setErrorMessage } from "../data/redux/messages";
+import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 import Boggle from '../data/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from "../components/BoardPathCreator";
 import DrawScoreBoard from "../components/GameScoreBoard";
-import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
-import { wordPathStringToArray, calculateWordValue } from "../data/utilities";
 
 class GameReview extends Component {
   constructor() {
     super();
 
     this.state = {
+      game: {},
+
       // current move info being reviewed
       moveIndex: 0,
 
@@ -44,18 +47,35 @@ class GameReview extends Component {
     };
   }
 
-  componentDidMount() {
-    const startingGameState = remoteToStartingGameState(this.props.game.sourceData);
-    this.setState({
-      startingGameState: startingGameState,
-    });
-    this._getReviewResults(this.state.moveIndex, startingGameState);
+  async componentDidMount() {
+    const { gameFromRedux, gameID, uid } = this.props;
+
+    // if this is a recent game, our source data should be coming from redux and we already have it
+    let gameSourceData = gameFromRedux ? gameFromRedux.sourceData : null;
+
+    // if the data didn't come from redux, pull it from Parse
+    if (!gameSourceData) {
+      gameSourceData = await getGameSourceData(gameID)
+        .catch(() => {
+          // we sort this error below
+        });
+    }
+
+    // start the game review process or redirect to previous page
+    if (gameSourceData) {
+      const game = remoteToLocal(gameSourceData, uid);
+      const startingGameState = remoteToStartingGameState(gameSourceData);
+      await this.setState({game, startingGameState});
+      this._getReviewResults(this.state.moveIndex, startingGameState);
+    } else {
+      this.props.setErrorMessage("Error getting game data.");
+      this.props.history.goBack();
+    }
   }
 
   render() {
     if (!this.state.displayingGameState) return null;
-    const { moveIndex, boardLocation, displayingGameState } = this.state;
-    const { game } = this.props;
+    const { moveIndex, boardLocation, displayingGameState, game } = this.state;
     const move = game.moves[moveIndex];
     const boardState = displayingGameState.boardState;
     const moveInning = Math.floor((moveIndex) / 2);
@@ -194,7 +214,7 @@ class GameReview extends Component {
   }
 
   _getReviewResults(moveIndex, startingGameState) {
-    const { game } = this.props;
+    const { game } = this.state;
     const { moves } = game;
 
     let currentGameState = startingGameState;
@@ -300,11 +320,17 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   const gameID = ownProps.match.params.gameID;
+  // if this is an archived game, it will not be in the redux data. We will deal with this case in componentDidMount().
+  const gameFromRedux = state.gameData.byID[gameID];
   return {
     gameID: gameID,
-    game: state.gameData.byID[gameID],
+    gameFromRedux,
     uid: state.user.uid
   };
 };
 
-export default withRouter(connect(mapStateToProps)(GameReview));
+const mapDispatchToProps = {
+  setErrorMessage,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameReview));

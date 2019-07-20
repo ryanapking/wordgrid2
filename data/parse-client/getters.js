@@ -144,3 +144,33 @@ export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerI
 
   return { wins, losses, active, total };
 }
+
+// attempts to pull data from Parse local data store
+// falls back to pulling from remote
+export async function getGameSourceData(gameID) {
+
+  const GamesObject = Parse.Object.extend("Games");
+
+  // try to fetch the game from the local datastore
+  let game = await new Parse.Query(GamesObject)
+    .fromLocalDatastore()
+    .get(gameID)
+    .catch((err) => {
+      // This error isn't a big issue. The game is probably not pinned by Parse, so we need to get the game from the parse server.
+      console.log('error getting game from local data store:', err);
+    });
+
+  // if the local data store fetch failed, fetch the game remote
+  if (!game) {
+    game = await new Parse.Query(GameObject)
+      .get(gameID)
+      .catch((err) => {
+        throw new Error("Error getting the game data.");
+      });
+
+    // I don't particularly care if pins fail.
+    game.pin().catch();
+  }
+
+  return game.toJSON();
+}
