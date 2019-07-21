@@ -37,12 +37,10 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
 
   const Games = Parse.Object.extend("Games");
 
-  // we are listening for games with no winner or games that are not yet archived
-  const p1ActiveGames = new Parse.Query(Games).equalTo("player1", user).doesNotExist("winner");
-  const p2ActiveGames = new Parse.Query(Games).equalTo("player2", user).doesNotExist("winner");
-  const p1RecentGames = new Parse.Query(Games).equalTo("player1", user).notEqualTo("archived", true);
-  const p2RecentGames = new Parse.Query(Games).equalTo("player2", user).notEqualTo("archived", true);
-  const gamesQuery = new Parse.Query.or(p1ActiveGames, p2ActiveGames, p1RecentGames, p2RecentGames).include('*');
+  // we are listening for games that are not yet archived
+  const p1Games = new Parse.Query(Games).equalTo("player1", user).notEqualTo("archived", true);
+  const p2Games = new Parse.Query(Games).equalTo("player2", user).notEqualTo("archived", true);
+  const gamesQuery = new Parse.Query.or(p1Games, p2Games).include('*');
 
   const games = await gamesQuery.find();
 
