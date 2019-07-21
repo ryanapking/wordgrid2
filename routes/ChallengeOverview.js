@@ -31,10 +31,11 @@ class ChallengeOverview extends Component {
         this._getCurrentChallengeAttempts(currentChallenge.date);
         this.props.setSourceChallengeData(currentChallenge);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log('error getting current challenge', err);
         this.setState({ gettingChallenge: false })
       });
-    // this._getChallengeAttemptDates();
+    this._getChallengeAttemptDates();
   }
 
   render() {
@@ -75,7 +76,7 @@ class ChallengeOverview extends Component {
   async _getCurrentChallenge() {
 
     // try to get the current challenge from async storage
-    let currentChallenge = await getCurrentChallenge(this.props.userID)
+    let currentChallenge = await getCurrentChallenge(this.props.uid)
       .catch((err) => {
         throw new Error('error getting current challenge from async storage');
       });
@@ -96,7 +97,7 @@ class ChallengeOverview extends Component {
         });
 
       // try again to get the current challenge from async storage
-      currentChallenge = await getCurrentChallenge(this.props.userID)
+      currentChallenge = await getCurrentChallenge(this.props.uid)
         .catch((err) => {
           throw new Error('error getting current challenge from async storage');
         });
@@ -113,7 +114,7 @@ class ChallengeOverview extends Component {
 
   // queries async-storage for attempts based on the current challenge date
   _getCurrentChallengeAttempts(date) {
-    getChallengeAttemptsByDate(this.props.userID, date)
+    getChallengeAttemptsByDate(this.props.uid, date)
       .then( (attempts) => {
 
         // mark each attempt's index, then sort based on score
@@ -147,7 +148,7 @@ class ChallengeOverview extends Component {
   _saveChallengeAttempt(attempt, currentChallengeDate, attemptIndex) {
     saveChallengeAttempt(attempt)
       .then( () => {
-        markChallengeAttemptSavedRemotely(this.props.userID, currentChallengeDate, attemptIndex)
+        markChallengeAttemptSavedRemotely(this.props.uid, currentChallengeDate, attemptIndex)
           .then( () => {
             this._getCurrentChallengeAttempts(currentChallengeDate);
           });
@@ -156,7 +157,7 @@ class ChallengeOverview extends Component {
 
   // get array of attempt dates from local storage
   _getChallengeAttemptDates() {
-    getChallengeAttemptDates(this.props.userID)
+    getChallengeAttemptDates(this.props.uid)
       .then( (dates) => {
         this.setState({
           pastChallengeDates: dates,
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    userID: state.user.uid,
+    uid: state.user.uid,
   };
 };
 
