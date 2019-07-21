@@ -85,31 +85,50 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
 
   console.log('pinned games:', pinnedGames);
 
-  // format local query into array of IDs for remote comparison
+  // format local query into arrays of IDs for remote comparison
   let pinnedGamesIds = [];
+  let unarchivedGameIds = [];
+
   if (pinnedGames) {
-    pinnedGamesIds = pinnedGames.map((game) => {
-      return game.id;
-    });
+    pinnedGamesIds = pinnedGames
+      .map((game) => {
+        return game.id;
+      });
+
+    unarchivedGameIds = pinnedGames
+      .filter((game) => {
+        return !game.get('archived');
+      })
+      .map((game) => {
+        return game.id;
+      });
   }
 
   console.log('pinned game IDs:', pinnedGamesIds);
+  console.log('unarchived game IDs:', unarchivedGameIds);
 
   // check remote for any games not stored locally
-  const unpinnedGamesAgainstOpponent = await new Parse.Query(GamesObject)
+  const unpinnedQuery = new Parse.Query(GamesObject)
     .containedIn('player1', playerPointers)
     .containedIn('player2', playerPointers)
-    .notContainedIn('objectId', pinnedGamesIds)
+    .notContainedIn('objectId', pinnedGamesIds);
+
+  // check remote for any games still pending
+  const unarchivedQuery = new Parse.Query(GamesObject)
+    .containedIn('objectId', unarchivedGameIds);
+
+  // combine above queries and fetch
+  const gamesToPin = await new Parse.Query.or(unpinnedQuery, unarchivedQuery)
     .find()
     .catch((err) => {
       throw new Error(err);
     });
 
-  console.log('unpinned games from remote:', unpinnedGamesAgainstOpponent);
+  console.log('unpinned games from remote:', gamesToPin);
 
   // pin the missing games
-  if (unpinnedGamesAgainstOpponent) {
-    unpinnedGamesAgainstOpponent.pinAll()
+  if (gamesToPin) {
+    Parse.Object.pinAll(gamesToPin)
       .catch((err) => {
         throw new Error(err);
       });
@@ -117,7 +136,7 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
 
   console.log('missing games pinned');
 
-  return unpinnedGamesAgainstOpponent;
+  return gamesToPin;
 }
 
 export async function getGamesAgainstOpponent(opponentId, currentPlayerId, active = true, offset = 0, fromLocalDatastore = false) {
