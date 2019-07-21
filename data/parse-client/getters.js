@@ -139,7 +139,7 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
   return gamesToPin;
 }
 
-export async function getGamesAgainstOpponent(opponentId, currentPlayerId, active = true, offset = 0, fromLocalDatastore = false) {
+export async function getOpponentArchive(opponentId, currentPlayerId, fromLocalDatastore = false) {
   const GamesObject = Parse.Object.extend("Games");
 
   const playerPointers = [
@@ -155,26 +155,21 @@ export async function getGamesAgainstOpponent(opponentId, currentPlayerId, activ
     }
   ];
 
-  const query = new Parse.Query(GamesObject)
+  const archive = await new Parse.Query(GamesObject)
+    .fromLocalDatastore()
     .containedIn('player1', playerPointers)
     .containedIn('player2', playerPointers)
-    .limit(10)
-    .skip(offset);
-
-  // returns either active games or inactive games
-  if (active) query.doesNotExist('winner');
-  else query.exists('winner');
-
-  if (fromLocalDatastore) query.fromLocalDatastore();
-
-  const foundGames = await query.find()
+    .exists('winner')
+    .find()
     .catch((err) => {
       throw new Error(err);
     });
 
-  if (!foundGames) return [];
+  console.log('found archive:', archive);
 
-  return foundGames.map((game) => {
+  if (!archive) return [];
+
+  return archive.map((game) => {
     return game.toJSON();
   });
 }
