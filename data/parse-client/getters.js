@@ -124,7 +124,7 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
       throw new Error(err);
     });
 
-  console.log('unpinned games from remote:', gamesToPin);
+  console.log('games to pin:', gamesToPin);
 
   // pin the missing games
   if (gamesToPin) {

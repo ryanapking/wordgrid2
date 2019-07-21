@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { getGamesAgainstOpponent, getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
-import { remoteToLocal } from "../data/utilities/functions/dataConversions";
+import { getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 import { startGame } from "../data/parse-client/actions";
 import GameListItem from '../components/GameListItem';
@@ -13,8 +12,6 @@ class Friend extends Component {
   constructor() {
     super();
     this.state = {
-      games: [],
-      gamesByID: {},
       record: null,
       startingNewGame: false,
     }
@@ -22,14 +19,6 @@ class Friend extends Component {
 
   componentDidMount() {
     const { friendID, uid } = this.props;
-    getGamesAgainstOpponent(friendID, uid)
-      .then((games) => {
-        this.parseGameData(games);
-      })
-      .catch(() => {
-        this.props.setErrorMessage("Unable to retrieve games.");
-      });
-
     getWinLossRecordAgainstOpponent(friendID, uid)
       .then((record) => {
         this.setState({ record });
@@ -37,20 +26,6 @@ class Friend extends Component {
       .catch(() => {
         this.props.setErrorMessage("Unable to retrieve record against opponent.");
       });
-  }
-
-  parseGameData(gamesData) {
-    const games = gamesData.map((game) => {
-      return game.objectId;
-    });
-    const gamesByID = {};
-    gamesData.forEach((game) => {
-      gamesByID[game.objectId] = remoteToLocal(game, this.props.uid);
-    });
-    this.setState({
-      games,
-      gamesByID,
-    });
   }
 
   _startGame() {
@@ -63,8 +38,8 @@ class Friend extends Component {
   }
 
   render() {
-    const { gamesByID, record } = this.state;
-    const { friend } = this.props;
+    const { gamesByID, friend } = this.props;
+    const { record } = this.state;
     const gamesByIDKeys = Object.keys(gamesByID);
 
     if (!friend) return null;
@@ -151,7 +126,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, ownProps) => {
   const friendID = ownProps.match.params.friendID;
   const friend = state.user.friendsByID[friendID];
+  const { byID } = state.gameData;
+  const gamesByID = {};
+  for ( let gameID in byID) {
+    const game = byID[gameID];
+    if (game.p1 === friendID || game.p2 === friendID) {
+      gamesByID[gameID] = game;
+    }
+  }
   return {
+    gamesByID,
     friendID,
     friend,
     uid: state.user.uid,
