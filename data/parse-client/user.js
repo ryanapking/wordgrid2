@@ -127,7 +127,7 @@ export async function getCurrentUser() {
 }
 
 export async function standardLogin(username, password) {
-  let user = await new Parse.User.logIn(username, password)
+  let user = await Parse.User.logIn(username, password)
     .catch( (err) => {
       throw new Error(err);
     });

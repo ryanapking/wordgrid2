@@ -151,7 +151,6 @@ class GameListItem extends Component {
     playerScore: PropTypes.number.isRequired,
     opponentScore: PropTypes.number.isRequired,
     hideOpponentName: PropTypes.bool,
-    requestFrom: PropTypes.string, // this will be a player ID, either matching current player or not
   }
 }
 

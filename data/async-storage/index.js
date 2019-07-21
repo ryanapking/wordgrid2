@@ -40,6 +40,22 @@ export async function storeChallengeByDate(uid, challenge, date) {
     });
 }
 
+export async function storeChallengesByDate(uid, challengesByDate) {
+  let userStorageObject = await getUserStorageObject(uid)
+    .catch((err) => {
+      throw new Error(err)
+    });
+
+  for (let date in challengesByDate) {
+    userStorageObject.challengesByDate[date] = challengesByDate[date];
+  }
+
+  return await saveUserStorageObject(uid, userStorageObject)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+}
+
 export async function getCurrentChallenge(uid) {
   const userStorageObject = await getUserStorageObject(uid)
     .catch( (err) => {

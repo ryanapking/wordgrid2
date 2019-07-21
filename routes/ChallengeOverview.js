@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
-import { getCurrentChallenge, storeChallengeByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
+import { getCurrentChallenge, storeChallengesByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
 import { getUpcomingChallengesByDate } from "../data/parse-client/getters";
 import { saveChallengeAttempt } from "../data/parse-client/actions";
 import { setSourceChallengeData } from "../data/redux/challengeData";
@@ -14,6 +14,7 @@ class ChallengeOverview extends Component {
     super();
 
     this.state = {
+      gettingChallenge: true,
       currentChallenge: null,
       currentChallengeAttempts: [],
       pastChallengeDates: [],
@@ -21,8 +22,19 @@ class ChallengeOverview extends Component {
   }
 
   componentDidMount() {
-    this._getCurrentChallenge();
-    this._getChallengeAttemptDates();
+    this._getCurrentChallenge()
+      .then((currentChallenge) => {
+        this.setState({
+          currentChallenge,
+          gettingChallenge: false,
+        });
+        this._getCurrentChallengeAttempts(currentChallenge.date);
+        this.props.setSourceChallengeData(currentChallenge);
+      })
+      .catch(() => {
+        this.setState({ gettingChallenge: false })
+      });
+    // this._getChallengeAttemptDates();
   }
 
   render() {
@@ -60,20 +72,43 @@ class ChallengeOverview extends Component {
     )
   }
 
-  // queries async-storage for the current challenge, queries Parse if not found
-  _getCurrentChallenge() {
-    getCurrentChallenge(this.props.userID)
-      .then( (challenge) => {
-        if (challenge) {
-          this.setState({
-            currentChallenge: challenge,
-          });
-          this._getCurrentChallengeAttempts(challenge.date);
-          this.props.setSourceChallengeData(challenge);
-        } else {
-          this._getUpcomingChallengesByDate();
-        }
+  async _getCurrentChallenge() {
+
+    // try to get the current challenge from async storage
+    let currentChallenge = await getCurrentChallenge(this.props.userID)
+      .catch((err) => {
+        throw new Error('error getting current challenge from async storage');
       });
+
+    // if we don't have the current challenge here, it probably hasn't been downloaded from parse yet.
+    if (!currentChallenge) {
+
+      // download upcoming challenges from parse
+      const upcomingChallenges = await getUpcomingChallengesByDate()
+        .catch((err) => {
+          throw new Error('error getting upcoming challenges from parse');
+        });
+
+      // save upcoming challenges to async storage
+      await storeChallengesByDate(this.props.uid, upcomingChallenges)
+        .catch((err) => {
+          throw new Error('error storing upcoming challenges in async storage');
+        });
+
+      // try again to get the current challenge from async storage
+      currentChallenge = await getCurrentChallenge(this.props.userID)
+        .catch((err) => {
+          throw new Error('error getting current challenge from async storage');
+        });
+    }
+
+    // if we have the challenge, set the appropriate state values
+    if (currentChallenge) {
+      return currentChallenge;
+    } else {
+      throw new Error('current challenge not found');
+    }
+
   }
 
   // queries async-storage for attempts based on the current challenge date
@@ -119,23 +154,7 @@ class ChallengeOverview extends Component {
       });
   }
 
-  // queries Parse server for upcoming challenges and saves to local storage
-  _getUpcomingChallengesByDate() {
-    getUpcomingChallengesByDate()
-      .then( async (challenges) => {
-        const dates = Object.keys(challenges);
-        for (let i = 0; i < dates.length; i++) {
-          const date = dates[i];
-          await storeChallengeByDate(this.props.userID, challenges[date], date)
-            .catch( (err) => {
-              console.log('error:', err);
-            });
-        }
-        this._getCurrentChallenge();
-      });
-  }
-
-  // get array of attempt dates
+  // get array of attempt dates from local storage
   _getChallengeAttemptDates() {
     getChallengeAttemptDates(this.props.userID)
       .then( (dates) => {

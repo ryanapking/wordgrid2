@@ -4,12 +4,10 @@ import Parse from './client-setup';
 import { challengeRemoteToLocalStorageObject } from '../utilities/functions/dataConversions';
 
 export async function getUpcomingChallengesByDate() {
-  let now = moment().toDate();
-
   const ChallengesObject = Parse.Object.extend("Challenges");
 
   let upcomingChallenges = await new Parse.Query(ChallengesObject)
-    .greaterThanOrEqualTo("endDate", now)
+    .equalTo("challengeComplete", false)
     .find();
 
   let challengesByDate = {};
