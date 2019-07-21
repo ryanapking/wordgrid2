@@ -56,7 +56,71 @@ export async function getFriendsByID(friendIDs = []) {
   });
 }
 
-export async function getGamesAgainstOpponent(opponentId, currentPlayerId, active = true, offset = 0) {
+export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
+  console.log('updatePinsAgainstOpponent()');
+
+  const GamesObject = Parse.Object.extend("Games");
+  const playerPointers = [
+    {
+      __type: 'Pointer',
+      className: '_User',
+      objectId: opponentId,
+    },
+    {
+      __type: 'Pointer',
+      className: '_User',
+      objectId: currentPlayerId,
+    }
+  ];
+
+  // query local data store for games against opponent
+  const pinnedGames = await new Parse.Query(GamesObject)
+    .fromLocalDatastore()
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
+    .find()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  console.log('pinned games:', pinnedGames);
+
+  // format local query into array of IDs for remote comparison
+  let pinnedGamesIds = [];
+  if (pinnedGames) {
+    pinnedGamesIds = pinnedGames.map((game) => {
+      return game.id;
+    });
+  }
+
+  console.log('pinned game IDs:', pinnedGamesIds);
+
+  // check remote for any games not stored locally
+  const unpinnedGamesAgainstOpponent = await new Parse.Query(GamesObject)
+    .containedIn('player1', playerPointers)
+    .containedIn('player2', playerPointers)
+    .notContainedIn('objectId', pinnedGamesIds)
+    .find()
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  console.log('unpinned games from remote:', unpinnedGamesAgainstOpponent);
+
+  // pin the missing games
+  if (unpinnedGamesAgainstOpponent) {
+    unpinnedGamesAgainstOpponent.pinAll()
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  console.log('missing games pinned');
+
+  return unpinnedGamesAgainstOpponent;
+}
+
+export async function getGamesAgainstOpponent(opponentId, currentPlayerId, active = true, offset = 0, fromLocalDatastore = false) {
   const GamesObject = Parse.Object.extend("Games");
 
   const playerPointers = [
@@ -81,6 +145,8 @@ export async function getGamesAgainstOpponent(opponentId, currentPlayerId, activ
   // returns either active games or inactive games
   if (active) query.doesNotExist('winner');
   else query.exists('winner');
+
+  if (fromLocalDatastore) query.fromLocalDatastore();
 
   const foundGames = await query.find()
     .catch((err) => {
