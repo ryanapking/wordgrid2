@@ -12,17 +12,18 @@ export const LOGIN_FAIL = 'wordgrid2/login/LOGIN_FAIL';
 export const LOGIN_LOST = 'wordgrid2/login/LOGIN_LOST';
 export const START_FETCHING_USER = 'wordgrid2/login/START_FETCHING_USER';
 export const END_FETCHING_USER = 'wordgrid2/login/END_FETCHING_USER';
-export const UPDATE_USER_INFO = 'wordgrid2/login/UPDATE_USER_INFO';
 export const UPDATE_FRIENDS_DATA = 'wordgrid2/login/UPDATE_FRIENDS_DATA';
+export const UPDATE_USER_DATA = "wordgrid2/login/UPDATE_USER_DATA";
 
 // initial state
 const initialState = {
   fetchingUser: false,
   loginStarted: false,
-  loggedIn: false,
   username: "",
   uid: null,
-  friends: [],
+  wins: 0,
+  losses: 0,
+  friends: [], // array of friend IDs
   friendsByID: {},
 };
 
@@ -30,9 +31,9 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_START:
-      return { ...state, username: "started", loginStarted: true };
+      return { ...state, loginStarted: true };
     case LOGIN_SUCCESS:
-      return { ...state, username: "one logged in broseph", loggedIn: true, uid: action.uid, friends: action.friends, loginStarted: false };
+      return { ...state, uid: action.uid, loginStarted: false };
     case LOGIN_FAIL:
       return { ...state, loginStarted: false };
     case LOGIN_LOST:
@@ -41,12 +42,36 @@ export default function reducer(state = initialState, action) {
       return { ...state, fetchingUser: true };
     case END_FETCHING_USER:
       return { ...state, fetchingUser: false };
-    case UPDATE_USER_INFO:
-      return { ...state, uid: action.uid, friends: action.friends };
     case UPDATE_FRIENDS_DATA:
       return { ...state, friendsByID: action.friendsByID };
+    case UPDATE_USER_DATA:
+      return updateUserDataReducer(state, action);
     default:
       return state;
+  }
+}
+
+// individual reducer functions
+function updateUserDataReducer(state, action) {
+  const updatedUser = action.user;
+
+  let updatedFriends = [];
+  let updatedFriendsByID = {};
+  if (updatedUser.friends) {
+    updatedUser.friends.forEach((friend) => {
+      updatedFriends.push(friend.objectId);
+      updatedFriendsByID[friend.objectId] = friend;
+    });
+  }
+
+  return {
+    ...state,
+    username: updatedUser.username ? updatedUser.username : state.username,
+    uid: updatedUser.objectId ? updatedUser.objectId : state.uid,
+    wins: updatedUser.wins ? updatedUser.wins : state.wins,
+    losses: updatedUser.losses ? updatedUser.losses : state.losses,
+    friends: updatedFriends ? updatedFriends : state.friends,
+    friendsByID: updatedFriendsByID ? updatedFriendsByID : state.friendsByID,
   }
 }
 
@@ -57,7 +82,7 @@ export function userAnonymousLogin(routerHistory) {
 
     anonymousLogin()
       .then( (user) => {
-        dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
+        dispatch(userLoginSuccess(user, routerHistory));
       })
       .catch( (err) => {
         console.log('anonymous login error:', err);
@@ -77,7 +102,7 @@ export function userStandardLogin(username, password, routerHistory) {
     standardLogin(username, password)
       .then( (user) => {
         console.log('returned after login:', user);
-        dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
+        dispatch(userLoginSuccess(user, routerHistory));
       })
       .catch( (err) => {
         console.log('standard login error:', err);
@@ -96,7 +121,7 @@ export function userCreateAccount(email, username, password, routerHistory) {
     createAccount(email, username, password)
       .then( (user) => {
         console.log('user account created:', user);
-        dispatch(userLoginSuccess(user.id, routerHistory));
+        dispatch(userLoginSuccess(user, routerHistory));
       })
       .catch( (err) => {
         console.log('account creation error:', err);
@@ -110,8 +135,9 @@ export function fetchUser(routerHistory) {
     dispatch(startFetchingUser());
     checkUser()
       .then( (user) => {
+        console.log('redux fetchUser() user:', user);
         if (user) {
-          dispatch(userLoginSuccess(user.uid, user.friends, routerHistory));
+          dispatch(userLoginSuccess(user, routerHistory));
           dispatch(refreshLocalUserInfo());
         }
       })
@@ -149,8 +175,9 @@ function userLoginFail() {
   }
 }
 
-function userLoginSuccess(uid, friends, routerHistory) {
+function userLoginSuccess(user, routerHistory) {
   console.log('userLoginSuccess()');
+  console.log('user:', user);
   return (dispatch, getState) => {
 
     // these functions are passed to the listener so it can manipulate the state when games are updated
@@ -202,9 +229,10 @@ function userLoginSuccess(uid, friends, routerHistory) {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      uid,
-      friends: friends ? friends : [],
+      uid: user.objectId,
     });
+
+    dispatch(refreshLocalUserInfo());
   }
 }
 
@@ -219,11 +247,7 @@ export function refreshLocalUserInfo() {
   return (dispatch) => {
     updateLocalUserDataFromParse()
       .then((user) => {
-        dispatch({
-          type: UPDATE_USER_INFO,
-          uid: user.uid,
-          friends: user.friends ? user.friends : [],
-        });
+        dispatch(setUserData(user));
       })
       .catch((err) => {
         dispatch(setErrorMessage(err));
@@ -249,4 +273,11 @@ export function refreshLocalFriendsData() {
         dispatch(setErrorMessage("Error refreshing friend data."));
       });
   }
+}
+
+export function setUserData(user) {
+  return {
+    type: UPDATE_USER_DATA,
+    user,
+  };
 }

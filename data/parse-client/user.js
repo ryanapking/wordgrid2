@@ -15,10 +15,7 @@ export async function anonymousLogin() {
       throw new Error(err);
     });
 
-  return {
-    uid: user.id,
-    friends: user.get('friends'),
-  };
+  return user.toJSON();
 }
 
 export async function createAccount(email, username, password) {
@@ -34,7 +31,7 @@ export async function createAccount(email, username, password) {
       throw new Error(err);
     });
 
-  return user;
+  return user.toJSON();
 }
 
 export async function convertAnonymousAccount(email, username, password) {
@@ -60,7 +57,7 @@ export async function convertAnonymousAccount(email, username, password) {
       throw new Error(err);
     });
 
-  return user;
+  return user.toJSON();
 }
 
 export async function updateExistingAccount(email = null, username = null, password = null) {
@@ -81,13 +78,16 @@ export async function updateExistingAccount(email = null, username = null, passw
   }
   if (saveNeeded) {
     return await user.save()
+      .then((user) => {
+        return user.toJSON();
+      })
       .catch( (err) => {
         // if the save failed, the local object is corrupted by the above sets that don't match the server
         user.fetch();
         throw new Error(err);
       });
   } else {
-    return user;
+    return user.toJSON();
   }
 }
 
@@ -105,10 +105,7 @@ export async function checkUser() {
     });
 
   if (user) {
-    return {
-      uid: user.id,
-      friends: user.get('friends'),
-    };
+    return user.toJSON();
   } else {
     return null;
   }
@@ -123,7 +120,7 @@ export async function getCurrentUser() {
 
   console.log('current user info:', user);
 
-  return user;
+  return user.toJSON();
 }
 
 export async function standardLogin(username, password) {
@@ -132,12 +129,7 @@ export async function standardLogin(username, password) {
       throw new Error(err);
     });
 
-  console.log('user logged in:', user);
-
-  return {
-    uid: user.id,
-    friends: user.get('friends'),
-  };
+  return user.toJSON();
 }
 
 export async function updateLocalUserDataFromParse() {
@@ -146,13 +138,10 @@ export async function updateLocalUserDataFromParse() {
       throw new Error(err);
     });
 
-  user = await user.fetch()
+  user = await user.fetchWithInclude(['friendList', 'friendList.friends'])
     .catch((err) => {
       throw new Error(err);
     });
 
-  return {
-    uid: user.id,
-    friends: user.get('friends'),
-  };
+  return user.toJSON();
 }
