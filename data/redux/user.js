@@ -1,7 +1,6 @@
 import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
 
 import { checkUser, anonymousLogin, standardLogin, createAccount, updateLocalUserDataFromParse } from "../parse-client/user";
-import { getFriendsByID } from "../parse-client/getters";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
 import { setErrorMessage } from "./messages";
 
@@ -251,26 +250,6 @@ export function refreshLocalUserInfo() {
       })
       .catch((err) => {
         dispatch(setErrorMessage(err));
-      });
-  }
-}
-
-export function refreshLocalFriendsData() {
-  return (dispatch, getState) => {
-    const friendIDs = getState().user.friends;
-    getFriendsByID(friendIDs)
-      .then( (friends) => {
-        const friendsByID = {};
-        friends.forEach((friend) => {
-          friendsByID[friend.id] = friend;
-        });
-        dispatch({
-          type: UPDATE_FRIENDS_DATA,
-          friendsByID,
-        })
-      })
-      .catch(() => {
-        dispatch(setErrorMessage("Error refreshing friend data."));
       });
   }
 }

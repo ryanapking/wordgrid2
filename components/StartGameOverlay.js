@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { startGame } from "../data/parse-client/actions";
 import { getUsersByPartialString } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
-import { refreshLocalFriendsData } from "../data/redux/user";
 
 class StartGameOverlay extends Component {
   constructor() {
@@ -22,14 +21,7 @@ class StartGameOverlay extends Component {
   }
 
   componentDidMount() {
-    // see if our local friends data contains all our friends, refresh if it doesn't
-    const { friends, friendsByID } = this.props;
-    const friendsByIDKeys = Object.keys(friendsByID);
-    let shouldRefreshFriends = false;
-    friends.forEach((friendID) => {
-      if (!shouldRefreshFriends && !friendsByIDKeys.includes(friendID)) shouldRefreshFriends = true;
-    });
-    if (shouldRefreshFriends) this.props.refreshLocalFriendsData();
+
   }
 
   render() {
@@ -135,7 +127,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setErrorMessage,
-  refreshLocalFriendsData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartGameOverlay);

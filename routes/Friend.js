@@ -38,7 +38,7 @@ class Friend extends Component {
   }
 
   render() {
-    const { gamesByID, friend } = this.props;
+    const { gamesByID, friend, friendID } = this.props;
     const { record } = this.state;
     const gamesByIDKeys = Object.keys(gamesByID);
 
@@ -64,7 +64,7 @@ class Friend extends Component {
         <View >
           <Button
             title={`Start a new game with ${friend.username}`}
-            onPress={ () => this._startGame(friend.id) }
+            onPress={ () => this._startGame(friendID) }
             color="blue"
             disabled={ this.state.startingNewGame }
           />
@@ -85,7 +85,7 @@ class Friend extends Component {
         )}
         <Button
           title={`View previous games against ${friend.username}`}
-          onPress={ () => this.props.history.push(`/friend/${friend.id}/archive`) }
+          onPress={ () => this.props.history.push(`/friend/${friendID}/archive`) }
           color="blue"
         />
       </View>

@@ -38,24 +38,6 @@ export async function getUsersByPartialString(searchString, excludeID) {
     });
 }
 
-export async function getFriendsByID(friendIDs = []) {
-  const myFriends = await new Parse.Query(Parse.User)
-    .containedIn("objectId", friendIDs)
-    .find()
-    .catch((err) => {
-      throw new Error(err);
-    });
-
-  if (!myFriends) return [];
-
-  return myFriends.map((friend) => {
-    return {
-      username: friend.get('username'),
-      id: friend.id,
-    }
-  });
-}
-
 export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
   console.log('updatePinsAgainstOpponent()');
 
