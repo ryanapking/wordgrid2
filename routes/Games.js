@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from "react-native-elements";
@@ -46,6 +46,7 @@ class Games extends Component {
             { readyToPlay.map( (gameID) => this.getGameListItem(gameID))}
           </View>
         }
+        <StartGameOverlay />
         {waitingOnOpponent.length > 0 &&
           <View>
             <ListItem title="Opponent's Move:" containerStyle={styles.divider} />
@@ -58,7 +59,10 @@ class Games extends Component {
             { over.map( (gameID) => this.getGameListItem(gameID))}
           </View>
         }
-        <StartGameOverlay />
+        <Button
+          title="View Archived Games"
+          onPress={ () => this.props.history.push('/games/archive') }
+        />
       </ScrollView>
     );
   }

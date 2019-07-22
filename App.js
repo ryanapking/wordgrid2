@@ -14,6 +14,7 @@ import Friends from "./routes/Friends";
 import Friend from "./routes/Friend";
 import FriendArchive from "./routes/FriendArchive";
 import Game from "./routes/Game";
+import GameArchive from "./routes/GameArchive";
 import GameReview from './routes/GameReview';
 import Games from "./routes/Games";
 import Challenge from "./routes/Challenge";
@@ -61,8 +62,9 @@ export default class App extends Component {
                 <Route exact path="/friend/:friendID" component={Friend} />
                 <Route path="/friend/:friendID/archive" component={FriendArchive} />
                 <Route path="/game/:gameID" component={Game} />
+                <Route path="/games/archive" component={GameArchive} />
                 <Route path="/gameReview/:gameID" component={GameReview} />
-                <Route path="/games" component={Games} />
+                <Route exact path="/games" component={Games} />
                 <Route path="/challenge" component={Challenge} />
                 <Route path="/challengeOverview" component={ChallengeOverview} />
                 <Route path="/challengeAttempts/:challengeDate" component={ChallengeAttempts} />
