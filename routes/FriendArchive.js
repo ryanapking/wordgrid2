@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
@@ -49,20 +49,23 @@ class FriendArchive extends Component {
         <Text>FriendArchive.js</Text>
         <Text>{ friendID }</Text>
         <Text>{ friend ? friend.username : '' }</Text>
-        {games.map((game) =>
-          <GameListItem
-            key={ game.sourceData.objectId }
-            opponentName={ friend.username }
-            gameID={ game.sourceData.objectId }
-            gameStatus={ game.status }
-            turn={ game.turn }
-            winner={ game.winner }
-            player1={ game.p1 }
-            playerScore={ game.currentPlayer.score }
-            opponentScore={ game.opponent.score }
-            hideOpponentName
-          />
-        )}
+        <FlatList
+          data={games}
+          renderItem={({item: game}) =>
+            <GameListItem
+              key={ game.sourceData.objectId }
+              opponentName={ friend.username }
+              gameID={ game.sourceData.objectId }
+              gameStatus={ game.status }
+              turn={ game.turn }
+              winner={ game.winner }
+              player1={ game.p1 }
+              playerScore={ game.currentPlayer.score }
+              opponentScore={ game.opponent.score }
+              hideOpponentName
+            />
+          }
+        />
       </View>
     );
   }
