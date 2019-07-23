@@ -3,8 +3,10 @@ import moment from 'moment';
 import Parse from './client-setup';
 import { challengeRemoteToLocalStorageObject } from '../utilities/functions/dataConversions';
 
+const ChallengesObject = Parse.Object.extend("Challenges");
+const GamesObject = Parse.Object.extend("Games");
+
 export async function getUpcomingChallengesByDate() {
-  const ChallengesObject = Parse.Object.extend("Challenges");
 
   let upcomingChallenges = await new Parse.Query(ChallengesObject)
     .equalTo("challengeComplete", false)
@@ -24,19 +26,63 @@ export async function getUpcomingChallengesByDate() {
   return challengesByDate;
 }
 
+// searches local data store for current challenge
+// if not found, searches remote db and pins challenge to local data store
+export async function getCurrentChallenge() {
+  const now = moment().toDate();
+  const localChallenge = await new Parse.Query(ChallengesObject)
+    .greaterThan("endDate", now)
+    .lessThan("startDate", now)
+    .limit(1)
+    .fromLocalDatastore()
+    .find()
+    .catch((err) => {
+      console.log('error fetching current challenge from local data store', err);
+      throw new Error(err);
+    });
+
+  if (localChallenge) {
+    return localChallenge[0].toJSON();
+  }
+
+  const remoteChallenge = await new Parse.Query(ChallengesObject)
+    .greaterThan('endDate', now)
+    .lessThan('startDate', now)
+    .limit(1)
+    .find()
+    .catch((err) => {
+      console.log('error fetching current challenge from parse', err);
+      throw new Error(err);
+    });
+
+  Parse.Object.pinAll(remoteChallenge)
+    .then(() => {
+      console.log('current challenge pinned');
+    })
+    .catch((err) => {
+      console.log('error pinning current challenge', err);
+    });
+
+  if (remoteChallenge) {
+    return remoteChallenge[0].toJSON();
+  }
+
+  throw new Error('No challenge found!');
+}
+
 // yields 1 to 2 values:
 // 1: recent challenges from local data store
 // 2: if needed, pulls from remote and yields
-export async function* getRecentChallenges(fromLocal = false, skipDays = 0) {
-  const ChallengeObject = Parse.Object.extend("Challenges");
+export async function* getRecentChallenges(skipDays = 0) {
 
   // count back 10 days from now, skipping any needed days
-  const startingPoint = moment().subtract(skipDays, 'day');
+  // we never want the current challenge, so we add one to skipDays
+  const startingPoint = moment().subtract(skipDays + 1, 'day');
   const latest = startingPoint.toDate();
   const earliest = startingPoint.subtract(10, 'day').toDate();
 
   // query against local data store
-  const localChallenges = await new Parse.Query(ChallengeObject)
+  const localChallenges = await new Parse.Query(ChallengesObject)
     .greaterThan("startDate", earliest)
     .lessThan("startDate", latest)
     .descending("startDate")
@@ -59,7 +105,6 @@ export async function* getRecentChallenges(fromLocal = false, skipDays = 0) {
   if (localChallenges.length < 10) needsFetch = true;
   if (!needsFetch) {
     localChallenges.forEach((challenge) => {
-      // TODO: this might need to include exceptions for the current challenge, which will never be marked complete
       const finalRankingComplete = challenge.get('finalRankingComplete');
       if (!finalRankingComplete) needsFetch = true;
     });
@@ -69,7 +114,7 @@ export async function* getRecentChallenges(fromLocal = false, skipDays = 0) {
   if (!needsFetch) return;
 
   // run same query as above against remote db
-  const remoteChallenges = await new Parse.Query(ChallengeObject)
+  const remoteChallenges = await new Parse.Query(ChallengesObject)
     .greaterThan("startDate", earliest)
     .lessThan("startDate", latest)
     .descending("startDate")
@@ -112,7 +157,6 @@ export async function getUsersByPartialString(searchString, excludeID) {
 export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
   console.log('updatePinsAgainstOpponent()');
 
-  const GamesObject = Parse.Object.extend("Games");
   const playerPointers = [
     {
       __type: 'Pointer',
@@ -193,7 +237,6 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
 }
 
 export async function getOpponentArchive(opponentId, currentPlayerId) {
-  const GamesObject = Parse.Object.extend("Games");
 
   const playerPointers = [
     {
@@ -228,7 +271,6 @@ export async function getOpponentArchive(opponentId, currentPlayerId) {
 }
 
 export async function getFullGameArchive(playerID) {
-  const GamesObject = Parse.Object.extend("Games");
   const currentPlayerPointer = {
     __type: 'Pointer',
     className: '_User',
@@ -260,7 +302,6 @@ export async function getFullGameArchive(playerID) {
 }
 
 export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerId) {
-  const GamesObject = Parse.Object.extend("Games");
 
   const currentPlayerPointer = {
     __type: 'Pointer',
@@ -311,8 +352,6 @@ export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerI
 // attempts to pull data from Parse local data store
 // falls back to pulling from remote
 export async function getGameSourceData(gameID) {
-
-  const GamesObject = Parse.Object.extend("Games");
 
   // try to fetch the game from the local datastore
   let game = await new Parse.Query(GamesObject)
