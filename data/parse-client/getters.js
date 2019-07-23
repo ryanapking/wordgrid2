@@ -24,6 +24,77 @@ export async function getUpcomingChallengesByDate() {
   return challengesByDate;
 }
 
+// yields 1 to 2 values:
+// 1: recent challenges from local data store
+// 2: if needed, pulls from remote and yields
+export async function* getRecentChallenges(fromLocal = false, skipDays = 0) {
+  const ChallengeObject = Parse.Object.extend("Challenges");
+
+  // count back 10 days from now, skipping any needed days
+  const startingPoint = moment().subtract(skipDays, 'day');
+  const latest = startingPoint.toDate();
+  const earliest = startingPoint.subtract(10, 'day').toDate();
+
+  // query against local data store
+  const localChallenges = await new Parse.Query(ChallengeObject)
+    .greaterThan("startDate", earliest)
+    .lessThan("startDate", latest)
+    .descending("startDate")
+    .include(['winners', 'winners.user'])
+    .fromLocalDatastore()
+    .find()
+    .catch((err) => {
+      console.log('error fetching challenges from local')
+      throw new Error(err);
+    });
+
+  // yield challenges form local data store
+  yield localChallenges.map((challenge) => {
+    return challenge.toJSON();
+  });
+
+  // determine if we need to fetch remote
+  let needsFetch = false;
+  // TODO: there will be a point in time when this will not return 10 challenges
+  if (localChallenges.length < 10) needsFetch = true;
+  if (!needsFetch) {
+    localChallenges.forEach((challenge) => {
+      // TODO: this might need to include exceptions for the current challenge, which will never be marked complete
+      const finalRankingComplete = challenge.get('finalRankingComplete');
+      if (!finalRankingComplete) needsFetch = true;
+    });
+  }
+
+  // exit if no fetch needed
+  if (!needsFetch) return;
+
+  // run same query as above against remote db
+  const remoteChallenges = await new Parse.Query(ChallengeObject)
+    .greaterThan("startDate", earliest)
+    .lessThan("startDate", latest)
+    .descending("startDate")
+    .include(['winners', 'winners.user'])
+    .find()
+    .catch((err) => {
+      console.log('error fetching challenges from remote')
+      throw new Error(err);
+    });
+
+  // pin values to local data store
+  Parse.Object.pinAll(remoteChallenges)
+    .then(() => {
+      console.log('remote challenges pinned');
+    })
+    .catch((err) => {
+      console.log('error pinning challenges', err);
+    });
+
+  // yield challenges from remote
+  yield remoteChallenges.map((challenge) => {
+    return challenge.toJSON();
+  });
+}
+
 export async function getUsersByPartialString(searchString, excludeID) {
   if (searchString.length < 3) return [];
 
