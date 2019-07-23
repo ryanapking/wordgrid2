@@ -3,9 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
+import moment from 'moment';
 
-import { getCurrentChallenge, storeChallengesByDate, getChallengeAttemptDates, getChallengeAttemptsByDate, markChallengeAttemptSavedRemotely } from "../data/async-storage";
-import { getUpcomingChallengesByDate } from "../data/parse-client/getters";
+import {
+  getChallengeAttemptDates,
+  getChallengeAttemptsByDate,
+  markChallengeAttemptSavedRemotely
+} from "../data/async-storage";
+import { getRecentChallenges, getCurrentChallenge } from "../data/parse-client/getters";
 import { saveChallengeAttempt } from "../data/parse-client/actions";
 import { setSourceChallengeData } from "../data/redux/challengeData";
 
@@ -16,57 +21,32 @@ class ChallengeOverview extends Component {
     this.state = {
       gettingChallenge: true,
       currentChallenge: null,
-      currentChallengeAttempts: [],
-      pastChallengeDates: [],
+      recentChallenges: [],
     };
   }
 
   componentDidMount() {
-    this._getCurrentChallenge()
-      .then((currentChallenge) => {
-        this.setState({
-          currentChallenge,
-          gettingChallenge: false,
-        });
-        this._getCurrentChallengeAttempts(currentChallenge.date);
-        this.props.setSourceChallengeData(currentChallenge);
-      })
-      .catch((err) => {
-        console.log('error getting current challenge', err);
-        this.setState({ gettingChallenge: false })
-      });
-    this._getChallengeAttemptDates();
+    this._getCurrentChallenge().then();
+    this._getRecentChallenges().then();
   }
 
   render() {
-    const { currentChallenge, currentChallengeAttempts, pastChallengeDates } = this.state;
+    const { recentChallenges, currentChallenge } = this.state;
 
-    // console.log('current challenge:', currentChallenge);
-    // console.log('current attempts:', currentChallengeAttempts);
+    console.log('current challenge:', currentChallenge);
+    console.log('recent challenges:', recentChallenges);
 
     return (
       <View>
-        <ListItem onPress={() => this.props.history.push(`/challenge`)}
+        <ListItem
+          onPress={() => this.props.history.push(`/challenge`)}
           title={ currentChallenge ? "Play Now" : "Searching for Current Challenge" }
         />
-        { currentChallengeAttempts.length > 0 ?
-          <ListItem title="Attempts" containerStyle={styles.divider} />
-          : null
-        }
-        { currentChallengeAttempts.map( (attempt, index) =>
+        { recentChallenges.map((challenge) =>
           <ListItem
-            key={index} style={styles.listItem}
-            title={ attempt.score + " points" }
-            rightTitle={ attempt.savedRemotely.toString() }
-            onPress={() => this.props.history.push(`/challengeAttemptReview/${currentChallenge.date}/${attempt.attemptIndex}`)}
-          />
-        )}
-        <ListItem title="Past Challenges" containerStyle={styles.divider} />
-        { pastChallengeDates.map( (date, index) =>
-          <ListItem
-            title={ date }
-            key={index}
-            onPress={() => this.props.history.push(`/challengeAttempts/${date}`)}
+            key={ challenge.objectId }
+            title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
+            onPress={ () => console.log(challenge.objectId) }
           />
         )}
       </View>
@@ -74,42 +54,30 @@ class ChallengeOverview extends Component {
   }
 
   async _getCurrentChallenge() {
-
-    // try to get the current challenge from async storage
-    let currentChallenge = await getCurrentChallenge(this.props.uid)
+    const currentChallenge = await getCurrentChallenge()
       .catch((err) => {
-        throw new Error('error getting current challenge from async storage');
+        this.props.setErrorMessage(err);
+        console.log('error getting current challenge', err);
       });
 
-    // if we don't have the current challenge here, it probably hasn't been downloaded from parse yet.
-    if (!currentChallenge) {
+    this.props.setSourceChallengeData(currentChallenge);
+    this.setState({
+      currentChallenge,
+      gettingChallenge: false,
+    });
+  }
 
-      // download upcoming challenges from parse
-      const upcomingChallenges = await getUpcomingChallengesByDate()
-        .catch((err) => {
-          throw new Error('error getting upcoming challenges from parse');
-        });
-
-      // save upcoming challenges to async storage
-      await storeChallengesByDate(this.props.uid, upcomingChallenges)
-        .catch((err) => {
-          throw new Error('error storing upcoming challenges in async storage');
-        });
-
-      // try again to get the current challenge from async storage
-      currentChallenge = await getCurrentChallenge(this.props.uid)
-        .catch((err) => {
-          throw new Error('error getting current challenge from async storage');
-        });
+  async _getRecentChallenges() {
+    const challengesGenerator = getRecentChallenges(); // returns values form local data store, then from remote, if needed
+    let valuesRemain = true;
+    while (valuesRemain) {
+      const { value: challenges, done } = await challengesGenerator.next();
+      valuesRemain = !done;
+      if (!challenges) continue;
+      this.setState({ recentChallenges: challenges });
+      console.log('challenges:', challenges);
+      console.log('done:', done);
     }
-
-    // if we have the challenge, set the appropriate state values
-    if (currentChallenge) {
-      return currentChallenge;
-    } else {
-      throw new Error('current challenge not found');
-    }
-
   }
 
   // queries async-storage for attempts based on the current challenge date
