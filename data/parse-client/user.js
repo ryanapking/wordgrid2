@@ -120,7 +120,7 @@ export async function getCurrentUser() {
 
   console.log('current user info:', user);
 
-  return user.toJSON();
+  return user;
 }
 
 export async function standardLogin(username, password) {

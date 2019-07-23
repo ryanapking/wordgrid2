@@ -55,3 +55,10 @@ export async function addFriend(friendID) {
 
   return newFriend;
 }
+
+export async function removeFriend(friendID) {
+  return await Parse.Cloud.run("removeFriend", {friendID})
+    .catch((err) => {
+      throw new Error(err);
+    });
+}

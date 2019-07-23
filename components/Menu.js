@@ -15,34 +15,44 @@ class Menu extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.gameMenuItems()}
-        <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
-        <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
-        <ListItem title="Friends" onPress={() => this.navigateTo('/friends')} />
+        { this.gameMenuItems() }
+        { this.globalMenuItems() }
       </View>
     );
   }
 
+  globalMenuItems() {
+    return (
+      <View>
+        <ListItem title="Navigate" containerStyle={styles.divider} />
+        <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
+        <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
+        <ListItem title="Friends" onPress={() => this.navigateTo('/friends')} />
+      </View>
+    )
+  }
+
   gameMenuItems() {
     const { game, gameID, friends } = this.props;
+    if (!game) return null;
 
-    if (game) {
-      return (
-        <View>
-          <ListItem title="Reset Move" onPress={ () => this.resetGameData(gameID) } />
-          <ListItem title="Forfeit Game" onPress={ () => this._forfeitGame(gameID) } />
+    const isFriend = friends.includes(game.opponent.id);
+
+    return (
+      <View>
+        <ListItem title="Game Actions" containerStyle={styles.divider} />
+        <ListItem title="Reset Move" onPress={ () => this.resetGameData(gameID) } />
+        <ListItem title="Forfeit Game" onPress={ () => this._forfeitGame(gameID) } />
+        { isFriend ? null :
           <ListItem
             title="Add Friend"
             titleStyle={game.opponent.id ? {} : styles.disabledTitle}
             onPress={ () => this._addFriend(game.opponent.id) }
             disabled={!game.opponent.id}
           />
-        </View>
-      );
-    } else {
-      return null;
-    }
-
+        }
+      </View>
+    );
   }
 
   _forfeitGame(gameID) {
@@ -89,6 +99,9 @@ const styles = StyleSheet.create({
   },
   disabledTitle: {
     color: 'lightgray',
+  },
+  divider: {
+    backgroundColor: 'lightgray',
   },
 });
 
