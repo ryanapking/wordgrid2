@@ -140,6 +140,35 @@ export async function* getRecentChallenges(skipDays = 0) {
   });
 }
 
+export async function getChallengeByID(challengeID) {
+  const localChallenge = await new Parse.Query(ChallengesObject)
+    .fromLocalDatastore()
+    .include(['winners', 'winners.user'])
+    .get(challengeID)
+    .catch((err) => {
+      console.log('error fetching challenge by ID from local data store', err);
+      throw new Error(err);
+    });
+
+  if (localChallenge) {
+    return localChallenge.toJSON();
+  }
+
+  const remoteChallenge = await new Parse.Query(ChallengesObject)
+    .include(['winners', 'winners.user'])
+    .get(challengeID)
+    .catch((err) => {
+      console.log('error fetching challenge by ID from remote store', err);
+      throw new Error(err);
+    });
+
+  if (remoteChallenge) {
+    return remoteChallenge.toJSON();
+  }
+
+  throw new Error('challenge not found');
+}
+
 export async function getUsersByPartialString(searchString, excludeID) {
   if (searchString.length < 3) return [];
 
