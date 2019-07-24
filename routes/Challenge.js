@@ -1,112 +1,71 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
-import { withRouter } from 'react-router-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { ListItem } from 'react-native-elements';
+import { withRouter } from 'react-router-native';
 
-import Board from '../components/Board';
-import ChallengeInteraction from '../components/ChallengeInteraction';
-import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
-import PieceOverlay from '../components/PieceOverlay';
-import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece, saveAttempt } from "../data/redux/challengeData";
+import { getChallengeAttemptsByDate } from "../data/async-storage";
 
 class Challenge extends Component {
-  componentDidMount() {
-    const { challenge } = this.props.challengeData;
-    if (!challenge || challenge.gameOver) {
-      this.props.startChallenge();
-    }
+  constructor() {
+    super();
+
+    this.state = {
+      challenge: null,
+      attempts: [],
+    };
   }
 
-  componentDidUpdate() {
-    const { challenge, source } = this.props.challengeData;
-
-    if (challenge.gameOver && !challenge.attemptSaved) {
-      this.props.saveAttempt(this.props.userID);
-    }
+  componentDidMount() {
+    // this._getAttempts();
   }
 
   render() {
-    const { challenge } = this.props.challengeData;
+    const { attempts } = this.state;
 
-    if (challenge) {
+    return (
+      <View>
+        <ListItem title={ "Challenge from " + this.props.challengeDate } />
+        <ListItem title="Attempts" containerStyle={styles.divider} />
+        { attempts.map( (attempt, index) =>
+          <ListItem
+            key={index}
+            title={ attempt.score + " points" }
+            onPress={() => this.props.history.push(`/challengeAttemptReview/${this.props.challengeDate}/${index}`)}
+          />
+        )}
+      </View>
+    )
+  }
 
-      // zindex doesn't work on android. must move the overlay before or after the other elements, depending on need.
-      const pieceOverlay =
-        <PieceOverlay
-          pointerEvents={'none'}
-          boardRows={challenge.rows}
-          placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
-        />;
-
-      return (
-        <View style={styles.container}>
-          { challenge.word ? null : pieceOverlay }
-          <View style={styles.underlay}>
-            <View style={styles.info}>
-              <ChallengeInfoDisplay
-                moves={challenge.moves}
-                score={challenge.score}
-                word={challenge.word}
-                style={{height: '100%', width: '100%'}}
-              />
-            </View>
-            <Board
-              style={styles.board}
-              word={challenge.word}
-              rows={challenge.rows}
-              consumedSquares={challenge.consumedSquares}
-              consumeSquare={(square) => this.props.consumeSquare(square)}
-              removeSquare={() => this.props.removeSquare()}
-              clearConsumedSquares={() => this.props.clearConsumedSquares()}
-            />
-            <ChallengeInteraction style={styles.interaction}></ChallengeInteraction>
-          </View>
-          { challenge.word ? pieceOverlay : null }
-        </View>
-      );
-    } else {
-      return null;
-    }
+  // get array of attempts
+  _getAttempts() {
+    getChallengeAttemptsByDate(this.props.userID, this.props.challengeDate)
+      .then( (attempts) => {
+        this.setState({
+          attempts: attempts,
+        });
+      });
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    width: '100%',
-    height: '100%',
+  listItem: {
+    display: 'flex',
+    justifyContent: 'space-between'
   },
-  underlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-  info: {
-    flex: 4,
-  },
-  board: {
-    flex: 14,
-  },
-  interaction: {
-    flex: 5,
+  divider: {
+    backgroundColor: "lightgray",
   }
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  const { challengeID } = ownProps.match.params;
+  console.log('challenge ID:', challengeID);
   return {
+    challengeID,
     userID: state.user.uid,
-    challengeData: state.challengeData
   };
 };
 
-const mapDispatchToProps = {
-  startChallenge,
-  consumeSquare,
-  removeSquare,
-  clearConsumedSquares,
-  placePiece,
-  saveAttempt,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Challenge));
+export default withRouter(connect(mapStateToProps)(Challenge));

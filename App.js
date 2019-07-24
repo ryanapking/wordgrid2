@@ -17,9 +17,9 @@ import Game from "./routes/Game";
 import GameArchive from "./routes/GameArchive";
 import GameReview from './routes/GameReview';
 import Games from "./routes/Games";
-import Challenge from "./routes/Challenge";
 import Challenges from "./routes/Challenges";
-import ChallengeAttempts from "./routes/ChallengeAttempts";
+import Challenge from "./routes/Challenge";
+import ChallengeAttempt from "./routes/ChallengeAttempt";
 import ChallengeAttemptReview from "./routes/ChallengeAttemptReview";
 
 // redirect all non-logged in users to the login screen
@@ -65,9 +65,9 @@ export default class App extends Component {
                 <Route path="/games/archive" component={GameArchive} />
                 <Route path="/gameReview/:gameID" component={GameReview} />
                 <Route exact path="/games" component={Games} />
-                <Route path="/challenge" component={Challenge} />
-                <Route path="/challengeOverview" component={Challenges} />
-                <Route path="/challengeAttempts/:challengeDate" component={ChallengeAttempts} />
+                <Route path="/challenges" component={Challenges} />
+                <Route path="/challenge/:challengeID" component={Challenge} />
+                <Route path="/challengeAttempt" component={ChallengeAttempt} />
                 <Route path="/challengeAttemptReview/:challengeDate/:attemptIndex" component={ChallengeAttemptReview} />
               </View>
             </View>

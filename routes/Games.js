@@ -33,7 +33,7 @@ class Games extends Component {
 
     return (
       <ScrollView style={{width: '100%'}}>
-        <ListItem title="Daily Challenge" onPress={() => this.props.history.push(`/challengeOverview/main`)} />
+        <ListItem title="Daily Challenge" onPress={() => this.props.history.push(`/challenges`)} />
         {requests.length > 0 &&
           <View>
             <ListItem title="New Game Requests:" containerStyle={styles.divider} />

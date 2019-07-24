@@ -40,14 +40,14 @@ class Challenges extends Component {
     return (
       <View>
         <ListItem
-          onPress={() => this.props.history.push(`/challenge`)}
+          onPress={() => this.props.history.push(`/challengeAttempt`)}
           title={ currentChallenge ? "Play Now" : "Searching for Current Challenge" }
         />
         { recentChallenges.map((challenge) =>
           <ListItem
             key={ challenge.objectId }
             title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
-            onPress={ () => console.log(challenge.objectId) }
+            onPress={ () => this.props.history.push(`/challenge/${challenge.objectId}`) }
           />
         )}
       </View>
