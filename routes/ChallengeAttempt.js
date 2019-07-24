@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,14 @@ import Board from '../components/Board';
 import ChallengeInteraction from '../components/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
 import PieceOverlay from '../components/PieceOverlay';
-import { startChallenge, consumeSquare, removeSquare, clearConsumedSquares, placePiece, saveAttempt } from "../data/redux/challengeData";
+import {
+  startChallenge,
+  consumeSquare,
+  removeSquare,
+  clearConsumedSquares,
+  placePiece,
+  saveAttempt,
+} from "../data/redux/challengeData";
 
 class ChallengeAttempt extends Component {
   componentDidMount() {

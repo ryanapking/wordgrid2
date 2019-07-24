@@ -61,7 +61,6 @@ class Challenges extends Component {
         console.log('error getting current challenge', err);
       });
 
-    this.props.setSourceChallengeData(currentChallenge);
     this.setState({
       currentChallenge,
       gettingChallenge: false,

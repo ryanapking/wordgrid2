@@ -9,7 +9,9 @@ import {
   getBoardPlusPiece,
   validateChallengeAttempt
 } from "../utilities";
+import { getCurrentChallenge } from "../parse-client/getters";
 import { storeChallengeAttemptByDate } from "../async-storage";
+import { setErrorMessage } from "./messages";
 import english from '../english';
 
 // available actions
@@ -142,11 +144,14 @@ export function setLocalChallengeData(sourceChallengeData) {
 }
 
 export function startChallenge() {
-  return (dispatch, getState) => {
-    const { challengeData } = getState();
-    if (challengeData.source) {
-      dispatch(setLocalChallengeData(challengeData.source));
-    }
+  return (dispatch) => {
+    getCurrentChallenge()
+      .then((currentChallenge) => {
+        dispatch(setLocalChallengeData(currentChallenge));
+      })
+      .catch((err) => {
+        dispatch(setErrorMessage('unable to find current challenge'));
+      });
   };
 }
 
@@ -221,7 +226,6 @@ export function placePiece(pieceIndex, rowRef, columnRef) {
     // remove the played piece and add the next piece
     const remainingPieces = challenge.pieces.filter( (piece, currentPieceIndex) => currentPieceIndex !== parseInt(pieceIndex));
     const pieces = [...remainingPieces, []];
-
 
     // convert the data into a move to be saved
     const newMoveItem = challengeStateToMove(challenge, placementRefString, placementValue);

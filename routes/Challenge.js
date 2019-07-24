@@ -4,24 +4,30 @@ import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
+import { getChallengeByID } from "../data/parse-client/getters";
 import { getChallengeAttemptsByDate } from "../data/async-storage";
+import { setErrorMessage } from "../data/redux/messages";
 
 class Challenge extends Component {
   constructor() {
     super();
 
     this.state = {
-      challenge: null,
+      challenge: {},
       attempts: [],
     };
   }
 
   componentDidMount() {
+    this._getChallengeByID().then();
     // this._getAttempts();
   }
 
   render() {
-    const { attempts } = this.state;
+    const { attempts, challenge } = this.state;
+    const { winners } = challenge;
+
+    console.log('Challenge.js render()', {challenge, winners});
 
     return (
       <View>
@@ -36,6 +42,15 @@ class Challenge extends Component {
         )}
       </View>
     )
+  }
+
+  async _getChallengeByID() {
+    const { challengeID } = this.props;
+    const challenge = await getChallengeByID(challengeID)
+      .catch((err) => {
+        this.props.setErrorMessage("Unable to find challenge");
+      });
+    this.setState({ challenge });
   }
 
   // get array of attempts
@@ -61,11 +76,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   const { challengeID } = ownProps.match.params;
-  console.log('challenge ID:', challengeID);
   return {
     challengeID,
     userID: state.user.uid,
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Challenge));
+const mapDispatchToProps = {
+  setErrorMessage,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Challenge));
