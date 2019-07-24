@@ -5,6 +5,7 @@ import { challengeRemoteToLocalStorageObject } from '../utilities/functions/data
 
 const ChallengesObject = Parse.Object.extend("Challenges");
 const GamesObject = Parse.Object.extend("Games");
+const ChallengeAttemptObject = Parse.Object.extend("ChallengeAttempt");
 
 export async function getUpcomingChallengesByDate() {
 
@@ -167,6 +168,71 @@ export async function getChallengeByID(challengeID) {
   }
 
   throw new Error('challenge not found');
+}
+
+// TODO: this should probably be a generator function that returns 1 to 2 values
+export async function getAttemptByChallengeID(challengeID, uid) {
+
+  // pointers for query comparisons
+  const challengePointer = {
+    __type: 'Pointer',
+    className: 'Challenges',
+    objectId: challengeID,
+  };
+  const userPointer = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: uid,
+  };
+
+  // query local data store
+  const localAttempts = await new Parse.Query(ChallengeAttemptObject)
+    .fromLocalDatastore()
+    .equalTo("user", userPointer)
+    .equalTo("challenge", challengePointer)
+    .limit(1)
+    .find()
+    .catch((err) => {
+      console.log('error getting attempt from local data store', err);
+      throw new Error(err);
+    });
+
+  // if we have a local attempt and it doesn't need to be updated, return it
+  let attempt;
+  if (localAttempts.length) {
+    attempt = localAttempts[0].toJSON();
+    if (attempt.challengeComplete) {
+      return attempt;
+    }
+  }
+
+  // query remote
+  const remoteAttempts = await new Parse.Query(ChallengeAttemptObject)
+    .equalTo("user", userPointer)
+    .equalTo("challenge", challengePointer)
+    .limit(1)
+    .find()
+    .catch((err) => {
+      console.log('error getting attempt from local data store', err);
+      return []; // no need to trigger error, just return empty
+    });
+
+  // pin and return remote values
+  if (remoteAttempts.length) {
+    Parse.Object.pinAll(remoteAttempts)
+      .then((something) => {
+        console.log('remote challenge attempt pinned successfully', something);
+      })
+      .catch((err) => {
+        console.log('error pinning remote challenge attempt:', err);
+      });
+    return remoteAttempts[0].toJSON();
+  }
+
+  // if remote returned nothing, fall back to returning local attempt, if it exists
+  if (attempt) return attempt;
+
+  throw new Error("Unable to find challenge attempt");
 }
 
 export async function getUsersByPartialString(searchString, excludeID) {
