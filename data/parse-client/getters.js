@@ -41,7 +41,7 @@ export async function getCurrentChallenge() {
       throw new Error(err);
     });
 
-  if (localChallenge) {
+  if (localChallenge.length) {
     return localChallenge[0].toJSON();
   }
 
@@ -94,7 +94,7 @@ export async function* getRecentChallenges(skipDays = 0) {
       throw new Error(err);
     });
 
-  // yield challenges form local data store
+  // yield challenges from local data store
   yield localChallenges.map((challenge) => {
     return challenge.toJSON();
   });

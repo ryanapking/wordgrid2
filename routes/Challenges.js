@@ -10,11 +10,12 @@ import {
   getChallengeAttemptsByDate,
   markChallengeAttemptSavedRemotely
 } from "../data/async-storage";
+import { setErrorMessage } from "../data/redux/messages";
 import { getRecentChallenges, getCurrentChallenge } from "../data/parse-client/getters";
 import { saveChallengeAttempt } from "../data/parse-client/actions";
 import { setSourceChallengeData } from "../data/redux/challengeData";
 
-class ChallengeOverview extends Component {
+class Challenges extends Component {
   constructor() {
     super();
 
@@ -152,6 +153,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setSourceChallengeData,
+  setErrorMessage,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeOverview));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Challenges));
