@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 
-import { getChallengeByID } from "../data/parse-client/getters";
-import { getChallengeAttemptsByDate } from "../data/async-storage";
+import { getChallengeByID, getAttemptByChallengeID } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 
 class Challenge extends Component {
@@ -14,20 +13,23 @@ class Challenge extends Component {
 
     this.state = {
       challenge: {},
+      officialAttempt: {},
+      localAttempts: [],
       attempts: [],
     };
   }
 
   componentDidMount() {
     this._getChallengeByID().then();
-    // this._getAttempts();
+    this._getOfficialAttemptByChallengeID().then();
+    this._getLocalAttemptsByChallengeID().then();
   }
 
   render() {
-    const { attempts, challenge } = this.state;
+    const { attempts, challenge, officialAttempt, localAttempts } = this.state;
     const { winners } = challenge;
 
-    console.log('Challenge.js render()', {challenge, winners});
+    console.log('Challenge.js render()', { challenge, winners, officialAttempt, localAttempts });
 
     return (
       <View>
@@ -44,6 +46,18 @@ class Challenge extends Component {
     )
   }
 
+  // pulls attempt from Parse local store or remote, if needed
+  async _getOfficialAttemptByChallengeID() {
+    const { challengeID, userID } = this.props;
+    this._getChallengeByID().then();
+    const attempt = await getAttemptByChallengeID(challengeID, userID)
+      .catch((err) => {
+        console.log('No attempt found');
+      });
+
+    this.setState({ officialAttempt: attempt });
+  }
+
   async _getChallengeByID() {
     const { challengeID } = this.props;
     const challenge = await getChallengeByID(challengeID)
@@ -53,14 +67,9 @@ class Challenge extends Component {
     this.setState({ challenge });
   }
 
-  // get array of attempts
-  _getAttempts() {
-    getChallengeAttemptsByDate(this.props.userID, this.props.challengeDate)
-      .then( (attempts) => {
-        this.setState({
-          attempts: attempts,
-        });
-      });
+  async _getLocalAttemptsByChallengeID() {
+    console.log('_getLocalAttemptsByChallengeID()');
+    const { challengeID, userID } = this.props;
   }
 }
 

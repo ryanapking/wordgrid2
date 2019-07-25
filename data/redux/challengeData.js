@@ -1,5 +1,4 @@
 import {
-  challengeLocalStorageObjectToPlayableObject,
   challengeStateToMove,
   challengeStateToAttempt,
   calculateWordValue,
@@ -7,10 +6,11 @@ import {
   wordPathArrayToString,
   placementRefStringToArray,
   getBoardPlusPiece,
-  validateChallengeAttempt
+  challengeRemoteToPlayableObject,
 } from "../utilities";
+import { saveChallengeAttempt } from "../parse-client/actions";
 import { getCurrentChallenge } from "../parse-client/getters";
-import { storeChallengeAttemptByDate } from "../async-storage";
+import { storeAttemptByChallengeID } from "../async-storage/challengeAttempts";
 import { setErrorMessage } from "./messages";
 import english from '../english';
 
@@ -139,7 +139,7 @@ export function setSourceChallengeData(sourceChallengeData) {
 export function setLocalChallengeData(sourceChallengeData) {
   return {
     type: CHALLENGE_SET_LOCAL_DATA,
-    challenge: challengeLocalStorageObjectToPlayableObject(sourceChallengeData),
+    challenge: challengeRemoteToPlayableObject(sourceChallengeData),
   };
 }
 
@@ -259,9 +259,19 @@ export function saveAttempt(userID) {
     const { challengeData } = getState();
     const { challenge } = challengeData;
     const challengeAttempt = challengeStateToAttempt(challenge);
-    storeChallengeAttemptByDate(userID, challengeAttempt, challenge.date)
+    saveChallengeAttempt(challengeAttempt)
       .then( () => {
-        dispatch(markSaved());
+        console.log('challenge saved remotely');
+      })
+      .catch( (err) => {
+        console.log('error saving attempt remotely', err);
+      });
+    storeAttemptByChallengeID(userID, challengeAttempt, challenge.id)
+      .then( () => {
+        console.log('challenge stored successfully');
+      })
+      .catch((err) => {
+        console.log('error storing attempt to local async storage:', err);
       });
   };
 }

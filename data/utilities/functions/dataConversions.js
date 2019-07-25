@@ -170,6 +170,37 @@ function challengeLocalStorageObjectToPlayableObject(localChallengeObject) {
   return challenge;
 }
 
+function challengeRemoteToPlayableObject(remoteChallengeObject) {
+  let localPieceBank = remoteChallengeObject.pieceBank.map((pieceSet) => {
+    let localPieceSet = {};
+    Object.keys(pieceSet).forEach( (key) => {
+      localPieceSet[key] = pieceStringToArray(pieceSet[key]);
+    });
+    return localPieceSet;
+  });
+
+  // create challenge item
+  let challenge = {
+    rows: boardStringToArray(remoteChallengeObject.startingBoard),
+    pieceBank: localPieceBank,
+    pieceSet: localPieceBank[0],
+    pieces: [...remoteChallengeObject.startingPieces, ""].map( (piece) => pieceStringToArray(piece)),
+    moves: [],
+
+    word: null,
+    wordValue: null,
+    wordPath: null,
+    consumedSquares: [],
+
+    score: 0,
+    gameOver: false,
+    attemptSaved: false,
+    id: remoteChallengeObject.objectId,
+  };
+
+  return challenge;
+}
+
 function challengeStateToMove(challengeData, placementRef = null, placementValue = null) {
   return {
     w: challengeData.word, // word played
@@ -367,6 +398,7 @@ module.exports = {
   remoteToLocal,
   challengeRemoteToLocalStorageObject,
   challengeLocalStorageObjectToPlayableObject,
+  challengeRemoteToPlayableObject,
   challengeStateToMove,
   challengeStateToAttempt,
   challengeAttemptToReviewObject,
