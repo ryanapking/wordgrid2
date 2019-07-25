@@ -80,7 +80,8 @@ class Challenge extends Component {
   }
 
   localAttemptsSection() {
-    const { localAttempts } = this.state;
+    const { localAttempts, challenge } = this.state;
+    if (!localAttempts.length || !challenge) return null;
     return (
       <View>
         <ListItem title="Your Additional Attempts" containerStyle={styles.divider} />
@@ -88,7 +89,7 @@ class Challenge extends Component {
           <ListItem
             key={index}
             title={ attempt.score + " points" }
-            onPress={() => this.props.history.push(`/challengeAttemptReview/${attempt.objectId}`)}
+            onPress={() => this.props.history.push(`/challengeAttemptReview/${challenge.objectId}/${index}`)}
           />
         )}
       </View>

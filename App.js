@@ -68,7 +68,8 @@ export default class App extends Component {
                 <Route path="/challenges" component={Challenges} />
                 <Route path="/challenge/:challengeID" component={Challenge} />
                 <Route path="/challengeAttempt" component={ChallengeAttempt} />
-                <Route path="/challengeAttemptReview/:attemptID" component={ChallengeAttemptReview} />
+                <Route exact path="/challengeAttemptReview/:attemptID" component={ChallengeAttemptReview} />
+                <Route exact path="/challengeAttemptReview/:challengeID/:attemptIndex" component={ChallengeAttemptReview} />
               </View>
             </View>
             <LoginRedirect />

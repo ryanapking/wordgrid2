@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, Text, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
-import { getAttemptByID } from "../data/parse-client/getters";
+import { getAttemptByChallengeIDAndIndex } from "../data/async-storage/challengeAttempts";
+import { getAttemptByID, getChallengeByID } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
+import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
+import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
+
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
 import Piece from '../components/Piece';
-import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
-import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 
 class ChallengeAttemptReview extends Component {
   constructor() {
@@ -30,10 +31,15 @@ class ChallengeAttemptReview extends Component {
   }
 
   componentDidMount() {
-    this._getAttemptData().then();
+    const { attemptID } = this.props;
+    if (attemptID) {
+      this._getAttemptDataByAttemptIndex().then();
+    } else {
+      this._getAttemptFromLocalStorage().then();
+    }
   }
 
-  async _getAttemptData() {
+  async _getAttemptDataByAttemptIndex() {
     const attempt = await getAttemptByID(this.props.attemptID)
       .catch((err) => {
         console.log('error getting attempt', err);
@@ -47,19 +53,37 @@ class ChallengeAttemptReview extends Component {
       challenge: attempt.challenge,
       attempt: attempt,
     });
+  }
 
-    // getChallengeAttemptByDateAndIndex(this.props.userID, this.props.challengeDate, this.props.attemptIndex)
-    //   .then( (attemptObject) => {
-    //     console.log('found attempt:', attemptObject);
-    //
-    //     const reviewObject = challengeAttemptToReviewObject(attemptObject.challenge, attemptObject.attempt);
-    //
-    //     this.setState({
-    //       reviewObject,
-    //       challenge: attemptObject.challenge,
-    //       attempt: attemptObject.attempt,
-    //     });
-    //   });
+  async _getAttemptFromLocalStorage() {
+    const { userID, challengeID, attemptIndex } = this.props;
+    let attempt, challenge;
+
+    const attemptPromise = getAttemptByChallengeIDAndIndex(userID, challengeID, attemptIndex)
+      .then((value) => {
+        attempt = value;
+      })
+      .catch((err) => {
+        console.log('error getting attempt', err);
+      });
+
+    const challengePromise = getChallengeByID(challengeID)
+      .then((value) => {
+        challenge = value;
+      })
+      .catch((err) => {
+        console.log('error fetching challenge by id', err);
+      });
+
+    await Promise.all([attemptPromise, challengePromise]);
+
+    if (attempt && challenge) {
+      const reviewObject = challengeAttemptToReviewObject(challenge, attempt);
+      this.setState({ reviewObject, challenge, attempt });
+    } else {
+      this.props.setErrorMessage('unable to get attempt');
+    }
+
   }
 
   render() {
@@ -221,9 +245,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, ownProps) => {
-  const { attemptID } = ownProps.match.params;
+  const { attemptID, challengeID, attemptIndex } = ownProps.match.params;
   return {
     attemptID,
+    challengeID,
+    attemptIndex,
     userID: state.user.uid,
   };
 };

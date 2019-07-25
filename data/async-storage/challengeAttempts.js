@@ -38,6 +38,22 @@ export async function getAttemptsByChallengeID(uid, challengeID) {
   }
 }
 
+export async function getAttemptByChallengeIDAndIndex(uid, challengeID, attemptIndex) {
+  const userStorageObject = await getUserStorageObject(uid)
+    .catch( (err) => {
+      throw new Error(err);
+    });
+
+  let attempt;
+  if (userStorageObject.attemptsByChallengeID.hasOwnProperty(challengeID)) {
+    attempt = userStorageObject.attemptsByChallengeID[challengeID][attemptIndex];
+  }
+
+  if (attempt) return attempt;
+  else throw new Error("attempt not found!");
+
+}
+
 export async function clearUserAttemptData(uid) {
   return await AsyncStorage
     .removeItem(prefix + uid)
