@@ -5,10 +5,12 @@ import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
 import { getChallengeAttemptByDateAndIndex } from "../data/async-storage";
+import { getAttemptByID } from "../data/parse-client/getters";
+import { setErrorMessage } from "../data/redux/messages";
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
 import Piece from '../components/Piece';
-import { boardStringToArray, wordPathStringToArray, challengeAttemptToReviewObject } from "../data/utilities";
+import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
 
 class ChallengeAttemptReview extends Component {
@@ -28,22 +30,36 @@ class ChallengeAttemptReview extends Component {
   }
 
   componentDidMount() {
-    this._getAttemptData();
+    this._getAttemptData().then();
   }
 
-  _getAttemptData() {
-    getChallengeAttemptByDateAndIndex(this.props.userID, this.props.challengeDate, this.props.attemptIndex)
-      .then( (attemptObject) => {
-        console.log('found attempt:', attemptObject);
-
-        const reviewObject = challengeAttemptToReviewObject(attemptObject.challenge, attemptObject.attempt);
-
-        this.setState({
-          reviewObject,
-          challenge: attemptObject.challenge,
-          attempt: attemptObject.attempt,
-        });
+  async _getAttemptData() {
+    const attempt = await getAttemptByID(this.props.attemptID)
+      .catch((err) => {
+        console.log('error getting attempt', err);
+        this.props.setErrorMessage("unable to get challenge attempt info");
       });
+
+    const reviewObject = challengeAttemptToReviewObject(attempt.challenge, attempt);
+
+    this.setState({
+      reviewObject,
+      challenge: attempt.challenge,
+      attempt: attempt,
+    });
+
+    // getChallengeAttemptByDateAndIndex(this.props.userID, this.props.challengeDate, this.props.attemptIndex)
+    //   .then( (attemptObject) => {
+    //     console.log('found attempt:', attemptObject);
+    //
+    //     const reviewObject = challengeAttemptToReviewObject(attemptObject.challenge, attemptObject.attempt);
+    //
+    //     this.setState({
+    //       reviewObject,
+    //       challenge: attemptObject.challenge,
+    //       attempt: attemptObject.attempt,
+    //     });
+    //   });
   }
 
   render() {
@@ -205,12 +221,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, ownProps) => {
-  const { challengeDate, attemptIndex } = ownProps.match.params;
+  const { attemptID } = ownProps.match.params;
   return {
-    challengeDate,
-    attemptIndex,
+    attemptID,
     userID: state.user.uid,
   };
 };
 
-export default withRouter(connect(mapStateToProps)(ChallengeAttemptReview));
+const mapDispatchToProps = {
+  setErrorMessage,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeAttemptReview));

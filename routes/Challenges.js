@@ -33,7 +33,8 @@ class Challenges extends Component {
     return (
       <View>
         <ListItem
-          onPress={() => this.props.history.push(`/challengeAttempt`)}
+          // onPress={() => this.props.history.push(`/challengeAttempt`)}
+          onPress={ () => this.props.history.push(`/challenge/${currentChallenge ? currentChallenge.objectId : ''}`) }
           title={ currentChallenge ? "Play Now" : "Searching for Current Challenge" }
         />
         { recentChallenges.map((challenge) =>
