@@ -137,37 +137,95 @@ export async function* getRecentChallenges(skipDays = 0) {
 
   // yield challenges from remote
   yield remoteChallenges.map((challenge) => {
+    const remoteJSON = challenge.toJSON();
+    console.log('remote challenge:', remoteJSON);
     return challenge.toJSON();
   });
 }
 
 export async function getChallengeByID(challengeID) {
+  // get challenge from local data store
   const localChallenge = await new Parse.Query(ChallengesObject)
     .fromLocalDatastore()
     .include(['winners', 'winners.user'])
     .get(challengeID)
     .catch((err) => {
       console.log('error fetching challenge by ID from local data store', err);
-      throw new Error(err);
     });
 
-  if (localChallenge) {
+  // if the local object is the finished version, return it
+  if (localChallenge && localChallenge.get('finalRankingComplete')) {
     return localChallenge.toJSON();
   }
 
+  // get challenge from remote
   const remoteChallenge = await new Parse.Query(ChallengesObject)
     .include(['winners', 'winners.user'])
     .get(challengeID)
     .catch((err) => {
       console.log('error fetching challenge by ID from remote store', err);
-      throw new Error(err);
     });
 
   if (remoteChallenge) {
+    remoteChallenge.pin()
+      .then(() => {
+        console.log('remote challenge pinned')
+      })
+      .catch((err) => {
+        console.log('remote challenge pin error:', err);
+      });
     return remoteChallenge.toJSON();
   }
 
+  // fall back to the local object if it exists
+  if (localChallenge) {
+    return localChallenge.toJSON();
+  }
+
   throw new Error('challenge not found');
+}
+
+export async function getAttemptByID(attemptID) {
+  // get attempt from local data store
+  const localAttempt = await new Parse.Query(ChallengeAttemptObject)
+    .fromLocalDatastore()
+    .include(['user', 'challenge'])
+    .get(attemptID)
+    .catch((err) => {
+      console.log('error fetching attempt by ID from local data store', err);
+    });
+
+  // if the local object is the finished version, return it
+  if (localAttempt && localAttempt.get('challengeComplete')) {
+    return localAttempt.toJSON();
+  }
+
+  // get attempt from remote
+  const remoteAttempt = await new Parse.Query(ChallengeAttemptObject)
+    .include(['user', 'challenge'])
+    .get(attemptID)
+    .catch((err) => {
+      console.log('error fetching attempt by ID from remote store', err);
+    });
+
+  // if we have the attempt, pin it and return
+  if (remoteAttempt) {
+    remoteAttempt.pin()
+      .then(() => {
+        console.log('remote attempt pinned')
+      })
+      .catch((err) => {
+        console.log('remote attempt pin error:', err);
+      });
+    return remoteAttempt.toJSON();
+  }
+
+  // fall back to the local object if it exists
+  if (localAttempt) {
+    return localAttempt.toJSON();
+  }
+
+  throw new Error('attempt not found');
 }
 
 // TODO: this should probably be a generator function that returns 1 to 2 values
