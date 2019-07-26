@@ -117,7 +117,6 @@ export async function* getRecentChallenges(skipDays = 0) {
   // yield challenges from remote
   yield remoteChallenges.map((challenge) => {
     const remoteJSON = challenge.toJSON();
-    console.log('remote challenge:', remoteJSON);
     return challenge.toJSON();
   });
 }

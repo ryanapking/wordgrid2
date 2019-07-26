@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, View, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Text } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 import moment from 'moment';
 
@@ -25,27 +25,50 @@ class Challenges extends Component {
   }
 
   render() {
-    const { recentChallenges, currentChallenge } = this.state;
-
-    console.log('current challenge:', currentChallenge);
-    console.log('recent challenges:', recentChallenges);
+    const { recentChallenges } = this.state;
 
     return (
-      <View>
-        <ListItem
-          // onPress={() => this.props.history.push(`/challengeAttempt`)}
-          onPress={ () => this.props.history.push(`/challenge/${currentChallenge ? currentChallenge.objectId : ''}`) }
-          title={ currentChallenge ? "Play Now" : "Searching for Current Challenge" }
-        />
-        { recentChallenges.map((challenge) =>
+      <ScrollView>
+        { this.currentChallengeSection() }
+        <Text h4 style={styles.h4}>Recent Challenges</Text>
+        { recentChallenges.map((challenge, index) =>
           <ListItem
             key={ challenge.objectId }
             title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
+            subtitle="tap to review"
+            rightTitle={ challenge.playerCount + " participants"}
             onPress={ () => this.props.history.push(`/challenge/${challenge.objectId}`) }
+            bottomDivider
           />
         )}
-      </View>
+      </ScrollView>
     )
+  }
+
+  currentChallengeSection() {
+    const { currentChallenge } = this.state;
+    if (!currentChallenge) return null;
+    const playerCountMessage = currentChallenge.playerCount > 0 ? currentChallenge.playerCount + " participants" : "";
+    return (
+      <View>
+        <Text h4 style={styles.h4}>Current Challenge</Text>
+        { playerCountMessage ? <Text>{ playerCountMessage }</Text> : null }
+        <View style={styles.row}>
+          <View style={styles.halfColumn} >
+            <Button
+              title="Play Now"
+              onPress={ () => this.props.history.push(`/challengeAttempt`) }
+            />
+          </View>
+          <View style={styles.halfColumn} >
+            <Button
+              title="Review Attempts"
+              onPress={ () => this.props.history.push(`/challenge/${currentChallenge ? currentChallenge.objectId : ''}`) }
+            />
+          </View>
+        </View>
+      </View>
+    );
   }
 
   async _getCurrentChallenge() {
@@ -83,7 +106,22 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: 'lightgray',
-  }
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  halfColumn: {
+    width: '50%',
+  },
+  h4: {
+    textAlign: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: 'lightgray',
+  },
 });
 
 const mapStateToProps = (state) => {

@@ -61,6 +61,7 @@ class GameListItem extends Component {
         rightTitle={ this.getGameStatus(calculatedGameStatus) }
         rightSubtitle={ this.getScore() }
         onPress={ this.getLink(calculatedGameStatus) }
+        bottomDivider
       />
     )
   }
