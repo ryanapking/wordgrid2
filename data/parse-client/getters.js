@@ -2,9 +2,9 @@ import moment from 'moment';
 
 import Parse from './client-setup';
 
-const ChallengesObject = Parse.Object.extend("Challenges");
-const GamesObject = Parse.Object.extend("Games");
-const ChallengeAttemptObject = Parse.Object.extend("ChallengeAttempt");
+const ChallengesObject = Parse.Object.extend("Challenges", {}, {});
+const GamesObject = Parse.Object.extend("Games", {}, {});
+const ChallengeAttemptObject = Parse.Object.extend("ChallengeAttempt", {}, {});
 
 // searches local data store for current challenge
 // if not found, searches remote db and pins challenge to local data store
@@ -70,7 +70,7 @@ export async function* getRecentChallenges(skipDays = 0) {
     .fromLocalDatastore()
     .find()
     .catch((err) => {
-      console.log('error fetching challenges from local')
+      console.log('error fetching challenges from local');
       throw new Error(err);
     });
 
@@ -101,7 +101,7 @@ export async function* getRecentChallenges(skipDays = 0) {
     .include(['winners', 'winners.user'])
     .find()
     .catch((err) => {
-      console.log('error fetching challenges from remote')
+      console.log('error fetching challenges from remote');
       throw new Error(err);
     });
 
@@ -237,6 +237,7 @@ export async function getAttemptByChallengeID(challengeID, uid) {
   // if we have a local attempt and it doesn't need to be updated, return it
   let attempt;
   if (localAttempts.length) {
+    /** @namespace result.challengeComplete **/
     attempt = localAttempts[0].toJSON();
     if (attempt.challengeComplete) {
       return attempt;
@@ -496,9 +497,10 @@ export async function getGameSourceData(gameID) {
 
   // if the local data store fetch failed, fetch the game remote
   if (!game) {
-    game = await new Parse.Query(GameObject)
-      .get(gameID)
+    game = await new Parse.Query(GamesObject)
+      .get(gameID, {})
       .catch((err) => {
+        console.log('error getting game data:', err);
         throw new Error("Error getting the game data.");
       });
 

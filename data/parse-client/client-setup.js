@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import Parse from 'parse/react-native';
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.initialize("RyanAppleKing");

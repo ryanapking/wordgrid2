@@ -35,7 +35,7 @@ export async function startGamesLiveQuery(storeGame, storeGameThenRedirect, remo
     };
   }
 
-  const Games = Parse.Object.extend("Games");
+  const Games = Parse.Object.extend("Games", {}, {});
 
   // we are listening for games that are not yet archived
   const p1Games = new Parse.Query(Games).equalTo("player1", user).notEqualTo("archived", true);

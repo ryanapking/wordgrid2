@@ -1,4 +1,4 @@
-import { v1 } from 'uuid';
+import v1 from 'uuid/v1';
 
 import Parse from './client-setup';
 
@@ -21,9 +21,9 @@ export async function anonymousLogin() {
 export async function createAccount(email, username, password) {
   let user = new Parse.User();
 
-  user.set('email', email);
-  user.set('username', username);
-  user.set('password', password);
+  user.set('email', email, {});
+  user.set('username', username, {});
+  user.set('password', password, {});
 
   user = await user.signUp()
     .catch((err) => {
@@ -124,7 +124,7 @@ export async function getCurrentUser() {
 }
 
 export async function standardLogin(username, password) {
-  let user = await Parse.User.logIn(username, password)
+  let user = await Parse.User.logIn(username, password, {})
     .catch( (err) => {
       throw new Error(err);
     });

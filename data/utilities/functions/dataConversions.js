@@ -348,8 +348,6 @@ function setCharAt(str, index, chr) {
   return str.substr(0,index) + chr + str.substr(index+1);
 }
 
-// TODO: Some of these function and exports need to be removed.
-// Look at the challenge data conversions
 module.exports = {
   remoteToStartingGameState,
   remoteToLocal,
