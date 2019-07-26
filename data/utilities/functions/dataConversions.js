@@ -125,19 +125,6 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
   return conversion;
 }
 
-function challengeRemoteToLocalStorageObject(remoteChallenge, date = null) {
-  return {
-    id: remoteChallenge.id,
-    startingBoard: remoteChallenge.get('startingBoard'),
-    startingPieces: remoteChallenge.get('startingPieces'),
-    pieceBank: remoteChallenge.get('pieceBank'),
-    startTime: remoteChallenge.get('startDate').getTime(),
-    endTime: remoteChallenge.get('endDate').getTime(),
-    // date is probably not needed. if it is, just send it in to avoid an unwanted dependency in our bit repo
-    date: date,
-  };
-}
-
 function challengeRemoteToPlayableObject(remoteChallengeObject) {
   let localPieceBank = remoteChallengeObject.pieceBank.map((pieceSet) => {
     let localPieceSet = {};
@@ -366,7 +353,6 @@ function setCharAt(str, index, chr) {
 module.exports = {
   remoteToStartingGameState,
   remoteToLocal,
-  challengeRemoteToLocalStorageObject,
   challengeRemoteToPlayableObject,
   challengeStateToMove,
   challengeStateToAttempt,
