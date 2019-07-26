@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Text } from 'react-native-elements';
 import { withRouter } from 'react-router-native';
 import moment from 'moment';
 
+import { numWithSuffix } from "../data/utilities/functions/calculations";
 import { getChallengeByID, getAttemptByChallengeID } from "../data/parse-client/getters";
 import { getAttemptsByChallengeID } from "../data/async-storage/challengeAttempts";
 import { setErrorMessage } from "../data/redux/messages";
@@ -42,8 +43,8 @@ class Challenge extends Component {
     if (!challenge) return null;
     return (
       <View>
-        <ListItem title={ "Challenge from " + moment(challenge.endDate.iso).format('MM-DD-YYYY') } />
-        <ListItem title={ challenge.playerCount + " participants" } />
+        <Text h4 style={styles.h4}>Challenge from { moment(challenge.endDate.iso).format('MM-DD-YYYY') }</Text>
+        <Text style={styles.p}>{ challenge.playerCount } participants</Text>
       </View>
     )
   }
@@ -53,9 +54,13 @@ class Challenge extends Component {
     if (!challenge || !officialAttempt) return null;
     return (
       <View>
-        <ListItem title="Your best attempt" containerStyle={styles.divider} />
-        <ListItem title={ "you ranked " + officialAttempt.rank + " of " + challenge.playerCount + " players" } />
-        <ListItem title={officialAttempt.score + " points"} />
+        <Text h4 style={styles.h4}>Your best attempt</Text>
+        <ListItem
+          title={ officialAttempt.score + " points" }
+          rightTitle={ numWithSuffix(officialAttempt.rank) }
+          rightSubtitle={ "of " + challenge.playerCount + " players" }
+          onPress={() => this.props.history.push(`/challengeAttemptReview/${officialAttempt.objectId}`)}
+        />
       </View>
     )
   }
@@ -67,12 +72,15 @@ class Challenge extends Component {
     if (!winners) return null;
     return (
       <View>
-        <ListItem title={"Winners"} containerStyle={styles.divider} />
+        <Text h4 style={styles.h4}>Winners</Text>
         { winners.map((attempt, index) =>
           <ListItem
             key={index}
-            title={ attempt.score + " points" }
+            title={ attempt.user.username }
+            rightTitle={ numWithSuffix(attempt.rank) }
+            rightSubtitle={ attempt.score + " points" }
             onPress={() => this.props.history.push(`/challengeAttemptReview/${attempt.objectId}`)}
+            bottomDivider={ index + 1 < winners.length }
           />
         )}
       </View>
@@ -84,12 +92,14 @@ class Challenge extends Component {
     if (!localAttempts.length || !challenge) return null;
     return (
       <View>
-        <ListItem title="Your Additional Attempts" containerStyle={styles.divider} />
+        <Text h4 style={styles.h4}>Your Additional Attempts</Text>
         { localAttempts.map( (attempt, index) =>
           <ListItem
             key={index}
             title={ attempt.score + " points" }
+            rightTitle="tap to review"
             onPress={() => this.props.history.push(`/challengeAttemptReview/${challenge.objectId}/${index}`)}
+            bottomDivider={ index + 1 < localAttempts.length }
           />
         )}
       </View>
@@ -102,7 +112,7 @@ class Challenge extends Component {
     this._getChallengeByID().then();
     const attempt = await getAttemptByChallengeID(challengeID, userID)
       .catch((err) => {
-        console.log('No attempt found');
+        console.log('No attempt found', err);
       });
 
     this.setState({ officialAttempt: attempt });
@@ -111,7 +121,7 @@ class Challenge extends Component {
   async _getChallengeByID() {
     const { challengeID } = this.props;
     const challenge = await getChallengeByID(challengeID)
-      .catch((err) => {
+      .catch(() => {
         this.props.setErrorMessage("Unable to find challenge");
       });
     this.setState({ challenge });
@@ -120,7 +130,7 @@ class Challenge extends Component {
   async _getLocalAttemptsByChallengeID() {
     const { challengeID, userID } = this.props;
     const localAttempts = await getAttemptsByChallengeID(userID, challengeID)
-      .catch((err) => {
+      .catch(() => {
         this.props.setErrorMessage("Error getting attempts from local storage");
       });
 
@@ -135,6 +145,15 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: "lightgray",
+  },
+  h4: {
+    textAlign: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: 'lightgray',
+  },
+  p: {
+    padding: 10,
   }
 });
 

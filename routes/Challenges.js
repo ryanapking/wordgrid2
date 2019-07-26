@@ -92,8 +92,6 @@ class Challenges extends Component {
       valuesRemain = !done;
       if (!challenges) continue;
       this.setState({ recentChallenges: challenges });
-      console.log('challenges:', challenges);
-      console.log('done:', done);
     }
   }
 

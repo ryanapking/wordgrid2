@@ -25,6 +25,7 @@ module.exports = {
   calculateLongestWordLength: calculations.calculateLongestWordLength,
   calculateHighestWordValue: calculations.calculateHighestWordValue,
   calculateMoveRating: calculations.calculateMoveRating,
+  numWithSuffix: calculations.numWithSuffix,
 
   validateChallengeAttempt: checks.validateChallengeAttempt,
   checkPieceFit: checks.checkPieceFit,

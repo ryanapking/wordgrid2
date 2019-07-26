@@ -71,10 +71,27 @@ function calculateMoveRating(word, longestWord, mostValuableWord) {
   }
 }
 
+function numWithSuffix(num) {
+  const parsedNum = parseInt(num);
+  let ones = parsedNum % 10;
+  let tens = parsedNum % 100;
+  if (ones === 1 && tens !== 11) {
+    return num + "st";
+  }
+  if (ones === 2 && tens !== 12) {
+    return num + "nd";
+  }
+  if (ones === 3 && tens !== 13) {
+    return num + "rd";
+  }
+  return num + "th";
+}
+
 module.exports = {
   calculateWordValue,
   calculatePiecePlacementValue,
   calculateLongestWordLength,
   calculateHighestWordValue,
   calculateMoveRating,
+  numWithSuffix,
 };
