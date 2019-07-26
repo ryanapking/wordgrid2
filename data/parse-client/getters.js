@@ -210,16 +210,8 @@ export async function getAttemptByID(attemptID) {
 export async function getAttemptByChallengeID(challengeID, uid) {
 
   // pointers for query comparisons
-  const challengePointer = {
-    __type: 'Pointer',
-    className: 'Challenges',
-    objectId: challengeID,
-  };
-  const userPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: uid,
-  };
+  const challengePointer = new ChallengesObject().set('id', challengeID, {});
+  const userPointer = new Parse.User().set('id', uid, {});
 
   // query local data store
   const localAttempts = await new Parse.Query(ChallengeAttemptObject)
@@ -290,16 +282,8 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
   console.log('updatePinsAgainstOpponent()');
 
   const playerPointers = [
-    {
-      __type: 'Pointer',
-      className: '_User',
-      objectId: opponentId,
-    },
-    {
-      __type: 'Pointer',
-      className: '_User',
-      objectId: currentPlayerId,
-    }
+    new Parse.User().set('id', opponentId, {}),
+    new Parse.User().set('id', currentPlayerId, {}),
   ];
 
   // query local data store for games against opponent
@@ -371,16 +355,8 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
 export async function getOpponentArchive(opponentId, currentPlayerId) {
 
   const playerPointers = [
-    {
-      __type: 'Pointer',
-      className: '_User',
-      objectId: opponentId,
-    },
-    {
-      __type: 'Pointer',
-      className: '_User',
-      objectId: currentPlayerId,
-    }
+    new Parse.User().set('id', opponentId, {}),
+    new Parse.User().set('id', currentPlayerId, {}),
   ];
 
   const archive = await new Parse.Query(GamesObject)
@@ -403,11 +379,7 @@ export async function getOpponentArchive(opponentId, currentPlayerId) {
 }
 
 export async function getFullGameArchive(playerID) {
-  const currentPlayerPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: playerID,
-  };
+  const currentPlayerPointer = new Parse.User().set('id', playerID, {});
 
   console.log('player id:', playerID);
 
@@ -435,18 +407,8 @@ export async function getFullGameArchive(playerID) {
 
 export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerId) {
 
-  const currentPlayerPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: currentPlayerId,
-  };
-
-  const opponentPointer = {
-    __type: 'Pointer',
-    className: '_User',
-    objectId: opponentId,
-  };
-
+  const currentPlayerPointer = new Parse.User().set('id', currentPlayerId, {});
+  const opponentPointer = new Parse.User().set('id', opponentId, {});
   const playerPointers = [opponentPointer, currentPlayerPointer];
 
   const wins = await new Parse.Query(GamesObject)
