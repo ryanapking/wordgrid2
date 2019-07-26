@@ -1,31 +1,10 @@
 import moment from 'moment';
 
 import Parse from './client-setup';
-import { challengeRemoteToLocalStorageObject } from '../utilities/functions/dataConversions';
 
 const ChallengesObject = Parse.Object.extend("Challenges");
 const GamesObject = Parse.Object.extend("Games");
 const ChallengeAttemptObject = Parse.Object.extend("ChallengeAttempt");
-
-export async function getUpcomingChallengesByDate() {
-
-  let upcomingChallenges = await new Parse.Query(ChallengesObject)
-    .equalTo("challengeComplete", false)
-    .find();
-
-  let challengesByDate = {};
-  upcomingChallenges.forEach( (challenge) => {
-
-    const date = moment(challenge.get("startDate")).format("M-D-YYYY");
-
-    const challengeLocalStorageObject = challengeRemoteToLocalStorageObject(challenge, date);
-    challengesByDate[challengeLocalStorageObject.date] = challengeLocalStorageObject;
-  });
-
-  console.log('upcoming challenges by date:', challengesByDate);
-
-  return challengesByDate;
-}
 
 // searches local data store for current challenge
 // if not found, searches remote db and pins challenge to local data store

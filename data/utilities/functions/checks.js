@@ -9,8 +9,7 @@ const settings = config.settings;
 function validateChallengeAttempt(remoteChallengeObject, challengeAttempt) {
   // function does not validate words, as that will happen differently on the device and on parse server
 
-  const challengeLocalStorageObject = dataConversions.challengeRemoteToLocalStorageObject(remoteChallengeObject);
-  const challenge = dataConversions.challengeLocalStorageObjectToPlayableObject(challengeLocalStorageObject);
+  const challenge = dataConversions.challengeRemoteToPlayableObject(remoteChallengeObject);
 
   if (challengeAttempt.challengeId !== challenge.id) return false;
   if (challengeAttempt.moves.length !== 5) return false;
