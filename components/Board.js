@@ -6,7 +6,7 @@ import BoardPathCreator from './BoardPathCreator';
 import DrawBoard from './DrawBoard';
 
 import { setBoardLocation } from "../data/redux/gameDisplay";
-import {SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED} from "../constants";
+import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED, SPACE_EMPTY_HOVERED, SPACE_FILLED_HOVERED } from "../constants";
 
 class Board extends Component {
   constructor() {
@@ -33,14 +33,16 @@ class Board extends Component {
     // if a word has already been played, we don't need any of this to be possible
     const pointerEvents = this.props.word ? 'none' : 'auto';
 
-    // console.log('game rows:', rows);
-
     const displayBoardState = rows.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
-        if (!letter) {
+        if (!letter && this._checkSquareHovered({rowIndex, columnIndex})) {
+          return {letter, status: SPACE_EMPTY_HOVERED}
+        } else if (!letter) {
           return {letter, status: SPACE_EMPTY};
         } else if (!this._checkSquareAvailable({rowIndex, columnIndex})) {
           return {letter, status: SPACE_CONSUMED};
+        } else if (this._checkSquareHovered({rowIndex, columnIndex})){
+          return {letter, status: SPACE_FILLED_HOVERED};
         } else {
           return {letter, status: SPACE_FILLED};
         }
@@ -83,6 +85,14 @@ class Board extends Component {
     const letter = onBoard ? this.props.rows[square.rowIndex][square.columnIndex] : null;
 
     return {...square, letter};
+  }
+
+  _checkSquareHovered(square) {
+    const { hoveredSpaces } = this.props.display;
+    const isHovered = hoveredSpaces.filter(({rowIndex, columnIndex}) => {
+      return (square.rowIndex === rowIndex && square.columnIndex === columnIndex);
+    });
+    return (isHovered.length > 0);
   }
 
   _checkSquareAdjacent(square) {

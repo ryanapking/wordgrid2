@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, PanResponder, Animated } from 'react-native';
+import { StyleSheet, View, PanResponder, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { setPieceLocation } from "../data/redux/gameDisplay";
+import { setHoveredSpaces, clearHoveredSpaces } from "../data/redux/gameDisplay";
 import { validatePlacement } from "../data/utilities/functions/checks";
 import DrawPiece from './DrawPiece';
 
@@ -20,6 +20,8 @@ class Piece extends Component {
       dragging: false,
       canDrop: false,
     };
+
+    this.lastSetHoveredSpaces = null;
 
     // middle point of the upper left letter tile (empty or not)
     this.relativeReferencePoint = {
@@ -50,7 +52,9 @@ class Piece extends Component {
 
   render() {
     const { baseSize } = this.props;
-    const { pan, scale, canDrop } = this.state;
+    const { pan, scale, canDrop, dragging } = this.state;
+
+    console.log('dragging?', dragging);
 
     const dragTransforms = {transform: [{translateX: pan.x}, {translateY: pan.y}, {scale}]};
 
@@ -66,7 +70,11 @@ class Piece extends Component {
         style={[styles.square, dragTransforms, this.props.style]}
       >
         <View style={styles.grid} pointerEvents={'none'}>
-          <DrawPiece pieceState={pieceState} pieceSize={baseSize} canDrop={canDrop}/>
+          <DrawPiece
+            pieceState={pieceState}
+            pieceSize={baseSize}
+            style={{ opacity: dragging ? .75 : 1 }}
+          />
         </View>
       </Animated.View>
     );
@@ -139,6 +147,8 @@ class Piece extends Component {
     const placementRef = this._getPlacementRef(event);
     const canDrop = validatePlacement(this.props.piece, placementRef, this.props.boardRows);
 
+    this.props.clearHoveredSpaces();
+
     if (canDrop) {
       this.props.placePiece(placementRef.rowIndex, placementRef.columnIndex);
     }
@@ -151,10 +161,32 @@ class Piece extends Component {
     }])(event, gestureState);
 
     const placementRef = this._getPlacementRef(event);
+    this._setHoveredSpaces(placementRef);
+
     const canDrop = validatePlacement(this.props.piece, placementRef, this.props.boardRows);
 
     if (canDrop !== this.state.canDrop) {
       this.setState({canDrop});
+    }
+  }
+
+  _setHoveredSpaces(hoveringRef) {
+    if (!this.lastSetHoveredSpaces || (Date.now() - this.lastSetHoveredSpaces > 200)) {
+      // console.log('setting hoveringRef');
+      let hoveredSpaces = [];
+      this.props.piece.forEach( (row, pieceRowIndex) => {
+        row.forEach( (letter, pieceColumnIndex) => {
+          if (letter) {
+            hoveredSpaces.push({
+              rowIndex: pieceRowIndex + hoveringRef.rowIndex,
+              columnIndex: pieceColumnIndex + hoveringRef.columnIndex,
+            });
+          }
+        });
+      });
+      // console.log('board spaces:', hoveredSpaces);
+      this.lastSetHoveredSpaces = Date.now();
+      this.props.setHoveredSpaces(hoveredSpaces);
     }
   }
 }
@@ -179,7 +211,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  setPieceLocation,
+  setHoveredSpaces,
+  clearHoveredSpaces,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Piece));

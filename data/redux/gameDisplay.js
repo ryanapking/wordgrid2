@@ -2,6 +2,8 @@
 export const DISPLAY_GAMEBOARD_SET = 'wordgrid2/gameDisplay/DISPLAY_GAMEBOARD_SET';
 export const DISPLAY_SET_PIECE_LOCATION = 'wordgrid2/gameDisplay/DISPLAY_SET_PIECE_LOCATION';
 export const DISPLAY_CLEAR_PIECE_LOCATIONS = 'wordgrid2/gameDisplay/DISPLAY_CLEAR_PIECE_LOCATIONS';
+export const DISPLAY_SET_HOVERED_SPACES = 'wordgrid2/gameDisplay/DISPLAY_SET_HOVERED_SPACES';
+export const DISPLAY_CLEAR_HOVERED_SPACES = 'wordgrid2/gameDisplay/DISPLAY_CLEAR_HOVERED_SPACES';
 
 // initial state
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
     rowMidPoints: [],
     columnMidPoints: [],
   },
+  hoveredSpaces: [],
   pieceLocations: {}
 };
 
@@ -29,6 +32,10 @@ export default function reducer(state = initialState, action) {
       return {...state, pieceLocations: {...state.pieceLocations, [action.pieceIndex]: action.pieceLocation}};
     case DISPLAY_CLEAR_PIECE_LOCATIONS:
       return {...state, pieceLocations: {}};
+    case DISPLAY_SET_HOVERED_SPACES:
+      return {...state, hoveredSpaces: action.hoveredSpaces};
+    case DISPLAY_CLEAR_HOVERED_SPACES:
+      return {...state, hoveredSpaces: []};
     default:
       return state;
   }
@@ -65,4 +72,17 @@ export function clearPieceLocations() {
   return {
     type: DISPLAY_CLEAR_PIECE_LOCATIONS,
   }
+}
+
+export function setHoveredSpaces(hoveredSpaces) {
+  return {
+    type: DISPLAY_SET_HOVERED_SPACES,
+    hoveredSpaces,
+  };
+}
+
+export function clearHoveredSpaces() {
+  return {
+    type: DISPLAY_CLEAR_HOVERED_SPACES,
+  };
 }

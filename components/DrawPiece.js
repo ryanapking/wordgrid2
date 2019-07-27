@@ -9,7 +9,7 @@ export default class DrawPiece extends Component {
     const letterHeight = (pieceSize > 0) ? (pieceSize / 4) : 0;
     const dragStyles = canDrop ? styles.canDrop : null;
     return (
-      <View style={styles.grid} pointerEvents={'none'}>
+      <View style={[styles.grid, this.props.style]} pointerEvents={'none'}>
         {pieceState.map( (row, rowIndex) =>
           <View style={styles.row} key={rowIndex}>
             {row.map( (square, columnIndex) =>
