@@ -103,10 +103,7 @@ function validateWordPath(wordPath, boardState, moveWord) {
   return (moveWord === pathWord);
 }
 
-function validatePlacementRef(playerPieces, placementRef, boardState) {
-  // function confirms that the placement ref fits on the board
-  const piece = playerPieces[placementRef.pieceIndex];
-
+function validatePlacement(piece, placementRef, boardState) {
   // grab each space that we should check
   let boardSpaces = [];
   piece.forEach( (row, pieceRowIndex) => {
@@ -133,7 +130,12 @@ function validatePlacementRef(playerPieces, placementRef, boardState) {
   });
 
   return placementValid;
+}
 
+function validatePlacementRef(playerPieces, placementRef, boardState) {
+  // function confirms that the placement ref fits on the board
+  const piece = playerPieces[placementRef.pieceIndex];
+  return validatePlacement(piece, placementRef, boardState);
 }
 
 function checkPieceFit(playerPieces, boardState) {
@@ -218,6 +220,7 @@ function getWinner(gameState) {
 
 module.exports = {
   validateChallengeAttempt,
+  validatePlacement,
   checkPieceFit,
   gameOverCheck,
   getWinner,

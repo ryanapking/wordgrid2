@@ -32,6 +32,7 @@ module.exports = {
   gameOverCheck: checks.gameOverCheck,
   getWinner: checks.getWinner,
   validateMove: checks.validateMove,
+  validatePlacement: checks.validatePlacement,
 
   remoteToStartingGameState: dataConversions.remoteToStartingGameState,
   remoteToLocal: dataConversions.remoteToLocal,
