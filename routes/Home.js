@@ -11,7 +11,7 @@ export default class App extends Component {
         {/*<View style={styles.triangleCornerLayer}></View>*/}
         {/*<View style={styles.triangleCorner1}></View>*/}
 
-        <View style={styles.ryan}></View>
+        <View style={styles.ryan} />
         <Redirect to="/games" />
       </View>
     );
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 15,
     backgroundColor: '#ecf0f1',
-  },triangleCorner: {
+  },
+  triangleCorner: {
     position: 'absolute',
     top:105,
     left:0,
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 80,
     borderRightColor: 'transparent',
     borderTopColor: 'gray'
-  },triangleCorner1: {
+  },
+  triangleCorner1: {
     position: 'absolute',
     top:100,
     left:0,
@@ -58,7 +60,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 90,
     borderRightColor: 'transparent',
     borderTopColor: 'green'
-  },triangleCornerLayer: {
+  },
+  triangleCornerLayer: {
     position: 'absolute',
     top:107,
     left:0,
@@ -70,5 +73,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 75,
     borderRightColor: 'transparent',
     borderTopColor: 'white'
-  }
+  },
 });

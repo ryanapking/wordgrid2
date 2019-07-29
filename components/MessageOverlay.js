@@ -11,7 +11,7 @@ class MessageOverlay extends Component {
     console.log("message state:", {error, info});
 
     let message = null;
-    let clearMessage = null;
+    let clearMessage = () => {};
     let errorNotice = null;
 
     if (error.length) {

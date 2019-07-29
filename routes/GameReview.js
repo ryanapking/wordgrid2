@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { remoteToLocal, moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath, wordPathStringToArray, calculateWordValue } from "../data/utilities";
+import { remoteToLocal, moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath, calculateWordValue } from "../data/utilities";
 import { getGameSourceData } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
@@ -255,8 +255,7 @@ class GameReview extends Component {
   }
 
   _onLayout() {
-    this.gameBoard.measure((x, y, width, height, pageX, pageY) => {
-      // console.log('measure:', {x, y, width, height, pageX, pageY});
+    this.gameBoard.measure((x, y, width, height) => {
       this.setState({
         boardLocation: {
           x,

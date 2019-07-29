@@ -29,7 +29,7 @@ class Friend extends Component {
   }
 
   _startGame() {
-    this.setState({ startingNewGame: true })
+    this.setState({ startingNewGame: true });
     startGame(this.props.friend.id)
       .catch((err) => {
         this.props.setErrorMessage(err);

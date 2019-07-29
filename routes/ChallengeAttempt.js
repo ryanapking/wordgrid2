@@ -25,7 +25,7 @@ class ChallengeAttempt extends Component {
   }
 
   componentDidUpdate() {
-    const { challenge, source } = this.props.challengeData;
+    const { challenge } = this.props.challengeData;
 
     if (challenge.gameOver && !challenge.attemptSaved) {
       this.props.saveAttempt(this.props.userID);
@@ -66,7 +66,7 @@ class ChallengeAttempt extends Component {
               removeSquare={() => this.props.removeSquare()}
               clearConsumedSquares={() => this.props.clearConsumedSquares()}
             />
-            <ChallengeInteraction style={styles.interaction}></ChallengeInteraction>
+            <ChallengeInteraction style={styles.interaction} />
           </View>
           { challenge.word ? pieceOverlay : null }
         </View>

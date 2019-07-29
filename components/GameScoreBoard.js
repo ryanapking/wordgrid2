@@ -7,7 +7,7 @@ class GameScoreBoard extends Component {
   render() {
     const { p1, p2, uid, currentPlayerScoreBoard, opponentScoreBoard, highlight } = this.props;
 
-    let scoreBoardArray = null;
+    let scoreBoardArray = [];
     let topLabel = null;
     let bottomLabel = null;
     if (uid === p1) {

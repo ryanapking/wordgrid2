@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import { Overlay, Input, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
@@ -57,7 +57,7 @@ class StartGameOverlay extends Component {
             { viewFriends ?
               <View>
                 <ListItem title="Your Friends" />
-                { friendsByIDKeys.map( (friendID, index) =>
+                { friendsByIDKeys.map( (friendID) =>
                   <ListItem
                     key={ friendID }
                     title={ friendsByID[friendID].username }

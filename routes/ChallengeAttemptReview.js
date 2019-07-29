@@ -136,7 +136,7 @@ class ChallengeAttemptReview extends Component {
         </View>
 
         <View style={styles.movesSection}>
-          <ScrollView ref={(scrollView) => this._availableMoves = scrollView}>
+          <ScrollView>
             <ListItem title="Moves" containerStyle={styles.divider} />
             {reviewObject.map( (move, index) =>
               <View key={index}>
@@ -178,8 +178,7 @@ class ChallengeAttemptReview extends Component {
   }
 
   _onLayout() {
-    this.gameBoard.measure((x, y, width, height, pageX, pageY) => {
-      // console.log('measure:', {x, y, width, height, pageX, pageY});
+    this.gameBoard.measure((x, y, width, height) => {
       this.setState({
         boardLocation: {
           x,

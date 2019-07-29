@@ -116,7 +116,7 @@ class AccountUpdateForm extends Component {
           }
         </View>
         { (updateUsername || updateEmail || updatePassword) ?
-          <View style={styles.saveButton}>
+          <View style={styles.button}>
             <Button
               disabled={!formReady}
               title="Save Changes"

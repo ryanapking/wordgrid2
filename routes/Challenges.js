@@ -31,7 +31,7 @@ class Challenges extends Component {
       <ScrollView>
         { this.currentChallengeSection() }
         <Text h4 style={styles.h4}>Recent Challenges</Text>
-        { recentChallenges.map((challenge, index) =>
+        { recentChallenges.map((challenge) =>
           <ListItem
             key={ challenge.objectId }
             title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
