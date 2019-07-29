@@ -10,9 +10,9 @@ import GameInteraction from '../components/GameInteraction';
 import GameMoveAnimation from '../components/GameMoveAnimation';
 import PieceOverlay from '../components/PieceOverlay';
 import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/gameData";
-import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities";
+import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities/functions/calculations";
+import { checkPieceFit } from "../data/utilities/functions/checks";
 
-import { checkPieceFit } from "../data/utilities";
 import DrawPieceSection from "../components/DrawPieceSection";
 
 class Game extends Component {

@@ -4,7 +4,19 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { remoteToLocal, moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath, calculateWordValue } from "../data/utilities";
+import {
+  remoteToLocal,
+  moveRemoteToLocal,
+  remoteToStartingGameState,
+  arrayToString,
+} from "../data/utilities/functions/dataConversions";
+import {
+  calculateLongestWordLength,
+  calculateHighestWordValue,
+  calculateWordValue,
+} from '../data/utilities/functions/calculations';
+import { applyMove, } from '../data/utilities/functions/applyMoves';
+import { getWordPath } from '../data/utilities/functions/getters';
 import { getGameSourceData } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 import { SPACE_STATES } from "../data/utilities/constants";

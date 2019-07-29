@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { markAnimationPlayed } from "../data/redux/gameData";
-import { getAnimationData } from "../data/utilities";
+import { getAnimationData } from "../data/utilities/functions/getters";
 import { SPACE_STATES } from "../data/utilities/constants";
 import Piece from "./Piece";
 import BoardPathCreator from "./BoardPathCreator";

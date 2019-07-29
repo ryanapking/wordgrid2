@@ -1,9 +1,6 @@
-import {
-  remoteToLocal,
-  calculateWordValue,
-  wordPathArrayToString,
-  generateLocalPiece
-} from '../utilities';
+import { remoteToLocal, wordPathArrayToString } from '../utilities/functions/dataConversions';
+import { calculateWordValue } from '../utilities/functions/calculations';
+import { generateLocalPiece } from '../utilities/functions/generators';
 import english from '../english';
 
 // available actions
@@ -409,7 +406,7 @@ export function playWord(gameID, userID) {
         });
       });
 
-      // this needs to be reworked to function with the piece being generated remotely
+      // TODO: this needs to be reworked to function with the piece being generated remotely
 
       // const opponentPieces = game.them.filter( (piece) => piece.length);
       // let newPieces = game.them;

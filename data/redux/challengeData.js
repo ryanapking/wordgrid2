@@ -1,13 +1,12 @@
 import {
   challengeStateToMove,
   challengeStateToAttempt,
-  calculateWordValue,
-  calculatePiecePlacementValue,
   wordPathArrayToString,
   placementRefStringToArray,
-  getBoardPlusPiece,
   challengeRemoteToPlayableObject,
-} from "../utilities";
+} from '../utilities/functions/dataConversions';
+import { calculateWordValue, calculatePiecePlacementValue } from '../utilities/functions/calculations';
+import { getBoardPlusPiece } from '../utilities/functions/applyMoves';
 import { saveChallengeAttempt } from "../parse-client/actions";
 import { getCurrentChallenge } from "../parse-client/getters";
 import { storeAttemptByChallengeID } from "../async-storage/challengeAttempts";

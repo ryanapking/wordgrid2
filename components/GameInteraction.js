@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 
 import DrawPieceSection from "./DrawPieceSection";
 
-import { calculateWordValue, localToRemote, validateMove } from "../data/utilities";
+import { calculateWordValue } from "../data/utilities/functions/calculations";
+import { localToRemote } from "../data/utilities/functions/dataConversions";
+import { validateMove } from "../data/utilities/functions/checks";
 import { playWord, clearConsumedSquares, resetLocalGameDataByID } from "../data/redux/gameData";
 import { saveMove } from "../data/parse-client/actions";
 
