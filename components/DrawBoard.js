@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {StyleSheet, View} from 'react-native';
 import PropTypes from 'prop-types';
 
-import { SPACE_EMPTY, SPACE_FILLED, SPACE_CONSUMED, SPACE_FILLED_HOVERED, SPACE_EMPTY_HOVERED } from "../constants";
+import { SPACE_STATES } from "../data/utilities/constants";
 import DrawLetter from "./DrawLetter";
 
 export default class DrawBoard extends Component {
@@ -29,15 +29,15 @@ export default class DrawBoard extends Component {
 
   _getFillStyle(status) {
     switch (status) {
-      case SPACE_EMPTY:
+      case SPACE_STATES.SPACE_EMPTY:
         return styles.emptySquare;
-      case SPACE_EMPTY_HOVERED:
+      case SPACE_STATES.SPACE_EMPTY_HOVERED:
         return styles.emptySquareHovered;
-      case SPACE_FILLED:
+      case SPACE_STATES.SPACE_FILLED:
         return styles.filledSquare;
-      case SPACE_FILLED_HOVERED:
+      case SPACE_STATES.SPACE_FILLED_HOVERED:
         return styles.filledSquareHovered;
-      case SPACE_CONSUMED:
+      case SPACE_STATES.SPACE_CONSUMED:
         return styles.consumedSquare;
       default:
         return styles.emptySquare;

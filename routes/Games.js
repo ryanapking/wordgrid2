@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from "react-native-elements";
 
+import { GAME_STATES } from "../data/utilities/constants";
 import StartGameOverlay from '../components/StartGameOverlay';
 import GameListItem from '../components/GameListItem';
 
@@ -20,7 +21,7 @@ class Games extends Component {
     Object.keys(gamesByID).forEach( (gameID) => {
       const game = gamesByID[gameID];
 
-      if ((game.status === "rp-new" || game.status === "rp") && this.props.userID === game.p2) {
+      if ((game.status === GAME_STATES.REQUEST_PENDING_NEW || game.status === GAME_STATES.REQUEST_PENDING) && this.props.userID === game.p2) {
         requests.push(gameID);
       } else if (game.turn === this.props.userID && !game.winner) {
         readyToPlay.push(gameID);

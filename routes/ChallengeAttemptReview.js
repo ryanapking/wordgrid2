@@ -8,7 +8,7 @@ import { getAttemptByChallengeIDAndIndex } from "../data/async-storage/challenge
 import { getAttemptByID, getChallengeByID } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
-import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
+import { SPACE_STATES } from "../data/utilities/constants";
 
 import DrawBoard from '../components/DrawBoard';
 import BoardPathCreator from '../components/BoardPathCreator';
@@ -114,11 +114,11 @@ class ChallengeAttemptReview extends Component {
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
         if (!letter) {
-          return {letter, status: SPACE_EMPTY};
+          return {letter, status: SPACE_STATES.SPACE_EMPTY};
         } else if (!this._checkSquareAvailable({rowIndex, columnIndex}, highlightPath)) {
-          return {letter, status: SPACE_CONSUMED};
+          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
         } else {
-          return {letter, status: SPACE_FILLED};
+          return {letter, status: SPACE_STATES.SPACE_FILLED};
         }
       });
     });

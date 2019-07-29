@@ -6,7 +6,7 @@ import BoardPathCreator from './BoardPathCreator';
 import DrawBoard from './DrawBoard';
 
 import { setBoardLocation } from "../data/redux/gameDisplay";
-import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED, SPACE_EMPTY_HOVERED, SPACE_FILLED_HOVERED } from "../constants";
+import { SPACE_STATES } from "../data/utilities/constants";
 
 class Board extends Component {
   constructor(props) {
@@ -36,15 +36,15 @@ class Board extends Component {
     const displayBoardState = rows.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
         if (!letter && this._checkSquareHovered({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_EMPTY_HOVERED}
+          return {letter, status: SPACE_STATES.SPACE_EMPTY_HOVERED}
         } else if (!letter) {
-          return {letter, status: SPACE_EMPTY};
+          return {letter, status: SPACE_STATES.SPACE_EMPTY};
         } else if (!this._checkSquareAvailable({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_CONSUMED};
+          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
         } else if (this._checkSquareHovered({rowIndex, columnIndex})){
-          return {letter, status: SPACE_FILLED_HOVERED};
+          return {letter, status: SPACE_STATES.SPACE_FILLED_HOVERED};
         } else {
-          return {letter, status: SPACE_FILLED};
+          return {letter, status: SPACE_STATES.SPACE_FILLED};
         }
       });
     });

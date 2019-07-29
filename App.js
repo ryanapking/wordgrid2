@@ -34,8 +34,8 @@ StatusBar.setHidden(true, null);
 console.disableYellowBox = true;
 
 export default class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       menuOverlayVisible: false

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import { markAnimationPlayed } from "../data/redux/gameData";
 import { getAnimationData } from "../data/utilities";
-import { SPACE_EMPTY, SPACE_FILLED, SPACE_CONSUMED } from "../constants";
+import { SPACE_STATES } from "../data/utilities/constants";
 import Piece from "./Piece";
 import BoardPathCreator from "./BoardPathCreator";
 import DrawBoard from './DrawBoard';
@@ -85,11 +85,11 @@ class GameMoveAnimation extends Component {
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
         if (!letter) {
-          return {letter, status: SPACE_EMPTY};
+          return {letter, status: SPACE_STATES.SPACE_EMPTY};
         } else if (this._checkSpaceConsumed(displayWordPath, rowIndex, columnIndex)) {
-          return {letter, status: SPACE_CONSUMED};
+          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
         } else {
-          return {letter, status: SPACE_FILLED};
+          return {letter, status: SPACE_STATES.SPACE_FILLED};
         }
       });
     });

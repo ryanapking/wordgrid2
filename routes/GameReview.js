@@ -7,7 +7,7 @@ import { ListItem } from 'react-native-elements';
 import { remoteToLocal, moveRemoteToLocal, remoteToStartingGameState, applyMove, arrayToString, calculateLongestWordLength, calculateHighestWordValue, getWordPath, calculateWordValue } from "../data/utilities";
 import { getGameSourceData } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
-import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED } from "../constants";
+import { SPACE_STATES } from "../data/utilities/constants";
 import Boggle from '../data/boggle-solver';
 
 import DrawBoard from '../components/DrawBoard';
@@ -84,11 +84,11 @@ class GameReview extends Component {
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
         if (!letter) {
-          return {letter, status: SPACE_EMPTY};
+          return {letter, status: SPACE_STATES.SPACE_EMPTY};
         } else if (!this._checkSquareAvailable({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_CONSUMED};
+          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
         } else {
-          return {letter, status: SPACE_FILLED};
+          return {letter, status: SPACE_STATES.SPACE_FILLED};
         }
       });
     });
