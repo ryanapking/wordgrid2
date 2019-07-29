@@ -1,6 +1,8 @@
 {
     "env": {},
-    "dependencies": {},
     "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "overrides": {
+        "ryanapking.wordgrid2/utilities": {}
+    }
 }
