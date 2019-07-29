@@ -30,7 +30,7 @@ import MessageOverlay from './components/MessageOverlay';
 
 const store = configureStore();
 
-StatusBar.setHidden(true);
+StatusBar.setHidden(true, null);
 console.disableYellowBox = true;
 
 export default class App extends Component {
