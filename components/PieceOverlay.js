@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Piece from "./Piece";
 
 class PieceOverlay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       offsetX: 0,

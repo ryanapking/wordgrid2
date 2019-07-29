@@ -11,8 +11,8 @@ import { getAttemptsByChallengeID } from "../data/async-storage/challengeAttempt
 import { setErrorMessage } from "../data/redux/messages";
 
 class Challenge extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       challenge: null,

@@ -9,8 +9,8 @@ import { setErrorMessage } from "../data/redux/messages";
 import { getRecentChallenges, getCurrentChallenge } from "../data/parse-client/getters";
 
 class Challenges extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       gettingChallenge: true,

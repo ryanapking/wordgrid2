@@ -7,8 +7,8 @@ import { withRouter } from 'react-router-native';
 import { userStandardLogin } from "../data/redux/user";
 
 class AccountLoginForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       username: "",

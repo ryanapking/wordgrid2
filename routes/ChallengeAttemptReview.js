@@ -15,8 +15,8 @@ import BoardPathCreator from '../components/BoardPathCreator';
 import Piece from '../components/Piece';
 
 class ChallengeAttemptReview extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       challenge: null,

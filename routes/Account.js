@@ -11,8 +11,8 @@ import AccountRegisterForm from '../components/AccountRegisterForm';
 import { convertAnonymousAccount } from "../data/parse-client/user";
 
 class Account extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       user: null,

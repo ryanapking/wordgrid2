@@ -8,8 +8,8 @@ import AccountLoginForm from '../components/AccountLoginForm';
 import AccountRegisterForm from '../components/AccountRegisterForm';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       displayForm: null

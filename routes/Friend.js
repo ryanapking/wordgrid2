@@ -9,8 +9,8 @@ import { startGame } from "../data/parse-client/actions";
 import GameListItem from '../components/GameListItem';
 
 class Friend extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       record: null,
       startingNewGame: false,

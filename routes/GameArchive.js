@@ -8,8 +8,8 @@ import { setErrorMessage } from "../data/redux/messages";
 import GameListItem from "../components/GameListItem";
 
 class GameArchive extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       games: [],

@@ -15,8 +15,8 @@ import BoardPathCreator from "../components/BoardPathCreator";
 import DrawScoreBoard from "../components/GameScoreBoard";
 
 class GameReview extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       game: {},

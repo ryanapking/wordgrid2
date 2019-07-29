@@ -8,8 +8,8 @@ import { getUsersByPartialString } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 
 class StartGameOverlay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       showOverlay: false,

@@ -9,8 +9,8 @@ import { respondToRequest } from "../data/parse-client/actions";
 import { setErrorMessage } from "../data/redux/messages";
 
 class GameListItem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       responding: false,

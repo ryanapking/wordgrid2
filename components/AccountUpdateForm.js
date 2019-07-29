@@ -11,8 +11,8 @@ import { setErrorMessage, setInfoMessage } from "../data/redux/messages";
 import { updateExistingAccount } from "../data/parse-client/user";
 
 class AccountUpdateForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       ...this.getInitialState()

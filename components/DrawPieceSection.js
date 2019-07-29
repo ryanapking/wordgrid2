@@ -6,8 +6,8 @@ import Piece from './Piece';
 import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
 
 class DrawPieceSection extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       pieceLocations: {},

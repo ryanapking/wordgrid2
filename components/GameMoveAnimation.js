@@ -11,8 +11,8 @@ import BoardPathCreator from "./BoardPathCreator";
 import DrawBoard from './DrawBoard';
 
 class GameMoveAnimation extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental(true);

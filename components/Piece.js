@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, PanResponder, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
+import PropTypes from 'prop-types'
 
 import { setHoveredSpaces, clearHoveredSpaces } from "../data/redux/gameDisplay";
 import { validatePlacement } from "../data/utilities/functions/checks";
@@ -9,8 +10,8 @@ import DrawPiece from './DrawPiece';
 
 class Piece extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       // used for local animations
       pan: new Animated.ValueXY(),
@@ -18,7 +19,6 @@ class Piece extends Component {
 
       // used for styling the current piece
       dragging: false,
-      canDrop: false,
     };
 
     this.lastSetHoveredSpaces = null;
@@ -32,8 +32,8 @@ class Piece extends Component {
     this._onStartShouldSetPanResponderCapture = this._onStartShouldSetPanResponderCapture.bind(this);
     this._onMoveShouldSetPanResponderCapture = this._onMoveShouldSetPanResponderCapture.bind(this);
     this._onPanResponderGrant = this._onPanResponderGrant.bind(this);
-    this._onPanResponderMove = this._onPanResponderMove.bind(this);
     this._onPanResponderRelease = this._onPanResponderRelease.bind(this);
+    this._onPanResponderMove = this._onPanResponderMove.bind(this);
     this._getPlacementRef = this._getPlacementRef.bind(this);
     this._setRelativeReferencePoint = this._setRelativeReferencePoint.bind(this);
 
@@ -52,9 +52,7 @@ class Piece extends Component {
 
   render() {
     const { baseSize } = this.props;
-    const { pan, scale, canDrop, dragging } = this.state;
-
-    console.log('dragging?', dragging);
+    const { pan, scale, dragging } = this.state;
 
     const dragTransforms = {transform: [{translateX: pan.x}, {translateY: pan.y}, {scale}]};
 
@@ -73,7 +71,7 @@ class Piece extends Component {
           <DrawPiece
             pieceState={pieceState}
             pieceSize={baseSize}
-            style={{ opacity: dragging ? .75 : 1 }}
+            style={{ opacity: dragging ? .65 : 1 }}
           />
         </View>
       </Animated.View>
@@ -121,7 +119,7 @@ class Piece extends Component {
 
   _onPanResponderGrant() {
     const { baseSize } = this.props;
-    this.setState({dragging: true, canDrop: false});
+    this.setState({ dragging: true });
     this.state.pan.setValue({x: 0, y: 0});
     const scaleTo = this.props.boardLocation.rowHeight / (baseSize / 4);
     Animated.timing(this.state.scale, {
@@ -132,7 +130,7 @@ class Piece extends Component {
   }
 
   _onPanResponderRelease(event) {
-    this.setState({dragging: false, canDrop: false});
+    this.setState({ dragging: false });
     Animated.timing(this.state.pan, {
       toValue: { x: 0, y: 0 },
       duration: 200,
@@ -162,12 +160,6 @@ class Piece extends Component {
 
     const placementRef = this._getPlacementRef(event);
     this._setHoveredSpaces(placementRef);
-
-    const canDrop = validatePlacement(this.props.piece, placementRef, this.props.boardRows);
-
-    if (canDrop !== this.state.canDrop) {
-      this.setState({canDrop});
-    }
   }
 
   _setHoveredSpaces(hoveringRef) {
@@ -189,7 +181,18 @@ class Piece extends Component {
       this.props.setHoveredSpaces(hoveredSpaces);
     }
   }
+
+  static propTypes = {
+    piece: PropTypes.array.isRequired,
+    baseSize: PropTypes.number.isRequired,
+    placePiece: PropTypes.func,
+    boardRows: PropTypes.array,
+    allowDrag: PropTypes.bool,
+    style: PropTypes.object,
+    key: PropTypes.string,
+  }
 }
+
 const styles = StyleSheet.create({
   square: {
     width: "100%",

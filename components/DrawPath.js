@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class DrawPath extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this._getRelativeCoordinates = this._getRelativeCoordinates.bind(this);
   }

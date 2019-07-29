@@ -9,8 +9,8 @@ import { setBoardLocation } from "../data/redux/gameDisplay";
 import { SPACE_CONSUMED, SPACE_EMPTY, SPACE_FILLED, SPACE_EMPTY_HOVERED, SPACE_FILLED_HOVERED } from "../constants";
 
 class Board extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this._onStartShouldSetPanResponderCapture = this._onStartShouldSetPanResponderCapture.bind(this);
     this._onMoveShouldSetPanResponderCapture = this._onMoveShouldSetPanResponderCapture.bind(this);
