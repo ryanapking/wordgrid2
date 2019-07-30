@@ -34,43 +34,43 @@ const routes = {
   home: {
     routeTitle: "Games",
     backRoute: null,
-    paths: ["/"],
+    path: "/",
     componentName: "Games",
   },
   game: {
     routeTitle: "vs ${opponentName}",
     backRoute: "home",
-    paths: ["/game/:gameID"],
+    path: "/game/:gameID",
     componentName: "Game",
   },
   gameReview: {
     routeTitle: "vs ${opponentName} Review",
     backRoute: "${prevHistory}",
-    paths: ["/gameReview/:gameID"],
+    path: "/gameReview/:gameID",
     componentName: "GameReview",
   },
   challenges: {
     routeTitle: "Challenges",
     backRoute: "home",
-    paths: ["/challenges"],
+    path: "/challenges",
     componentName: "Challenges",
   },
   challenge: {
     routeTitle: "${challengeDate} Challenge",
     backRoute: "challenges",
-    paths: ["/challenge/:challengeID"],
+    path: "/challenge/:challengeID",
     componentName: "Challenge",
   },
   challengeAttempt: {
     routeTitle: "${challengeDate} Challenge Attempt",
     backRoute: "${prevHistory}",
-    paths: ["/challengeAttempt"],
+    path: "/challengeAttempt",
     componentName: "ChallengeAttempt",
   },
   challengeAttemptReview: {
     routeTitle: "Complex Title",
     backRoute: "${prevHistory}",
-    paths: [
+    path: [
       "/challengeAttemptReview/:attemptID",
       "/challengeAttemptReview/:challengeID/:attemptIndex"
     ],
@@ -79,48 +79,37 @@ const routes = {
   login: {
     routeTitle: "Login",
     backRoute: null,
-    paths: ["/login"],
+    path: "/login",
     componentName: "Login",
   },
   account: {
     routeTitle: "Account",
     backRoute: "home",
-    paths: ["/account"],
+    path: "/account",
     componentName: "Account",
   },
   friends: {
     routeTitle: "Friends",
     backRoute: "home",
-    paths: ["/friends"],
+    path: "/friends",
     componentName: "Friends",
   },
   friend: {
     routeTitle: "${friendName}",
     backRoute: "friends",
-    paths: ["/friend/:friendID"],
+    path: "/friend/:friendID",
     componentName: "Friend",
   },
   friendArchive: {
     routeTitle: "${friendName} Archive",
     backRoute: "friend",
-    paths: ["/friend/:friendID/archive"],
+    path: "/friend/:friendID/archive",
     componentName: "FriendArchive",
   },
 };
 
-// Each route above can have more than one path.
-// Dump all paths into an array to easily output each as a <Route> in App.js
-let allPaths = [];
-Object.keys(routes).forEach((routeName) => {
-  const route = routes[routeName];
-  route.paths.forEach((path) => {
-    allPaths.push({
-      componentName: route.componentName,
-      path,
-    });
-  });
+export const routesArray = Object.keys(routes).map((routeName) => {
+  return routes[routeName];
 });
-
-export const pathsArray = allPaths;
 
 export default routes;

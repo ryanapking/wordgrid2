@@ -5,7 +5,7 @@ import { NativeRouter, Route } from'react-router-native';
 import { Overlay } from 'react-native-elements';
 
 import configureStore from './data/redux/configureStore';
-import { pathsArray, RouteComponents } from './routes';
+import { routesArray, RouteComponents } from './routes';
 import Menu from './components/Menu';
 import TopBar from './components/TopBar';
 import MessageOverlay from './components/MessageOverlay';
@@ -38,7 +38,7 @@ export default class App extends Component {
                 <TopBar openDrawer={() => this.setState({ menuOverlayVisible: true })} />
               </View>
               <View style={styles.mainSection}>
-                { pathsArray.map((route, index) =>
+                { routesArray.map((route, index) =>
                   <Route
                     key={index}
                     exact
