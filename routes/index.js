@@ -45,7 +45,7 @@ const routes = {
   },
   gameReview: {
     routeTitle: "vs ${opponentName} Review",
-    backRoute: "${prevHistory}",
+    backRoute: "|previousPage|",
     path: "/gameReview/:gameID",
     componentName: "GameReview",
   },
@@ -63,13 +63,13 @@ const routes = {
   },
   challengeAttempt: {
     routeTitle: "${challengeDate} Challenge Attempt",
-    backRoute: "${prevHistory}",
+    backRoute: "|previousPage|",
     path: "/challengeAttempt",
     componentName: "ChallengeAttempt",
   },
   challengeAttemptReview: {
     routeTitle: "Complex Title",
-    backRoute: "${prevHistory}",
+    backRoute: "|previousPage|",
     path: [
       "/challengeAttemptReview/:attemptID",
       "/challengeAttemptReview/:challengeID/:attemptIndex"

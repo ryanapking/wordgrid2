@@ -25,7 +25,7 @@ class Menu extends Component {
     return (
       <View>
         <ListItem title="Navigate" containerStyle={styles.divider} />
-        <ListItem title="Games" onPress={() => this.navigateTo(`/games`)} />
+        <ListItem title="Games" onPress={() => this.navigateTo(`/`)} />
         <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
         <ListItem title="Friends" onPress={() => this.navigateTo('/friends')} />
       </View>
