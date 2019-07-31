@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import Piece from "./Piece";
 
+import MeasureView from "./MeasureView";
+
 class PieceOverlay extends Component {
   constructor(props) {
     super(props);
@@ -31,9 +33,9 @@ class PieceOverlay extends Component {
     });
 
     return (
-      <View style={[styles.overlay, this.props.style]}
-        ref={baseView => this.baseView = baseView}
-        onLayout={ () => this._onLayout() }
+      <MeasureView
+        style={[styles.overlay, this.props.style]}
+        onMeasure={ (x, y, width, height, pageX, pageY) => this.setState({offsetX: pageX, offsetY: pageY,}) }
       >
         { pieceIndexes.map( (pieceIndex) =>
           <View key={pieceIndex} style={[locations[pieceIndex], styles.pieceBackground]} />
@@ -49,18 +51,10 @@ class PieceOverlay extends Component {
             placePiece={(rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
           />
         )}
-      </View>
+      </MeasureView>
     );
   }
 
-  _onLayout() {
-    this.baseView.measure( (x, y, width, height, pageX, pageY) => {
-      this.setState({
-        offsetX: pageX,
-        offsetY: pageY,
-      })
-    })
-  }
 }
 
 const styles = StyleSheet.create({

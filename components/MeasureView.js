@@ -9,6 +9,8 @@ export default class MeasureView extends Component {
         style={this.props.style}
         ref={ measureView => this.measureView = measureView }
         onLayout={() => this._onLayout() }
+        { ...this.props.panHandlers }
+        pointerEvents={ this.props.pointerEvents }
       >
         {this.props.children}
       </View>
@@ -23,6 +25,8 @@ export default class MeasureView extends Component {
 
   static propTypes = {
     onMeasure: PropTypes.func.isRequired,
+    pointerEvents: PropTypes.string,
+    panHandlers: PropTypes.object,
     style: ViewPropTypes.style,
   }
 }

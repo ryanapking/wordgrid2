@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import { connect } from 'react-redux';
 
 import Piece from './Piece';
+import MeasureView from "./MeasureView";
 import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
 
 class DrawPieceSection extends Component {
@@ -12,8 +13,6 @@ class DrawPieceSection extends Component {
     this.state = {
       pieceLocations: {},
     };
-
-    this.pieceViews = {};
   }
 
   render() {
@@ -24,13 +23,12 @@ class DrawPieceSection extends Component {
           const baseSize = this.state.pieceLocations[pieceIndex] ? this.state.pieceLocations[pieceIndex].width : 0;
           return (
             <View style={styles.gamePieceContainer} key={pieceIndex}>
-              <View
-                ref={pieceView => this.pieceViews[pieceIndex] = pieceView}
-                onLayout={ () => this._onLayout(pieceIndex) }
+              <MeasureView
                 style={styles.gamePiece}
+                onMeasure={ (x, y, width, height, pageX, pageY) => this.setPieceLocation(piece, pieceIndex, {x, y, width, height, pageX, pageY}) }
               >
                 { allowDrag ? null : <Piece piece={piece} pieceIndex={pieceIndex} style={styles.gamePiece} allowDrag={allowDrag} baseSize={baseSize}/>}
-              </View>
+              </MeasureView>
             </View>
           );
         })}
@@ -46,25 +44,23 @@ class DrawPieceSection extends Component {
     }
   }
 
-  _onLayout(pieceIndex) {
-    const { allowDrag } = this.props;
-    this.pieceViews[pieceIndex].measure( (x, y, width, height, pageX, pageY) => {
-      const pieceLocation = {x, y, width, height, pageX, pageY, piece: this.props.pieces[pieceIndex]};
-
-      // local data is used for piece size calculations
-      this.setState({
-        pieceLocations: {
-          ...this.state.pieceLocations,
-          [pieceIndex]: pieceLocation,
-        }
-      });
-
-      // set the piece location for the overlay
-      if (allowDrag) {
-        this.props.setPieceLocation(pieceIndex, pieceLocation);
+  setPieceLocation(piece, pieceIndex, location) {
+    const pieceLocation = { ...location, piece };
+    // local data is used for piece size calculations
+    this.setState({
+      pieceLocations: {
+        ...this.state.pieceLocations,
+        [pieceIndex]: pieceLocation,
       }
     });
+
+    // if needed, set the piece location for the overlay
+    const { allowDrag } = this.props;
+    if (allowDrag) {
+      this.props.setPieceLocation(pieceIndex, pieceLocation);
+    }
   }
+
 }
 
 const styles = StyleSheet.create({

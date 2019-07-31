@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {PanResponder, StyleSheet, View} from 'react-native';
+import { PanResponder, StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import BoardPathCreator from './BoardPathCreator';
 import DrawBoard from './DrawBoard';
+import MeasureView from "./MeasureView";
 
 import { setBoardLocation } from "../data/redux/gameDisplay";
 import { SPACE_STATES } from "../data/utilities/constants";
@@ -52,14 +53,15 @@ class Board extends Component {
     // console.log('displayBoardState:', displayBoardState);
 
     return(
-      <View style={[this.props.style, styles.gameBoardView]}>
-        <View style={styles.base} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-          <View style={{width: '100%', height: '100%'}} {...this.panResponder.panHandlers} pointerEvents={pointerEvents}>
-            <DrawBoard boardState={displayBoardState} boardSize={display.boardLocation.width}/>
-          </View>
-          <BoardPathCreator squares={consumedSquares} boardLocation={display.boardLocation}/>
-        </View>
-      </View>
+      <MeasureView
+        style={[styles.base, this.props.style]}
+        onMeasure={ (x, y, width, height, pageX, pageY) => this.props.setBoardLocation(pageX, pageY, width, height) }
+        panHandlers={this.panResponder.panHandlers}
+        pointerEvents={pointerEvents}
+      >
+        <DrawBoard boardState={displayBoardState} boardSize={display.boardLocation.width}/>
+        <BoardPathCreator squares={consumedSquares} boardLocation={display.boardLocation}/>
+      </MeasureView>
     );
   }
 
@@ -190,13 +192,6 @@ class Board extends Component {
   _onMoveShouldSetPanResponderCapture() {
     return true;
   }
-
-  _onLayout() {
-    this.gameBoard.measure((x, y, width, height, pageX, pageY) => {
-      // console.log('measure:', {x, y, width, height, pageX, pageY});
-      this.props.setBoardLocation(pageX, pageY, width, height);
-    });
-  }
 }
 
 const styles = StyleSheet.create({
@@ -206,12 +201,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     maxHeight: "100%",
     aspectRatio: 1
-  },
-  gameBoardView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%'
   },
 });
 
