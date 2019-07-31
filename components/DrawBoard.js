@@ -14,21 +14,23 @@ export default class DrawBoard extends Component {
     const displayBoardState = boardState.map( (row, rowIndex) => {
       return row.map( (letter, columnIndex) => {
 
-        const square = {rowIndex, columnIndex};
+        let square = { rowIndex, columnIndex, letter };
         const squareHovered = isSquareInArray(square, hoveredSquares);
         const squareConsumed = isSquareInArray(square, consumedSquares);
 
         if (!letter && squareHovered) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY_HOVERED}
+          square.fillStyle = styles.emptySquareHovered;
         } else if (!letter) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY};
+          square.fillStyle = styles.emptySquare;
         } else if (squareConsumed) {
-          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
+          square.fillStyle = styles.consumedSquare;
         } else if (squareHovered){
-          return {letter, status: SPACE_STATES.SPACE_FILLED_HOVERED};
+          square.fillStyle = styles.filledSquareHovered;
         } else {
-          return {letter, status: SPACE_STATES.SPACE_FILLED};
+          square.fillStyle = styles.filledSquare;
         }
+
+        return square;
       });
     });
 
@@ -36,35 +38,15 @@ export default class DrawBoard extends Component {
       <View style={styles.grid}>
         {displayBoardState.map((row, rowIndex) =>
           <View key={rowIndex} style={styles.row}>
-            {row.map( (square, columnIndex) => {
-              const fillStyle = this._getFillStyle(square.status);
-              return (
-                <View key={columnIndex} style={[styles.centered, styles.column, fillStyle]}>
-                  <DrawLetter letter={square.letter} style={fillStyle} letterSize={letterHeight}/>
-                </View>
-              );
-            })}
+            {row.map( (square, columnIndex) =>
+              <View key={columnIndex} style={[styles.centered, styles.column, square.fillStyle]}>
+                <DrawLetter letter={square.letter} style={square.fillStyle} letterSize={letterHeight}/>
+              </View>
+            )}
           </View>
         )}
       </View>
     );
-  }
-
-  _getFillStyle(status) {
-    switch (status) {
-      case SPACE_STATES.SPACE_EMPTY:
-        return styles.emptySquare;
-      case SPACE_STATES.SPACE_EMPTY_HOVERED:
-        return styles.emptySquareHovered;
-      case SPACE_STATES.SPACE_FILLED:
-        return styles.filledSquare;
-      case SPACE_STATES.SPACE_FILLED_HOVERED:
-        return styles.filledSquareHovered;
-      case SPACE_STATES.SPACE_CONSUMED:
-        return styles.consumedSquare;
-      default:
-        return styles.emptySquare;
-    }
   }
 
   static propTypes = {
