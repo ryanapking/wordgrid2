@@ -34,7 +34,7 @@ export default class App extends Component {
             </Overlay>
             <MessageOverlay />
             <View style={styles.mainContainer}>
-              <View style={styles.topBarSection} >
+              <View style={styles.topBarSection}>
                 <TopBar openDrawer={() => this.setState({ menuOverlayVisible: true })} />
               </View>
               <View style={styles.mainSection}>
@@ -43,7 +43,10 @@ export default class App extends Component {
                     key={index}
                     exact
                     path={route.path}
-                    component={RouteComponents[route.componentName]}
+                    render={ () => {
+                      const RouteComponent = RouteComponents[route.componentName];
+                      return <RouteComponent currentRoute={route} />;
+                    }}
                   />
                 )}
               </View>
