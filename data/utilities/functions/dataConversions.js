@@ -142,7 +142,7 @@ function challengeRemoteToPlayableObject(remoteChallengeObject) {
     pieces: [...remoteChallengeObject.startingPieces, ""].map( (piece) => pieceStringToArray(piece)),
     moves: [],
 
-    word: null,
+    word: "",
     wordValue: null,
     wordPath: null,
     consumedSquares: [],

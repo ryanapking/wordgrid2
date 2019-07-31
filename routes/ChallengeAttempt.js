@@ -15,6 +15,8 @@ import {
   placePiece,
   saveAttempt,
 } from "../data/redux/challengeData";
+import DrawBoard from "../components/DrawBoard";
+import BoardPathCreator from "../components/BoardPathCreator";
 
 class ChallengeAttempt extends Component {
   componentDidMount() {
@@ -59,13 +61,21 @@ class ChallengeAttempt extends Component {
             </View>
             <Board
               style={styles.board}
-              word={challenge.word}
               rows={challenge.rows}
+              pointerEventsDisabled={challenge.word.length > 0}
               consumedSquares={challenge.consumedSquares}
               consumeSquare={(square) => this.props.consumeSquare(square)}
               removeSquare={() => this.props.removeSquare()}
               clearConsumedSquares={() => this.props.clearConsumedSquares()}
-            />
+            >
+              <DrawBoard
+                boardState={challenge.rows}
+                boardSize={this.props.display.boardLocation.width}
+                consumedSquares={challenge.consumedSquares}
+                hoveredSquares={this.props.display.hoveredSpaces}
+              />
+              <BoardPathCreator squares={challenge.consumedSquares} boardLocation={this.props.display.boardLocation}/>
+            </Board>
             <ChallengeInteraction style={styles.interaction} />
           </View>
           { challenge.word ? pieceOverlay : null }
@@ -103,7 +113,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     userID: state.user.uid,
-    challengeData: state.challengeData
+    challengeData: state.challengeData,
+    display: state.gameDisplay,
   };
 };
 

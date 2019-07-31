@@ -104,7 +104,7 @@ function placePieceReducer(state, action) {
     ...state,
     challenge: {
       ...state.challenge,
-      word: null,
+      word: "",
       wordPath: null,
       wordValue: null,
       pieces: action.pieces,
