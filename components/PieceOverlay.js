@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import Piece from "./Piece";
+import PieceDraggableView from "./PieceDraggableView";
 
 import MeasureView from "./MeasureView";
+import DrawPiece from "./DrawPiece";
 
 class PieceOverlay extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class PieceOverlay extends Component {
           <View key={pieceIndex} style={[locations[pieceIndex], styles.pieceBackground]} />
         )}
         { pieceIndexes.map( (pieceIndex) =>
-          <Piece
+          <PieceDraggableView
             key={pieceIndex}
             piece={pieceLocations[pieceIndex].piece}
             style={locations[pieceIndex]}
@@ -49,7 +50,12 @@ class PieceOverlay extends Component {
             baseSize={pieceLocations[pieceIndex].width}
             boardRows={this.props.boardRows}
             placePiece={(rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
-          />
+          >
+            <DrawPiece
+              piece={pieceLocations[pieceIndex].piece}
+              pieceSize={pieceLocations[pieceIndex].width}
+            />
+          </PieceDraggableView>
         )}
       </MeasureView>
     );

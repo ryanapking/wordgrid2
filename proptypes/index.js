@@ -19,3 +19,9 @@ export const routeType = PropTypes.shape({
   path: PropTypes.string,
   componentName: PropTypes.string,
 });
+
+export const letterGridType = PropTypes.arrayOf(
+  PropTypes.arrayOf(
+    PropTypes.string
+  )
+);

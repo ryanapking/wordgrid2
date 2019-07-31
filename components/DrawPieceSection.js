@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {StyleSheet, View} from 'react-native';
 import { connect } from 'react-redux';
 
-import Piece from './Piece';
+import PieceDraggableView from './PieceDraggableView';
+import DrawPiece from "./DrawPiece";
 import MeasureView from "./MeasureView";
 import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
 
@@ -27,7 +28,21 @@ class DrawPieceSection extends Component {
                 style={styles.gamePiece}
                 onMeasure={ (x, y, width, height, pageX, pageY) => this.setPieceLocation(piece, pieceIndex, {x, y, width, height, pageX, pageY}) }
               >
-                { allowDrag ? null : <Piece piece={piece} pieceIndex={pieceIndex} style={styles.gamePiece} allowDrag={allowDrag} baseSize={baseSize}/>}
+                { allowDrag ? null :
+                  <PieceDraggableView
+                    piece={piece}
+                    pieceIndex={pieceIndex}
+                    style={styles.gamePiece}
+                    allowDrag={allowDrag}
+                    baseSize={baseSize}
+                  >
+                    <DrawPiece
+                      piece={piece}
+                      pieceSize={baseSize}
+                      style={{ opacity: 1 }}
+                    />
+                  </PieceDraggableView>
+                }
               </MeasureView>
             </View>
           );

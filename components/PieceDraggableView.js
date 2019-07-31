@@ -6,9 +6,8 @@ import PropTypes from 'prop-types'
 
 import { setHoveredSpaces, clearHoveredSpaces } from "../data/redux/gameDisplay";
 import { validatePlacement } from "../data/utilities/functions/checks";
-import DrawPiece from './DrawPiece';
 
-class Piece extends Component {
+class PieceDraggableView extends Component {
 
   constructor(props) {
     super(props);
@@ -51,29 +50,16 @@ class Piece extends Component {
   }
 
   render() {
-    const { baseSize } = this.props;
     const { pan, scale, dragging } = this.state;
-
     const dragTransforms = {transform: [{translateX: pan.x}, {translateY: pan.y}, {scale}]};
-
-    const pieceState = this.props.piece.map( (row) => {
-      return row.map( (letter) => {
-        return {letter};
-      });
-    });
+    const opacity = { opacity: dragging ? .65 : 1};
 
     return (
       <Animated.View
         {...this.panResponder.panHandlers}
-        style={[styles.square, dragTransforms, this.props.style]}
+        style={[styles.square, dragTransforms, this.props.style, opacity]}
       >
-        <View style={styles.grid} pointerEvents={'none'}>
-          <DrawPiece
-            pieceState={pieceState}
-            pieceSize={baseSize}
-            style={{ opacity: dragging ? .65 : 1 }}
-          />
-        </View>
+        {this.props.children}
       </Animated.View>
     );
   }
@@ -218,4 +204,4 @@ const mapDispatchToProps = {
   clearHoveredSpaces,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Piece));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PieceDraggableView));

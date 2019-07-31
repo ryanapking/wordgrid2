@@ -5,10 +5,10 @@ import { withRouter } from 'react-router-native';
 
 import { markAnimationPlayed } from "../data/redux/gameData";
 import { getAnimationData } from "../data/utilities/functions/getters";
-import { SPACE_STATES } from "../data/utilities/constants";
-import Piece from "./Piece";
+import PieceDraggableView from "./PieceDraggableView";
 import BoardPathCreator from "./BoardPathCreator";
 import BoardDrawLetterGrid from './BoardDrawLetterGrid';
+import DrawPiece from "./DrawPiece";
 
 class GameMoveAnimation extends Component {
   constructor(props) {
@@ -82,18 +82,6 @@ class GameMoveAnimation extends Component {
       columnWidth: letterWidth,
     };
 
-    const displayBoardState = boardState.map( (row, rowIndex) => {
-      return row.map( (letter, columnIndex) => {
-        if (!letter) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY};
-        } else if (this._checkSpaceConsumed(displayWordPath, rowIndex, columnIndex)) {
-          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
-        } else {
-          return {letter, status: SPACE_STATES.SPACE_FILLED};
-        }
-      });
-    });
-
     const displayWord = animation.word.substring(0, displayWordPath.length);
 
     return (
@@ -104,7 +92,7 @@ class GameMoveAnimation extends Component {
             { pieces.map( (piece, index) =>
               <View key={index} style={[styles.gamePieceContainer, {zIndex: 1}]} >
                 <View style={[styles.gamePiece, styles.gamePieceBackground]} ref={(piece) => this.pieceRefs[index] = piece} onLayout={piece.onLayout}>
-                  { (overlay.pieceIndex === index) ? null : <Piece piece={piece.letters} pieceIndex={index} style={[styles.gamePiece]} allowDrag={false} baseSize={overlay.pieceSize}/> }
+                  { (overlay.pieceIndex === index) ? null : <PieceDraggableView piece={piece.letters} pieceIndex={index} style={[styles.gamePiece]} allowDrag={false} baseSize={overlay.pieceSize}/> }
                 </View>
               </View>
             )}
@@ -113,12 +101,29 @@ class GameMoveAnimation extends Component {
 
         <View style={styles.boardSection}>
           <View style={styles.board} ref={(view) => this._board = view} onLayout={() => this._measureBoard()}>
-            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardSize}/>
+            <BoardDrawLetterGrid
+              boardState={boardState}
+              boardSize={boardSize}
+              consumedSquares={displayWordPath}
+              hoveredSquares={[]}
+            />
             <BoardPathCreator squares={displayWordPath} boardLocation={boardLocation}/>
           </View>
         </View>
 
-        { !overlay.location ? null : <Piece piece={pieces[overlay.pieceIndex].letters} style={[styles.gamePiece, overlay.styles, this.state.moveTo]} allowDrag={false} baseSize={overlay.pieceSize}/> }
+        { !overlay.location ? null :
+          <PieceDraggableView
+            piece={pieces[overlay.pieceIndex].letters}
+            style={[styles.gamePiece, overlay.styles, this.state.moveTo]}
+            allowDrag={false}
+            baseSize={overlay.pieceSize}
+          >
+            <DrawPiece
+              piece={pieces[overlay.pieceIndex].letters}
+              pieceSize={overlay.pieceSize}
+            />
+          </PieceDraggableView>
+        }
 
         <View style={styles.moveInfoSection}>
           <Text style={{textAlign: 'center'}}>{ displayWord }</Text>

@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewPropTypes } from 'react-native';
 import DrawLetter from "./DrawLetter";
 import PropTypes from "prop-types";
 
+import { letterGridType } from "../proptypes";
+
 export default class DrawPiece extends Component {
   render() {
-    const { pieceSize, pieceState, canDrop } = this.props;
+    const { pieceSize, piece, canDrop } = this.props;
     const letterHeight = (pieceSize > 0) ? (pieceSize / 4) : 0;
     const dragStyles = canDrop ? styles.canDrop : null;
     return (
       <View style={[styles.grid, this.props.style]} pointerEvents={'none'}>
-        {pieceState.map( (row, rowIndex) =>
+        {piece.map( (row, rowIndex) =>
           <View style={styles.row} key={rowIndex}>
-            {row.map( (square, columnIndex) =>
+            {row.map( (letter, columnIndex) =>
               <View style={styles.column} key={columnIndex}>
-                { square.letter ? <DrawLetter style={dragStyles} letter={square.letter} letterSize={letterHeight}/> : null}
+                { letter ? <DrawLetter style={dragStyles} letter={letter} letterSize={letterHeight}/> : null}
               </View>
             )}
           </View>
@@ -24,17 +26,9 @@ export default class DrawPiece extends Component {
   }
 
   static propTypes = {
-    pieceState:
-      PropTypes.arrayOf(
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            letter: PropTypes.string,
-            status: PropTypes.number
-          })
-        )
-      ),
+    style: ViewPropTypes.style,
+    piece: letterGridType.isRequired,
     pieceSize: PropTypes.number,
-    canDrop: PropTypes.bool
   }
 }
 
