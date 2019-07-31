@@ -40,7 +40,11 @@ export default class DrawBoard extends Component {
           <View key={rowIndex} style={styles.row}>
             {row.map( (square, columnIndex) =>
               <View key={columnIndex} style={[styles.centered, styles.column, square.fillStyle]}>
-                <DrawLetter letter={square.letter} style={square.fillStyle} letterSize={letterHeight}/>
+                <DrawLetter
+                  letter={square.letter}
+                  style={square.fillStyle}
+                  letterSize={letterHeight}
+                />
               </View>
             )}
           </View>

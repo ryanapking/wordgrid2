@@ -77,7 +77,7 @@ class Game extends Component {
         <View style={styles.container}>
           { overlayActive ? null : pieceOverlay }
           <View style={styles.underlay}>
-            <GameInfoDisplay style={styles.info} gameID={this.props.gameID}/>
+            <GameInfoDisplay style={styles.info} gameID={this.props.gameID} />
             <Board
               style={styles.board}
               rows={game.rows}
@@ -93,9 +93,12 @@ class Game extends Component {
                 consumedSquares={game.consumedSquares}
                 hoveredSquares={this.props.display.hoveredSpaces}
               />
-              <BoardPathCreator squares={game.consumedSquares} boardLocation={this.props.display.boardLocation}/>
+              <BoardPathCreator
+                squares={game.consumedSquares}
+                boardLocation={this.props.display.boardLocation}
+              />
             </Board>
-            <GameInteraction style={styles.interaction} gameID={this.props.gameID}/>
+            <GameInteraction style={styles.interaction} gameID={this.props.gameID} />
           </View>
           { overlayActive ? pieceOverlay : null }
         </View>

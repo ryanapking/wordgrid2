@@ -12,3 +12,10 @@ export const squaresArrayType = PropTypes.arrayOf(
     columnIndex: PropTypes.number.isRequired,
   })
 );
+
+export const routeType = PropTypes.shape({
+  routeTitle: PropTypes.string,
+  backRoute: PropTypes.string,
+  path: PropTypes.string,
+  componentName: PropTypes.string,
+});
