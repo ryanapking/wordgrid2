@@ -6,7 +6,7 @@ import { SPACE_STATES } from "../data/utilities/constants";
 import { isSquareInArray } from "../data/utilities/functions/checks";
 import DrawLetter from "./DrawLetter";
 
-export default class DrawBoard extends Component {
+export default class BoardDrawLetterGrid extends Component {
   render() {
     const { boardState, boardSize, consumedSquares, hoveredSquares } = this.props;
     const letterHeight = (boardSize > 0) ? (boardSize / 10) : 0;

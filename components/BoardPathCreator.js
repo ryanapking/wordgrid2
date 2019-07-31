@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from "prop-types";
 
-import DrawPath from './DrawPath';
+import BoardDrawPath from './BoardDrawPath';
 
 
 export default class BoardPathCreator extends Component {
@@ -21,7 +21,7 @@ export default class BoardPathCreator extends Component {
     return (
       <View style={styles.overlay} pointerEvents={'none'}>
         {squarePairs.map( (pair, pairIndex) =>
-          <DrawPath key={pairIndex} square1={pair[0]} square2={pair[1]} boardLocation={boardLocation}/>
+          <BoardDrawPath key={pairIndex} square1={pair[0]} square2={pair[1]} boardLocation={boardLocation}/>
         )}
       </View>
     );

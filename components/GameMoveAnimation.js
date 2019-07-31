@@ -8,7 +8,7 @@ import { getAnimationData } from "../data/utilities/functions/getters";
 import { SPACE_STATES } from "../data/utilities/constants";
 import Piece from "./Piece";
 import BoardPathCreator from "./BoardPathCreator";
-import DrawBoard from './DrawBoard';
+import BoardDrawLetterGrid from './BoardDrawLetterGrid';
 
 class GameMoveAnimation extends Component {
   constructor(props) {
@@ -113,7 +113,7 @@ class GameMoveAnimation extends Component {
 
         <View style={styles.boardSection}>
           <View style={styles.board} ref={(view) => this._board = view} onLayout={() => this._measureBoard()}>
-            <DrawBoard boardState={displayBoardState} boardSize={boardSize}/>
+            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardSize}/>
             <BoardPathCreator squares={displayWordPath} boardLocation={boardLocation}/>
           </View>
         </View>

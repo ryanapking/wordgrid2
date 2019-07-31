@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
-export default class DrawPath extends Component {
+export default class BoardDrawPath extends Component {
   constructor(props) {
     super(props);
 

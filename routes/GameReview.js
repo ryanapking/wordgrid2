@@ -22,7 +22,7 @@ import { setErrorMessage } from "../data/redux/messages";
 import { SPACE_STATES } from "../data/utilities/constants";
 import Boggle from '../data/boggle-solver';
 
-import DrawBoard from '../components/DrawBoard';
+import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
 import BoardPathCreator from "../components/BoardPathCreator";
 import DrawScoreBoard from "../components/GameScoreBoard";
 
@@ -113,7 +113,7 @@ class GameReview extends Component {
 
         <View style={styles.boardSection}>
           <View style={styles.board} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-            <DrawBoard boardState={displayBoardState} boardSize={boardLocation.width}/>
+            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardLocation.width}/>
             <BoardPathCreator squares={this.state.displayPath} boardLocation={boardLocation}/>
           </View>
         </View>

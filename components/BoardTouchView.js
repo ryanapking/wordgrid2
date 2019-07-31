@@ -8,7 +8,7 @@ import MeasureView from "./MeasureView";
 import { setBoardLocation } from "../data/redux/gameDisplay";
 import { isSquareInArray } from "../data/utilities/functions/checks";
 
-class Board extends Component {
+class BoardTouchView extends Component {
   constructor(props) {
     super(props);
 
@@ -188,4 +188,4 @@ const mapDispatchToProps = {
   setBoardLocation
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(BoardTouchView);

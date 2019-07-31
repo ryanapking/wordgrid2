@@ -10,7 +10,7 @@ import { setErrorMessage } from "../data/redux/messages";
 import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
 import { SPACE_STATES } from "../data/utilities/constants";
 
-import DrawBoard from '../components/DrawBoard';
+import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
 import BoardPathCreator from '../components/BoardPathCreator';
 import Piece from '../components/Piece';
 
@@ -130,7 +130,7 @@ class ChallengeAttemptReview extends Component {
 
         <View style={styles.boardSection}>
           <View style={styles.board} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-            <DrawBoard boardState={displayBoardState} boardSize={boardLocation.width}/>
+            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardLocation.width}/>
             <BoardPathCreator squares={wordPath} boardLocation={boardLocation}/>
           </View>
         </View>

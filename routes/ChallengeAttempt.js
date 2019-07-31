@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
-import Board from '../components/Board';
+import BoardTouchView from '../components/BoardTouchView';
 import ChallengeInteraction from '../components/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
 import PieceOverlay from '../components/PieceOverlay';
@@ -15,7 +15,7 @@ import {
   placePiece,
   saveAttempt,
 } from "../data/redux/challengeData";
-import DrawBoard from "../components/DrawBoard";
+import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/BoardPathCreator";
 
 class ChallengeAttempt extends Component {
@@ -59,7 +59,7 @@ class ChallengeAttempt extends Component {
                 style={{height: '100%', width: '100%'}}
               />
             </View>
-            <Board
+            <BoardTouchView
               style={styles.board}
               rows={challenge.rows}
               pointerEventsDisabled={challenge.word.length > 0}
@@ -68,14 +68,14 @@ class ChallengeAttempt extends Component {
               removeSquare={() => this.props.removeSquare()}
               clearConsumedSquares={() => this.props.clearConsumedSquares()}
             >
-              <DrawBoard
+              <BoardDrawLetterGrid
                 boardState={challenge.rows}
                 boardSize={this.props.display.boardLocation.width}
                 consumedSquares={challenge.consumedSquares}
                 hoveredSquares={this.props.display.hoveredSpaces}
               />
               <BoardPathCreator squares={challenge.consumedSquares} boardLocation={this.props.display.boardLocation}/>
-            </Board>
+            </BoardTouchView>
             <ChallengeInteraction style={styles.interaction} />
           </View>
           { challenge.word ? pieceOverlay : null }

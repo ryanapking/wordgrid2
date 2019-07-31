@@ -24,7 +24,7 @@ export default class Boggle {
       this.size = Math.sqrt(len);
     } else {
       if (boardParam < 4) {
-        throw new Error('Board size must be 4x4 or greater.');
+        throw new Error('BoardTouchView size must be 4x4 or greater.');
       }
       if (boardParam > 6) {
         throw new Error('No dice for board greater than 6x6.');

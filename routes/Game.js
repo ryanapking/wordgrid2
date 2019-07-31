@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
 import GameInfoDisplay from '../components/GameInfoDisplay';
-import Board from '../components/Board';
+import Board from '../components/BoardTouchView';
 import GameInteraction from '../components/GameInteraction';
 import GameMoveAnimation from '../components/GameMoveAnimation';
 import PieceOverlay from '../components/PieceOverlay';
@@ -13,7 +13,7 @@ import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquare
 import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities/functions/calculations";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 
-import DrawBoard from "../components/DrawBoard";
+import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/BoardPathCreator";
 
 class Game extends Component {
@@ -87,7 +87,7 @@ class Game extends Component {
               removeSquare={() => this.props.removeSquare(gameID)}
               clearConsumedSquares={() => this.props.clearConsumedSquares(gameID)}
             >
-              <DrawBoard
+              <BoardDrawLetterGrid
                 boardState={game.rows}
                 boardSize={this.props.display.boardLocation.width}
                 consumedSquares={game.consumedSquares}

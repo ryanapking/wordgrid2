@@ -57,7 +57,10 @@ class TopBar extends Component {
         exact: true,
         strict: false,
       });
-      if (match) previousRoute = route;
+      if (match) {
+        previousRoute = route;
+        break;
+      }
     }
 
     if (previousRoute) return previousRoute.routeTitle;
