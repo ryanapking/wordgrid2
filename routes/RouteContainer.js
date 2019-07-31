@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Overlay } from "react-native-elements";
+import PropTypes from 'prop-types';
 
 import { routeType } from "../proptypes";
 import TopBar from "../components/TopBar";
@@ -17,8 +18,6 @@ export default class RouteContainer extends Component {
   }
 
   render() {
-    const { currentRoute, backRoute } = this.props;
-
     return (
       <View style={styles.mainContainer}>
         <MessageOverlay />
@@ -28,9 +27,8 @@ export default class RouteContainer extends Component {
         <View style={styles.topBarSection}>
           <TopBar
             openMenu={() => this.setState({ menuOverlayVisible: true })}
-            routeTitle={currentRoute.routeTitle}
-            backPath={ backRoute ? backRoute.path : null }
-            backTitle={ backRoute ? backRoute.routeTitle : null }
+            currentRouteKey={this.props.currentRouteKey}
+            backRouteKey={this.props.backRouteKey}
           />
         </View>
         <View style={styles.mainSection}>
@@ -41,8 +39,8 @@ export default class RouteContainer extends Component {
   }
 
   static propTypes = {
-    currentRoute: routeType.isRequired,
-    backRoute: routeType,
+    currentRouteKey: PropTypes.string.isRequired,
+    backRouteKey: PropTypes.string,
   }
 }
 

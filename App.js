@@ -27,7 +27,7 @@ export default class App extends Component {
               render={ () => {
                 const RouteComponent = RouteComponents[route.componentName];
                 return (
-                  <RouteContainer currentRoute={route} backRoute={ routes[route.backRoute] } >
+                  <RouteContainer currentRouteKey={route.routeKey} backRouteKey={ route.backRouteKey } >
                     <RouteComponent />
                   </RouteContainer>
                 );

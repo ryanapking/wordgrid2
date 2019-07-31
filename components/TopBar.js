@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { withRouter } from 'react-router-native';
+import { withRouter, matchPath } from 'react-router-native';
 import { Header, Icon, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
+import routes from '../routes';
+
 class TopBar extends Component {
   render() {
-    const { backPath, backTitle, routeTitle } = this.props;
+    const { currentRouteKey, backRouteKey } = this.props;
+    const currentRoute = routes[currentRouteKey];
+
     return (
       <Header
         placement="center"
-        leftComponent={ !backPath ? null :
+        leftComponent={ !backRouteKey ? null :
           <View style={styles.iconSection}>
             <Icon
               type='MaterialCommunityIcons'
               name='arrow-back'
-              onPress={ () => this.props.history.push(backPath) }
+              onPress={ () => this.navigateBack() }
               iconStyle={styles.icon}
             />
             <View style={styles.textSection}>
-              <Text style={styles.text}>{ backTitle }</Text>
+              <Text style={styles.text}>{ this.getBackTitle() }</Text>
             </View>
           </View>
         }
         centerComponent={{
-          text: routeTitle,
+          text: currentRoute.routeTitle,
           style: { color: '#fff' }
         }}
         rightComponent={{
@@ -39,11 +43,52 @@ class TopBar extends Component {
     );
   }
 
+  getPreviousPageTitle() {
+    const { history } = this.props;
+    const previousPage = history.entries[history.entries.length - 2];
+
+    if (!previousPage) return;
+
+    let previousRoute;
+    for (let routeKey in routes) {
+      const route = routes[routeKey];
+      const match = matchPath(previousPage.pathname, {
+        path: route.path,
+        exact: true,
+        strict: false,
+      });
+      if (match) previousRoute = route;
+    }
+
+    if (previousRoute) return previousRoute.routeTitle;
+    else return "";
+  }
+
+  getBackTitle() {
+    const { backRouteKey } = this.props;
+
+    if (backRouteKey === "|previousPage|") {
+      return this.getPreviousPageTitle();
+    } else if (!backRouteKey) {
+      return "";
+    } else {
+      return routes[backRouteKey].routeTitle;
+    }
+  }
+
+  navigateBack() {
+    const { backRouteKey, history } = this.props;
+    if ( backRouteKey === "|previousPage|") {
+      history.push(history.entries[history.entries.length - 2]);
+    } else {
+      history.push(routes[backRouteKey].path);
+    }
+  }
+
   static propTypes = {
-    backPath: PropTypes.string,
-    backTitle: PropTypes.string,
-    routeTitle: PropTypes.string,
     openMenu: PropTypes.func.isRequired,
+    currentRouteKey: PropTypes.string.isRequired,
+    backRouteKey: PropTypes.string,
   }
 }
 

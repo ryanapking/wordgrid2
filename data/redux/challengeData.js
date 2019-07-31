@@ -14,7 +14,6 @@ import { setErrorMessage } from "./messages";
 import english from '../english';
 
 // available actions
-const CHALLENGE_SET_SOURCE_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_SOURCE_DATA';
 const CHALLENGE_SET_LOCAL_DATA = 'wordgrid2/challengeData/CHALLENGE_SET_LOCAL_DATA';
 const CHALLENGE_CONSUME_SQUARE = 'wordgrid2/challengeData/CHALLENGE_CONSUME_SQUARE';
 const CHALLENGE_REMOVE_SQUARE = 'wordgrid2/challengeData/CHALLENGE_REMOVE_SQUARE';
@@ -24,15 +23,12 @@ const CHALLENGE_PLACE_PIECE = 'wordgrid2/challengeData/CHALLENGE_PLACE_PIECE';
 const CHALLENGE_MARK_SAVED = 'wordgrid2/challengeData/CHALLENGE_MARK_SAVED';
 
 const initialState = {
-  source: null,
   challenge: null,
 };
 
 // reducer manager
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case CHALLENGE_SET_SOURCE_DATA:
-      return { ...state, source: action.sourceChallengeData };
     case CHALLENGE_SET_LOCAL_DATA:
       return { ...state, challenge: action.challenge };
     case CHALLENGE_CONSUME_SQUARE:
@@ -128,13 +124,6 @@ function markSavedReducer(state, action) {
 }
 
 // action creators
-export function setSourceChallengeData(sourceChallengeData) {
-  return {
-    type: CHALLENGE_SET_SOURCE_DATA,
-    sourceChallengeData,
-  };
-}
-
 export function setLocalChallengeData(sourceChallengeData) {
   return {
     type: CHALLENGE_SET_LOCAL_DATA,
