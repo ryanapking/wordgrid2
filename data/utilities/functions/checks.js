@@ -218,6 +218,28 @@ function getWinner(gameState) {
   }
 }
 
+/**
+ * Returns true or false based on whether the square is in the provided array
+ *
+ * @param {Object} needleSquare - The square to be searched for
+ * @param {number} needleSquare.rowIndex
+ * @param {number} needleSquare.columnIndex
+ * @param {Object[]} haystackSquares - The squares we are searching in
+ * @param {number} haystackSquares[].rowIndex
+ * @param {number} haystackSquares[].columnIndex
+ *
+ * @returns {boolean} true if square is in the provided array
+ */
+export function isSquareInArray(needleSquare, haystackSquares) {
+  for (let i = 0; i < haystackSquares.length; i++) {
+    const currentSquare = haystackSquares[i];
+    if (currentSquare.rowIndex === needleSquare.rowIndex && currentSquare.columnIndex === needleSquare.columnIndex) {
+      return true;
+    }
+  }
+  return false;
+}
+
 module.exports = {
   validateChallengeAttempt,
   validatePlacement,
@@ -225,4 +247,5 @@ module.exports = {
   gameOverCheck,
   getWinner,
   validateMove,
+  isSquareInArray,
 };

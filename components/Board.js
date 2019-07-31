@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { PanResponder, StyleSheet, View, Text } from 'react-native';
+import { PanResponder, StyleSheet, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import BoardPathCreator from './BoardPathCreator';
-import DrawBoard from './DrawBoard';
+import { squaresArrayType, rowsType } from "../proptypes";
 import MeasureView from "./MeasureView";
-
 import { setBoardLocation } from "../data/redux/gameDisplay";
-import { SPACE_STATES } from "../data/utilities/constants";
+import { isSquareInArray } from "../data/utilities/functions/checks";
 
 class Board extends Component {
   constructor(props) {
@@ -29,38 +28,14 @@ class Board extends Component {
   }
 
   render() {
-    const { display, rows, consumedSquares } = this.props;
-
-    // if a word has already been played, we don't need any of this to be possible
-    const pointerEvents = this.props.word ? 'none' : 'auto';
-
-    const displayBoardState = rows.map( (row, rowIndex) => {
-      return row.map( (letter, columnIndex) => {
-        if (!letter && this._checkSquareHovered({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY_HOVERED}
-        } else if (!letter) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY};
-        } else if (!this._checkSquareAvailable({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
-        } else if (this._checkSquareHovered({rowIndex, columnIndex})){
-          return {letter, status: SPACE_STATES.SPACE_FILLED_HOVERED};
-        } else {
-          return {letter, status: SPACE_STATES.SPACE_FILLED};
-        }
-      });
-    });
-
-    // console.log('displayBoardState:', displayBoardState);
-
     return(
       <MeasureView
         style={[styles.base, this.props.style]}
         onMeasure={ (x, y, width, height, pageX, pageY) => this.props.setBoardLocation(pageX, pageY, width, height) }
         panHandlers={this.panResponder.panHandlers}
-        pointerEvents={pointerEvents}
+        pointerEvents={this.props.pointerEventsDisabled ? 'none' : 'auto'}
       >
-        <DrawBoard boardState={displayBoardState} boardSize={display.boardLocation.width}/>
-        <BoardPathCreator squares={consumedSquares} boardLocation={display.boardLocation}/>
+        { this.props.children }
       </MeasureView>
     );
   }
@@ -89,14 +64,6 @@ class Board extends Component {
     return {...square, letter};
   }
 
-  _checkSquareHovered(square) {
-    const { hoveredSpaces } = this.props.display;
-    const isHovered = hoveredSpaces.filter(({rowIndex, columnIndex}) => {
-      return (square.rowIndex === rowIndex && square.columnIndex === columnIndex);
-    });
-    return (isHovered.length > 0);
-  }
-
   _checkSquareAdjacent(square) {
     // if this is the first piece consumed, that's all we need to check
     if (this.props.consumedSquares.length === 0) return true;
@@ -116,11 +83,8 @@ class Board extends Component {
   }
 
   _checkSquareAvailable(square) {
-    return this.props.consumedSquares.reduce( (available, compareSquare ) => {
-      const rowClash = (square.rowIndex === compareSquare.rowIndex);
-      const columnClash = (square.columnIndex === compareSquare.columnIndex);
-      return (available && (!rowClash || !columnClash));
-    }, true);
+    const { consumedSquares } = this.props;
+    return !isSquareInArray(square, consumedSquares);
   }
 
   _checkIfLastSquarePlayed(square) {
@@ -191,6 +155,16 @@ class Board extends Component {
 
   _onMoveShouldSetPanResponderCapture() {
     return true;
+  }
+
+  static propTypes = {
+    rows: rowsType,
+    consumedSquares: squaresArrayType,
+    style: ViewPropTypes.style,
+    pointerEventsDisabled: PropTypes.bool,
+    consumeSquare: PropTypes.func,
+    removeSquare: PropTypes.func,
+    clearConsumedSquares: PropTypes.func,
   }
 }
 

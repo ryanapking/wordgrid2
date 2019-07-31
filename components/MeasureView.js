@@ -10,7 +10,7 @@ export default class MeasureView extends Component {
         ref={ measureView => this.measureView = measureView }
         onLayout={() => this._onLayout() }
         { ...this.props.panHandlers }
-        pointerEvents={ this.props.pointerEvents }
+        pointerEvents={ this.props.pointerEvents ? this.props.pointerEvents : 'auto' }
       >
         {this.props.children}
       </View>

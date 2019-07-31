@@ -1,17 +1,40 @@
 import React, { Component } from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { SPACE_STATES } from "../data/utilities/constants";
+import { isSquareInArray } from "../data/utilities/functions/checks";
 import DrawLetter from "./DrawLetter";
 
 export default class DrawBoard extends Component {
   render() {
-    const { boardState, boardSize } = this.props;
+    const { boardState, boardSize, consumedSquares, hoveredSquares } = this.props;
     const letterHeight = (boardSize > 0) ? (boardSize / 10) : 0;
+
+    const displayBoardState = boardState.map( (row, rowIndex) => {
+      return row.map( (letter, columnIndex) => {
+
+        const square = {rowIndex, columnIndex};
+        const squareHovered = isSquareInArray(square, hoveredSquares);
+        const squareConsumed = isSquareInArray(square, consumedSquares);
+
+        if (!letter && squareHovered) {
+          return {letter, status: SPACE_STATES.SPACE_EMPTY_HOVERED}
+        } else if (!letter) {
+          return {letter, status: SPACE_STATES.SPACE_EMPTY};
+        } else if (squareConsumed) {
+          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
+        } else if (squareHovered){
+          return {letter, status: SPACE_STATES.SPACE_FILLED_HOVERED};
+        } else {
+          return {letter, status: SPACE_STATES.SPACE_FILLED};
+        }
+      });
+    });
+
     return (
       <View style={styles.grid}>
-        {boardState.map((row, rowIndex) =>
+        {displayBoardState.map((row, rowIndex) =>
           <View key={rowIndex} style={styles.row}>
             {row.map( (square, columnIndex) => {
               const fillStyle = this._getFillStyle(square.status);
@@ -48,13 +71,10 @@ export default class DrawBoard extends Component {
     boardState:
       PropTypes.arrayOf(
         PropTypes.arrayOf(
-          PropTypes.shape({
-            letter: PropTypes.string,
-            status: PropTypes.number
-          })
+          PropTypes.string
         )
       ),
-    boardSize: PropTypes.number
+    boardSize: PropTypes.number,
   }
 }
 

@@ -13,7 +13,8 @@ import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquare
 import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities/functions/calculations";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 
-import DrawPieceSection from "../components/DrawPieceSection";
+import DrawBoard from "../components/DrawBoard";
+import BoardPathCreator from "../components/BoardPathCreator";
 
 class Game extends Component {
 
@@ -79,13 +80,21 @@ class Game extends Component {
             <GameInfoDisplay style={styles.info} gameID={this.props.gameID}/>
             <Board
               style={styles.board}
-              word={game.word}
               rows={game.rows}
+              pointerEventsDisabled={game.word.length > 0}
               consumedSquares={game.consumedSquares}
               consumeSquare={(square) => this.props.consumeSquare(square, gameID)}
               removeSquare={() => this.props.removeSquare(gameID)}
               clearConsumedSquares={() => this.props.clearConsumedSquares(gameID)}
-            />
+            >
+              <DrawBoard
+                boardState={game.rows}
+                boardSize={this.props.display.boardLocation.width}
+                consumedSquares={game.consumedSquares}
+                hoveredSquares={this.props.display.hoveredSpaces}
+              />
+              <BoardPathCreator squares={game.consumedSquares} boardLocation={this.props.display.boardLocation}/>
+            </Board>
             <GameInteraction style={styles.interaction} gameID={this.props.gameID}/>
           </View>
           { overlayActive ? pieceOverlay : null }
@@ -135,7 +144,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     gameID: gameID,
     game: state.gameData.byID[gameID],
-    uid: state.user.uid
+    uid: state.user.uid,
+    display: state.gameDisplay,
   };
 };
 
