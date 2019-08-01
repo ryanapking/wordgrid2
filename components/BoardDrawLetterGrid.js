@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { SPACE_STATES } from "../data/utilities/constants";
 import { isSquareInArray } from "../data/utilities/functions/checks";
 import DrawLetter from "./DrawLetter";
 

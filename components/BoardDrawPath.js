@@ -3,11 +3,6 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class BoardDrawPath extends Component {
-  constructor(props) {
-    super(props);
-
-    this._getRelativeCoordinates = this._getRelativeCoordinates.bind(this);
-  }
   render() {
     const { square1, square2, boardLocation } = this.props;
 

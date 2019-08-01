@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
 import GameInfoDisplay from '../components/GameInfoDisplay';
-import Board from '../components/BoardTouchView';
+import BoardTouchView from '../components/BoardTouchView';
 import GameInteraction from '../components/GameInteraction';
 import GameMoveAnimation from '../components/GameMoveAnimation';
 import PieceOverlay from '../components/PieceOverlay';
@@ -78,7 +78,7 @@ class Game extends Component {
           { overlayActive ? null : pieceOverlay }
           <View style={styles.underlay}>
             <GameInfoDisplay style={styles.info} gameID={this.props.gameID} />
-            <Board
+            <BoardTouchView
               style={styles.board}
               rows={game.rows}
               pointerEventsDisabled={game.word.length > 0}
@@ -97,7 +97,7 @@ class Game extends Component {
                 squares={game.consumedSquares}
                 boardLocation={this.props.display.boardLocation}
               />
-            </Board>
+            </BoardTouchView>
             <GameInteraction style={styles.interaction} gameID={this.props.gameID} />
           </View>
           { overlayActive ? pieceOverlay : null }

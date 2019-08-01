@@ -11,12 +11,12 @@ export default class BoardPathCreator extends Component {
 
     // split the consumedSquares into pairs, to allow a path section to be rendered
     const squarePairs = squares
-    .map( (square, squareIndex, usedSquares) => {
-      return usedSquares.slice(squareIndex - 1, squareIndex + 1);
-    })
-    .filter( (pair) => {
-      return pair.length === 2;
-    });
+      .map( (square, squareIndex) => {
+        return squares.slice(squareIndex - 1, squareIndex + 1);
+      })
+      .filter( (pair) => {
+        return pair.length === 2;
+      });
 
     return (
       <View style={styles.overlay} pointerEvents={'none'}>

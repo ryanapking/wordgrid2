@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, PanResponder, Animated } from 'react-native';
+import { StyleSheet, View, PanResponder, Animated, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import PropTypes from 'prop-types'
@@ -174,7 +174,7 @@ class PieceDraggableView extends Component {
     placePiece: PropTypes.func,
     boardRows: PropTypes.array,
     allowDrag: PropTypes.bool,
-    style: PropTypes.object,
+    style: ViewPropTypes.style,
     key: PropTypes.string,
   }
 }
