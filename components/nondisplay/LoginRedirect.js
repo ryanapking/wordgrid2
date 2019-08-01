@@ -3,6 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { fetchUser } from "../../data/redux/user";
+import routes from '../../routes';
+
+const allowedPaths = [
+  routes.accountCreate.path,
+  routes.accountLoginAnonymous.path,
+  routes.accountLoginSelect.path,
+  routes.accountLoginStandard.path,
+];
 
 class LoginRedirect extends Component {
   componentDidMount() {
@@ -10,14 +18,14 @@ class LoginRedirect extends Component {
     this.props.fetchUser(this.props.history);
   }
   componentDidUpdate() {
-    const uid = this.props.user.uid;
-    const onLoginPath = (this.props.location.pathname === "/login");
+    const { uid } = this.props.user;
+    const onLoginPath = allowedPaths.includes(this.props.location.pathname);
     if (!uid && !onLoginPath) {
       // console.log('redirecting to login...');
-      this.props.history.push("/login");
+      this.props.history.push(routes.accountLoginSelect.path);
     } else if (uid && onLoginPath) {
       // console.log('login successful, redirecting home...');
-      this.props.history.push("/");
+      this.props.history.push(routes.home.path);
     }
   }
   render() {
