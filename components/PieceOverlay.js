@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PieceDraggableView from "./PieceDraggableView";
 
 import MeasureView from "./MeasureView";
-import DrawPiece from "./DrawPiece";
+import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
 
 class PieceOverlay extends Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class PieceOverlay extends Component {
             boardRows={this.props.boardRows}
             placePiece={(rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
           >
-            <DrawPiece
+            <PieceDrawLetterGrid
               piece={pieceLocations[pieceIndex].piece}
               pieceSize={pieceLocations[pieceIndex].width}
             />

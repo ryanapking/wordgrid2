@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import { connect } from 'react-redux';
 
 import PieceDraggableView from './PieceDraggableView';
-import DrawPiece from "./DrawPiece";
+import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
 import MeasureView from "./MeasureView";
 import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
 
@@ -36,10 +36,9 @@ class DrawPieceSection extends Component {
                     allowDrag={allowDrag}
                     baseSize={baseSize}
                   >
-                    <DrawPiece
+                    <PieceDrawLetterGrid
                       piece={piece}
                       pieceSize={baseSize}
-                      style={{ opacity: 1 }}
                     />
                   </PieceDraggableView>
                 }

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { letterGridType } from "../proptypes";
 
-export default class DrawPiece extends Component {
+export default class PieceDrawLetterGrid extends Component {
   render() {
     const { pieceSize, piece, canDrop } = this.props;
     const letterHeight = (pieceSize > 0) ? (pieceSize / 4) : 0;
@@ -26,8 +26,8 @@ export default class DrawPiece extends Component {
   }
 
   static propTypes = {
-    style: ViewPropTypes.style,
     piece: letterGridType.isRequired,
+    style: ViewPropTypes.style,
     pieceSize: PropTypes.number,
   }
 }

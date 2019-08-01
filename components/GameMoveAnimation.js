@@ -8,7 +8,7 @@ import { getAnimationData } from "../data/utilities/functions/getters";
 import PieceDraggableView from "./PieceDraggableView";
 import BoardPathCreator from "./BoardPathCreator";
 import BoardDrawLetterGrid from './BoardDrawLetterGrid';
-import DrawPiece from "./DrawPiece";
+import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
 
 class GameMoveAnimation extends Component {
   constructor(props) {
@@ -118,7 +118,7 @@ class GameMoveAnimation extends Component {
             allowDrag={false}
             baseSize={overlay.pieceSize}
           >
-            <DrawPiece
+            <PieceDrawLetterGrid
               piece={pieces[overlay.pieceIndex].letters}
               pieceSize={overlay.pieceSize}
             />
