@@ -18,6 +18,7 @@ export const UPDATE_USER_DATA = "wordgrid2/login/UPDATE_USER_DATA";
 const initialState = {
   fetchingUser: false,
   loginStarted: false,
+  isAnonymous: true,
   username: "",
   uid: null,
   wins: 0,
@@ -63,8 +64,11 @@ function updateUserDataReducer(state, action) {
     });
   }
 
+  // TODO: may need another way of determining if a user is anonymous
+
   return {
     ...state,
+    isAnonymous: !updatedUser.hasOwnProperty('email'),
     username: updatedUser.username ? updatedUser.username : state.username,
     uid: updatedUser.objectId ? updatedUser.objectId : state.uid,
     wins: updatedUser.wins ? updatedUser.wins : state.wins,

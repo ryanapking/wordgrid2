@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import routes from '../routes';
 import { resetLocalGameDataByID } from "../data/redux/gameData";
 import { refreshLocalUserInfo } from "../data/redux/user";
 import { setErrorMessage } from "../data/redux/messages";
@@ -22,12 +23,13 @@ class Menu extends Component {
   }
 
   globalMenuItems() {
+    const { anonymousUser } = this.props;
     // TODO: push user to the appropriate account page depending on whether they are registered or anonymous
     return (
       <View>
         <ListItem title="Navigate" containerStyle={styles.divider} />
         <ListItem title="Games" onPress={() => this.navigateTo(`/`)} />
-        <ListItem title="Account" onPress={() => this.navigateTo('/account')} />
+        <ListItem title="Account" onPress={() => this.navigateTo(anonymousUser ? routes.accountAnonymous.path : routes.account.path)} />
         <ListItem title="Friends" onPress={() => this.navigateTo('/friends')} />
       </View>
     )
@@ -117,6 +119,7 @@ const mapStateToProps = (state, ownProps) => {
   console.log('user:', state.user);
 
   return {
+    anonymousUser: state.user.isAnonymous,
     gameID,
     game,
     friends: state.user.friends,

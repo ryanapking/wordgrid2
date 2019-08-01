@@ -6,3 +6,8 @@ Other Things:
 1. Tear down and separate Account route
 2. Remove connect() and withRouter() from all possible components
     - Definitely required in touchable components and probably in logic components
+3. Create tests for as many components as possible
+4. Use JSDoc to document utility functions
+
+Eventually Maybe:
+1.

@@ -57,6 +57,12 @@ export async function convertAnonymousAccount(email, username, password) {
       throw new Error(err);
     });
 
+  // fetch the user from remote to remove password data from local object
+  user = await user.fetch()
+    .catch((err) => {
+      console.log('error fetching user:', err);
+    });
+
   return user.toJSON();
 }
 
