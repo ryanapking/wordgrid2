@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import { NativeRouter, Route } from'react-router-native';
 
 import configureStore from './data/redux/configureStore';
-import routes, { routesArray, RouteComponents } from './routes';
+import routes, { routesArray } from './routes';
+import RouteComponents from "./routes/RouteComponents";
 import LoginRedirect from "./components/nondisplay/LoginRedirect";
 import RouteContainer from "./routes/RouteContainer";
 

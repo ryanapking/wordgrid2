@@ -54,7 +54,7 @@ const routes = {
   accountLoginAnonymous: {
     routeKey: "accountLoginAnonymous",
     routeTitle: "Login Anonymously",
-    backRouteKey: 'accountLoginSelect',
+    backRouteKey: null,
     path: "/accountLoginAnonymous",
     componentName: "AccountLoginAnonymous",
   },
@@ -68,14 +68,14 @@ const routes = {
   accountLoginStandard: {
     routeKey: "accountLoginStandard",
     routeTitle: "Standard Login",
-    backRouteKey: "accountLoginSelect",
+    backRouteKey: null,
     path: "/accountLoginStandard",
     componentName: "AccountLoginStandard",
   },
   accountCreate: {
     routeKey: "accountCreate",
     routeTitle: "Create Account",
-    backRouteKey: "accountLoginSelect",
+    backRouteKey: null,
     path: "/accountCreate",
     componentName: "AccountCreate",
   },
