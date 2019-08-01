@@ -22,6 +22,7 @@ class Menu extends Component {
   }
 
   globalMenuItems() {
+    // TODO: push user to the appropriate account page depending on whether they are registered or anonymous
     return (
       <View>
         <ListItem title="Navigate" containerStyle={styles.divider} />
