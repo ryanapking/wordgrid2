@@ -3,4 +3,6 @@ Expo Things:
 2. Back gesture/button handler
 
 Other Things:
-1.
+1. Tear down and separate Account route
+2. Remove connect() and withRouter() from all possible components
+    - Definitely required in touchable components and probably in logic components

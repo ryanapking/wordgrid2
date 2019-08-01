@@ -1,10 +1,11 @@
 import Account from "./Account";
+import AccountAnonymous from "./AccountAnonymous";
+import AccountConvertAnonymous from "./AccountConvertAnonymous";
 import AccountCreate from "./AccountCreate";
 import AccountEdit from "./AccountEdit";
 import AccountLoginAnonymous from "./AccountLoginAnonymous";
 import AccountLoginSelect from "./AccountLoginSelect";
 import AccountLoginStandard from "./AccountLoginStandard";
-import AccountConvertAnonymous from "./AccountConvertAnonymous";
 import Friends from "./Friends";
 import Friend from "./Friend";
 import FriendArchive from "./FriendArchive";
@@ -19,12 +20,13 @@ import ChallengeAttemptReview from "./ChallengeAttemptReview";
 
 const RouteComponents = {
   Account,
+  AccountAnonymous,
+  AccountConvertAnonymous,
   AccountCreate,
   AccountEdit,
   AccountLoginAnonymous,
   AccountLoginSelect,
   AccountLoginStandard,
-  AccountConvertAnonymous,
   Friends,
   Friend,
   FriendArchive,
