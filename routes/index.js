@@ -1,3 +1,5 @@
+import AccountConvertAnonymous from "./AccountConvertAnonymous";
+
 const routes = {
   home: {
     routeKey: "home",
@@ -86,12 +88,12 @@ const routes = {
     path: "/accountEdit",
     componentName: "AccountEdit",
   },
-  accountRegister: {
-    routeKey: "accountRegister",
+  accountConvertAnonymous: {
+    routeKey: "accountConvertAnonymous",
     routeTitle: "Register Account",
     backRouteKey: "account",
-    path: "/accountRegister",
-    componentName: "AccountRegister",
+    path: "/accountConvertAnonymous",
+    componentName: "AccountConvertAnonymous",
   },
   account: {
     routeKey: "account",

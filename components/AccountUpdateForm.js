@@ -14,11 +14,25 @@ class AccountUpdateForm extends Component {
   constructor(props) {
     super(props);
 
+    this.initialState = {
+      updateUsername: false,
+      updateEmail: false,
+      updatePassword: false,
+
+      newUsername: "",
+      newEmail: "",
+      newPassword: "",
+      newRetypePassword: "",
+
+      saving: false,
+    };
+
     this.state = {
-      ...this.getInitialState()
+      ...this.initialState,
     };
 
   }
+
   render() {
     const { updateUsername, updateEmail, updatePassword, newUsername, newEmail, newPassword, newRetypePassword } = this.state;
     const { username, email } = this.props;
@@ -146,7 +160,7 @@ class AccountUpdateForm extends Component {
         // trigger parent element to get user data, which should be updated
         this.props.accountUpdated();
         this.props.setInfoMessage('Account updated successfully.');
-        this.setState({ ...this.getInitialState() });
+        this.setState({ ...this.initialState });
       })
       .catch( (err) => {
         this.props.setErrorMessage(err);
@@ -155,21 +169,6 @@ class AccountUpdateForm extends Component {
         this.setState({ saving: false });
       });
 
-  }
-
-  getInitialState() {
-    return {
-      updateUsername: false,
-      updateEmail: false,
-      updatePassword: false,
-
-      newUsername: "",
-      newEmail: "",
-      newPassword: "",
-      newRetypePassword: "",
-
-      saving: false,
-    };
   }
 
   static propTypes = {

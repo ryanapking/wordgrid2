@@ -4,7 +4,7 @@ import AccountEdit from "./AccountEdit";
 import AccountLoginAnonymous from "./AccountLoginAnonymous";
 import AccountLoginSelect from "./AccountLoginSelect";
 import AccountLoginStandard from "./AccountLoginStandard";
-import AccountRegister from "./AccountRegister";
+import AccountConvertAnonymous from "./AccountConvertAnonymous";
 import Friends from "./Friends";
 import Friend from "./Friend";
 import FriendArchive from "./FriendArchive";
@@ -24,7 +24,7 @@ const RouteComponents = {
   AccountLoginAnonymous,
   AccountLoginSelect,
   AccountLoginStandard,
-  AccountRegister,
+  AccountConvertAnonymous,
   Friends,
   Friend,
   FriendArchive,

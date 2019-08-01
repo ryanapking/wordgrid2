@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { View, Button } from 'react-native';
 import { Input } from "react-native-elements";
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-native';
+import PropTypes from 'prop-types';
 
-import { userStandardLogin } from "../data/redux/user";
-
-class AccountLoginForm extends Component {
+export default class AccountLoginForm extends Component {
   constructor(props) {
     super(props);
 
@@ -37,19 +34,13 @@ class AccountLoginForm extends Component {
         <Button
           disabled={!username || !password}
           title="Login"
-          onPress={ () => this.props.userStandardLogin(this.state.username, this.state.password, this.props.history) }
+          onPress={ () => this.props.formAction(this.state.username, this.state.password) }
         />
       </View>
     );
   }
+
+  static propTypes = {
+    formAction: PropTypes.func.isRequired,
+  }
 }
-
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = {
-  userStandardLogin,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountLoginForm));
