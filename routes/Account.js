@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-native';
 
+import routes from '.';
 import { setInfoMessage, setErrorMessage } from "../data/redux/messages";
 import { getCurrentUser } from "../data/parse-client/user";
 import AccountUpdateForm from '../components/AccountUpdateForm';
@@ -75,7 +77,7 @@ class Account extends Component {
           </View>
           { logoutConfirmationDisplayed
             ? <Button title="Cancel Logout" onPress={ () => this.setState({ logoutConfirmationDisplayed: false })} />
-            : <Button title="Register Account" onPress={ () => this.setState({ registerAccount: true }) } />
+            : <Button title="Register Account" onPress={ () => this.props.history.push(routes.accountConvertAnonymous.path) } />
           }
         </View>
       );
@@ -126,4 +128,4 @@ const mapDispatchToProps = {
   setErrorMessage,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Account));

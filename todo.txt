@@ -1,0 +1,6 @@
+Expo Things:
+1. Notification handler
+2. Back gesture/button handler
+
+Other Things:
+1.
