@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { Overlay } from "react-native-elements";
 import PropTypes from 'prop-types';
 
-import { routeType } from "../proptypes";
 import TopBar from "../components/TopBar";
 import Menu from "../components/Menu";
 import MessageOverlay from "../components/MessageOverlay";

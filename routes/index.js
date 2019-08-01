@@ -1,4 +1,3 @@
-import Home from "./Home";
 import Login from "./Login";
 import Account from "./Account";
 import Friends from "./Friends";
@@ -14,7 +13,6 @@ import ChallengeAttempt from "./ChallengeAttempt";
 import ChallengeAttemptReview from "./ChallengeAttemptReview";
 
 export const RouteComponents = {
-  Home,
   Login,
   Account,
   Friends,
