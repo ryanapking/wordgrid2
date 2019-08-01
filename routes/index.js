@@ -1,7 +1,9 @@
 import Account from "./Account";
 import AccountCreate from "./AccountCreate";
 import AccountEdit from "./AccountEdit";
-import AccountLogin from "./AccountLogin";
+import AccountLoginAnonymous from "./AccountLoginAnonymous";
+import AccountLoginSelect from "./AccountLoginSelect";
+import AccountLoginStandard from "./AccountLoginStandard";
 import AccountRegister from "./AccountRegister";
 import Friends from "./Friends";
 import Friend from "./Friend";
@@ -19,7 +21,9 @@ export const RouteComponents = {
   Account,
   AccountCreate,
   AccountEdit,
-  AccountLogin,
+  AccountLoginAnonymous,
+  AccountLoginSelect,
+  AccountLoginStandard,
   AccountRegister,
   Friends,
   Friend,
@@ -87,12 +91,26 @@ const routes = {
     ],
     componentName: "ChallengeAttemptReview",
   },
-  accountLogin: {
-    routeKey: "accountLogin",
-    routeTitle: "AccountLogin",
+  accountLoginAnonymous: {
+    routeKey: "accountLoginAnonymous",
+    routeTitle: "AccountLoginAnonymous",
+    backRouteKey: null,
+    path: "/accountLoginAnonymous",
+    componentName: "AccountLoginAnonymous",
+  },
+  accountLoginSelect: {
+    routeKey: "accountLoginSelect",
+    routeTitle: "AccountLoginSelect",
     backRouteKey: null,
     path: "/login",
-    componentName: "AccountLogin",
+    componentName: "AccountLoginSelect",
+  },
+  accountLoginStandard: {
+    routeKey: "accountLoginStandard",
+    routeTitle: "AccountLoginStandard",
+    backRouteKey: null,
+    path: "/accountLoginStandard",
+    componentName: "AccountLoginStandard",
   },
   accountCreate: {
     routeKey: "accountCreate",
