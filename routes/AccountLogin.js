@@ -7,7 +7,7 @@ import { userAnonymousLogin, userCreateAccount } from '../data/redux/user';
 import AccountLoginForm from '../components/AccountLoginForm';
 import AccountRegisterForm from '../components/AccountRegisterForm';
 
-class Login extends Component {
+class AccountLogin extends Component {
   constructor(props) {
     super(props);
 
@@ -124,4 +124,4 @@ const mapDispatchToProps = {
   userCreateAccount,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountLogin));

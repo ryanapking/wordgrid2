@@ -1,5 +1,8 @@
-import Login from "./Login";
 import Account from "./Account";
+import AccountCreate from "./AccountCreate";
+import AccountEdit from "./AccountEdit";
+import AccountLogin from "./AccountLogin";
+import AccountRegister from "./AccountRegister";
 import Friends from "./Friends";
 import Friend from "./Friend";
 import FriendArchive from "./FriendArchive";
@@ -13,8 +16,11 @@ import ChallengeAttempt from "./ChallengeAttempt";
 import ChallengeAttemptReview from "./ChallengeAttemptReview";
 
 export const RouteComponents = {
-  Login,
   Account,
+  AccountCreate,
+  AccountEdit,
+  AccountLogin,
+  AccountRegister,
   Friends,
   Friend,
   FriendArchive,
@@ -81,12 +87,33 @@ const routes = {
     ],
     componentName: "ChallengeAttemptReview",
   },
-  login: {
-    routeKey: "login",
-    routeTitle: "Login",
+  accountLogin: {
+    routeKey: "accountLogin",
+    routeTitle: "AccountLogin",
     backRouteKey: null,
     path: "/login",
-    componentName: "Login",
+    componentName: "AccountLogin",
+  },
+  accountCreate: {
+    routeKey: "accountCreate",
+    routeTitle: "AccountCreate",
+    backRouteKey: null,
+    path: "/accountCreate",
+    componentName: "AccountCreate",
+  },
+  accountEdit: {
+    routeKey: "accountEdit",
+    routeTitle: "AccountEdit",
+    backRouteKey: null,
+    path: "/accountEdit",
+    componentName: "AccountEdit",
+  },
+  accountRegister: {
+    routeKey: "accountRegister",
+    routeTitle: "AccountRegister",
+    backRouteKey: null,
+    path: "/accountRegister",
+    componentName: "AccountRegister",
   },
   account: {
     routeKey: "account",
