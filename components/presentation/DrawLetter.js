@@ -1,45 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { letterValues } from '../../data/utilities/config';
 
-export default class DrawLetter extends Component {
-  render() {
-    const { letter, letterSize } = this.props;
+const DrawLetter = props => {
+  const { letter, letterSize } = props;
 
-    if (!letter) {
-      return null;
-    }
-
-    const textStyles = {
-      textAlign: 'center',
-      fontSize: letterSize ? letterSize * .75 : 0,
-    };
-
-    const borderSize = {
-      borderWidth: letterSize ? letterSize * .015 : 0,
-    };
-
-    const valueSize = {
-      fontSize: letterSize ? letterSize * .25 : 0,
-      paddingBottom: letterSize ? letterSize * .025 : 1,
-      paddingRight: letterSize ? letterSize * .05 : 2,
-    };
-
-    return (
-      <View style={[borderSize, styles.letter, this.props.style]}>
-        <Text style={textStyles}>{ letter.toUpperCase() }</Text>
-        <Text style={[styles.value, valueSize]}>{ letterValues[letter] }</Text>
-      </View>
-    );
+  if (!letter) {
+    return null;
   }
 
-  static propTypes = {
-    letter: PropTypes.string,
-    letterSize: PropTypes.number,
-  }
-}
+  const textStyles = {
+    textAlign: 'center',
+    fontSize: letterSize ? letterSize * .75 : 0,
+  };
+
+  const borderSize = {
+    borderWidth: letterSize ? letterSize * .015 : 0,
+  };
+
+  const valueSize = {
+    fontSize: letterSize ? letterSize * .25 : 0,
+    paddingBottom: letterSize ? letterSize * .025 : 1,
+    paddingRight: letterSize ? letterSize * .05 : 2,
+  };
+
+  return (
+    <View style={[borderSize, styles.letter, props.style]}>
+      <Text style={textStyles}>{ letter.toUpperCase() }</Text>
+      <Text style={[styles.value, valueSize]}>{ letterValues[letter] }</Text>
+    </View>
+  );
+};
+
+DrawLetter.propTypes = {
+  letter: PropTypes.string,
+  letterSize: PropTypes.number,
+};
 
 const styles = StyleSheet.create({
   letter: {
@@ -62,3 +60,5 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 });
+
+export default DrawLetter;

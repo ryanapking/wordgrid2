@@ -1,67 +1,65 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { isSquareInArray } from "../../data/utilities/functions/checks";
 import DrawLetter from "./DrawLetter";
 
-export default class BoardDrawLetterGrid extends Component {
-  render() {
-    const { boardState, boardSize, consumedSquares, hoveredSquares } = this.props;
-    const letterHeight = (boardSize > 0) ? (boardSize / 10) : 0;
+const BoardDrawLetterGrid = props => {
+  const { boardState, boardSize, consumedSquares, hoveredSquares } = props;
+  const letterHeight = (boardSize > 0) ? (boardSize / 10) : 0;
 
-    const displayBoardState = boardState.map( (row, rowIndex) => {
-      return row.map( (letter, columnIndex) => {
+  const displayBoardState = boardState.map( (row, rowIndex) => {
+    return row.map( (letter, columnIndex) => {
 
-        let square = { rowIndex, columnIndex, letter };
-        const squareHovered = isSquareInArray(square, hoveredSquares);
-        const squareConsumed = isSquareInArray(square, consumedSquares);
+      let square = { rowIndex, columnIndex, letter };
+      const squareHovered = isSquareInArray(square, hoveredSquares);
+      const squareConsumed = isSquareInArray(square, consumedSquares);
 
-        if (!letter && squareHovered) {
-          square.fillStyle = styles.emptySquareHovered;
-        } else if (!letter) {
-          square.fillStyle = styles.emptySquare;
-        } else if (squareConsumed) {
-          square.fillStyle = styles.consumedSquare;
-        } else if (squareHovered){
-          square.fillStyle = styles.filledSquareHovered;
-        } else {
-          square.fillStyle = styles.filledSquare;
-        }
+      if (!letter && squareHovered) {
+        square.fillStyle = styles.emptySquareHovered;
+      } else if (!letter) {
+        square.fillStyle = styles.emptySquare;
+      } else if (squareConsumed) {
+        square.fillStyle = styles.consumedSquare;
+      } else if (squareHovered){
+        square.fillStyle = styles.filledSquareHovered;
+      } else {
+        square.fillStyle = styles.filledSquare;
+      }
 
-        return square;
-      });
+      return square;
     });
+  });
 
-    return (
-      <View style={styles.grid}>
-        {displayBoardState.map((row, rowIndex) =>
-          <View key={rowIndex} style={styles.row}>
-            {row.map( (square, columnIndex) =>
-              <View key={columnIndex} style={[styles.centered, styles.column, square.fillStyle]}>
-                <DrawLetter
-                  letter={square.letter}
-                  style={square.fillStyle}
-                  letterSize={letterHeight}
-                />
-              </View>
-            )}
-          </View>
-        )}
-      </View>
-    );
-  }
+  return (
+    <View style={styles.grid}>
+      {displayBoardState.map((row, rowIndex) =>
+        <View key={rowIndex} style={styles.row}>
+          {row.map( (square, columnIndex) =>
+            <View key={columnIndex} style={[styles.centered, styles.column, square.fillStyle]}>
+              <DrawLetter
+                letter={square.letter}
+                style={square.fillStyle}
+                letterSize={letterHeight}
+              />
+            </View>
+          )}
+        </View>
+      )}
+    </View>
+  );
+};
 
-  static propTypes = {
-    boardState:
+BoardDrawLetterGrid.propTypes = {
+  boardState:
+    PropTypes.arrayOf(
       PropTypes.arrayOf(
-        PropTypes.arrayOf(
-          PropTypes.string
-        )
-      ),
-    boardSize: PropTypes.number,
-  }
-}
+        PropTypes.string
+      )
+    ),
+  boardSize: PropTypes.number,
+};
 
 const styles = StyleSheet.create({
   grid: {
@@ -99,3 +97,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffa487",
   },
 });
+
+export default BoardDrawLetterGrid;

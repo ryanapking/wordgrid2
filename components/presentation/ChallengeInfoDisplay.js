@@ -1,30 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
 import ChallengePieceSetDisplay from '../containers/ChallengePieceSetDisplay';
 
-class ChallengeInfoDisplay extends Component {
-  render() {
-    const { moves, score, word } = this.props;
+const ChallengeInfoDisplay = props => {
+  const { moves, score, word } = props;
 
-    // const drawHistory
-    const movesRemaining = 5 - moves.length;
-    const message = word ? "place a piece" : "spell a word";
+  // const drawHistory
+  const movesRemaining = 5 - moves.length;
+  const message = word ? "place a piece" : "spell a word";
 
-    return (
-      <View style={[styles.row, this.props.style]}>
-        <View style={[styles.equal, styles.column]}>
-          <Text style={[styles.equal, styles.textCenter]}>{ score } points</Text>
-          <Text style={[styles.equal, styles.textCenter]}>{ movesRemaining } moves remaining</Text>
-          <Text style={[styles.equal, styles.textCenter]}>{ message }</Text>
-        </View>
-        <View style={styles.equal}>
-          <ChallengePieceSetDisplay />
-        </View>
+  return (
+    <View style={[styles.row, props.style]}>
+      <View style={[styles.equal, styles.column]}>
+        <Text style={[styles.equal, styles.textCenter]}>{ score } points</Text>
+        <Text style={[styles.equal, styles.textCenter]}>{ movesRemaining } moves remaining</Text>
+        <Text style={[styles.equal, styles.textCenter]}>{ message }</Text>
       </View>
-    );
-  }
-}
+      <View style={styles.equal}>
+        <ChallengePieceSetDisplay />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   row: {
