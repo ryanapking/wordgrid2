@@ -54,6 +54,7 @@ class FriendArchive extends Component {
           renderItem={({item: game}) =>
             <GameListItem
               key={ game.sourceData.objectId }
+              uid={ this.props.uid }
               opponentName={ friend.username }
               gameID={ game.sourceData.objectId }
               gameStatus={ game.status }

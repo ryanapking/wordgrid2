@@ -144,6 +144,7 @@ class GameListItem extends Component {
   }
 
   static propTypes = {
+    uid: PropTypes.string.isRequired,
     gameID: PropTypes.string.isRequired,
     player1: PropTypes.string.isRequired,
     gameStatus: PropTypes.string.isRequired,
@@ -173,9 +174,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return {
-    uid: state.user.uid,
-  };
+  return {};
 };
 
 const mapDispatchToProps = {

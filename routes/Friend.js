@@ -72,6 +72,7 @@ class Friend extends Component {
         {gamesByIDKeys.map((gameID) =>
           <GameListItem
             key={ gameID }
+            uid={ this.props.uid }
             opponentName={ friend.username }
             gameID={ gameID }
             gameStatus={ gamesByID[gameID].status }

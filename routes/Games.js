@@ -73,6 +73,7 @@ class Games extends Component {
     return (
       <GameListItem
         key={ gameID }
+        uid={ this.props.userID }
         opponentName={ game.opponent.name }
         gameID={ gameID }
         gameStatus={ game.status }
