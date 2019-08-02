@@ -240,9 +240,12 @@ function userLoginSuccess(user, routerHistory) {
 }
 
 export function userLoggedOut() {
-  stopGamesLiveQuery();
-  return {
-    type: LOGIN_LOST
+  return (dispatch) => {
+    stopGamesLiveQuery();
+    dispatch(removeAllLocalGames());
+    dispatch({
+      type: LOGIN_LOST,
+    });
   }
 }
 
