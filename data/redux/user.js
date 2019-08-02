@@ -1,9 +1,3 @@
-import { setLocalGameDataByID, removeLocalGameByID, removeAllLocalGames } from "./gameData";
-
-import { checkUser, anonymousLogin, standardLogin, createAccount, updateLocalUserDataFromParse } from "../parse-client/user";
-import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
-import { setErrorMessage } from "./messages";
-
 // available actions
 export const LOGIN_START = 'wordgrid2/login/LOGIN_START';
 export const LOGIN_SUCCESS = 'wordgrid2/login/LOGIN_SUCCESS';
@@ -79,81 +73,6 @@ function updateUserDataReducer(state, action) {
 }
 
 // action creators
-export function userAnonymousLogin(routerHistory) {
-  return (dispatch) => {
-    dispatch(userLoginStart());
-
-    anonymousLogin()
-      .then( (user) => {
-        dispatch(userLoginSuccess(user, routerHistory));
-      })
-      .catch( (err) => {
-        console.log('anonymous login error:', err);
-        dispatch(userLoginFail());
-      });
-  }
-}
-
-export function userStandardLogin(username, password, routerHistory) {
-  return (dispatch) => {
-
-    console.log('standardLogin action creator');
-    console.log({username, password});
-
-    dispatch(userLoginStart());
-
-    standardLogin(username, password)
-      .then( (user) => {
-        console.log('returned after login:', user);
-        dispatch(userLoginSuccess(user, routerHistory));
-      })
-      .catch( (err) => {
-        console.log('standard login error:', err);
-        dispatch(userLoginFail());
-      });
-  }
-}
-
-export function userCreateAccount(email, username, password, routerHistory) {
-  return (dispatch) => {
-    console.log('creating account');
-    console.log({email, username, password});
-
-    dispatch(userLoginStart());
-
-    createAccount(email, username, password)
-      .then( (user) => {
-        console.log('user account created:', user);
-        dispatch(userLoginSuccess(user, routerHistory));
-      })
-      .catch( (err) => {
-        console.log('account creation error:', err);
-        dispatch(userLoginFail());
-      });
-  }
-}
-
-export function fetchUser(routerHistory) {
-  return (dispatch) => {
-    dispatch(startFetchingUser());
-    checkUser()
-      .then( (user) => {
-        console.log('redux fetchUser() user:', user);
-        if (user) {
-          dispatch(userLoginSuccess(user, routerHistory));
-          dispatch(refreshLocalUserInfo());
-        }
-      })
-      .catch( (err) => {
-        dispatch(setErrorMessage(err));
-        dispatch(userLoggedOut());
-      })
-      .finally(() => {
-        dispatch(endFetchingUser());
-      });
-  }
-}
-
 export function startFetchingUser() {
   return {
     type: START_FETCHING_USER,
@@ -166,98 +85,21 @@ export function endFetchingUser() {
   }
 }
 
-function userLoginStart() {
+export function userLoginStart() {
   return {
     type: LOGIN_START
   }
 }
 
-function userLoginFail() {
+export function userLoginFail() {
   return {
     type: LOGIN_FAIL
   }
 }
 
-function userLoginSuccess(user, routerHistory) {
-  console.log('userLoginSuccess()');
-  console.log('user:', user);
-  return (dispatch, getState) => {
-
-    // these functions are passed to the listener so it can manipulate the state when games are updated
-    // (importing the store directing into the listener creates a require cycle)
-    // it happens here so only one listener is created
-    const storeGame = (game) => {
-      dispatch(
-        setLocalGameDataByID(game.objectId, getState().user.uid, game)
-      );
-    };
-
-    const storeGameThenRedirect = (game) => {
-      dispatch(
-        setLocalGameDataByID(game.objectId, getState().user.uid, game)
-      );
-
-      // redirect to the new game once it's saved to local storage
-      let intervalCounter = 0;
-      let waitInterval = setInterval(() => {
-        intervalCounter++;
-        const gameIDs = Object.keys(getState().gameData.byID);
-        if (gameIDs.includes(game.objectId)) {
-          routerHistory.push(`/game/${game.objectId}`);
-          clearInterval(waitInterval);
-        } else if (intervalCounter > 10) {
-          clearInterval(waitInterval);
-        }
-      }, 250);
-    };
-
-    const removeGame = (gameID) => {
-      dispatch(
-        removeLocalGameByID(gameID)
-      );
-    };
-
-    const removeAllGames = () => {
-      dispatch(
-        removeAllLocalGames()
-      );
-    };
-
-    // start the parse live query
-    // send router history so it has the ability to redirect the app
-    startGamesLiveQuery(storeGame, storeGameThenRedirect, removeGame, removeAllGames)
-      .catch( (err) => {
-        console.log('error starting live query:', err);
-      });
-
-    dispatch({
-      type: LOGIN_SUCCESS,
-      uid: user.objectId,
-    });
-
-    dispatch(refreshLocalUserInfo());
-  }
-}
-
-export function userLoggedOut() {
-  return (dispatch) => {
-    stopGamesLiveQuery();
-    dispatch(removeAllLocalGames());
-    dispatch({
-      type: LOGIN_LOST,
-    });
-  }
-}
-
-export function refreshLocalUserInfo() {
-  return (dispatch) => {
-    updateLocalUserDataFromParse()
-      .then((user) => {
-        dispatch(setUserData(user));
-      })
-      .catch((err) => {
-        dispatch(setErrorMessage(err));
-      });
+export function userLoginLost() {
+  return {
+    type: LOGIN_LOST,
   }
 }
 
@@ -265,5 +107,12 @@ export function setUserData(user) {
   return {
     type: UPDATE_USER_DATA,
     user,
-  };
+  }
+}
+
+export function userLoginSuccess(uid) {
+  return {
+    type: LOGIN_SUCCESS,
+    uid,
+  }
 }

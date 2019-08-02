@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import routes from '.';
 import { useHistory } from "../components/hooks/tempReactRouter";
-import { userCreateAccount } from "../data/redux/user";
 import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
+import { userCreateAccount } from "../data/redux/thunkedUserActions";
 
 const AccountCreate = () => {
   const history = useHistory();

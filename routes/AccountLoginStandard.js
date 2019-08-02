@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import AccountLoginForm from "../components/presentation/AccountLoginForm";
 import routes from '.';
-import { userStandardLogin } from "../data/redux/user";
+import { userStandardLogin } from "../data/redux/thunkedUserActions";
 
 class AccountLoginStandard extends Component {
   render() {

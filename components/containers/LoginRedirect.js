@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { fetchUser } from "../../data/redux/user";
 import routes from '../../routes';
+import { fetchUser } from "../../data/redux/thunkedUserActions";
 
 const allowedPaths = [
   routes.accountCreate.path,

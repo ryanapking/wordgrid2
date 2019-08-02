@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 
 import routes from '../../routes';
 import { resetLocalGameDataByID } from "../../data/redux/gameData";
-import { refreshLocalUserInfo } from "../../data/redux/user";
 import { setErrorMessage } from "../../data/redux/messages";
 import { addFriend, forfeitGame } from "../../data/parse-client/actions";
+import { refreshLocalUserInfo } from "../../data/redux/thunkedUserActions";
 
 class Menu extends Component {
 

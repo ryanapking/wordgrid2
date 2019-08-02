@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { logout } from "../../data/parse-client/user";
-import { userLoggedOut } from "../../data/redux/user";
+import { userLoggedOut } from "../../data/redux/thunkedUserActions";
 
 class AccountLogoutButton extends Component {
   render() {
