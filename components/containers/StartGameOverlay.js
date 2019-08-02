@@ -3,9 +3,9 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Overlay, Input, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-import { startGame } from "../data/parse-client/actions";
-import { getUsersByPartialString } from "../data/parse-client/getters";
-import { setErrorMessage } from "../data/redux/messages";
+import { startGame } from "../../data/parse-client/actions";
+import { getUsersByPartialString } from "../../data/parse-client/getters";
+import { setErrorMessage } from "../../data/redux/messages";
 
 class StartGameOverlay extends Component {
   constructor(props) {

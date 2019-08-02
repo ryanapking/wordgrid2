@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import routes from "./index";
-import AccountLogoutButton from "../components/AccountLogoutButton";
+import AccountLogoutButton from "../components/containers/AccountLogoutButton";
 import { setInfoMessage } from "../data/redux/messages";
 
 class AccountAnonymous extends Component {

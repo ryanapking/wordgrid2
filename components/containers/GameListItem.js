@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { respondToRequest } from "../data/parse-client/actions";
-import { setErrorMessage } from "../data/redux/messages";
+import { respondToRequest } from "../../data/parse-client/actions";
+import { setErrorMessage } from "../../data/redux/messages";
 
 class GameListItem extends Component {
   constructor(props) {

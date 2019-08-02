@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewPropTypes } from 'react-native';
 import DrawLetter from "./DrawLetter";
 import PropTypes from "prop-types";
 
-import { letterGridType } from "../proptypes";
+import { letterGridType } from "../../proptypes";
 
 export default class PieceDrawLetterGrid extends Component {
   render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-import ChallengePieceSetDisplay from './ChallengePieceSetDisplay';
+import ChallengePieceSetDisplay from '../containers/ChallengePieceSetDisplay';
 
 class ChallengeInfoDisplay extends Component {
   render() {

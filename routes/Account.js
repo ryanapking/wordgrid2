@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-native';
 import routes from '.';
 import { setInfoMessage, setErrorMessage } from "../data/redux/messages";
 import { getCurrentUser } from "../data/parse-client/user";
-import AccountUpdateForm from '../components/AccountUpdateForm';
+import AccountUpdateForm from '../components/containers/AccountUpdateForm';
 
 class Account extends Component {
   constructor(props) {

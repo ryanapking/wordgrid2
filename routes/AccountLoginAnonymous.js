@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import routes from '.';
-import Text from "../components/Text";
+import Text from "../components/presentation/Text";
 import { userAnonymousLogin } from "../data/redux/user";
 
 class AccountLoginAnonymous extends Component {

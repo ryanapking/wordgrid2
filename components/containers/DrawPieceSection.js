@@ -3,9 +3,9 @@ import {StyleSheet, View} from 'react-native';
 import { connect } from 'react-redux';
 
 import PieceDraggableView from './PieceDraggableView';
-import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
+import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
 import MeasureView from "./MeasureView";
-import { setPieceLocation, clearPieceLocations } from "../data/redux/gameDisplay";
+import { setPieceLocation, clearPieceLocations } from "../../data/redux/gameDisplay";
 
 class DrawPieceSection extends Component {
   constructor(props) {

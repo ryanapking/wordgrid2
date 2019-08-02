@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import { convertAnonymousAccount ,getCurrentUser } from "../data/parse-client/user";
-import AccountRegisterForm from "../components/AccountRegisterForm";
+import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
 import routes from "./index";
 
 class AccountConvertAnonymous extends Component {

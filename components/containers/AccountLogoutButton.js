@@ -3,9 +3,9 @@ import { Button } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { logout } from "../data/parse-client/user";
-import { userLoggedOut } from "../data/redux/user";
-import { removeAllLocalGames } from "../data/redux/gameData";
+import { logout } from "../../data/parse-client/user";
+import { userLoggedOut } from "../../data/redux/user";
+import { removeAllLocalGames } from "../../data/redux/gameData";
 
 class AccountLogoutButton extends Component {
   render() {

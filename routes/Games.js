@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-native';
 import { ListItem } from "react-native-elements";
 
 import { GAME_STATES } from "../data/utilities/constants";
-import StartGameOverlay from '../components/StartGameOverlay';
-import GameListItem from '../components/GameListItem';
+import StartGameOverlay from '../components/containers/StartGameOverlay';
+import GameListItem from '../components/containers/GameListItem';
 
 class Games extends Component {
 

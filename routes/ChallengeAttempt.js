@@ -3,10 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
-import BoardTouchView from '../components/BoardTouchView';
-import ChallengeInteraction from '../components/ChallengeInteraction';
-import ChallengeInfoDisplay from '../components/ChallengeInfoDisplay';
-import PieceOverlay from '../components/PieceOverlay';
+import BoardTouchView from '../components/containers/BoardTouchView';
+import ChallengeInteraction from '../components/containers/ChallengeInteraction';
+import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
+import PieceOverlay from '../components/containers/PieceOverlay';
 import {
   startChallenge,
   consumeSquare,
@@ -15,8 +15,8 @@ import {
   placePiece,
   saveAttempt,
 } from "../data/redux/challengeData";
-import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
-import BoardPathCreator from "../components/BoardPathCreator";
+import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
+import BoardPathCreator from "../components/presentation/BoardPathCreator";
 
 class ChallengeAttempt extends Component {
   componentDidMount() {

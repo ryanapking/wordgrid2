@@ -3,12 +3,12 @@ import ReactNative, {Platform, StyleSheet, View, Text, LayoutAnimation, UIManage
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { markAnimationPlayed } from "../data/redux/gameData";
-import { getAnimationData } from "../data/utilities/functions/getters";
+import { markAnimationPlayed } from "../../data/redux/gameData";
+import { getAnimationData } from "../../data/utilities/functions/getters";
 import PieceDraggableView from "./PieceDraggableView";
-import BoardPathCreator from "./BoardPathCreator";
-import BoardDrawLetterGrid from './BoardDrawLetterGrid';
-import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
+import BoardPathCreator from "../presentation/BoardPathCreator";
+import BoardDrawLetterGrid from '../presentation/BoardDrawLetterGrid';
+import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
 
 class GameMoveAnimation extends Component {
   constructor(props) {

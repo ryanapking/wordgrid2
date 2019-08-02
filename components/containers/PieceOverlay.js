@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PieceDraggableView from "./PieceDraggableView";
 
 import MeasureView from "./MeasureView";
-import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
+import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
 
 class PieceOverlay extends Component {
   constructor(props) {

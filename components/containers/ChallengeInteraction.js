@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
 import DrawPieceSection from "./DrawPieceSection";
-import { calculateWordValue } from "../data/utilities/functions/calculations";
-import { playWord, clearConsumedSquares } from '../data/redux/challengeData';
+import { calculateWordValue } from "../../data/utilities/functions/calculations";
+import { playWord, clearConsumedSquares } from '../../data/redux/challengeData';
 
 class ChallengeInteraction extends Component {
   render() {

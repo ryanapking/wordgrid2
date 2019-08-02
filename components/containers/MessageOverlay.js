@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Overlay } from 'react-native-elements';
 
-import { clearErrorMessage, clearInfoMessage } from "../data/redux/messages";
+import { clearErrorMessage, clearInfoMessage } from "../../data/redux/messages";
 
 class MessageOverlay extends Component {
   render() {

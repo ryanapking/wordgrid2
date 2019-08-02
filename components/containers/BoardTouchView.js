@@ -3,10 +3,10 @@ import { PanResponder, StyleSheet, ViewPropTypes } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { squaresArrayType, rowsType } from "../proptypes";
+import { squaresArrayType, rowsType } from "../../proptypes";
 import MeasureView from "./MeasureView";
-import { setBoardLocation } from "../data/redux/gameDisplay";
-import { isSquareInArray } from "../data/utilities/functions/checks";
+import { setBoardLocation } from "../../data/redux/gameDisplay";
+import { isSquareInArray } from "../../data/utilities/functions/checks";
 
 class BoardTouchView extends Component {
   constructor(props) {

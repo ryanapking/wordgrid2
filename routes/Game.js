@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
-import GameInfoDisplay from '../components/GameInfoDisplay';
-import BoardTouchView from '../components/BoardTouchView';
-import GameInteraction from '../components/GameInteraction';
-import GameMoveAnimation from '../components/GameMoveAnimation';
-import PieceOverlay from '../components/PieceOverlay';
+import GameInfoDisplay from '../components/containers/GameInfoDisplay';
+import BoardTouchView from '../components/containers/BoardTouchView';
+import GameInteraction from '../components/containers/GameInteraction';
+import GameMoveAnimation from '../components/containers/GameMoveAnimation';
+import PieceOverlay from '../components/containers/PieceOverlay';
 import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/gameData";
 import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities/functions/calculations";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 
-import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
-import BoardPathCreator from "../components/BoardPathCreator";
+import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
+import BoardPathCreator from "../components/presentation/BoardPathCreator";
 
 class Game extends Component {
 

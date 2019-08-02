@@ -7,8 +7,8 @@ import validator from 'validator';
 
 import AccountLogoutButton from './AccountLogoutButton';
 
-import { setErrorMessage, setInfoMessage } from "../data/redux/messages";
-import { updateExistingAccount } from "../data/parse-client/user";
+import { setErrorMessage, setInfoMessage } from "../../data/redux/messages";
+import { updateExistingAccount } from "../../data/parse-client/user";
 
 class AccountUpdateForm extends Component {
   constructor(props) {

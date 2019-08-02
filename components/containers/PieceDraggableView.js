@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import PropTypes from 'prop-types'
 
-import { setHoveredSpaces, clearHoveredSpaces } from "../data/redux/gameDisplay";
-import { validatePlacement } from "../data/utilities/functions/checks";
+import { setHoveredSpaces, clearHoveredSpaces } from "../../data/redux/gameDisplay";
+import { validatePlacement } from "../../data/utilities/functions/checks";
 
 class PieceDraggableView extends Component {
 

@@ -1,5 +1,3 @@
-import AccountConvertAnonymous from "./AccountConvertAnonymous";
-
 const routes = {
   home: {
     routeKey: "home",

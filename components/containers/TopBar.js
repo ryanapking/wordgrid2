@@ -4,7 +4,7 @@ import { withRouter, matchPath } from 'react-router-native';
 import { Header, Icon, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
-import routes from '../routes';
+import routes from '../../routes';
 
 class TopBar extends Component {
   render() {

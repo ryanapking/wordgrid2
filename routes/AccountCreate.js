@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import routes from '.';
 import { userCreateAccount } from "../data/redux/user";
-import AccountRegisterForm from "../components/AccountRegisterForm";
+import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
 
 class AccountCreate extends Component {
   render() {
