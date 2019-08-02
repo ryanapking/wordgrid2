@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import routes from '.';
+import Text from "../components/Text";
 import { userAnonymousLogin } from "../data/redux/user";
 
 class AccountLoginAnonymous extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Your games will be saved on this phone until your account is registered. Would you like to continue?</Text>
+        <Text centered>Your games will be saved on this phone until your account is registered. Would you like to continue?</Text>
         <View style={styles.buttonSection}>
           <Button title="Login Anonymously" onPress={ () => this.props.userAnonymousLogin(this.props.history)} />
         </View>

@@ -3,8 +3,9 @@ import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
-import { convertAnonymousAccount, getCurrentUser } from "../data/parse-client/user";
+import { convertAnonymousAccount ,getCurrentUser } from "../data/parse-client/user";
 import AccountRegisterForm from "../components/AccountRegisterForm";
+import routes from "./index";
 
 class AccountConvertAnonymous extends Component {
   constructor(props) {
@@ -52,6 +53,11 @@ class AccountConvertAnonymous extends Component {
         this.setState({ fetchingUser: false });
       });
 
+    if (!user._isLinked("anonymous")) {
+      this.props.history.push(routes.account.path);
+      return;
+    }
+
     this.setState({ user, fetchingUser: false });
   }
 
@@ -82,7 +88,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = {
-  convertAnonymousAccount,
+
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountConvertAnonymous));

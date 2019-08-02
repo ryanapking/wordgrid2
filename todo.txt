@@ -8,6 +8,8 @@ Other Things:
     - Definitely required in touchable components and probably in logic components
 3. Create tests for as many components as possible
 4. Use JSDoc to document utility functions
+5. Remove getCurrentUser() call in Account and AccountConvertAnonymous
+    - We should not need to use the Parse object in a react component
 
 Eventually Maybe:
 1.
