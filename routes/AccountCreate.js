@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-native';
+import { useDispatch } from 'react-redux';
 
 import routes from '.';
+import { useHistory } from "../components/hooks/tempReactRouter";
 import { userCreateAccount } from "../data/redux/user";
 import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
 
-class AccountCreate extends Component {
-  render() {
-    return(
-      <View style={styles.container}>
-        <AccountRegisterForm
-          buttonText="Create Account"
-          formAction={ (email, username, password) => this.props.userCreateAccount(email, username, password, this.props.history)}
-        />
-        <View style={styles.buttonSection}>
-          <Button title="Cancel" onPress={ () => this.props.history.push(routes.accountLoginSelect.path)} />
-        </View>
+const AccountCreate = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  return(
+    <View style={styles.container}>
+      <AccountRegisterForm
+        buttonText="Create Account"
+        formAction={ (email, username, password) => dispatch(userCreateAccount(email, username, password, history)) }
+      />
+      <View style={styles.buttonSection}>
+        <Button title="Cancel" onPress={ () => history.push(routes.accountLoginSelect.path)} />
       </View>
-    )
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,12 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = {
-  userCreateAccount,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountCreate));
+export default AccountCreate;
