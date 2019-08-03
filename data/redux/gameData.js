@@ -65,9 +65,26 @@ export default function reducer(state = initialState, action) {
 
 // individual reducer functions
 function placePieceReducer(state, action) {
+  const { pieceIndex, rowRef, columnRef, gameID } = action;
   const byID = state.byID;
-  const game = state.byID[action.gameID];
-  const rows = action.rows;
+  const game = state.byID[gameID];
+  const piece = game.currentPlayer.currentPieces[pieceIndex];
+  const remotePieceIndex = game.currentPlayer.currentPiecesIndexes[pieceIndex];
+  const placementRef = [remotePieceIndex, rowRef, columnRef].join("|");
+
+  // make a full copy of the existing rows to manipulate
+  let newRows = game.rows.map( (row) => [...row] );
+
+  // add the piece letters to the rows copy
+  piece.forEach((row, rowIndex) => {
+    row.forEach((letter, columnIndex) => {
+      const boardRow = rowRef + rowIndex;
+      const boardColumn = columnRef + columnIndex;
+      if (letter) {
+        newRows[boardRow][boardColumn] = letter;
+      }
+    });
+  });
 
   const remainingPieces = game.currentPlayer.currentPieces.filter( (piece, pieceIndex) => pieceIndex !== parseInt(action.pieceIndex));
   const newCurrentPieces = [...remainingPieces, []];
@@ -78,9 +95,9 @@ function placePieceReducer(state, action) {
       ...byID,
       [action.gameID]: {
         ...game,
-        rows,
+        rows: newRows,
         piecePlaced: true,
-        placementRef: action.placementRef,
+        placementRef: placementRef,
         currentPlayer: {
           ...game.currentPlayer,
           currentPieces: newCurrentPieces,
@@ -325,34 +342,12 @@ function resetLocalGameDataReducer(state, action) {
 
 // action creators
 export function placePiece(gameID, pieceIndex, rowRef, columnRef) {
-  return (dispatch, getState) => {
-    const { gameData } = getState();
-    const game = gameData.byID[gameID];
-    const piece = game.currentPlayer.currentPieces[pieceIndex];
-    const remotePieceIndex = game.currentPlayer.currentPiecesIndexes[pieceIndex];
-    const placementRef = [remotePieceIndex, rowRef, columnRef].join("|");
-
-    // make a full copy of the existing rows to manipulate
-    let newRows = game.rows.map( (row) => [...row] );
-
-    // add the piece letters to the rows copy
-    piece.forEach((row, rowIndex) => {
-      row.forEach((letter, columnIndex) => {
-        const boardRow = rowRef + rowIndex;
-        const boardColumn = columnRef + columnIndex;
-        if (letter) {
-          newRows[boardRow][boardColumn] = letter;
-        }
-      });
-    });
-
-    dispatch({
-      type: PLACE_PIECE,
-      rows: newRows,
-      pieceIndex,
-      gameID,
-      placementRef,
-    });
+  return {
+    type: PLACE_PIECE,
+    gameID,
+    pieceIndex,
+    rowRef,
+    columnRef,
   };
 }
 
@@ -385,23 +380,6 @@ export function setLocalGameDataByID(gameID, userID, sourceData) {
     localData,
     gameID
   }
-}
-
-export function setOpponentName(gameID) {
-  return (dispatch, getState) => {
-    const { gameData } = getState();
-    const opponentID = gameData.byID[gameID].opponent.id;
-    if (!opponentID) return;
-
-    // getUserName(opponentID)
-    //   .then( (opponentName) => {
-    //     dispatch({
-    //       type: SET_OPPONENT_NAME,
-    //       gameID,
-    //       opponentName,
-    //     });
-    //   })
-  };
 }
 
 export function removeLocalGameByID(gameID) {
