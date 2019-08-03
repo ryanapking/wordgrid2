@@ -215,21 +215,51 @@ function setBoardRowsReducer(state, action) {
 }
 
 function playWordReducer(state, action) {
+  const { gameID } = action;
   const byID = state.byID;
-  const game = state.byID[action.gameID];
+  const game = state.byID[gameID];
+  const word = game.consumedSquares.reduce( (word, square) => word + square.letter, "");
+
+  // verify word is acceptable
+  if (word.length < 4 || !english.contains(word)) {
+    return { ...state };
+  }
+
+  const wordValue = calculateWordValue(word);
+  const wordPath = wordPathArrayToString(game.consumedSquares);
+  const newRows = game.rows.map((row, rowIndex) => {
+    return row.map((letter, columnIndex) => {
+      const letterPlayed = game.consumedSquares.reduce((found, square) => found || (square.rowIndex === rowIndex && square.columnIndex === columnIndex), false);
+      return letterPlayed ? "" : letter;
+    });
+  });
+  const newScoreBoard = [
+    ...game.currentPlayer.scoreBoard,
+    wordValue,
+  ];
+
+  // TODO: this needs to be reworked to function with the piece being generated remotely
+
+  // const opponentPieces = game.them.filter( (piece) => piece.length);
+  // let newPieces = game.them;
+  //
+  // // add a new piece if needed
+  // if (opponentPieces.length < 3) {
+  //   newPieces = [...opponentPieces, generateLocalPiece(word.length)];
+  // }
 
   const newGameState = {
     ...game,
-    word: action.word,
-    wordPath: action.wordPath,
-    wordValue: action.wordValue,
+    word,
+    wordPath,
+    wordValue,
     consumedSquares: [],
-    rows: action.newRows,
+    rows: newRows,
     // them: action.newPieces,
     // scoreBoard: action.scoreBoard,
     currentPlayer: {
       ...game.currentPlayer,
-      scoreBoard: action.newScoreBoard,
+      scoreBoard: newScoreBoard,
     }
   };
 
@@ -403,53 +433,10 @@ export function setBoardRows(gameID, rows) {
   }
 }
 
-export function playWord(gameID, userID) {
-  // console.log('playWord()');
-  return (dispatch, getState) => {
-    const { gameData } = getState();
-    // console.log('game data:', gameData);
-    const game = gameData.byID[gameID];
-    const word = game.consumedSquares.reduce( (word, square) => word + square.letter, "");
-
-    if (word.length >= 4 && english.contains(word)) {
-      const wordValue = calculateWordValue(word);
-      const wordPath = wordPathArrayToString(game.consumedSquares);
-
-      const newRows = game.rows.map( (row, rowIndex ) => {
-        return row.map( (letter, columnIndex) => {
-          const letterPlayed = game.consumedSquares.reduce( (found, square) => found || (square.rowIndex === rowIndex && square.columnIndex === columnIndex), false );
-          return letterPlayed ? "" : letter;
-        });
-      });
-
-      // TODO: this needs to be reworked to function with the piece being generated remotely
-
-      // const opponentPieces = game.them.filter( (piece) => piece.length);
-      // let newPieces = game.them;
-      //
-      // // add a new piece if needed
-      // if (opponentPieces.length < 3) {
-      //   newPieces = [...opponentPieces, generateLocalPiece(word.length)];
-      // }
-
-
-      let newScoreBoard = [
-        ...game.currentPlayer.scoreBoard,
-        wordValue,
-      ];
-
-      dispatch({
-        type: PLAY_WORD,
-        gameID,
-        userID,
-        word,
-        wordPath,
-        wordValue,
-        newRows,
-        // newPieces,
-        newScoreBoard,
-      });
-    }
+export function playWord(gameID) {
+  return {
+    type: PLAY_WORD,
+    gameID,
   };
 }
 

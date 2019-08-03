@@ -44,7 +44,7 @@ class GameInteraction extends Component {
             { longEnough &&
               <Button
                 title={`Play word for ${calculateWordValue(displayWord)} points`}
-                onPress={ () => this.props.playWord(this.props.gameID, this.props.uid) }
+                onPress={ () => this.props.playWord(this.props.gameID) }
               />
             }
           </View>
