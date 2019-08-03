@@ -1,16 +1,11 @@
 import {
-  challengeStateToMove,
-  challengeStateToAttempt,
-  wordPathArrayToString,
-  placementRefStringToArray,
   challengeRemoteToPlayableObject,
+  challengeStateToMove,
+  placementRefStringToArray,
+  wordPathArrayToString,
 } from '../utilities/functions/dataConversions';
-import { calculateWordValue, calculatePiecePlacementValue } from '../utilities/functions/calculations';
+import { calculatePiecePlacementValue, calculateWordValue } from '../utilities/functions/calculations';
 import { getBoardPlusPiece } from '../utilities/functions/applyMoves';
-import { saveChallengeAttempt } from "../parse-client/actions";
-import { getCurrentChallenge } from "../parse-client/getters";
-import { storeAttemptByChallengeID } from "../async-storage/challengeAttempts";
-import { setErrorMessage } from "./messages";
 import english from '../english';
 
 // available actions
@@ -80,22 +75,66 @@ function clearConsumedSquareReducer(state, action) {
 }
 
 function playWordReducer(state, action) {
+  const { challenge } = state;
+  const word = challenge.consumedSquares.reduce( (word, square) => word + square.letter, "");
+
+  if (word.length < 4 || !english.contains(word)) {
+    return { ...state };
+  }
+
+  const wordValue = calculateWordValue(word);
+  const wordPath = wordPathArrayToString(challenge.consumedSquares);
+
+  const newRows = challenge.rows.map( (row, rowIndex ) => {
+    return row.map( (letter, columnIndex) => {
+      const letterPlayed = challenge.consumedSquares.reduce( (found, square) => found || (square.rowIndex === rowIndex && square.columnIndex === columnIndex), false );
+      return letterPlayed ? "" : letter;
+    });
+  });
+
+  const score = challenge.score + wordValue;
+
+  let pieces = challenge.pieces.filter( (piece) => piece.length > 0);
+  pieces = [...pieces, challenge.pieceSet[word.length]];
+
   return {
     ...state,
     challenge: {
       ...state.challenge,
-      word: action.word,
-      wordValue: action.wordValue,
-      wordPath: action.wordPath,
+      word,
+      wordValue,
+      wordPath,
       consumedSquares: [],
-      rows: action.newRows,
-      score: action.score,
-      pieces: action.pieces,
+      rows: newRows,
+      score,
+      pieces,
     }
   }
 }
 
 function placePieceReducer(state, action) {
+  const { pieceIndex, rowRef, columnRef } = action;
+  const { challenge } = state;
+  const piece = challenge.pieces[pieceIndex];
+
+  const placementRefString = [pieceIndex, rowRef, columnRef].join("|");
+  const placementRefArray = placementRefStringToArray(placementRefString);
+
+  const newRows = getBoardPlusPiece(challenge.rows, challenge.pieces, placementRefArray);
+  const placementValue = calculatePiecePlacementValue(piece);
+  const score = challenge.score + placementValue;
+
+  // remove the played piece and add the next piece
+  const remainingPieces = challenge.pieces.filter( (piece, currentPieceIndex) => currentPieceIndex !== parseInt(pieceIndex));
+  const pieces = [...remainingPieces, []];
+
+  // convert the data into a move to be saved
+  const newMoveItem = challengeStateToMove(challenge, placementRefString, placementValue);
+  const moves = [...challenge.moves, newMoveItem];
+
+  const pieceSet = challenge.pieceBank[moves.length];
+  const gameOver = (moves.length >= 5);
+
   return {
     ...state,
     challenge: {
@@ -103,12 +142,12 @@ function placePieceReducer(state, action) {
       word: "",
       wordPath: null,
       wordValue: null,
-      pieces: action.pieces,
-      pieceSet: action.pieceSet,
-      moves: action.moves,
-      rows: action.rows,
-      gameOver: action.gameOver,
-      score: action.score,
+      pieces,
+      pieceSet,
+      moves,
+      rows: newRows,
+      gameOver,
+      score,
     }
   }
 }
@@ -128,18 +167,6 @@ export function setLocalChallengeData(sourceChallengeData) {
   return {
     type: CHALLENGE_SET_LOCAL_DATA,
     challenge: challengeRemoteToPlayableObject(sourceChallengeData),
-  };
-}
-
-export function startChallenge() {
-  return (dispatch) => {
-    getCurrentChallenge()
-      .then((currentChallenge) => {
-        dispatch(setLocalChallengeData(currentChallenge));
-      })
-      .catch((err) => {
-        dispatch(setErrorMessage('unable to find current challenge'));
-      });
   };
 }
 
@@ -163,76 +190,17 @@ export function clearConsumedSquares() {
 }
 
 export function playWord() {
-  return (dispatch, getState) => {
-    const { challengeData } = getState();
-    const { challenge } = challengeData;
-    const word = challenge.consumedSquares.reduce( (word, square) => word + square.letter, "");
-    if (word.length >=4 && english.contains(word)) {
-      const wordValue = calculateWordValue(word);
-      const wordPath = wordPathArrayToString(challenge.consumedSquares);
-
-      const newRows = challenge.rows.map( (row, rowIndex ) => {
-        return row.map( (letter, columnIndex) => {
-          const letterPlayed = challenge.consumedSquares.reduce( (found, square) => found || (square.rowIndex === rowIndex && square.columnIndex === columnIndex), false );
-          return letterPlayed ? "" : letter;
-        });
-      });
-
-      const score = challenge.score + wordValue;
-
-      let pieces = challenge.pieces.filter( (piece) => piece.length > 0);
-      pieces = [...pieces, challenge.pieceSet[word.length]];
-
-      console.log('pieces:', pieces);
-
-      dispatch({
-        type: CHALLENGE_PLAY_WORD,
-        word,
-        wordPath,
-        wordValue,
-        newRows,
-        score,
-        pieces,
-      });
-    }
+  return {
+    type: CHALLENGE_PLAY_WORD,
   };
 }
 
 export function placePiece(pieceIndex, rowRef, columnRef) {
-  return (dispatch, getState) => {
-    const { challengeData } = getState();
-    const { challenge } = challengeData;
-    const piece = challenge.pieces[pieceIndex];
-
-    const placementRefString = [pieceIndex, rowRef, columnRef].join("|");
-    const placementRefArray = placementRefStringToArray(placementRefString);
-
-    const newRows = getBoardPlusPiece(challenge.rows, challenge.pieces, placementRefArray);
-    const placementValue = calculatePiecePlacementValue(piece);
-    const score = challenge.score + placementValue;
-
-    // remove the played piece and add the next piece
-    const remainingPieces = challenge.pieces.filter( (piece, currentPieceIndex) => currentPieceIndex !== parseInt(pieceIndex));
-    const pieces = [...remainingPieces, []];
-
-    // convert the data into a move to be saved
-    const newMoveItem = challengeStateToMove(challenge, placementRefString, placementValue);
-    const moves = [...challenge.moves, newMoveItem];
-
-    const pieceSet = challenge.pieceBank[moves.length];
-    const gameOver = (moves.length >= 5);
-
-    dispatch({
-      type: CHALLENGE_PLACE_PIECE,
-      rows: newRows,
-      pieceIndex,
-      placementRef: placementRefString,
-      pieces,
-      pieceSet,
-      moves,
-      gameOver,
-      score,
-    });
+  return {
+    type: CHALLENGE_PLACE_PIECE,
+    pieceIndex,
+    rowRef,
+    columnRef,
   };
 }
 
@@ -240,26 +208,4 @@ export function markSaved() {
   return {
     type: CHALLENGE_MARK_SAVED
   }
-}
-
-export function saveAttempt(userID) {
-  return (dispatch, getState) => {
-    const { challengeData } = getState();
-    const { challenge } = challengeData;
-    const challengeAttempt = challengeStateToAttempt(challenge);
-    saveChallengeAttempt(challengeAttempt)
-      .then( () => {
-        console.log('challenge saved remotely');
-      })
-      .catch( (err) => {
-        console.log('error saving attempt remotely', err);
-      });
-    storeAttemptByChallengeID(userID, challengeAttempt, challenge.id)
-      .then( () => {
-        console.log('challenge stored successfully');
-      })
-      .catch((err) => {
-        console.log('error storing attempt to local async storage:', err);
-      });
-  };
 }
