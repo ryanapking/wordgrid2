@@ -66,7 +66,7 @@ class GameInteraction extends Component {
       <View style={this.props.style}>
         <View style={styles.confirmMoveSection}>
           <Button title="Submit Move" onPress={() => this.saveRemoteMove()} />
-          <Button title="Reset Move" onPress={() => this.props.resetLocalGameDataByID(this.props.gameID)} />
+          <Button title="Reset Move" onPress={() => this.props.resetLocalGameDataByID(this.props.gameID, this.props.uid)} />
         </View>
       </View>
     );

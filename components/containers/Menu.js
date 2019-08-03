@@ -77,7 +77,7 @@ class Menu extends Component {
   }
 
   resetGameData(gameID) {
-    this.props.resetLocalGameDataByID(gameID);
+    this.props.resetLocalGameDataByID(gameID, this.props.uid);
     this.props.closeNavMenu();
   }
 
@@ -119,6 +119,7 @@ const mapStateToProps = (state, ownProps) => {
   console.log('user:', state.user);
 
   return {
+    uid: state.user.uid,
     anonymousUser: state.user.isAnonymous,
     gameID,
     game,

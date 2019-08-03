@@ -15,6 +15,7 @@ export const SET_BOARD_ROWS = 'wordgrid2/gameData/SET_BOARD_ROWS';
 export const PLAY_WORD = 'wordgrid2/gameData/PLAY_WORD';
 export const MARK_ANIMATION_PLAYED = 'wordgrid2/gameData/MARK_ANIMATION_PLAYED';
 export const SET_AVAILABLE_WORDS_DATA = 'wordgrid2/gameData/SET_AVAILABLE_WORDS_DATA';
+export const RESET_LOCAL_GAME_DATA = 'wordgrid2/gameData/RESET_LOCAL_GAME_DATA';
 
 // syncing actions
 export const SET_LOCAL_GAME_BY_ID = 'wordgrid2/gameData/SET_LOCAL_GAME_BY_ID';
@@ -55,6 +56,8 @@ export default function reducer(state = initialState, action) {
       return markAnimationPlayedReducer(state, action);
     case SET_AVAILABLE_WORDS_DATA:
       return setAvailableWordsDataReducer(state, action);
+    case RESET_LOCAL_GAME_DATA:
+      return resetLocalGameDataReducer(state, action);
     default:
       return state;
   }
@@ -277,6 +280,19 @@ function setAvailableWordsDataReducer(state, action) {
   }
 }
 
+function resetLocalGameDataReducer(state, action) {
+  const { gameID, uid } = action;
+  const gameSourceData = state.byID[gameID].sourceData;
+  const localGame = remoteToLocal(gameSourceData, uid);
+  return {
+    ...state,
+    byID: {
+      ...state.byID,
+      [gameID]: localGame,
+    },
+  };
+}
+
 // action creators
 export function placePiece(gameID, pieceIndex, rowRef, columnRef) {
   return (dispatch, getState) => {
@@ -454,12 +470,10 @@ export function setAvailableWordsData(gameID, longest, mostValuable, availableWo
   }
 }
 
-export function resetLocalGameDataByID(gameID) {
-  return (dispatch, getState) => {
-    const game = getState().gameData.byID[gameID];
-    const { uid } = getState().user;
-    dispatch(
-      setLocalGameDataByID(gameID, uid, game.sourceData)
-    );
+export function resetLocalGameDataByID(gameID, uid) {
+  return {
+    type: RESET_LOCAL_GAME_DATA,
+    gameID,
+    uid,
   };
 }
