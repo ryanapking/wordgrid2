@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
-import { withRouter } from 'react-router-native';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import AccountLoginForm from "../components/presentation/AccountLoginForm";
 import routes from '.';
 import { userStandardLogin } from "../data/redux/thunkedUserActions";
+import { useHistory } from "../components/hooks/tempReactRouter";
 
-class AccountLoginStandard extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <AccountLoginForm
-          formAction={ (username, password) => this.props.userStandardLogin(username, password, this.props.history) }
-        />
-        <View style={styles.buttonSection}>
-          <Button title="Cancel" onPress={ () => this.props.history.push(routes.accountLoginSelect.path) } />
-        </View>
+const AccountLoginStandard = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  return (
+    <View style={styles.container}>
+      <AccountLoginForm
+        formAction={ (username, password) => dispatch(userStandardLogin(username, password, history)) }
+      />
+      <View style={styles.buttonSection}>
+        <Button title="Cancel" onPress={ () => history.push(routes.accountLoginSelect.path) } />
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -35,12 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = () => {
-  return {};
-};
-
-const mapDispatchToProps = {
-  userStandardLogin,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountLoginStandard));
+export default AccountLoginStandard;
