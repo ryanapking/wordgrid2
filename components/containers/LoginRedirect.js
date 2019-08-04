@@ -12,6 +12,16 @@ const allowedPaths = [
   routes.accountLoginStandard.path,
 ];
 
+const anonymousPaths = [
+  routes.accountAnonymous.path,
+  routes.accountConvertAnonymous.path,
+];
+
+const registeredAccountPaths = [
+  routes.account.path,
+  routes.accountEdit.path,
+];
+
 class LoginRedirect extends Component {
   componentDidMount() {
     // we send the history object so the user can be routed to newly created games
@@ -27,10 +37,10 @@ class LoginRedirect extends Component {
     } else if (uid && onLoginPath) {
       // redirect logged-in user to homepage
       this.props.history.push(routes.home.path);
-    } else if (isAnonymous && currentPath === routes.account.path) {
+    } else if (isAnonymous && registeredAccountPaths.includes(currentPath)) {
       // redirect anonymous user from account to anonymous account route
       this.props.history.push(routes.accountAnonymous.path);
-    } else if (!isAnonymous && currentPath === routes.accountAnonymous.path) {
+    } else if (!isAnonymous && anonymousPaths.includes(currentPath)) {
       // redirect non-anonymous user from anonymous account to account route
       this.props.history.push(routes.account.path);
     }
