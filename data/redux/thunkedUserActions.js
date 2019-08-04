@@ -16,9 +16,13 @@ import {
   userLoginLost,
   userLoginStart
 } from "./user";
-import { setErrorMessage } from "./messages";
+import {
+  logout,
+  updateExistingAccount,
+  convertAnonymousAccount as parseConvertAnonymousAccount
+} from "../parse-client/user";
+import { setErrorMessage, setInfoMessage } from "./messages";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
-import { logout } from "../parse-client/user";
 import { removeAllLocalGames, removeLocalGameByID, setLocalGameDataByID } from "./gameData";
 
 export function userAnonymousLogin(routerHistory) {
@@ -168,5 +172,28 @@ export function loginComplete(user, routerHistory) {
 
     dispatch(userLoginSuccess());
     dispatch(refreshLocalUserInfo());
+  }
+}
+
+export function updateAccount(newEmail, newUsername, newPassword) {
+  console.log('updateAccount() action creator');
+  return async (dispatch) => {
+    await updateExistingAccount(newEmail, newUsername, newPassword)
+      .catch( (err) => {
+        dispatch(setErrorMessage(err));
+      });
+    dispatch(refreshLocalUserInfo());
+    dispatch(setInfoMessage("Account updated"));
+  }
+}
+
+export function convertAnonymousAccount(email, username, password) {
+  return async (dispatch) => {
+    await parseConvertAnonymousAccount(email, username, password)
+      .catch( (err) => {
+        dispatch(setErrorMessage(err));
+      });
+    dispatch(refreshLocalUserInfo());
+    dispatch(setInfoMessage("Account Registered"));
   }
 }
