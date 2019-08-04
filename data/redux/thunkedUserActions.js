@@ -1,5 +1,4 @@
 // centralized point for complex action creators that use thunk to make remote calls and/or string together other action creators
-// action creators
 
 import {
   anonymousLogin,
@@ -19,6 +18,7 @@ import {
 } from "./user";
 import { setErrorMessage } from "./messages";
 import { startGamesLiveQuery, stopGamesLiveQuery } from "../parse-client/listeners";
+import { logout } from "../parse-client/user";
 import { removeAllLocalGames, removeLocalGameByID, setLocalGameDataByID } from "./gameData";
 
 export function userAnonymousLogin(routerHistory) {
@@ -80,6 +80,16 @@ export function userLoggedOut() {
     stopGamesLiveQuery();
     dispatch(removeAllLocalGames());
     dispatch(userLoginLost());
+  }
+}
+
+export function userLogout() {
+  return async (dispatch) => {
+    await logout()
+      .catch((err) => {
+        console.log('error logging out', err);
+      });
+    dispatch(userLoggedOut());
   }
 }
 

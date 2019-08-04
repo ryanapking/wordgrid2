@@ -8,15 +8,14 @@ import ChallengeInteraction from '../components/containers/ChallengeInteraction'
 import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
 import PieceOverlay from '../components/containers/PieceOverlay';
 import {
-  startChallenge,
   consumeSquare,
   removeSquare,
   clearConsumedSquares,
   placePiece,
-  saveAttempt,
 } from "../data/redux/challengeData";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
+import { saveAttempt, startChallenge } from "../data/redux/thunkedChallengeActions";
 
 class ChallengeAttempt extends Component {
   componentDidMount() {
