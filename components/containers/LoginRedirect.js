@@ -18,14 +18,21 @@ class LoginRedirect extends Component {
     this.props.fetchUser(this.props.history);
   }
   componentDidUpdate() {
-    const { uid } = this.props.user;
-    const onLoginPath = allowedPaths.includes(this.props.location.pathname);
+    const { uid, isAnonymous } = this.props.user;
+    const { pathname: currentPath } = this.props.location;
+    const onLoginPath = allowedPaths.includes(currentPath);
     if (!uid && !onLoginPath) {
-      // console.log('redirecting to login...');
+      // redirect logged-out user to login page
       this.props.history.push(routes.accountLoginSelect.path);
     } else if (uid && onLoginPath) {
-      // console.log('login successful, redirecting home...');
+      // redirect logged-in user to homepage
       this.props.history.push(routes.home.path);
+    } else if (isAnonymous && currentPath === routes.account.path) {
+      // redirect anonymous user from account to anonymous account route
+      this.props.history.push(routes.accountAnonymous.path);
+    } else if (!isAnonymous && currentPath === routes.accountAnonymous.path) {
+      // redirect non-anonymous user from anonymous account to account route
+      this.props.history.push(routes.account.path);
     }
   }
   render() {
