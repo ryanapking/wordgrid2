@@ -15,7 +15,14 @@ export async function respondToRequest({gameID, accept}) {
     });
 }
 
-export async function forfeitGame(gameID) {
+/**
+ * Forfeits a game.
+ *
+ * @param {object} obj
+ * @param {string} obj.gameID
+ * @returns {Promise<any>}
+ */
+export async function forfeitGame({gameID}) {
   return await Parse.Cloud.run("forfeitGame", {gameID}, {})
     .catch( (err) => {
       throw new Error(err);
@@ -50,14 +57,28 @@ export async function saveChallengeAttempt(challengeAttempt) {
     });
 }
 
-export async function addFriend(friendID) {
+/**
+ * Adds a friend in Parse
+ *
+ * @param {Object} obj
+ * @param {string} obj.friendID
+ * @returns {Promise<any>}
+ */
+export async function addFriend({friendID}) {
   return await Parse.Cloud.run("addFriend", {friendID}, {})
     .catch( (err) => {
       throw new Error(err);
     });
 }
 
-export async function removeFriend(friendID) {
+/**
+ * Removes a friend in Parse
+ *
+ * @param {Object} obj
+ * @param {string} obj.friendID
+ * @returns {Promise<any>}
+ */
+export async function removeFriend({friendID}) {
   return await Parse.Cloud.run("removeFriend", {friendID}, {})
     .catch((err) => {
       throw new Error(err);

@@ -13,7 +13,7 @@ const RouteContainer = props => {
   return (
     <View style={styles.mainContainer}>
       <MessageOverlay />
-      <Overlay isVisible={menuOverlayVisible} onBackdropPress={() => this.setState({ menuOverlayVisible: false })}>
+      <Overlay isVisible={menuOverlayVisible} onBackdropPress={() => setMenuOverlayVisible(false) }>
         <Menu closeNavMenu={ () => setMenuOverlayVisible(false) }/>
       </Overlay>
       <View style={styles.topBarSection}>

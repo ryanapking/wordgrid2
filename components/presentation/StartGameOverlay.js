@@ -3,8 +3,8 @@ import { View, Button, StyleSheet, ActivityIndicator } from 'react-native';
 import { Overlay } from 'react-native-elements';
 
 import { startGame as parseStartGame } from "../../data/parse-client/actions";
-import StartGameFriend from "../presentation/StartGameFriend";
-import StartGameSearch from "../presentation/StartGameSearch";
+import StartGameFriend from "./StartGameFriend";
+import StartGameSearch from "./StartGameSearch";
 import { useParseAction } from "../hooks/useParseAction";
 
 const StartGameOverlay = () => {

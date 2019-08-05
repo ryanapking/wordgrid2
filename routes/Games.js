@@ -5,7 +5,7 @@ import { ListItem } from "react-native-elements";
 
 import { useHistory } from "../components/hooks/tempReactRouter";
 import { GAME_STATES } from "../data/utilities/constants";
-import StartGameOverlay from '../components/containers/StartGameOverlay';
+import StartGameOverlay from '../components/presentation/StartGameOverlay';
 import GameListItem from '../components/presentation/GameListItem';
 
 const Games = () => {
