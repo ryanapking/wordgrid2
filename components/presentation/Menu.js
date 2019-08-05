@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useHistory } from "../hooks/tempReactRouter";
-import MenuGlobal from "../presentation/MenuGlobal";
-import MenuGame from "../presentation/MenuGame";
+import MenuGlobal from "./MenuGlobal";
+import MenuGame from "./MenuGame";
 
 const Menu = props => {
   const history = useHistory();

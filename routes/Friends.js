@@ -1,36 +1,26 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useSelector, shallowEqual } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-class Friends extends Component {
-  render() {
-    const { friendsByID } = this.props;
-    const friendsByIDKeys = Object.keys(friendsByID);
-    return (
-      <View>
-        {friendsByIDKeys.map((friendID) =>
-          <ListItem
-            key={ friendID }
-            title={ friendsByID[friendID].username }
-            onPress={ () => this.props.history.push(`/friend/${friendID}`) }
-          />
-        )}
-      </View>
-    );
-  }
-}
+import { useHistory } from "../components/hooks/tempReactRouter";
 
-const mapStateToProps = (state) => {
-  return {
-    friends: state.user.friends,
-    friendsByID: state.user.friendsByID,
-  }
+const Friends = () => {
+  const history = useHistory();
+  const friendsByID = useSelector(state => state.user.friendsByID, shallowEqual);
+  const friendsByIDKeys = Object.keys(friendsByID);
+  return (
+    <View>
+      {friendsByIDKeys.map((friendID) =>
+        <ListItem
+          key={ friendID }
+          title={ friendsByID[friendID].username }
+          onPress={ () => history.push(`/friend/${friendID}`) }
+        />
+      )}
+    </View>
+  );
 };
 
-const mapDispatchToProps = {
-
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Friends));
+export default Friends;

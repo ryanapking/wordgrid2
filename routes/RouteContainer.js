@@ -4,7 +4,7 @@ import { Overlay } from "react-native-elements";
 import PropTypes from 'prop-types';
 
 import TopBar from "../components/presentation/TopBar";
-import Menu from "../components/containers/Menu";
+import Menu from "../components/presentation/Menu";
 import MessageOverlay from "../components/presentation/MessageOverlay";
 
 const RouteContainer = props => {
