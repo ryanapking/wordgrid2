@@ -43,7 +43,15 @@ export async function startGame({opponentID}) {
     });
 }
 
-export async function saveMove(gameID, move) {
+/**
+ * Saves a move to Parse
+ *
+ * @param {Object} obj
+ * @param {string} obj.gameID
+ * @param {string} obj.move
+ * @returns {Promise<any>}
+ */
+export async function saveMove({gameID, move}) {
   return await Parse.Cloud.run("saveMove", {gameID, move}, {})
     .catch( (err) => {
       throw new Error(err);

@@ -6,10 +6,8 @@ import { connect } from 'react-redux';
 import DrawPieceSection from "./DrawPieceSection";
 
 import { calculateWordValue } from "../../data/utilities/functions/calculations";
-import { localToRemote } from "../../data/utilities/functions/dataConversions";
-import { validateMove } from "../../data/utilities/functions/checks";
 import { playWord, clearConsumedSquares, resetLocalGameDataByID } from "../../data/redux/gameData";
-import { saveMove } from "../../data/parse-client/actions";
+import { saveMove } from "../../data/redux/thunkedGameActions";
 
 class GameInteraction extends Component {
   render() {
@@ -62,30 +60,17 @@ class GameInteraction extends Component {
   }
 
   _confirmMoveInteraction() {
+    const { gameID, uid } = this.props;
     return (
       <View style={this.props.style}>
         <View style={styles.confirmMoveSection}>
-          <Button title="Submit Move" onPress={() => this.saveRemoteMove()} />
+          <Button title="Submit Move" onPress={() => this.props.saveMove(gameID, uid)} />
           <Button title="Reset Move" onPress={() => this.props.resetLocalGameDataByID(this.props.gameID, this.props.uid)} />
         </View>
       </View>
     );
   }
 
-  saveRemoteMove() {
-    const {gameID, uid, game} = this.props;
-    const newMove = localToRemote(game, uid);
-
-    // nothing currently happens with the validation
-    // mainly here to trigger the function for now
-    validateMove(uid, game.sourceData, newMove);
-
-    saveMove(gameID, newMove)
-      .then((savedGameObject) => {
-        this.props.history.push("/");
-      });
-
-  }
 }
 
 const styles = StyleSheet.create({
@@ -132,6 +117,7 @@ const mapDispatchToProps = {
   playWord,
   clearConsumedSquares,
   resetLocalGameDataByID,
+  saveMove,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameInteraction));
