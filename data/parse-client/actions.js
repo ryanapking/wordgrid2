@@ -1,6 +1,14 @@
 import Parse from "./client-setup";
 
-export async function respondToRequest(gameID, accept) {
+/**
+ * Accepts or Rejects a game request
+ *
+ * @param {Object} obj
+ * @param {string} obj.gameID
+ * @param {boolean} obj.accept
+ * @returns {Promise<any>}
+ */
+export async function respondToRequest({gameID, accept}) {
   return await Parse.Cloud.run("requestResponse", {gameID, accept}, {})
     .catch( (err) => {
       throw new Error(err);
