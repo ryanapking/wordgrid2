@@ -6,10 +6,13 @@ export const rowsType = PropTypes.arrayOf(
   )
 );
 
+export const rowsArrayType = PropTypes.arrayOf(rowsType);
+
 export const squaresArrayType = PropTypes.arrayOf(
   PropTypes.shape({
     rowIndex: PropTypes.number.isRequired,
     columnIndex: PropTypes.number.isRequired,
+    letter: PropTypes.string,
   })
 );
 

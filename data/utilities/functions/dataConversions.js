@@ -104,6 +104,7 @@ function remoteToLocal(source, userID, movesToApply = null, phase = null) {
     // local data for display purposes
     animationOver: !moves, // no animation unless there has been a move
     piecePlaced: false, // determines what action is available to the user
+    movePhase: "spell", // "spell", "place" or "confirm"
 
     // to be set when the game is loaded; used when rating a move
     availableWords: {

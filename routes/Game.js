@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
 import GameInfoDisplay from '../components/containers/GameInfoDisplay';
 import BoardTouchView from '../components/containers/BoardTouchView';
-import GameInteraction from '../components/containers/GameInteraction';
 import GameMoveAnimation from '../components/containers/GameMoveAnimation';
 import PieceOverlay from '../components/containers/PieceOverlay';
-import { setAvailableWordsData, consumeSquare, removeSquare, clearConsumedSquares, placePiece } from "../data/redux/gameData";
-import { calculateHighestWordValue, calculateLongestWordLength } from "../data/utilities/functions/calculations";
+import {
+  setAvailableWordsData,
+  consumeSquare,
+  removeSquare,
+  clearConsumedSquares,
+  placePiece,
+  resetLocalGameDataByID,
+  playWord,
+} from "../data/redux/gameData";
+import {
+  calculateHighestWordValue,
+  calculateLongestWordLength,
+} from "../data/utilities/functions/calculations";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 
+import SpellWordSection from "../components/presentation/SpellWordSection";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
+import DrawPieceSection from "../components/containers/DrawPieceSection";
 
 class Game extends Component {
 
@@ -54,17 +66,18 @@ class Game extends Component {
   }
 
   render() {
-    const { game, gameID } = this.props;
+    const { game, gameID, uid } = this.props;
 
     // zindex doesn't work on android, so we need to move the overlay before or after the other visual elements
     const overlayActive = (game.word && !game.piecePlaced);
 
-    const pieceOverlay =
+    const pieceOverlay = (
       <PieceOverlay
         pointerEvents={'none'}
         boardRows={game.rows}
         placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(this.props.gameID, pieceIndex, rowRef, columnRef)}
-      />;
+      />
+    );
 
     if (!this.props.game.animationOver) {
       return (
@@ -98,7 +111,28 @@ class Game extends Component {
                 boardLocation={this.props.display.boardLocation}
               />
             </BoardTouchView>
-            <GameInteraction style={styles.interaction} gameID={this.props.gameID} />
+            <View style={styles.interaction}>
+              { game.movePhase === "place" ?
+                <DrawPieceSection pieces={game.currentPlayer.currentPieces} allowDrag />
+                : null
+              }
+              { game.movePhase === "confirm" ?
+                <View style={styles.confirmMoveSection}>
+                  <Button title="Submit Move" onPress={ () => this.props.saveMove(gameID, uid) } />
+                  <Button title="Reset Move" onPress={ () => this.props.resetLocalGameDataByID(gameID, uid) } />
+                </View>
+                : null
+              }
+              { game.movePhase === "spell" ?
+                <SpellWordSection
+                  playWord={ () => this.props.playWord(gameID) }
+                  clearConsumedSquares={ () => this.props.clearConsumedSquares(gameID) }
+                  displayPieces={game.currentPlayer.currentPieces}
+                  consumedSquares={game.consumedSquares}
+                />
+                : null
+              }
+            </View>
           </View>
           { overlayActive ? pieceOverlay : null }
         </View>
@@ -139,7 +173,14 @@ const styles = StyleSheet.create({
   interaction: {
     flex: 5,
     // backgroundColor: 'green',
-  }
+  },
+  confirmMoveSection: {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
 });
 
 const mapStateToProps = (state, ownProps) => {
@@ -158,6 +199,8 @@ const mapDispatchToProps = {
   removeSquare,
   clearConsumedSquares,
   placePiece,
+  resetLocalGameDataByID,
+  playWord,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Game));

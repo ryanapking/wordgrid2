@@ -101,7 +101,8 @@ function placePieceReducer(state, action) {
         currentPlayer: {
           ...game.currentPlayer,
           currentPieces: newCurrentPieces,
-        }
+        },
+        movePhase: "confirm",
       },
     }
   };
@@ -277,7 +278,8 @@ function playWordReducer(state, action) {
     currentPlayer: {
       ...game.currentPlayer,
       scoreBoard: newScoreBoard,
-    }
+    },
+    movePhase: "place",
   };
 
   return {
