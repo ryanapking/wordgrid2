@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
 import BoardTouchView from '../components/containers/BoardTouchView';
-import ChallengeInteraction from '../components/containers/ChallengeInteraction';
+import ChallengeInteraction from '../components/presentation/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
 import PieceOverlay from '../components/containers/PieceOverlay';
 import {

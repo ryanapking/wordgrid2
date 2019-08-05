@@ -264,18 +264,30 @@ export async function getAttemptByChallengeID(challengeID, uid) {
   throw new Error("Unable to find challenge attempt");
 }
 
-export async function getUsersByPartialString(searchString, excludeID) {
+/**
+ * Searches for users by username
+ *
+ * @param {Object} obj
+ * @param {string} obj.searchString
+ * @param {string} obj.currentUserID
+ * @returns {Promise<Array|any>}
+ */
+export async function getUsersByPartialString({searchString, currentUserID}) {
   if (searchString.length < 3) return [];
 
-  return await new Parse.Query(Parse.User)
+  const results =  await new Parse.Query(Parse.User)
     .exists('email')
     .startsWith('username', searchString)
-    .notEqualTo('objectId', excludeID)
+    .notEqualTo('objectId', currentUserID)
     .limit(10)
     .find()
     .catch( (err) => {
       throw new Error(err);
     });
+
+  return results.map((user) => {
+    return user.toJSON();
+  });
 }
 
 export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {

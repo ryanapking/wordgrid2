@@ -1,109 +1,57 @@
-import React, { Component } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
-import { Overlay, Input, ListItem } from 'react-native-elements';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { View, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import { Overlay } from 'react-native-elements';
 
-import { startGame } from "../../data/parse-client/actions";
-import { getUsersByPartialString } from "../../data/parse-client/getters";
-import { setErrorMessage } from "../../data/redux/messages";
+import { startGame as parseStartGame } from "../../data/parse-client/actions";
+import StartGameFriend from "../presentation/StartGameFriend";
+import StartGameSearch from "../presentation/StartGameSearch";
+import { useParseAction } from "../hooks/useParseAction";
 
-class StartGameOverlay extends Component {
-  constructor(props) {
-    super(props);
+const StartGameOverlay = () => {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [displayType, setDisplayType] = useState('');
+  const [startGame, startGamePending] = useParseAction(parseStartGame);
 
-    this.state = {
-      showOverlay: false,
-      searchByUserID: false,
-      viewFriends: false,
+  const closeOverlay = () => {
+    setShowOverlay(false);
+    setDisplayType('');
+  };
 
-      possibleOpponents: [],
-    };
-  }
-
-  componentDidMount() {
-
-  }
-
-  render() {
-    const { showOverlay, searchByUserID, viewFriends, possibleOpponents } = this.state;
-    const { friendsByID } = this.props;
-    const friendsByIDKeys = Object.keys(friendsByID);
-
-    return (
-      <View>
-        <Button title="Start a new Game" onPress={ () => this.setState({ showOverlay: true })} />
-        <Overlay
-          isVisible={ showOverlay }
-          onBackdropPress={ () => this.setState({ showOverlay: false, viewFriends: false, searchByUserID: false, possibleOpponents: [] }) }
-        >
-          <View>
-            {(searchByUserID || viewFriends) ? null :
-              <View style={styles.buttonSection}>
-                <Button title="Random Opponent" onPress={ () => this._startGame() } />
-                <View style={styles.buttonSpacer}>
-                  <Button title="Play a Friend" onPress={ () => this.setState({ viewFriends: true }) } />
-                </View>
-                <Button title="Find by Username" onPress={ () => this.setState({ searchByUserID: true }) } />
-              </View>
-            }
-            { searchByUserID ?
-              <Input
-                label="Username"
-                autoCapitalize="none"
-                onChangeText={ (searchString) => this._searchForUsers(searchString) }
-              />
-              : null
-            }
-            { viewFriends ?
-              <View>
-                <ListItem title="Your Friends" />
-                { friendsByIDKeys.map( (friendID) =>
-                  <ListItem
-                    key={ friendID }
-                    title={ friendsByID[friendID].username }
-                    onPress={ () => this._startGame( friendsByID[friendID].id ) }
-                  />
-                )}
-              </View>
-              : null
-            }
-            { possibleOpponents.map( (user, index) =>
-              <ListItem
-                title={ user.username }
-                key={index}
-                onPress={ () => this._startGame(user.id) }
-              />
-            )}
-          </View>
-        </Overlay>
+  let overlayContents = null;
+  if (startGamePending) {
+    overlayContents = <ActivityIndicator />;
+  } else if (!displayType) {
+    overlayContents = (
+      <View style={styles.buttonSection}>
+        <Button title="Random Opponent" onPress={ () => startGame({}) } />
+        <View style={styles.buttonSpacer}>
+          <Button title="Play a Friend" onPress={ () => setDisplayType("friends") } />
+        </View>
+        <Button title="Find by Username" onPress={ () => setDisplayType("search") } />
       </View>
-    );
+    )
+  } else if (displayType === 'friends') {
+    overlayContents = <StartGameFriend />;
+  } else if (displayType === 'search') {
+    overlayContents = <StartGameSearch />;
   }
 
-  _searchForUsers(searchString) {
-    getUsersByPartialString(searchString, this.props.uid)
-      .then( (users) => {
-        console.log('user search response:', users);
-        const simpleUsersObject = users.map( (user) => {
-          return {
-            username: user.get('username'),
-            id: user.id,
-          };
-        });
-        this.setState({ possibleOpponents: simpleUsersObject })
-      })
-      .catch( (err) => {
-        this.props.setErrorMessage(err);
-      });
-  }
+  return (
+    <View>
+      <Button title="Start a new Game" onPress={ () => setShowOverlay(true) } />
+      <Overlay
+        isVisible={ showOverlay }
+        onBackdropPress={ () => closeOverlay() }
+      >
+        <View>
+          {overlayContents}
+          <Button title="Cancel" onPress={ () => closeOverlay() } />
+        </View>
+      </Overlay>
+    </View>
+  )
 
-  _startGame(opponentID = null) {
-    startGame(opponentID)
-      .catch( (err) => {
-        this.props.setErrorMessage(err);
-      });
-  }
-}
+};
 
 const styles = StyleSheet.create({
   buttonSection: {
@@ -117,16 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    uid: state.user.uid,
-    friends: state.user.friends,
-    friendsByID: state.user.friendsByID,
-  };
-};
-
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(StartGameOverlay);
+export default StartGameOverlay;

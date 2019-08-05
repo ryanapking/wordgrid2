@@ -17,5 +17,8 @@ export const useParseAction = (parseAction) => {
     setPending(false);
     setResponse(response);
   };
-  return [callAction, pending, response];
+  const clearResponse = () => {
+    setResponse(null);
+  };
+  return [callAction, pending, response, clearResponse];
 };

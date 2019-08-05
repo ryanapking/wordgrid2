@@ -22,7 +22,14 @@ export async function forfeitGame(gameID) {
     });
 }
 
-export async function startGame(opponentID = null) {
+/**
+ * Starts a new game against a random or specified opponent
+ *
+ * @param {Object} obj
+ * @param {string} obj.opponentID
+ * @returns {Promise<any>}
+ */
+export async function startGame({opponentID}) {
   return await Parse.Cloud.run("startGame", {opponentID}, {})
     .catch( (err) => {
       throw new Error(err);

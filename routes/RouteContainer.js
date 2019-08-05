@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import TopBar from "../components/presentation/TopBar";
 import Menu from "../components/containers/Menu";
-import MessageOverlay from "../components/containers/MessageOverlay";
+import MessageOverlay from "../components/presentation/MessageOverlay";
 
 const RouteContainer = props => {
   const [ menuOverlayVisible, setMenuOverlayVisible] = useState(false);
