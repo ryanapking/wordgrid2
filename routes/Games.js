@@ -6,7 +6,7 @@ import { ListItem } from "react-native-elements";
 
 import { GAME_STATES } from "../data/utilities/constants";
 import StartGameOverlay from '../components/containers/StartGameOverlay';
-import GameListItem from '../components/containers/GameListItem';
+import GameListItem from '../components/presentation/GameListItem';
 
 class Games extends Component {
 

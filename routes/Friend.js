@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-native';
 import { getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
 import { startGame } from "../data/parse-client/actions";
-import GameListItem from '../components/containers/GameListItem';
+import GameListItem from '../components/presentation/GameListItem';
 
 class Friend extends Component {
   constructor(props) {

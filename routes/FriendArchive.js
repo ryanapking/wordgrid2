@@ -7,7 +7,7 @@ import { updatePinsAgainstOpponent, getOpponentArchive } from "../data/parse-cli
 import { remoteToLocal } from "../data/utilities/functions/dataConversions";
 import { setErrorMessage } from '../data/redux/messages';
 
-import GameListItem from '../components/containers/GameListItem';
+import GameListItem from '../components/presentation/GameListItem';
 
 class FriendArchive extends Component {
   constructor(props) {

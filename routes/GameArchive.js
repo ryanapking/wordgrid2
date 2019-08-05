@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { remoteToLocal } from "../data/utilities/functions/dataConversions";
 import { getFullGameArchive } from "../data/parse-client/getters";
 import { setErrorMessage } from "../data/redux/messages";
-import GameListItem from "../components/containers/GameListItem";
+import GameListItem from "../components/presentation/GameListItem";
 
 class GameArchive extends Component {
   constructor(props) {
