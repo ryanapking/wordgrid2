@@ -8,6 +8,10 @@ import {
   updateLocalUserDataFromParse
 } from "../parse-client/user";
 import {
+  addFriend as parseAddFriend,
+  removeFriend as parseRemoveFriend,
+} from "../parse-client/actions";
+import {
   endFetchingUser,
   userLoginSuccess,
   setUserData,
@@ -195,5 +199,21 @@ export function convertAnonymousAccount(email, username, password) {
       });
     dispatch(refreshLocalUserInfo());
     dispatch(setInfoMessage("Account Registered"));
+  }
+}
+
+export function addFriend(friendID) {
+  return async (dispatch) => {
+    await parseAddFriend({friendID})
+      .catch(err => dispatch(setErrorMessage(err)));
+    dispatch(refreshLocalUserInfo());
+  }
+}
+
+export function removeFriend(friendID) {
+  return async (dispatch) => {
+    await parseRemoveFriend({friendID})
+      .catch(err => dispatch(setErrorMessage(err)));
+    dispatch(refreshLocalUserInfo());
   }
 }

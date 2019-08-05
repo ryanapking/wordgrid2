@@ -52,8 +52,8 @@ function updateUserDataReducer(state, action) {
 
   let updatedFriends = [];
   let updatedFriendsByID = {};
-  if (updatedUser.friends) {
-    updatedUser.friends.forEach((friend) => {
+  if (updatedUser.friendList) {
+    updatedUser.friendList.friends.forEach((friend) => {
       updatedFriends.push(friend.objectId);
       updatedFriendsByID[friend.objectId] = friend;
     });
