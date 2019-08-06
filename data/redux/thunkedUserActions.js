@@ -125,6 +125,7 @@ export function fetchUser(routerHistory) {
 // provides functions to Parse listener for manipulating redux data
 // initiates refresh of user data
 export function loginComplete(user, routerHistory) {
+  const uid = user.objectId;
   return (dispatch, getState) => {
 
     // these functions are passed to the listener so it can manipulate the state when games are updated
@@ -132,13 +133,13 @@ export function loginComplete(user, routerHistory) {
     // it happens here so only one listener is created
     const storeGame = (game) => {
       dispatch(
-        setLocalGameDataByID(game.objectId, getState().user.uid, game)
+        setLocalGameDataByID(game.objectId, uid, game)
       );
     };
 
     const storeGameThenRedirect = (game) => {
       dispatch(
-        setLocalGameDataByID(game.objectId, getState().user.uid, game)
+        setLocalGameDataByID(game.objectId, uid, game)
       );
 
       // redirect to the new game once it's saved to local storage
