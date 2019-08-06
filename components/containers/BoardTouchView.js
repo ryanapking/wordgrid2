@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { squaresArrayType, rowsType } from "../../proptypes";
-import MeasureView from "./MeasureView";
+import MeasureView from "../presentation/MeasureView";
 import { setBoardLocation } from "../../data/redux/gameDisplay";
 import { isSquareInArray } from "../../data/utilities/functions/checks";
 

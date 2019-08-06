@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import PieceDraggableView from './PieceDraggableView';
 import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
-import MeasureView from "./MeasureView";
+import MeasureView from "../presentation/MeasureView";
 import { setPieceLocation, clearPieceLocations } from "../../data/redux/gameDisplay";
 
 class DrawPieceSection extends Component {
