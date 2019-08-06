@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
-import GameInfoDisplay from '../components/containers/GameInfoDisplay';
 import BoardTouchView from '../components/containers/BoardTouchView';
 import GameMoveAnimation from '../components/containers/GameMoveAnimation';
 import PieceOverlay from '../components/containers/PieceOverlay';
@@ -27,6 +26,8 @@ import SpellWordSection from "../components/presentation/SpellWordSection";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
 import DrawPieceSection from "../components/containers/DrawPieceSection";
+import GameScoreBoard from "../components/presentation/GameScoreBoard";
+import GamePhaseDisplay from "../components/presentation/GamePhaseDisplay";
 
 class Game extends Component {
 
@@ -90,7 +91,23 @@ class Game extends Component {
         <View style={styles.container}>
           { overlayActive ? null : pieceOverlay }
           <View style={styles.underlay}>
-            <GameInfoDisplay style={styles.info} gameID={this.props.gameID} />
+            <View style={styles.info}>
+              <View style={[styles.leftSide, {padding: 5}]}>
+                <Text>Opponent Pieces:</Text>
+                <DrawPieceSection pieces={game.opponent.currentPieces} allowDrag={false} />
+              </View>
+              <View style={[styles.rightSide, {padding: 5}]}>
+                <GameScoreBoard
+                  style={styles.equal}
+                  uid={uid}
+                  p1={game.p1}
+                  p2={game.p2}
+                  currentPlayerScoreBoard={game.currentPlayer.scoreBoard}
+                  opponentScoreBoard={game.opponent.scoreBoard}
+                />
+                <GamePhaseDisplay style={styles.equal} movePhase={game.movePhase} />
+              </View>
+            </View>
             <BoardTouchView
               style={styles.board}
               rows={game.rows}
@@ -152,8 +169,6 @@ class Game extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    // display: 'flex',
-    // flexDirection: 'column'
     width: '100%',
     height: '100%',
   },
@@ -164,15 +179,14 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 4,
-    // backgroundColor: 'blue',
+    display: 'flex',
+    flexDirection: 'row',
   },
   board: {
     flex: 14,
-    // backgroundColor: 'red',
   },
   interaction: {
     flex: 5,
-    // backgroundColor: 'green',
   },
   confirmMoveSection: {
     height: '100%',
@@ -180,6 +194,26 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
+  },
+  equal: {
+    flex: 1,
+  },
+  row: {
+    flex: 1,
+  },
+  leftSide: {
+    flex: 1,
+  },
+  rightSide: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  scoreBoard: {
+    flex: 1,
+  },
+  phaseDisplay: {
+    flex: 1,
   },
 });
 

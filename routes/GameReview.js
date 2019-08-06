@@ -24,7 +24,7 @@ import Boggle from '../data/boggle-solver';
 
 import BoardDrawLetterGrid from '../components/presentation/BoardDrawLetterGrid';
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
-import DrawScoreBoard from "../components/containers/GameScoreBoard";
+import DrawScoreBoard from "../components/presentation/GameScoreBoard";
 
 class GameReview extends Component {
   constructor(props) {
