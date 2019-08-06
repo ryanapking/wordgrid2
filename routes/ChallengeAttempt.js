@@ -11,12 +11,12 @@ import {
 import { startChallenge, placePieceThenSave } from "../data/redux/thunkedChallengeActions";
 
 import PieceOverlay from '../components/presentation/PieceOverlay';
-import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
 import SpellWordSection from "../components/presentation/SpellWordSection";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
 import DrawPieceSection from "../components/presentation/DrawPieceSection";
 import BoardTouchView from '../components/containers/BoardTouchView';
+import ChallengePieceSetDisplay from "../components/presentation/ChallengePieceSetDisplay";
 
 const ChallengeAttempt = () => {
   const dispatch = useDispatch();
@@ -42,12 +42,18 @@ const ChallengeAttempt = () => {
       { challenge.word ? null : pieceOverlay }
       <View style={styles.underlay}>
         <View style={styles.info}>
-          <ChallengeInfoDisplay
-            moves={challenge.moves}
-            score={challenge.score}
-            word={challenge.word}
-            style={{height: '100%', width: '100%'}}
-          />
+          <View style={[styles.equal, styles.column]}>
+            <Text style={[styles.equal, styles.textCenter]}>{ challenge.score } points</Text>
+            <Text style={[styles.equal, styles.textCenter]}>{ 5 - challenge.moves.length } moves remaining</Text>
+            <Text style={[styles.equal, styles.textCenter]}>{ challenge.word ? "place a piece" : "spell a word" }</Text>
+          </View>
+          <View style={styles.equal}>
+            <ChallengePieceSetDisplay
+              consumedSquares={challenge.consumedSquares}
+              pieceSet={challenge.pieceSet}
+              word={challenge.word}
+            />
+          </View>
         </View>
         <BoardTouchView
           style={styles.board}
@@ -105,6 +111,8 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 4,
+    display: 'flex',
+    flexDirection: 'row',
   },
   board: {
     flex: 14,
@@ -116,7 +124,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  equal: {
+    flex: 1,
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
 });
 
 export default ChallengeAttempt;
