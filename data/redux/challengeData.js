@@ -108,6 +108,7 @@ function playWordReducer(state, action) {
       rows: newRows,
       score,
       pieces,
+      movePhase: "place",
     }
   }
 }
@@ -148,6 +149,7 @@ function placePieceReducer(state, action) {
       rows: newRows,
       gameOver,
       score,
+      movePhase: gameOver ? "complete" : "spell",
     }
   }
 }

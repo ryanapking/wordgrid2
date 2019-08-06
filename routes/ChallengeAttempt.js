@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import { withRouter } from 'react-router-native';
 import { connect } from 'react-redux';
 
 import BoardTouchView from '../components/containers/BoardTouchView';
-import ChallengeInteraction from '../components/presentation/ChallengeInteraction';
 import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
 import PieceOverlay from '../components/containers/PieceOverlay';
 import {
@@ -12,10 +11,13 @@ import {
   removeSquare,
   clearConsumedSquares,
   placePiece,
+  playWord,
 } from "../data/redux/challengeData";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
 import { saveAttempt, startChallenge } from "../data/redux/thunkedChallengeActions";
+import SpellWordSection from "../components/presentation/SpellWordSection";
+import DrawPieceSection from "../components/containers/DrawPieceSection";
 
 class ChallengeAttempt extends Component {
   componentDidMount() {
@@ -35,54 +37,68 @@ class ChallengeAttempt extends Component {
 
   render() {
     const { challenge } = this.props.challengeData;
+    if (!challenge) return null;
 
-    if (challenge) {
+    // zindex doesn't work on android. must move the overlay before or after the other elements, depending on need.
+    const pieceOverlay =
+      <PieceOverlay
+        pointerEvents={'none'}
+        boardRows={challenge.rows}
+        placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
+      />;
 
-      // zindex doesn't work on android. must move the overlay before or after the other elements, depending on need.
-      const pieceOverlay =
-        <PieceOverlay
-          pointerEvents={'none'}
-          boardRows={challenge.rows}
-          placePiece={(pieceIndex, rowRef, columnRef) => this.props.placePiece(pieceIndex, rowRef, columnRef)}
-        />;
-
-      return (
-        <View style={styles.container}>
-          { challenge.word ? null : pieceOverlay }
-          <View style={styles.underlay}>
-            <View style={styles.info}>
-              <ChallengeInfoDisplay
-                moves={challenge.moves}
-                score={challenge.score}
-                word={challenge.word}
-                style={{height: '100%', width: '100%'}}
-              />
-            </View>
-            <BoardTouchView
-              style={styles.board}
-              rows={challenge.rows}
-              pointerEventsDisabled={challenge.word.length > 0}
-              consumedSquares={challenge.consumedSquares}
-              consumeSquare={(square) => this.props.consumeSquare(square)}
-              removeSquare={() => this.props.removeSquare()}
-              clearConsumedSquares={() => this.props.clearConsumedSquares()}
-            >
-              <BoardDrawLetterGrid
-                boardState={challenge.rows}
-                boardSize={this.props.display.boardLocation.width}
-                consumedSquares={challenge.consumedSquares}
-                hoveredSquares={this.props.display.hoveredSpaces}
-              />
-              <BoardPathCreator squares={challenge.consumedSquares} boardLocation={this.props.display.boardLocation}/>
-            </BoardTouchView>
-            <ChallengeInteraction style={styles.interaction} />
+    return (
+      <View style={styles.container}>
+        { challenge.word ? null : pieceOverlay }
+        <View style={styles.underlay}>
+          <View style={styles.info}>
+            <ChallengeInfoDisplay
+              moves={challenge.moves}
+              score={challenge.score}
+              word={challenge.word}
+              style={{height: '100%', width: '100%'}}
+            />
           </View>
-          { challenge.word ? pieceOverlay : null }
+          <BoardTouchView
+            style={styles.board}
+            rows={challenge.rows}
+            pointerEventsDisabled={challenge.word.length > 0}
+            consumedSquares={challenge.consumedSquares}
+            consumeSquare={(square) => this.props.consumeSquare(square)}
+            removeSquare={() => this.props.removeSquare()}
+            clearConsumedSquares={() => this.props.clearConsumedSquares()}
+          >
+            <BoardDrawLetterGrid
+              boardState={challenge.rows}
+              boardSize={this.props.display.boardLocation.width}
+              consumedSquares={challenge.consumedSquares}
+              hoveredSquares={this.props.display.hoveredSpaces}
+            />
+            <BoardPathCreator squares={challenge.consumedSquares} boardLocation={this.props.display.boardLocation}/>
+          </BoardTouchView>
+          <View style={styles.interaction}>
+            { challenge.movePhase === "spell" ?
+              <SpellWordSection
+                displayPieces={challenge.pieces}
+                consumedSquares={challenge.consumedSquares}
+                clearConsumedSquares={ () => this.props.clearConsumedSquares() }
+                playWord={ () => this.props.playWord() }
+              />
+              : null
+            }
+            { challenge.movePhase === "place" ?
+              <DrawPieceSection pieces={challenge.pieces} allowDrag />
+              : null
+            }
+            { challenge.movePhase === "complete" ?
+              <Text>Game Over</Text>
+              : null
+            }
+          </View>
         </View>
-      );
-    } else {
-      return null;
-    }
+        { challenge.word ? pieceOverlay : null }
+      </View>
+    );
   }
 }
 
@@ -106,7 +122,12 @@ const styles = StyleSheet.create({
   },
   interaction: {
     flex: 5,
-  }
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
 });
 
 const mapStateToProps = (state) => {
@@ -124,6 +145,7 @@ const mapDispatchToProps = {
   clearConsumedSquares,
   placePiece,
   saveAttempt,
+  playWord,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeAttempt));

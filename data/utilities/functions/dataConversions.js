@@ -152,6 +152,7 @@ function challengeRemoteToPlayableObject(remoteChallengeObject) {
     gameOver: false,
     attemptSaved: false,
     id: remoteChallengeObject.objectId,
+    movePhase: "spell",
   };
 
   return challenge;
