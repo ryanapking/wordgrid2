@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { NativeRouter, Route } from'react-router-native';
 
 import configureStore from './data/redux/configureStore';
-import routes, { routesArray } from './routes';
+import { routesArray } from './routes';
 import RouteComponents from "./routes/RouteComponents";
 import LoginRedirect from "./components/presentation/LoginRedirect";
 import RouteContainer from "./routes/RouteContainer";
@@ -14,29 +14,29 @@ const store = configureStore();
 StatusBar.setHidden(true, null);
 console.disableYellowBox = true;
 
-export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <NativeRouter>
-          <LoginRedirect />
-          { routesArray.map((route, index) =>
-            <Route
-              key={index}
-              exact
-              path={route.path}
-              render={ () => {
-                const RouteComponent = RouteComponents[route.componentName];
-                return (
-                  <RouteContainer currentRouteKey={route.routeKey} backRouteKey={ route.backRouteKey } >
-                    <RouteComponent />
-                  </RouteContainer>
-                );
-              }}
-            />
-          )}
-        </NativeRouter>
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <NativeRouter>
+        <LoginRedirect />
+        { routesArray.map((route, index) =>
+          <Route
+            key={index}
+            exact
+            path={route.path}
+            render={ () => {
+              const RouteComponent = RouteComponents[route.componentName];
+              return (
+                <RouteContainer currentRouteKey={route.routeKey} backRouteKey={ route.backRouteKey } >
+                  <RouteComponent />
+                </RouteContainer>
+              );
+            }}
+          />
+        )}
+      </NativeRouter>
+    </Provider>
+  );
+};
+
+export default App;
