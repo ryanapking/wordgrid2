@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-native';
 import Boggle from '../data/boggle-solver';
 import BoardTouchView from '../components/containers/BoardTouchView';
 import GameMoveAnimation from '../components/containers/GameMoveAnimation';
-import PieceOverlay from '../components/containers/PieceOverlay';
+import PieceOverlay from '../components/presentation/PieceOverlay';
 import {
   setAvailableWordsData,
   consumeSquare,

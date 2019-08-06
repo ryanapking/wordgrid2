@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import BoardTouchView from '../components/containers/BoardTouchView';
 import ChallengeInfoDisplay from '../components/presentation/ChallengeInfoDisplay';
-import PieceOverlay from '../components/containers/PieceOverlay';
+import PieceOverlay from '../components/presentation/PieceOverlay';
 import {
   consumeSquare,
   removeSquare,
