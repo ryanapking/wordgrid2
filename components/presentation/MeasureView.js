@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 
 const MeasureView = props => {
-  const [viewToMeasure, setViewToMeasure] = useState(null);
+  const viewToMeasure = useRef(null);
 
   const measure = () => {
-    viewToMeasure.measure((x, y, width, height, pageX, pageY) => {
+    viewToMeasure.current.measure((x, y, width, height, pageX, pageY) => {
       props.onMeasure(x, y, width, height, pageX, pageY);
     });
   };
@@ -14,7 +14,7 @@ const MeasureView = props => {
   return (
     <View
       style={props.style}
-      ref={ measureView => setViewToMeasure(measureView) }
+      ref={viewToMeasure}
       onLayout={() => measure() }
       { ...props.panHandlers }
       pointerEvents={ props.pointerEvents ? props.pointerEvents : 'auto' }

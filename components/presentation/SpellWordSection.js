@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Button } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { rowsArrayType, squaresArrayType } from "../../proptypes";
-import DrawPieceSection from "../containers/DrawPieceSection";
+import DrawPieceSection from "./DrawPieceSection";
 import { calculateWordValue } from "../../data/utilities/functions/calculations";
 
 const SpellWordSection = props => {

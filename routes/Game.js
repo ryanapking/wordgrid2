@@ -25,7 +25,7 @@ import { checkPieceFit } from "../data/utilities/functions/checks";
 import SpellWordSection from "../components/presentation/SpellWordSection";
 import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
 import BoardPathCreator from "../components/presentation/BoardPathCreator";
-import DrawPieceSection from "../components/containers/DrawPieceSection";
+import DrawPieceSection from "../components/presentation/DrawPieceSection";
 import GameScoreBoard from "../components/presentation/GameScoreBoard";
 import GamePhaseDisplay from "../components/presentation/GamePhaseDisplay";
 

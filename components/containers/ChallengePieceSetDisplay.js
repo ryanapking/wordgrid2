@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
-import DrawPieceSection from './DrawPieceSection';
+import DrawPieceSection from '../presentation/DrawPieceSection';
 
 class ChallengePieceSetDisplay extends Component {
   componentDidUpdate() {
