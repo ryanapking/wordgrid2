@@ -3,7 +3,7 @@ import { saveChallengeAttempt } from "../parse-client/actions";
 import { storeAttemptByChallengeID } from "../async-storage/challengeAttempts";
 import { getCurrentChallenge } from "../parse-client/getters";
 import { setErrorMessage } from "./messages";
-import { setLocalChallengeData } from "./challengeData";
+import { setLocalChallengeData, placePiece } from "./challengeData";
 
 export function saveAttempt(userID) {
   return (dispatch, getState) => {
@@ -37,4 +37,14 @@ export function startChallenge() {
         dispatch(setErrorMessage('unable to find current challenge'));
       });
   };
+}
+
+export function placePieceThenSave(pieceIndex, rowRef, columnRef) {
+  return (dispatch, getState) => {
+    dispatch(placePiece(pieceIndex, rowRef, columnRef));
+    const challenge = getState().challengeData.challenge;
+    if (challenge.gameOver) {
+      dispatch(saveAttempt());
+    }
+  }
 }
