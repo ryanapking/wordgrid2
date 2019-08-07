@@ -12,10 +12,9 @@ const PieceDraggableView = props => {
   const boardLocation = useSelector(state => state.gameDisplay.boardLocation, shallowEqual);
 
   const pan = useRef(new Animated.ValueXY());
-  const scale = useRef(new Animated.Value(1));
+  const [scale] = useState(new Animated.Value(1));
 
   const [dragging, setDragging] = useState(false);
-  const [relativeReferencePoint, setRelativeReferencePoint] = useState({ x: 0, y: 0 });
   const [lastSetHoveredSpaces, setLastSetHoveredSpaces] = useState(null);
 
 
@@ -45,38 +44,44 @@ const PieceDraggableView = props => {
   };
 
   const getPlacementRef = (event) => {
-    // set the x and y coordinates of the top left corner of the piece being dragged
+    const currentScale = scale._value;
+    // console.log('current scale:', currentScale);
+
+    // event location (aka pointer location) relative to the game board
+    const eventBoardX = event.nativeEvent.pageX - boardLocation.x;
+    const eventBoardY = event.nativeEvent.pageY - boardLocation.y;
+    // console.log('board relative:', {x: eventBoardX, y: eventBoardY});
+
     // locationX and locationY are set based on initial size, so the distances must be scaled
-    const scaledX = event.nativeEvent.pageX - (event.nativeEvent.locationX * scale.current._value);
-    const scaledY = event.nativeEvent.pageY - (event.nativeEvent.locationY * scale.current._value);
+    const scaledLocationX = (event.nativeEvent.locationX * currentScale);
+    const scaledLocationY = (event.nativeEvent.locationY * currentScale);
+    // console.log('scaled location:', {x: scaledLocationX, y: scaledLocationY});
 
-    // add the relative x and y for the midpoint of the top left square of the piece
-    const placementRefX = scaledX + relativeReferencePoint.x;
-    const placementRefY = scaledY + relativeReferencePoint.y;
+    // upper left of piece relative to the game board
+    const pieceBoardX = eventBoardX - scaledLocationX;
+    const pieceBoardY = eventBoardY - scaledLocationY;
+    // console.log('piece relative:', {x: pieceBoardX, y: pieceBoardY});
 
-    // subtract board location to get our x and y relative to the board
-    const boardX = placementRefX - boardLocation.x;
-    const boardY = placementRefY - boardLocation.y;
+    // the center point of the upper left tile relative to the board
+    const pieceOffset = (baseSize * currentScale) / 8;
+    const offsetX = pieceBoardX + pieceOffset;
+    const offsetY = pieceBoardY + pieceOffset;
+    // console.log('offset:', {x: offsetX, y: offsetY});
 
     // calculate row and column
-    const columnIndex = Math.floor(boardX / boardLocation.columnWidth);
-    const rowIndex = Math.floor(boardY / boardLocation.rowHeight);
+    const columnIndex = Math.floor(offsetX / boardLocation.columnWidth);
+    const rowIndex = Math.floor(offsetY / boardLocation.rowHeight);
+
+    // console.log('hovering:', {row: rowIndex, column: columnIndex});
 
     return { rowIndex, columnIndex };
   };
 
-  // TODO: this is not updating the relative reference point as expected
   useEffect(() => {
-    // Add a listener for the delta value change
-    scale.current.addListener((currentScale) => {
-      // use the base piece size and current scale to determine the piece's current size
-      const pieceHeight = baseSize * currentScale.value;
-      const pieceWidth = baseSize * currentScale.value;
-      setRelativeReferencePoint({
-        x: (pieceHeight / 8),
-        y: (pieceWidth / 8),
-      });
-    });
+    // scale.addListener(() => {
+      // our listener doesn't do anything, but without it the scale value is unchanged in the callbacks below
+      // TODO: why now?
+    // });
   }, []);
 
   // create the panresponder
@@ -87,13 +92,14 @@ const PieceDraggableView = props => {
       setDragging(true);
       pan.current.setValue({x: 0, y: 0});
       const scaleTo = boardLocation.rowHeight / (baseSize / 4);
-      Animated.timing(scale.current, {
+      Animated.timing(scale, {
         toValue: scaleTo,
         duration: 200,
         useNativeDriver: true,
       }).start();
     },
     onPanResponderMove: (event, gestureState) => {
+      // console.log('scale:', scale._value);
       Animated.event([null, {
         dx: pan.current.x,
         dy: pan.current.y,
@@ -109,7 +115,7 @@ const PieceDraggableView = props => {
         duration: 200,
         useNativeDriver: true,
       }).start();
-      Animated.timing(scale.current, {
+      Animated.timing(scale, {
         toValue: 1,
         duration: 200,
         useNativeDriver: true,
@@ -126,7 +132,7 @@ const PieceDraggableView = props => {
     },
   }), []);
 
-  const dragTransforms = {transform: [{translateX: pan.current.x}, {translateY: pan.current.y}, {scale: scale.current}]};
+  const dragTransforms = {transform: [{translateX: pan.current.x}, {translateY: pan.current.y}, {scale: scale}]};
   const opacity = { opacity: dragging ? .65 : 1};
 
 
