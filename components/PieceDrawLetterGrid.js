@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewPropTypes } from 'react-native';
 import PropTypes from "prop-types";
 
 import DrawLetter from "./DrawLetter";
-import { letterGridType } from "../../proptypes";
+import { letterGridType } from "../proptypes";
 
 const PieceDrawLetterGrid = props => {
   const { pieceSize, piece, canDrop } = props;

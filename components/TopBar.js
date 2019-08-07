@@ -4,7 +4,7 @@ import { matchPath } from 'react-router-native';
 import { Header, Icon, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
-import routes from '../../routes';
+import routes from '../routes';
 import { useHistory } from "../hooks/tempReactRouter";
 
 const TopBar = props => {

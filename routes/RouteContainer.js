@@ -3,9 +3,9 @@ import { View, StyleSheet } from 'react-native';
 import { Overlay } from "react-native-elements";
 import PropTypes from 'prop-types';
 
-import TopBar from "../components/presentation/TopBar";
-import Menu from "../components/presentation/Menu";
-import MessageOverlay from "../components/presentation/MessageOverlay";
+import TopBar from "../components/TopBar";
+import Menu from "../components/Menu";
+import MessageOverlay from "../components/MessageOverlay";
 
 const RouteContainer = props => {
   const [ menuOverlayVisible, setMenuOverlayVisible] = useState(false);

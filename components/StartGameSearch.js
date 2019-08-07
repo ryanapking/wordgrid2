@@ -4,8 +4,8 @@ import { Input, ListItem } from 'react-native-elements';
 import { useSelector, shallowEqual } from "react-redux";
 
 import { useParseAction } from "../hooks/useParseAction";
-import { startGame as parseStartGame } from "../../data/parse-client/actions";
-import { getUsersByPartialString } from "../../data/parse-client/getters";
+import { startGame as parseStartGame } from "../data/parse-client/actions";
+import { getUsersByPartialString } from "../data/parse-client/getters";
 
 const StartGameSearch = () => {
   const userID = useSelector(state => state.user.uid, shallowEqual);

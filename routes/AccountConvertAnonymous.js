@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { convertAnonymousAccount } from "../data/redux/thunkedUserActions";
-import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
+import AccountRegisterForm from "../components/AccountRegisterForm";
 
 const AccountConvertAnonymous = () => {
   const dispatch = useDispatch();

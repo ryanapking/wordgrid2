@@ -3,8 +3,8 @@ import { View, Text, Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import routes from "./index";
-import AccountLogoutButton from "../components/presentation/AccountLogoutButton";
-import { useHistory } from "../components/hooks/tempReactRouter";
+import AccountLogoutButton from "../components/AccountLogoutButton";
+import { useHistory } from "../hooks/tempReactRouter";
 import { setInfoMessage } from "../data/redux/messages";
 
 const AccountAnonymous = () => {

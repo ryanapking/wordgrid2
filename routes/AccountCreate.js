@@ -3,8 +3,8 @@ import { View, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import routes from '.';
-import { useHistory } from "../components/hooks/tempReactRouter";
-import AccountRegisterForm from "../components/presentation/AccountRegisterForm";
+import { useHistory } from "../hooks/tempReactRouter";
+import AccountRegisterForm from "../components/AccountRegisterForm";
 import { userCreateAccount } from "../data/redux/thunkedUserActions";
 
 const AccountCreate = () => {

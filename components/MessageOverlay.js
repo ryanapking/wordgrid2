@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Overlay } from 'react-native-elements';
 
-import { clearErrorMessage, clearInfoMessage } from "../../data/redux/messages";
+import { clearErrorMessage, clearInfoMessage } from "../data/redux/messages";
 
 const MessageOverlay = () => {
   const [error, info] = useSelector(state => [state.messages.error, state.messages.info], shallowEqual);

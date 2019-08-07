@@ -10,9 +10,9 @@ import { setErrorMessage } from "../data/redux/messages";
 import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
 import { SPACE_STATES } from "../data/utilities/constants";
 
-import BoardDrawLetterGrid from '../components/presentation/BoardDrawLetterGrid';
-import BoardPathCreator from '../components/presentation/BoardPathCreator';
-import Piece from '../components/presentation/PieceDraggableView';
+import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
+import BoardPathCreator from '../components/BoardPathCreator';
+import Piece from '../components/PieceDraggableView';
 
 class ChallengeAttemptReview extends Component {
   constructor(props) {

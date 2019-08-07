@@ -3,7 +3,7 @@ import { StyleSheet, View, Button, ActivityIndicator } from "react-native";
 import { useSelector, shallowEqual } from "react-redux";
 
 import routes from '.';
-import { useHistory } from "../components/hooks/tempReactRouter";
+import { useHistory } from "../hooks/tempReactRouter";
 
 const AccountLoginSelect = () => {
   const fetchingUser = useSelector(state => state.user.fetchingUser, shallowEqual);

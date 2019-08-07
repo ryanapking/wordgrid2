@@ -6,7 +6,7 @@ import { NativeRouter, Route } from'react-router-native';
 import configureStore from './data/redux/configureStore';
 import { routesArray } from './routes';
 import RouteComponents from "./routes/RouteComponents";
-import LoginRedirect from "./components/presentation/LoginRedirect";
+import LoginRedirect from "./components/LoginRedirect";
 import RouteContainer from "./routes/RouteContainer";
 
 const store = configureStore();

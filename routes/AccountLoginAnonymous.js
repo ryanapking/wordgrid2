@@ -3,8 +3,8 @@ import { View, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import routes from '.';
-import Text from "../components/presentation/Text";
-import { useHistory } from "../components/hooks/tempReactRouter";
+import Text from "../components/Text";
+import { useHistory } from "../hooks/tempReactRouter";
 import { userAnonymousLogin } from "../data/redux/thunkedUserActions";
 
 const AccountLoginAnonymous = () => {

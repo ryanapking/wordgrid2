@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
-import BoardTouchView from '../components/presentation/BoardTouchView';
-import GameMoveAnimation from '../components/presentation/GameMoveAnimation';
-import PieceOverlay from '../components/presentation/PieceOverlay';
+import BoardTouchView from '../components/BoardTouchView';
+import GameMoveAnimation from '../components/GameMoveAnimation';
+import PieceOverlay from '../components/PieceOverlay';
 import {
   setAvailableWordsData,
   consumeSquare,
@@ -22,12 +22,12 @@ import {
 } from "../data/utilities/functions/calculations";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 
-import SpellWordSection from "../components/presentation/SpellWordSection";
-import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
-import BoardPathCreator from "../components/presentation/BoardPathCreator";
-import DrawPieceSection from "../components/presentation/DrawPieceSection";
-import GameScoreBoard from "../components/presentation/GameScoreBoard";
-import GamePhaseDisplay from "../components/presentation/GamePhaseDisplay";
+import SpellWordSection from "../components/SpellWordSection";
+import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
+import BoardPathCreator from "../components/BoardPathCreator";
+import DrawPieceSection from "../components/DrawPieceSection";
+import GameScoreBoard from "../components/GameScoreBoard";
+import GamePhaseDisplay from "../components/GamePhaseDisplay";
 
 class Game extends Component {
 

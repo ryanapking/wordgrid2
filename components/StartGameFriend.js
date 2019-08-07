@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from "react-redux";
 import { ListItem } from "react-native-elements";
 
 import { useParseAction } from "../hooks/useParseAction";
-import { startGame as parseStartGame } from "../../data/parse-client/actions";
+import { startGame as parseStartGame } from "../data/parse-client/actions";
 
 const StartGameFriend = () => {
   const friendsByID = useSelector(state => state.user.friendsByID, shallowEqual);

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { squaresArrayType } from "../../proptypes";
+import { squaresArrayType } from "../proptypes";
 import DrawPieceSection from './DrawPieceSection';
 
 const ChallengePieceSetDisplay = props => {

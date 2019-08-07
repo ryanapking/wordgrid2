@@ -4,7 +4,7 @@ import { connect, useSelector, shallowEqual } from 'react-redux';
 import { withRouter } from 'react-router-native';
 import { ListItem } from 'react-native-elements';
 
-import { useHistory } from "../components/hooks/tempReactRouter";
+import { useHistory } from "../hooks/tempReactRouter";
 
 const Friends = () => {
   const history = useHistory();

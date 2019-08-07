@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setErrorMessage } from "../../data/redux/messages";
+import { setErrorMessage } from "../data/redux/messages";
 
 export const useParseFetcher = (parseFunction, functionParams) => {
   const [parseObject, setParseObject] = useState(null);

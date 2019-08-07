@@ -10,13 +10,13 @@ import {
 } from "../data/redux/challengeData";
 import { startChallenge, placePieceThenSave } from "../data/redux/thunkedChallengeActions";
 
-import PieceOverlay from '../components/presentation/PieceOverlay';
-import SpellWordSection from "../components/presentation/SpellWordSection";
-import BoardDrawLetterGrid from "../components/presentation/BoardDrawLetterGrid";
-import BoardPathCreator from "../components/presentation/BoardPathCreator";
-import DrawPieceSection from "../components/presentation/DrawPieceSection";
-import BoardTouchView from '../components/presentation/BoardTouchView';
-import ChallengePieceSetDisplay from "../components/presentation/ChallengePieceSetDisplay";
+import PieceOverlay from '../components/PieceOverlay';
+import SpellWordSection from "../components/SpellWordSection";
+import BoardDrawLetterGrid from "../components/BoardDrawLetterGrid";
+import BoardPathCreator from "../components/BoardPathCreator";
+import DrawPieceSection from "../components/DrawPieceSection";
+import BoardTouchView from '../components/BoardTouchView';
+import ChallengePieceSetDisplay from "../components/ChallengePieceSetDisplay";
 
 const ChallengeAttempt = () => {
   const dispatch = useDispatch();

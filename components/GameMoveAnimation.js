@@ -11,8 +11,8 @@ import ReactNative, {
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { markAnimationPlayed } from "../../data/redux/gameData";
-import { getAnimationData } from "../../data/utilities/functions/getters";
+import { markAnimationPlayed } from "../data/redux/gameData";
+import { getAnimationData } from "../data/utilities/functions/getters";
 import { useInterval } from "../hooks/useInterval";
 import PieceDraggableView from "./PieceDraggableView";
 import BoardPathCreator from "./BoardPathCreator";

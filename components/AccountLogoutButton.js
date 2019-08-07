@@ -3,7 +3,7 @@ import { Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { userLogout } from "../../data/redux/thunkedUserActions";
+import { userLogout } from "../data/redux/thunkedUserActions";
 
 const AccountLogoutButton = props => {
   const dispatch = useDispatch();

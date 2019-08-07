@@ -5,10 +5,10 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 
 import { useParams } from "../hooks/tempReactRouter";
-import { resetLocalGameDataByID } from "../../data/redux/gameData";
+import { resetLocalGameDataByID } from "../data/redux/gameData";
 import { useParseAction } from "../hooks/useParseAction";
-import { forfeitGame as parseForfeitGame } from "../../data/parse-client/actions";
-import { addFriend, removeFriend } from "../../data/redux/thunkedUserActions";
+import { forfeitGame as parseForfeitGame } from "../data/parse-client/actions";
+import { addFriend, removeFriend } from "../data/redux/thunkedUserActions";
 
 const MenuGame = props => {
   const dispatch = useDispatch();

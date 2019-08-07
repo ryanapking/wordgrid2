@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { rowsType } from "../../proptypes";
+import { rowsType } from "../proptypes";
 import PieceDraggableView from "./PieceDraggableView";
 
 import MeasureView from "./MeasureView";

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Button, StyleSheet, ActivityIndicator } from 'react-native';
 import { Overlay } from 'react-native-elements';
 
-import { startGame as parseStartGame } from "../../data/parse-client/actions";
+import { startGame as parseStartGame } from "../data/parse-client/actions";
 import StartGameFriend from "./StartGameFriend";
 import StartGameSearch from "./StartGameSearch";
 import { useParseAction } from "../hooks/useParseAction";

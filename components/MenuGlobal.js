@@ -3,7 +3,7 @@ import { StyleSheet, View} from "react-native";
 import { ListItem } from "react-native-elements";
 import PropTypes from 'prop-types';
 
-import routes from "../../routes";
+import routes from "../routes";
 
 const MenuGlobal = props => {
   return (

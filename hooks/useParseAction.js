@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 
-import { setErrorMessage } from "../../data/redux/messages";
+import { setErrorMessage } from "../data/redux/messages";
 
 export const useParseAction = (parseAction) => {
   const [pending, setPending] = useState(false);

@@ -3,8 +3,8 @@ import { StyleSheet, PanResponder, Animated, ViewPropTypes } from 'react-native'
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types'
 
-import { setHoveredSpaces as reduxSetHoveredSpaces, clearHoveredSpaces } from "../../data/redux/gameDisplay";
-import { validatePlacement } from "../../data/utilities/functions/checks";
+import { setHoveredSpaces as reduxSetHoveredSpaces, clearHoveredSpaces } from "../data/redux/gameDisplay";
+import { validatePlacement } from "../data/utilities/functions/checks";
 
 const PieceDraggableView = props => {
   const { allowDrag, baseSize, piece, boardRows, placePiece } = props;

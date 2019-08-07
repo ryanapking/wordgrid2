@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import AccountLoginForm from "../components/presentation/AccountLoginForm";
+import AccountLoginForm from "../components/AccountLoginForm";
 import routes from '.';
 import { userStandardLogin } from "../data/redux/thunkedUserActions";
-import { useHistory } from "../components/hooks/tempReactRouter";
+import { useHistory } from "../hooks/tempReactRouter";
 
 const AccountLoginStandard = () => {
   const dispatch = useDispatch();

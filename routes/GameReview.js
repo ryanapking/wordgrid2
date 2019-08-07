@@ -22,9 +22,9 @@ import { setErrorMessage } from "../data/redux/messages";
 import { SPACE_STATES } from "../data/utilities/constants";
 import Boggle from '../data/boggle-solver';
 
-import BoardDrawLetterGrid from '../components/presentation/BoardDrawLetterGrid';
-import BoardPathCreator from "../components/presentation/BoardPathCreator";
-import DrawScoreBoard from "../components/presentation/GameScoreBoard";
+import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
+import BoardPathCreator from "../components/BoardPathCreator";
+import DrawScoreBoard from "../components/GameScoreBoard";
 
 class GameReview extends Component {
   constructor(props) {

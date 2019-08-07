@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
-import routes from '../../routes';
-import { fetchUser } from "../../data/redux/thunkedUserActions";
+import routes from '../routes';
+import { fetchUser } from "../data/redux/thunkedUserActions";
 import { useRouter } from "../hooks/tempReactRouter";
 
 const loginPaths = [

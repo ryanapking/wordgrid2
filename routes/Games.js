@@ -3,10 +3,10 @@ import { View, ScrollView, StyleSheet, Button } from 'react-native';
 import { useSelector, shallowEqual } from 'react-redux';
 import { ListItem } from "react-native-elements";
 
-import { useHistory } from "../components/hooks/tempReactRouter";
+import { useHistory } from "../hooks/tempReactRouter";
 import { GAME_STATES } from "../data/utilities/constants";
-import StartGameOverlay from '../components/presentation/StartGameOverlay';
-import GameListItem from '../components/presentation/GameListItem';
+import StartGameOverlay from '../components/StartGameOverlay';
+import GameListItem from '../components/GameListItem';
 
 const Games = () => {
   const history = useHistory();

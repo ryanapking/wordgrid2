@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { useParseAction } from "../hooks/useParseAction";
 import { useHistory } from "../hooks/tempReactRouter";
-import { respondToRequest } from "../../data/parse-client/actions";
+import { respondToRequest } from "../data/parse-client/actions";
 
 const GameListItem = props => {
   const history = useHistory();

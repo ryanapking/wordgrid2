@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import validator from 'validator';
 
 import AccountLogoutButton from './AccountLogoutButton';
-import { updateAccount } from "../../data/redux/thunkedUserActions";
+import { updateAccount } from "../data/redux/thunkedUserActions";
 
 const AccountUpdateForm = props => {
   const dispatch = useDispatch();
