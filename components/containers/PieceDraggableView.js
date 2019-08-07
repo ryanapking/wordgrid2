@@ -78,10 +78,10 @@ const PieceDraggableView = props => {
   };
 
   useEffect(() => {
-    // scale.addListener(() => {
+    scale.addListener(() => {
       // our listener doesn't do anything, but without it the scale value is unchanged in the callbacks below
       // TODO: why now?
-    // });
+    });
   }, []);
 
   // create the panresponder
