@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import Boggle from '../data/boggle-solver';
 import BoardTouchView from '../components/presentation/BoardTouchView';
-import GameMoveAnimation from '../components/containers/GameMoveAnimation';
+import GameMoveAnimation from '../components/presentation/GameMoveAnimation';
 import PieceOverlay from '../components/presentation/PieceOverlay';
 import {
   setAvailableWordsData,
@@ -83,7 +83,7 @@ class Game extends Component {
     if (!this.props.game.animationOver) {
       return (
         <View style={styles.container}>
-          <GameMoveAnimation />
+          <GameMoveAnimation game={game} gameID={gameID} />
         </View>
       );
     } else {

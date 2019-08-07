@@ -7,7 +7,6 @@ import ReactNative, {
   LayoutAnimation,
   UIManager,
   Animated,
-  ViewPropTypes
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,17 +14,17 @@ import PropTypes from 'prop-types';
 import { markAnimationPlayed } from "../../data/redux/gameData";
 import { getAnimationData } from "../../data/utilities/functions/getters";
 import { useInterval } from "../hooks/useInterval";
-import PieceDraggableView from "../presentation/PieceDraggableView";
-import BoardPathCreator from "../presentation/BoardPathCreator";
-import BoardDrawLetterGrid from '../presentation/BoardDrawLetterGrid';
-import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
-import MeasureView from "../presentation/MeasureView";
+import PieceDraggableView from "./PieceDraggableView";
+import BoardPathCreator from "./BoardPathCreator";
+import BoardDrawLetterGrid from './BoardDrawLetterGrid';
+import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
 
 const GameMoveAnimation = props => {
   const dispatch = useDispatch();
   const boardRef = useRef(null);
   const animationContainerRef = useRef(null);
   const gamePiecesContainerRef = useRef(null);
+  const activePieceRef = useRef(null);
 
   const [state, baseSetState] = useState({
     // data concerning what is moving where
@@ -63,6 +62,17 @@ const GameMoveAnimation = props => {
       }
     });
   };
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+    const animation = getAnimationData(game);
+    setState({
+      animation: animation,
+      boardState: animation.boardStates.start,
+    });
+  }, []);
 
   const { game, gameID } = props;
   const { boardLocation, animation, letterWidth, displayWordPath, boardState, boardSize, message, overlay } = state;
@@ -144,7 +154,6 @@ const GameMoveAnimation = props => {
       setState({animationPhase: "word drawn"});
     }
   };
-
   useInterval(drawWord, 500);
 
   const swapBoards = () => {
@@ -165,118 +174,53 @@ const GameMoveAnimation = props => {
   };
 
   const measurePiece = (pieceIndex) => {
-    console.log('measuring piece', pieceIndex);
-    console.log('pieces container:', gamePiecesContainerRef.current._children);
-    // if (!this.pieceRefs[pieceIndex]) return;
-    //
-    // const animationContainerHandle = ReactNative.findNodeHandle(this._animationContainer);
-    //
-    // this.pieceRefs[pieceIndex].measureLayout(animationContainerHandle, (x, y, width, height) => {
-    //   // console.log('piece location:', {x, y, width, height});
-    //
-    //   const locationStyles = {
-    //     position: 'absolute',
-    //     width,
-    //     height,
-    //     top: y,
-    //     left: x,
-    //     zIndex: 999,
-    //   };
-    //
-    //   this.setState({
-    //     overlay: {
-    //       location: {x, y, width, height},
-    //       pieceIndex: pieceIndex,
-    //       styles: locationStyles,
-    //       pieceSize: width,
-    //     }
-    //   });
-    // });
-  };
+    const animationContainerHandle = ReactNative.findNodeHandle(animationContainerRef.current);
 
-  const onPieceMeasure = (pieceIndex, x, y, width, height) => {
-    // console.log('piece location:', {x, y, width, height});
-    console.log('onPieceMeasure()');
-    console.log('pieceIndex:', pieceIndex);
-    console.log('location:', {x, y, width, height});
+    activePieceRef.current.measureLayout(animationContainerHandle, (x, y, width, height) => {
+      console.log('piece location:', {x, y, width, height});
 
-    const locationStyles = {
-      position: 'absolute',
-      width,
-      height,
-      top: y,
-      left: x,
-      zIndex: 999,
-    };
+      const locationStyles = {
+        position: 'absolute',
+        width,
+        height,
+        top: y,
+        left: x,
+        zIndex: 999,
+      };
 
-    setState({
-      overlay: {
-        location: {x, y, width, height},
-        pieceIndex: pieceIndex,
-        styles: locationStyles,
-        pieceSize: width,
-      }
+      setState({
+        overlay: {
+          location: {x, y, width, height},
+          pieceIndex: pieceIndex,
+          styles: locationStyles,
+          pieceSize: width,
+        }
+      });
     });
   };
-
-
-
-
-
-
-
-
-
-
-
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
-    const animation = getAnimationData(game);
-    setState({
-      animation: animation,
-      boardState: animation.boardStates.start,
-    });
-  }, []);
-
-
-
-
-
-
-
-
-
-
-
-
 
   if (!animation) return null;
 
+  // grab the appropriate pieces with styling
   const { pieceStates, placementRef } = animation;
   const { startIndexes, startPieces } = pieceStates;
-
-  // console.log('placementRef:', placementRef); 3
-
-  // console.log('startIndexes:', startIndexes); [0, 2, 3]
-  // console.log('startPieces:', startPieces); [piece, piece, piece]
-
   const pieces = startPieces.map( (letters, index) => {
-    // console.log('piece index:', index);
-    // console.log('startIndexes index:', startIndexes[index]);
-    // console.log('placement ref:', placementRef.pieceIndex);
     if (startIndexes[index] === placementRef.pieceIndex) {
-      console.log('yes, piece index:', index);
-      let onMeasure = (x, y, width, height, pageX, pageY) => onPieceMeasure(index, x, y, width, height, pageX, pageY);
-      return {letters, animationStyles: null, onMeasure};
+      return {
+        letters,
+        ref: activePieceRef,
+        animationStyles: null,
+        onMeasure: () => measurePiece(index),
+      };
     } else {
-      // console.log('no, piece index:', index);
-      return {letters, animationStyles: null, onMeasure: () => {}}
+      return {
+        letters,
+        ref: null,
+        animationStyles: null,
+        onMeasure: () => {}
+      }
     }
   });
-
-  // console.log('pieces:', pieces);
 
   const displayBoardLocation = {
     rowHeight: letterWidth,
@@ -293,8 +237,9 @@ const GameMoveAnimation = props => {
           { pieces.map( (piece, index) =>
             <View key={index} style={[styles.gamePieceContainer, {zIndex: 1}]} ref={gamePiecesContainerRef} >
               <View
-                style={[styles.gamePiece, styles.gamePieceBackground, {backgroundColor: 'green'}]}
-                onLayout={ () => measurePiece(index) }
+                style={[styles.gamePiece, styles.gamePieceBackground]}
+                ref={piece.ref}
+                onLayout={ () => piece.onMeasure() }
               >
                 { (overlay.pieceIndex === index) ? null :
                   <PieceDrawLetterGrid
