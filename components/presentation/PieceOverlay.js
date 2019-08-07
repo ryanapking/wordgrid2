@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { rowsType } from "../../proptypes";
-import PieceDraggableView from "../containers/PieceDraggableView";
+import PieceDraggableView from "./PieceDraggableView";
 
 import MeasureView from "./MeasureView";
 import PieceDrawLetterGrid from "./PieceDrawLetterGrid";

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { rowsArrayType } from "../../proptypes";
-import PieceDraggableView from '../containers/PieceDraggableView';
+import PieceDraggableView from './PieceDraggableView';
 import PieceDrawLetterGrid from "./PieceDrawLetterGrid";
 import MeasureView from "./MeasureView";
 import { setPieceLocation as reduxSetPieceLocation, clearPieceLocations } from "../../data/redux/gameDisplay";

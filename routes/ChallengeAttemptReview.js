@@ -12,7 +12,7 @@ import { SPACE_STATES } from "../data/utilities/constants";
 
 import BoardDrawLetterGrid from '../components/presentation/BoardDrawLetterGrid';
 import BoardPathCreator from '../components/presentation/BoardPathCreator';
-import Piece from '../components/containers/PieceDraggableView';
+import Piece from '../components/presentation/PieceDraggableView';
 
 class ChallengeAttemptReview extends Component {
   constructor(props) {

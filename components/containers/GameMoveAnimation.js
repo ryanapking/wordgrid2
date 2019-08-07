@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-native';
 
 import { markAnimationPlayed } from "../../data/redux/gameData";
 import { getAnimationData } from "../../data/utilities/functions/getters";
-import PieceDraggableView from "./PieceDraggableView";
+import PieceDraggableView from "../presentation/PieceDraggableView";
 import BoardPathCreator from "../presentation/BoardPathCreator";
 import BoardDrawLetterGrid from '../presentation/BoardDrawLetterGrid';
 import PieceDrawLetterGrid from "../presentation/PieceDrawLetterGrid";
