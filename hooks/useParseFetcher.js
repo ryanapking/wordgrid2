@@ -1,27 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setErrorMessage } from "../data/redux/messages";
 
+const initialState = {
+  parseObject: null,
+  fetching: null,
+};
+
+const reducer = (state, action) => {
+  switch(action.type) {
+    case 'fetching':
+      return {...state, fetching: true};
+    case 'fetchingComplete':
+      return {...state, fetching: false};
+    case 'setObject':
+      return {...state, fetching: false, parseObject: action.parseObject};
+    default:
+      return {...state};
+  }
+};
+
 export const useParseFetcher = (parseFunction, functionParams) => {
-  const [parseObject, setParseObject] = useState(null);
-  const [fetching, setFetching] = useState(false);
-  const dispatch = useDispatch();
+  const [state, localDispatch] = useReducer(reducer, initialState);
+  const reduxDispatch = useDispatch();
 
   const fetchObject = async () => {
-    setFetching(true);
+    localDispatch({type: "fetching"});
     const parseObject = await parseFunction(functionParams)
       .catch((err) => {
-        setFetching(false);
-        dispatch(setErrorMessage(err));
+        localDispatch({type: "fetchingComplete"});
+        reduxDispatch(setErrorMessage(err));
       });
-    setFetching(false);
-    setParseObject(parseObject);
+    localDispatch({type: "setObject", parseObject});
   };
 
   useEffect(() => {
     fetchObject().then();
   }, []);
 
-  return [parseObject, fetching, fetchObject];
+  return [state.parseObject, state.fetching, fetchObject];
 };
