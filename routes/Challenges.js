@@ -1,101 +1,53 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, ScrollView, View, Button } from 'react-native';
-import { connect } from 'react-redux';
 import { ListItem, Text } from 'react-native-elements';
-import { withRouter } from 'react-router-native';
 import moment from 'moment';
 
-import { setErrorMessage } from "../data/redux/messages";
+import { useHistory } from "../hooks/tempReactRouter";
+import { useParseFetcher } from "../hooks/useParseFetcher";
 import { getRecentChallenges, getCurrentChallenge } from "../data/parse-client/getters";
 
-class Challenges extends Component {
-  constructor(props) {
-    super(props);
+const Challenges = () => {
+  const history = useHistory();
+  const [currentChallenge] = useParseFetcher(getCurrentChallenge, {});
+  const [recentChallenges] = useParseFetcher(getRecentChallenges, {}, true);
 
-    this.state = {
-      gettingChallenge: true,
-      currentChallenge: null,
-      recentChallenges: [],
-    };
-  }
-
-  componentDidMount() {
-    this._getCurrentChallenge().then();
-    this._getRecentChallenges().then();
-  }
-
-  render() {
-    const { recentChallenges } = this.state;
-
-    return (
-      <ScrollView>
-        { this.currentChallengeSection() }
-        <Text h4 style={styles.h4}>Recent Challenges</Text>
-        { recentChallenges.map((challenge) =>
-          <ListItem
-            key={ challenge.objectId }
-            title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
-            subtitle="tap to review"
-            rightTitle={ challenge.playerCount + " participants"}
-            onPress={ () => this.props.history.push(`/challenge/${challenge.objectId}`) }
-            bottomDivider
-          />
-        )}
-      </ScrollView>
-    )
-  }
-
-  currentChallengeSection() {
-    const { currentChallenge } = this.state;
-    if (!currentChallenge) return null;
-    const playerCountMessage = currentChallenge.playerCount > 0 ? currentChallenge.playerCount + " participants" : "";
-    return (
-      <View>
-        <Text h4 style={styles.h4}>Current Challenge</Text>
-        { playerCountMessage ? <Text>{ playerCountMessage }</Text> : null }
-        <View style={styles.row}>
-          <View style={styles.halfColumn} >
-            <Button
-              title="Play Now"
-              onPress={ () => this.props.history.push(`/challengeAttempt`) }
-            />
-          </View>
-          <View style={styles.halfColumn} >
-            <Button
-              title="Review Attempts"
-              onPress={ () => this.props.history.push(`/challenge/${currentChallenge ? currentChallenge.objectId : ''}`) }
-            />
+  return (
+    <ScrollView>
+      {!currentChallenge ? null :
+        <View>
+          <Text h4 style={styles.h4}>Current Challenge</Text>
+          { currentChallenge.playerCount > 0 ? <Text>{ currentChallenge.playerCount } participants</Text> : null }
+          <View style={styles.row}>
+            <View style={styles.halfColumn} >
+              <Button
+                title="Play Now"
+                onPress={ () => history.push(`/challengeAttempt`) }
+              />
+            </View>
+            <View style={styles.halfColumn} >
+              <Button
+                title="Review Attempts"
+                onPress={ () => history.push(`/challenge/${currentChallenge.objectId}`) }
+              />
+            </View>
           </View>
         </View>
-      </View>
-    );
-  }
-
-  async _getCurrentChallenge() {
-    const currentChallenge = await getCurrentChallenge()
-      .catch((err) => {
-        this.props.setErrorMessage(err);
-        console.log('error getting current challenge', err);
-      });
-
-    this.setState({
-      currentChallenge,
-      gettingChallenge: false,
-    });
-  }
-
-  async _getRecentChallenges() {
-    const challengesGenerator = getRecentChallenges(); // returns values form local data store, then from remote, if needed
-    let valuesRemain = true;
-    while (valuesRemain) {
-      const { value: challenges, done } = await challengesGenerator.next();
-      valuesRemain = !done;
-      if (!challenges) continue;
-      this.setState({ recentChallenges: challenges });
-    }
-  }
-
-}
+      }
+      <Text h4 style={styles.h4}>Recent Challenges</Text>
+      { recentChallenges && recentChallenges.map((challenge) =>
+        <ListItem
+          key={ challenge.objectId }
+          title={ moment(challenge.endDate.iso).format('MM-DD-YYYY') }
+          subtitle="tap to review"
+          rightTitle={ challenge.playerCount + " participants"}
+          onPress={ () => history.push(`/challenge/${challenge.objectId}`) }
+          bottomDivider
+        />
+      )}
+    </ScrollView>
+  )
+};
 
 const styles = StyleSheet.create({
   listItem: {
@@ -122,14 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    uid: state.user.uid,
-  };
-};
-
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Challenges));
+export default Challenges;
