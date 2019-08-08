@@ -424,7 +424,15 @@ async function getLocalOpponentArchive(opponentId, currentPlayerId) {
   }
 }
 
-export async function getFullGameArchive(playerID) {
+/**
+ * Queries local data store for all archived games
+ *
+ * @param {Object} obj
+ * @param {string} obj.playerID
+ *
+ * @returns {Promise<Array|*>}
+ */
+export async function getFullGameArchive({playerID}) {
   const currentPlayerPointer = new Parse.User().set('id', playerID, {});
 
   console.log('player id:', playerID);
