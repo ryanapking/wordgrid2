@@ -25,7 +25,15 @@ export async function storeAttemptByChallengeID(uid, attempt, challengeID) {
     });
 }
 
-export async function getAttemptsByChallengeID(uid, challengeID) {
+/**
+ * Returns all local user attempts for a given challenge ID
+ *
+ * @param {Object} obj
+ * @param {string} obj.uid
+ * @param {string} obj.challengeID
+ * @returns {Promise<Array>}
+ */
+export async function getAttemptsByChallengeID({uid, challengeID}) {
   let userStorageObject = await getUserStorageObject(uid)
     .catch((err) => {
       throw new Error(err);

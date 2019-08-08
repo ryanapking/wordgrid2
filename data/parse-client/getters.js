@@ -121,7 +121,14 @@ export async function* getRecentChallenges(skipDays = 0) {
   });
 }
 
-export async function getChallengeByID(challengeID) {
+/**
+ * Returns a Challenge from Parse based on ID
+ *
+ * @param {Object} obj
+ * @param {string} obj.challengeID
+ * @returns {Promise<Array|any>}
+ */
+export async function getChallengeByID({challengeID}) {
   // get challenge from local data store
   const localChallenge = await new Parse.Query(ChallengesObject)
     .fromLocalDatastore()
@@ -207,7 +214,7 @@ export async function getAttemptByID(attemptID) {
 }
 
 // TODO: this should probably be a generator function that returns 1 to 2 values
-export async function getAttemptByChallengeID(challengeID, uid) {
+export async function getAttemptByChallengeID({challengeID, uid}) {
 
   // pointers for query comparisons
   const challengePointer = new ChallengesObject().set('id', challengeID, {});

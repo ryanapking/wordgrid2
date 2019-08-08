@@ -67,7 +67,7 @@ class ChallengeAttemptReview extends Component {
         console.log('error getting attempt', err);
       });
 
-    const challengePromise = getChallengeByID(challengeID)
+    const challengePromise = getChallengeByID({challengeID})
       .then((value) => {
         challenge = value;
       })
