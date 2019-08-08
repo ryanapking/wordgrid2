@@ -1,98 +1,100 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-native';
+import { useSelector, shallowEqual } from 'react-redux';
 
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
+import { useParseAction } from "../hooks/useParseAction";
+import { useParams, useHistory } from "../hooks/tempReactRouter";
 import { getWinLossRecordAgainstOpponent } from "../data/parse-client/getters";
-import { setErrorMessage } from "../data/redux/messages";
-import { startGame } from "../data/parse-client/actions";
+import { startGame as parseStartGame } from "../data/parse-client/actions";
 import GameListItem from '../components/GameListItem';
 
-class Friend extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      record: null,
-      startingNewGame: false,
+const Friend = () => {
+  const history = useHistory();
+  const params = useParams();
+  const { friendID } = params;
+
+  const [uid, friend, gamesByID] = useSelector(
+    state => {
+      return [
+        state.user.uid,
+        state.user.friendsByID[friendID],
+        state.gameData.byID
+      ]
+    },
+    shallowEqual,
+  );
+
+  // filter to get only the active games vs current friend
+  const gamesVsFriend = useMemo(() => {
+    if (!gamesByID) return [];
+    const gamesVsFriend = [];
+    for ( let gameID in gamesByID) {
+      const game = gamesByID[gameID];
+      if (game.p1 === friendID || game.p2 === friendID) {
+        gamesVsFriend.push(game);
+      }
     }
-  }
+    return gamesVsFriend;
+  }, [gamesByID, friendID]);
 
-  componentDidMount() {
-    const { friendID, uid } = this.props;
-    getWinLossRecordAgainstOpponent(friendID, uid)
-      .then((record) => {
-        this.setState({ record });
-      })
-      .catch(() => {
-        this.props.setErrorMessage("Unable to retrieve record against opponent.");
-      });
-  }
+  const [record] = useAsyncFetcher(
+    getWinLossRecordAgainstOpponent,
+    {opponentId: friendID, currentPlayerId: uid},
+  );
 
-  _startGame() {
-    this.setState({ startingNewGame: true });
-    startGame(this.props.friend.id)
-      .catch((err) => {
-        this.props.setErrorMessage(err);
-        this.setState({ startingNewGame: false })
-      });
-  }
+  const [startGame, startGamePending] = useParseAction(parseStartGame);
 
-  render() {
-    const { gamesByID, friend, friendID } = this.props;
-    const { record } = this.state;
-    const gamesByIDKeys = Object.keys(gamesByID);
+  if (!friend) return null;
 
-    if (!friend) return null;
-
-    return (
-      <View>
-        <View style={ styles.topSection }>
-          <Text style={ styles.friendName }>{ friend ? friend.username : "" }</Text>
-          <View style={styles.recordLine}>
-            <Text style={styles.recordLabel}>Wins</Text>
-            <Text style={styles.recordNumber}>{ record ? record.wins : '0' }</Text>
-          </View>
-          <View style={styles.recordLine}>
-            <Text style={styles.recordLabel}>Losses</Text>
-            <Text style={styles.recordNumber}>{ record ? record.losses : '0' }</Text>
-          </View>
-          <View style={styles.recordLine}>
-            <Text style={styles.recordLabel}>Active</Text>
-            <Text style={styles.recordNumber}>{ record ? record.active : '0' }</Text>
-          </View>
+  return (
+    <View>
+      <View style={ styles.topSection }>
+        <Text style={ styles.friendName }>{ friend ? friend.username : "" }</Text>
+        <View style={styles.recordLine}>
+          <Text style={styles.recordLabel}>Wins</Text>
+          <Text style={styles.recordNumber}>{ record ? record.wins : '0' }</Text>
         </View>
-        <View >
-          <Button
-            title={`Start a new game with ${friend.username}`}
-            onPress={ () => this._startGame(friendID) }
-            color="blue"
-            disabled={ this.state.startingNewGame }
-          />
+        <View style={styles.recordLine}>
+          <Text style={styles.recordLabel}>Losses</Text>
+          <Text style={styles.recordNumber}>{ record ? record.losses : '0' }</Text>
         </View>
-        {gamesByIDKeys.map((gameID) =>
-          <GameListItem
-            key={ gameID }
-            uid={ this.props.uid }
-            opponentName={ friend.username }
-            gameID={ gameID }
-            gameStatus={ gamesByID[gameID].status }
-            turn={ gamesByID[gameID].turn }
-            winner={ gamesByID[gameID].winner }
-            player1={ gamesByID[gameID].p1 }
-            playerScore={ gamesByID[gameID].currentPlayer.score }
-            opponentScore={ gamesByID[gameID].opponent.score }
-            hideOpponentName
-          />
-        )}
+        <View style={styles.recordLine}>
+          <Text style={styles.recordLabel}>Active</Text>
+          <Text style={styles.recordNumber}>{ record ? record.active : '0' }</Text>
+        </View>
+      </View>
+      <View >
         <Button
-          title={`View previous games against ${friend.username}`}
-          onPress={ () => this.props.history.push(`/friend/${friendID}/archive`) }
+          title={`Start a new game with ${friend.username}`}
+          onPress={ () => startGame({opponentID: friendID}) }
           color="blue"
+          disabled={ startGamePending }
         />
       </View>
-    );
-  }
-}
+      {gamesVsFriend.map((game) =>
+        <GameListItem
+          key={ game.sourceData.objectId }
+          uid={ uid }
+          opponentName={ friend.username }
+          gameID={ game.sourceData.objectId }
+          gameStatus={ game.status }
+          turn={ game.turn }
+          winner={ game.winner }
+          player1={ game.p1 }
+          playerScore={ game.currentPlayer.score }
+          opponentScore={ game.opponent.score }
+          hideOpponentName
+        />
+      )}
+      <Button
+        title={`View previous games against ${friend.username}`}
+        onPress={ () => history.push(`/friend/${friendID}/archive`) }
+        color="blue"
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   topSection: {
@@ -124,27 +126,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
-  const friendID = ownProps.match.params.friendID;
-  const friend = state.user.friendsByID[friendID];
-  const { byID } = state.gameData;
-  const gamesByID = {};
-  for ( let gameID in byID) {
-    const game = byID[gameID];
-    if (game.p1 === friendID || game.p2 === friendID) {
-      gamesByID[gameID] = game;
-    }
-  }
-  return {
-    gamesByID,
-    friendID,
-    friend,
-    uid: state.user.uid,
-  };
-};
-
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Friend));
+export default Friend;

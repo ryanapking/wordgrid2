@@ -424,7 +424,16 @@ export async function getFullGameArchive(playerID) {
   });
 }
 
-export async function getWinLossRecordAgainstOpponent(opponentId, currentPlayerId) {
+/**
+ * Returns user record vs an opponent
+ *
+ * @param {Object} obj
+ * @param {string} obj.opponentId
+ * @param {string} obj.currentPlayerId
+ *
+ * @returns {Promise<{wins: *, total: *, active: *, losses: *}>}
+ */
+export async function getWinLossRecordAgainstOpponent({opponentId, currentPlayerId}) {
 
   const currentPlayerPointer = new Parse.User().set('id', currentPlayerId, {});
   const opponentPointer = new Parse.User().set('id', opponentId, {});
