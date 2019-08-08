@@ -4,13 +4,13 @@ import { ListItem, Text } from 'react-native-elements';
 import moment from 'moment';
 
 import { useHistory } from "../hooks/tempReactRouter";
-import { useParseFetcher } from "../hooks/useParseFetcher";
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
 import { getRecentChallenges, getCurrentChallenge } from "../data/parse-client/getters";
 
 const Challenges = () => {
   const history = useHistory();
-  const [currentChallenge] = useParseFetcher(getCurrentChallenge, {});
-  const [recentChallenges] = useParseFetcher(getRecentChallenges, {}, true);
+  const [currentChallenge] = useAsyncFetcher(getCurrentChallenge, {});
+  const [recentChallenges] = useAsyncFetcher(getRecentChallenges, {}, true);
 
   return (
     <ScrollView>

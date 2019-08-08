@@ -5,7 +5,7 @@ import { ListItem, Text } from 'react-native-elements';
 import moment from 'moment';
 
 import { useParams, useHistory } from "../hooks/tempReactRouter";
-import { useParseFetcher } from "../hooks/useParseFetcher";
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
 import { numWithSuffix } from "../data/utilities/functions/calculations";
 import { getChallengeByID, getAttemptByChallengeID } from "../data/parse-client/getters";
 import { getAttemptsByChallengeID } from "../data/async-storage/challengeAttempts";
@@ -15,9 +15,9 @@ const Challenge = () => {
   const history = useHistory();
   const { challengeID } = params;
   const uid = useSelector(state => state.user.uid, shallowEqual);
-  const [challenge] = useParseFetcher(getChallengeByID, {challengeID});
-  const [officialAttempt] = useParseFetcher(getAttemptByChallengeID,{challengeID, uid});
-  const [localAttempts] = useParseFetcher(getAttemptsByChallengeID, {uid, challengeID});
+  const [challenge] = useAsyncFetcher(getChallengeByID, {challengeID});
+  const [officialAttempt] = useAsyncFetcher(getAttemptByChallengeID,{challengeID, uid});
+  const [localAttempts] = useAsyncFetcher(getAttemptsByChallengeID, {uid, challengeID});
 
   return (
     <View>

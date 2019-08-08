@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setErrorMessage } from "../data/redux/messages";
 
 const initialState = {
-  parseObject: null,
+  returnValue: null,
   fetching: false,
 };
 
@@ -14,44 +14,45 @@ const reducer = (state, action) => {
       return {...state, fetching: true};
     case 'fetchingComplete':
       return {...state, fetching: false};
-    case 'setObject':
-      return {...state, fetching: false, parseObject: action.parseObject};
+    case 'setReturn':
+      return {...state, fetching: false, returnValue: action.returnValue};
     default:
       return {...state};
   }
 };
 
 /**
- * Takes a parse function, returns the value and fetching status. Throws an error using redux if needed.
+ * Takes an async function or async generator function, returns the value(s) and fetching status.
+ * Throws an error using redux if needed.
  *
- * @param {function} parseFunction - parse fetcher function to run
- * @param {Object} functionParams - Should match param requirements for provided parseFunction
+ * @param {function} asyncFunction - Async fetcher function to run
+ * @param {Object} functionParams - Should match param requirements for provided asyncFunction
  * @param {boolean} [isGenerator=false] - is the provided function a generator function
  *
  * @returns {[null|Object|Array, Boolean, Function]}
  */
-export const useParseFetcher = (parseFunction, functionParams, isGenerator = false) => {
+export const useAsyncFetcher = (asyncFunction, functionParams, isGenerator = false) => {
   const [state, localDispatch] = useReducer(reducer, initialState);
   const reduxDispatch = useDispatch();
 
   const fetchObject = async () => {
     localDispatch({type: "fetching"});
-    const parseObject = await parseFunction(functionParams)
+    const returnValue = await asyncFunction(functionParams)
       .catch((err) => {
         localDispatch({type: "fetchingComplete"});
         reduxDispatch(setErrorMessage(err));
       });
-    localDispatch({type: "setObject", parseObject});
+    localDispatch({type: "setReturn", returnValue});
   };
 
   const fetchGenerator = async () => {
-    const generator = parseFunction(functionParams);
+    const generator = asyncFunction(functionParams);
     let valuesRemain = true;
     while (valuesRemain) {
       localDispatch({type: "fetching"});
       const { value, done } = await generator.next();
       if (done) valuesRemain = false;
-      else localDispatch({type: "setObject", parseObject: value});
+      else localDispatch({type: "setReturn", returnValue: value});
     }
   };
 
@@ -60,5 +61,5 @@ export const useParseFetcher = (parseFunction, functionParams, isGenerator = fal
     else fetchObject().then();
   }, []);
 
-  return [state.parseObject, state.fetching, fetchObject];
+  return [state.returnValue, state.fetching, fetchObject];
 };
