@@ -297,7 +297,16 @@ export async function getUsersByPartialString({searchString, currentUserID}) {
   });
 }
 
-export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
+/**
+ * Reviews the provided array of local archive data, queries parse for other games, saves them to the local data store.
+ *
+ * @param {string} opponentId
+ * @param {string} currentPlayerId
+ * @param {Array} localArchiveArray
+ *
+ * @returns {Promise<boolean>} True if any games were saved locally, false if not.
+ */
+async function updatePinsAgainstOpponent(opponentId, currentPlayerId, localArchiveArray) {
   console.log('updatePinsAgainstOpponent()');
 
   const playerPointers = [
@@ -305,29 +314,17 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
     new Parse.User().set('id', currentPlayerId, {}),
   ];
 
-  // query local data store for games against opponent
-  const pinnedGames = await new Parse.Query(GamesObject)
-    .fromLocalDatastore()
-    .containedIn('player1', playerPointers)
-    .containedIn('player2', playerPointers)
-    .find()
-    .catch((err) => {
-      throw new Error(err);
-    });
-
-  console.log('pinned games:', pinnedGames);
-
   // format local query into arrays of IDs for remote comparison
   let pinnedGamesIds = [];
   let unarchivedGameIds = [];
 
-  if (pinnedGames) {
-    pinnedGamesIds = pinnedGames
+  if (localArchiveArray.length > 0) {
+    pinnedGamesIds = localArchiveArray
       .map((game) => {
         return game.id;
       });
 
-    unarchivedGameIds = pinnedGames
+    unarchivedGameIds = localArchiveArray
       .filter((game) => {
         return !game.get('archived');
       })
@@ -341,6 +338,7 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
 
   // check remote for any games not stored locally
   const unpinnedQuery = new Parse.Query(GamesObject)
+    .exists('winner')
     .containedIn('player1', playerPointers)
     .containedIn('player2', playerPointers)
     .notContainedIn('objectId', pinnedGamesIds);
@@ -359,42 +357,71 @@ export async function updatePinsAgainstOpponent(opponentId, currentPlayerId) {
   console.log('games to pin:', gamesToPin);
 
   // pin the missing games
-  if (gamesToPin) {
-    Parse.Object.pinAll(gamesToPin)
+  if (gamesToPin.length > 0) {
+    await Parse.Object.pinAll(gamesToPin)
       .catch((err) => {
         throw new Error(err);
       });
+    return true;
   }
 
-  console.log('missing games pinned');
-
-  return gamesToPin;
+  return false;
 }
 
-export async function getOpponentArchive(opponentId, currentPlayerId) {
+/**
+ * Generator function that yields an array of games vs a specific opponent.
+ * Queries local data, then updates it if needed
+ *
+ * @param {Object} obj
+ * @param {string} obj.opponentId
+ * @param {string} object.currentPlayerId
+ *
+ * @yields {Promise<Array|any>}
+ */
+export async function* getOpponentArchive({opponentId, currentPlayerId}) {
+  const localArchive = await getLocalOpponentArchive(opponentId, currentPlayerId);
+  yield localArchive;
 
+  const pinsUpdated = await updatePinsAgainstOpponent(opponentId, currentPlayerId, localArchive);
+
+  if (pinsUpdated) {
+    yield await getLocalOpponentArchive(opponentId, currentPlayerId);
+  }
+}
+
+/**
+ * Queries local data store for completed games against an opponent.
+ *
+ * @param {string} opponentId
+ * @param {string} currentPlayerId
+ *
+ * @returns {Promise<Array|*>}
+ */
+async function getLocalOpponentArchive(opponentId, currentPlayerId) {
   const playerPointers = [
     new Parse.User().set('id', opponentId, {}),
     new Parse.User().set('id', currentPlayerId, {}),
   ];
 
-  const archive = await new Parse.Query(GamesObject)
+  // query local data store for games vs an opponent
+  const localArchive = await new Parse.Query(GamesObject)
     .fromLocalDatastore()
     .containedIn('player1', playerPointers)
     .containedIn('player2', playerPointers)
     .exists('winner')
     .find()
     .catch((err) => {
-      throw new Error(err);
+      console.log('error fetching local opponent archive:', err);
+      // don't throw an error, we will return an empty array
     });
 
-  console.log('found archive:', archive);
-
-  if (!archive) return [];
-
-  return archive.map((game) => {
-    return game.toJSON();
-  });
+  if (localArchive && localArchive.length > 0) {
+    return localArchive.map((game) => {
+      return game.toJSON();
+    });
+  } else {
+    return [];
+  }
 }
 
 export async function getFullGameArchive(playerID) {

@@ -1,89 +1,52 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { withRouter } from 'react-router-native';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
-import { updatePinsAgainstOpponent, getOpponentArchive } from "../data/parse-client/getters";
+import { useParams } from "../hooks/tempReactRouter";
+import { getOpponentArchive } from "../data/parse-client/getters";
 import { remoteToLocal } from "../data/utilities/functions/dataConversions";
-import { setErrorMessage } from '../data/redux/messages';
-
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
 import GameListItem from '../components/GameListItem';
 
-class FriendArchive extends Component {
-  constructor(props) {
-    super(props);
+const FriendArchive = () => {
+  const params = useParams();
+  const { friendID } = params;
+  const [uid, friend] = useSelector(state => [state.user.uid, state.user.friendsByID[friendID]], shallowEqual);
+  const [gamesSource] = useAsyncFetcher(getOpponentArchive, {opponentId: friendID, currentPlayerId: uid}, true);
 
-    this.state = {
-      games: [],
-    }
-  }
+  // convert source data to something we can display
+  const games = useMemo(() => {
+    if (!gamesSource) return [];
+    return gamesSource.map((gameSource) => {
+      return remoteToLocal(gameSource, uid);
+    });
+  }, [gamesSource, uid]);
 
-  componentDidMount() {
-    const { friendID, uid } = this.props;
-    updatePinsAgainstOpponent(friendID, uid)
-      .finally(() => {
-        this._getOpponentArchive();
-      });
-  }
-
-  _getOpponentArchive() {
-    const { friendID, uid } = this.props;
-    getOpponentArchive(friendID, uid, true)
-      .then((games) => {
-        const parsedGames = games.map((game) => {
-          return remoteToLocal(game, uid);
-        });
-        this.setState({ games: parsedGames });
-      })
-      .catch((err) => {
-        this.props.setErrorMessage(err);
-      });
-  }
-
-  render() {
-    const { friendID, friend } = this.props;
-    const { games } = this.state;
-
-    return (
-      <View>
-        <Text>FriendArchive.js</Text>
-        <Text>{ friendID }</Text>
-        <Text>{ friend ? friend.username : '' }</Text>
-        <FlatList
-          data={games}
-          renderItem={({item: game}) =>
-            <GameListItem
-              key={ game.sourceData.objectId }
-              uid={ this.props.uid }
-              opponentName={ friend.username }
-              gameID={ game.sourceData.objectId }
-              gameStatus={ game.status }
-              turn={ game.turn }
-              winner={ game.winner }
-              player1={ game.p1 }
-              playerScore={ game.currentPlayer.score }
-              opponentScore={ game.opponent.score }
-              hideOpponentName
-            />
-          }
-        />
-      </View>
-    );
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  const { friendID } = ownProps.match.params;
-  const friend = state.user.friendsByID[friendID];
-  return {
-    uid: state.user.uid,
-    friend,
-    friendID,
-  };
+  return (
+    <View>
+      <Text>FriendArchive.js</Text>
+      <Text>{ friendID }</Text>
+      <Text>{ friend ? friend.username : '' }</Text>
+      <FlatList
+        data={games}
+        renderItem={({item: game}) =>
+          <GameListItem
+            key={ game.sourceData.objectId }
+            uid={ uid }
+            opponentName={ friend.username }
+            gameID={ game.sourceData.objectId }
+            gameStatus={ game.status }
+            turn={ game.turn }
+            winner={ game.winner }
+            player1={ game.p1 }
+            playerScore={ game.currentPlayer.score }
+            opponentScore={ game.opponent.score }
+            hideOpponentName
+          />
+        }
+      />
+    </View>
+  );
 };
 
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FriendArchive));
+export default FriendArchive;
