@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-native';
+import { useSelector, shallowEqual } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 
 import {
@@ -15,218 +14,54 @@ import {
   calculateHighestWordValue,
   calculateWordValue,
 } from '../data/utilities/functions/calculations';
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
+import { useParams } from "../hooks/tempReactRouter";
 import { applyMove, } from '../data/utilities/functions/applyMoves';
 import { getWordPath } from '../data/utilities/functions/getters';
 import { getGameSourceData } from "../data/parse-client/getters";
-import { setErrorMessage } from "../data/redux/messages";
-import { SPACE_STATES } from "../data/utilities/constants";
 import Boggle from '../data/boggle-solver';
 
+import MeasureView from "../components/MeasureView";
 import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
 import BoardPathCreator from "../components/BoardPathCreator";
 import DrawScoreBoard from "../components/GameScoreBoard";
 
-class GameReview extends Component {
-  constructor(props) {
-    super(props);
+const GameReview = () => {
+  const params = useParams();
+  const { gameID } = params;
+  const uid = useSelector(state => state.user.uid, shallowEqual);
 
-    this.state = {
-      game: {},
+  const availableMovesRef = useRef(null);
 
-      // current move info being reviewed
-      moveIndex: 0,
+  const [gameSource] = useAsyncFetcher(getGameSourceData, {gameID});
 
-      startingGameState: null,
-      displayingGameState: null,
+  const [moveIndex, setMoveIndex] = useState(0);
+  const [reviewResults, setReviewResults] = useState({});
+  const [displayPath, setDisplayPath] = useState([]);
+  const [boardSize, setBoardSize] = useState({});
 
-      // the pieces of the list view
-      playerMovePath: [],
-      playerMoveWord: null,
+  const [game, startingGameState] = useMemo(() => {
+    if (!gameSource || !uid) return [null, null];
+    return [
+      remoteToLocal(gameSource, uid),
+      remoteToStartingGameState(gameSource, uid)
+    ];
+  }, [gameSource, uid]);
 
-      mostValuableWords: [],
-      mostValuablePoints: null,
+  // calculate review object and set
+  useEffect(() => {
+    if (!game || !startingGameState || !uid) return;
 
-      longestWords: [],
-      longestLetterCount: null,
+    // reset review results
+    setReviewResults({});
 
-      availableWords: [],
-
-      // the only thing that's actually drawn on the board
-      displayPath: [],
-
-      // measurements
-      boardLocation: {},
-    };
-  }
-
-  async componentDidMount() {
-    const { gameFromRedux, gameID, uid } = this.props;
-
-    // if this is a recent game, our source data should be coming from redux and we already have it
-    let gameSourceData = gameFromRedux ? gameFromRedux.sourceData : null;
-
-    // if the data didn't come from redux, pull it from Parse
-    if (!gameSourceData) {
-      gameSourceData = await getGameSourceData(gameID)
-        .catch(() => {
-          // we sort this error below
-        });
+    // scroll to the top
+    if (availableMovesRef.current) {
+      availableMovesRef.current.scrollTo({y: 0, animated: false});
+      availableMovesRef.current.flashScrollIndicators();
     }
 
-    // start the game review process or redirect to previous page
-    if (gameSourceData) {
-      const game = remoteToLocal(gameSourceData, uid);
-      const startingGameState = remoteToStartingGameState(gameSourceData);
-      await this.setState({game, startingGameState});
-      this._getReviewResults(this.state.moveIndex, startingGameState);
-    } else {
-      this.props.setErrorMessage("Error getting game data.");
-      this.props.history.goBack();
-    }
-  }
-
-  render() {
-    if (!this.state.displayingGameState) return null;
-    const { moveIndex, boardLocation, displayingGameState, game } = this.state;
-    const move = game.moves[moveIndex];
-    const boardState = displayingGameState.boardState;
-    const moveInning = Math.floor((moveIndex) / 2);
-    const moveLabel = (move.p === this.props.uid) ? "Your move:" : "Their move:";
-
-    const displayBoardState = boardState.map( (row, rowIndex) => {
-      return row.map( (letter, columnIndex) => {
-        if (!letter) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY};
-        } else if (!this._checkSquareAvailable({rowIndex, columnIndex})) {
-          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
-        } else {
-          return {letter, status: SPACE_STATES.SPACE_FILLED};
-        }
-      });
-    });
-
-    const hideNextButton = (moveIndex >= game.moves.length - 1);
-    const hidePrevButton = (moveIndex <= 0);
-
-    return (
-      <View style={styles.reviewContainer}>
-
-        <View style={styles.boardSection}>
-          <View style={styles.board} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardLocation.width}/>
-            <BoardPathCreator squares={this.state.displayPath} boardLocation={boardLocation}/>
-          </View>
-        </View>
-
-        <View style={styles.changeMovesSection}>
-          <View>
-            { hidePrevButton ? null :
-              <Text style={styles.changeMove} onPress={() => this._changeMoveIndex(moveIndex - 1)}>Prev</Text>
-            }
-          </View>
-          <View>
-            { hideNextButton ? null :
-              <Text style={styles.changeMove} onPress={() => this._changeMoveIndex(moveIndex + 1)}>Next</Text>
-            }
-          </View>
-        </View>
-
-        <View style={styles.availableMovesSection}>
-          <ScrollView ref={(scrollView) => this._availableMoves = scrollView}>
-
-            <ListItem
-              title={ moveLabel }
-              rightTitle={ move.wv + " points" }
-              containerStyle={styles.divider}
-            />
-            <TouchableWithoutFeedback onPressIn={() => this._setDisplayPath(this.state.playerMovePath)} onPressOut={() => this._clearDisplayPath()}>
-              <ListItem
-                title={ move.w.toUpperCase() }
-                rightTitle={
-                  <DrawScoreBoard p1={game.p1} p2={game.p2} currentPlayerScoreBoard={game.currentPlayer.scoreBoard} opponentScoreBoard={game.opponent.scoreBoard} highlight={{player: move.p, inning: moveInning}}/>
-                }
-              />
-            </TouchableWithoutFeedback>
-
-            <ListItem
-              title="Most Valuable Words"
-              rightTitle={ this.state.mostValuablePoints + " points" }
-              containerStyle={styles.divider}
-            />
-            {this.state.mostValuableWords.map( (word, index) =>
-              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                <ListItem title={ word } />
-              </TouchableWithoutFeedback>
-            )}
-
-            <ListItem
-              title="Longest Words"
-              rightTitle={ this.state.longestLetterCount + " letters"}
-              containerStyle={styles.divider}
-            />
-            {this.state.longestWords.map( (word, index) =>
-              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                <ListItem title={word} />
-              </TouchableWithoutFeedback>
-            )}
-
-            <ListItem
-              title="All Available Words"
-              rightTitle={ this.state.availableWords.length + " words" }
-              containerStyle={styles.divider}
-            />
-            {this.state.availableWords.map( (word, index) =>
-              <TouchableWithoutFeedback key={index} onPressIn={() => this._findAndSetDisplayPath(word.word, boardState)} onPressOut={() => this._clearDisplayPath()}>
-                <ListItem title={word.word} rightTitle={ word.value + " points" } />
-              </TouchableWithoutFeedback>
-            )}
-
-          </ScrollView>
-        </View>
-
-      </View>
-    );
-  }
-
-  _changeMoveIndex(moveIndex) {
-    this.setState({
-      moveIndex,
-    });
-
-    this._availableMoves.scrollTo({y: 0, animated: false});
-    this._availableMoves.flashScrollIndicators();
-    this._getReviewResults(moveIndex, this.state.startingGameState);
-  }
-
-  _clearDisplayPath() {
-    this.setState({
-      displayPath: []
-    });
-  }
-
-  _setDisplayPath(wordPath) {
-    this.setState({
-      displayPath: wordPath
-    });
-  }
-
-  _findAndSetDisplayPath(word, boardState) {
-    const wordPath = getWordPath(word, boardState);
-    this._setDisplayPath(wordPath);
-  }
-
-  _checkSquareAvailable(square) {
-    return this.state.displayPath.reduce( (squareAvailable, pathSquare) => {
-      if (square.rowIndex === pathSquare.rowIndex && square.columnIndex === pathSquare.columnIndex) {
-        return false;
-      } else {
-        return squareAvailable;
-      }
-    }, true);
-  }
-
-  _getReviewResults(moveIndex, startingGameState) {
-    const { game } = this.state;
+    // calculate board state for the given moveIndex
     const { moves } = game;
 
     let currentGameState = startingGameState;
@@ -238,8 +73,7 @@ class GameReview extends Component {
 
     const boardString = arrayToString(currentGameState.boardState);
 
-    let boggle = new Boggle(boardString);
-    boggle.solve( (words) => {
+    new Boggle(boardString).solve( (words) => {
       const longest = calculateLongestWordLength(words);
       const mostValuable = calculateHighestWordValue(words);
 
@@ -254,7 +88,7 @@ class GameReview extends Component {
           return word2.value - word1.value;
         });
 
-      this.setState({
+      setReviewResults({
         displayingGameState: currentGameState,
         availableWords: allWordsWithValues,
         longestWords: longest.words,
@@ -264,23 +98,123 @@ class GameReview extends Component {
         playerMovePath: move.wordPath,
       });
     });
-  }
 
-  _onLayout() {
-    this.gameBoard.measure((x, y, width, height) => {
-      this.setState({
-        boardLocation: {
-          x,
-          y,
-          width,
-          height,
-          rowHeight: height / 10,
-          columnWidth: width / 10,
-        }
-      });
-    });
-  }
-}
+  }, [moveIndex, game, startingGameState, uid]);
+
+  if (!reviewResults.displayingGameState) return null;
+
+  const move = game.moves[moveIndex];
+  const boardState = reviewResults.displayingGameState.boardState;
+  const moveInning = Math.floor((moveIndex) / 2);
+  const moveLabel = (move.p === uid) ? "Your move:" : "Their move:";
+  const hideNextButton = (moveIndex >= game.moves.length - 1);
+  const hidePrevButton = (moveIndex <= 0);
+
+  return (
+    <View style={styles.reviewContainer}>
+
+      <View style={styles.boardSection}>
+        <MeasureView
+          style={styles.board}
+          onMeasure={(x, y, width, height) => setBoardSize({width, height, rowHeight: height / 10, columnWidth: width / 10 }) }
+        >
+          <BoardDrawLetterGrid
+            boardState={boardState}
+            boardSize={boardSize.width}
+            consumedSquares={displayPath}
+          />
+          <BoardPathCreator squares={displayPath} boardLocation={boardSize}/>
+        </MeasureView>
+      </View>
+
+      <View style={styles.changeMovesSection}>
+        <View>
+          { hidePrevButton ? null :
+            <Text style={styles.changeMove} onPress={() => setMoveIndex(currentMoveIndex => currentMoveIndex - 1)}>Prev</Text>
+          }
+        </View>
+        <View>
+          { hideNextButton ? null :
+            <Text style={styles.changeMove} onPress={() => setMoveIndex(currentMoveIndex => currentMoveIndex + 1)}>Next</Text>
+          }
+        </View>
+      </View>
+
+      <View style={styles.availableMovesSection}>
+        <ScrollView ref={availableMovesRef}>
+
+          <ListItem
+            title={ moveLabel }
+            rightTitle={ move.wv + " points" }
+            containerStyle={styles.divider}
+          />
+          <TouchableWithoutFeedback onPressIn={() => setDisplayPath(reviewResults.playerMovePath)} onPressOut={() => setDisplayPath([])}>
+            <ListItem
+              title={ move.w.toUpperCase() }
+              rightTitle={
+                <DrawScoreBoard
+                  p1={game.p1}
+                  p2={game.p2}
+                  uid={uid}
+                  currentPlayerScoreBoard={game.currentPlayer.scoreBoard}
+                  opponentScoreBoard={game.opponent.scoreBoard}
+                  highlight={{player: move.p, inning: moveInning}}
+                />
+              }
+            />
+          </TouchableWithoutFeedback>
+
+          <ListItem
+            title="Most Valuable Words"
+            rightTitle={ reviewResults.mostValuablePoints + " points" }
+            containerStyle={styles.divider}
+          />
+          {reviewResults.mostValuableWords.map( (word, index) =>
+            <TouchableWithoutFeedback
+              key={index}
+              onPressIn={() => setDisplayPath(getWordPath(word, boardState)) }
+              onPressOut={() => setDisplayPath([])}
+            >
+              <ListItem title={ word } />
+            </TouchableWithoutFeedback>
+          )}
+
+          <ListItem
+            title="Longest Words"
+            rightTitle={ reviewResults.longestLetterCount + " letters"}
+            containerStyle={styles.divider}
+          />
+          {reviewResults.longestWords.map( (word, index) =>
+            <TouchableWithoutFeedback
+              key={index}
+              onPressIn={() => setDisplayPath(getWordPath(word, boardState))}
+              onPressOut={() => setDisplayPath([])}
+            >
+              <ListItem title={word} />
+            </TouchableWithoutFeedback>
+          )}
+
+          <ListItem
+            title="All Available Words"
+            rightTitle={ reviewResults.availableWords.length + " words" }
+            containerStyle={styles.divider}
+          />
+          {reviewResults.availableWords.map( (word, index) =>
+            <TouchableWithoutFeedback
+              key={index}
+              onPressIn={() => setDisplayPath(getWordPath(word.word, boardState)) }
+              onPressOut={() => setDisplayPath([]) }
+            >
+              <ListItem title={word.word} rightTitle={ word.value + " points" } />
+            </TouchableWithoutFeedback>
+          )}
+
+        </ScrollView>
+      </View>
+
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   reviewContainer: {
@@ -329,19 +263,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
-  const gameID = ownProps.match.params.gameID;
-  // if this is an archived game, it will not be in the redux data. We will deal with this case in componentDidMount().
-  const gameFromRedux = state.gameData.byID[gameID];
-  return {
-    gameID: gameID,
-    gameFromRedux,
-    uid: state.user.uid
-  };
-};
-
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GameReview));
+export default GameReview;

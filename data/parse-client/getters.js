@@ -506,9 +506,16 @@ export async function getWinLossRecordAgainstOpponent({opponentId, currentPlayer
   return { wins, losses, active, total };
 }
 
-// attempts to pull data from Parse local data store
-// falls back to pulling from remote
-export async function getGameSourceData(gameID) {
+
+/**
+ * Attempts to pull data from Parse local data store, falls back to pulling from remote.
+ *
+ * @param {Object} obj
+ * @param {string} obj.gameID
+ *
+ * @returns {Promise<*>}
+ */
+export async function getGameSourceData({gameID}) {
 
   // try to fetch the game from the local datastore
   let game = await new Parse.Query(GamesObject)

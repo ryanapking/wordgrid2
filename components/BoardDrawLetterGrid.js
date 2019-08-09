@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { squaresArrayType, rowsType } from "../proptypes";
 import { isSquareInArray } from "../data/utilities/functions/checks";
 import DrawLetter from "./DrawLetter";
 
@@ -13,8 +14,8 @@ const BoardDrawLetterGrid = props => {
     return row.map( (letter, columnIndex) => {
 
       let square = { rowIndex, columnIndex, letter };
-      const squareHovered = isSquareInArray(square, hoveredSquares);
-      const squareConsumed = isSquareInArray(square, consumedSquares);
+      const squareHovered = hoveredSquares && isSquareInArray(square, hoveredSquares);
+      const squareConsumed = consumedSquares && isSquareInArray(square, consumedSquares);
 
       if (!letter && squareHovered) {
         square.fillStyle = styles.emptySquareHovered;
@@ -52,13 +53,10 @@ const BoardDrawLetterGrid = props => {
 };
 
 BoardDrawLetterGrid.propTypes = {
-  boardState:
-    PropTypes.arrayOf(
-      PropTypes.arrayOf(
-        PropTypes.string
-      )
-    ),
+  boardState: rowsType.isRequired,
   boardSize: PropTypes.number,
+  consumedSquares: squaresArrayType,
+  hoveredSquares: squaresArrayType,
 };
 
 const styles = StyleSheet.create({
