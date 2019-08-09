@@ -1,197 +1,124 @@
-import React, { Component } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-native';
+import { useSelector, shallowEqual } from 'react-redux';
 import { ListItem } from 'react-native-elements';
 
+import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
+import { useParams } from "../hooks/tempReactRouter";
 import { getAttemptByChallengeIDAndIndex } from "../data/async-storage/challengeAttempts";
 import { getAttemptByID, getChallengeByID } from "../data/parse-client/getters";
-import { setErrorMessage } from "../data/redux/messages";
 import { challengeAttemptToReviewObject } from "../data/utilities/functions/dataConversions";
-import { SPACE_STATES } from "../data/utilities/constants";
 
+import PieceDrawLetterGrid from "../components/PieceDrawLetterGrid";
+import MeasureView from "../components/MeasureView";
 import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
 import BoardPathCreator from '../components/BoardPathCreator';
-import Piece from '../components/PieceDraggableView';
 
-class ChallengeAttemptReview extends Component {
-  constructor(props) {
-    super(props);
+const ChallengeAttemptReview = () => {
+  const params = useParams();
+  const { attemptID, challengeID, attemptIndex } = params;
+  const userID = useSelector(state => state.user.uid, shallowEqual);
 
-    this.state = {
-      challenge: null,
-      attempt: null,
-
-      reviewObject: null,
-
-      moveIndex: 0,
-      phaseIndex: null,
-      boardLocation: {},
-    };
+  // sometimes we want a local attempt
+  // sometimes we want a remote attempt
+  // this is probably not a great way to manage this
+  let getAttemptFunction, getAttemptParams;
+  if (attemptID) {
+    getAttemptFunction = getAttemptByID;
+    getAttemptParams = {attemptID};
+  } else if (attemptIndex) {
+    getAttemptFunction = getAttemptByChallengeIDAndIndex;
+    getAttemptParams = {userID, challengeID, attemptIndex};
   }
 
-  componentDidMount() {
-    const { attemptID } = this.props;
-    if (attemptID) {
-      this._getAttemptDataByAttemptIndex().then();
-    } else {
-      this._getAttemptFromLocalStorage().then();
-    }
-  }
+  const [currentMove, setCurrentMove] = useState({moveIndex: 0, phaseIndex: 0});
+  const [boardLocation, setBoardLocation] = useState({});
+  const [attempt] = useAsyncFetcher(getAttemptFunction, getAttemptParams);
+  const [challenge] = useAsyncFetcher(getChallengeByID, {challengeID});
 
-  async _getAttemptDataByAttemptIndex() {
-    const attempt = await getAttemptByID(this.props.attemptID)
-      .catch((err) => {
-        console.log('error getting attempt', err);
-        this.props.setErrorMessage("unable to get challenge attempt info");
-      });
+  const reviewObject = useMemo(() => {
+    if (!attempt || !challenge) return null;
+    return challengeAttemptToReviewObject(challenge, attempt);
+  }, [attempt, challenge]);
 
-    const reviewObject = challengeAttemptToReviewObject(attempt.challenge, attempt);
-
-    this.setState({
-      reviewObject,
-      challenge: attempt.challenge,
-      attempt: attempt,
-    });
-  }
-
-  async _getAttemptFromLocalStorage() {
-    const { userID, challengeID, attemptIndex } = this.props;
-    let attempt, challenge;
-
-    const attemptPromise = getAttemptByChallengeIDAndIndex(userID, challengeID, attemptIndex)
-      .then((value) => {
-        attempt = value;
-      })
-      .catch((err) => {
-        console.log('error getting attempt', err);
-      });
-
-    const challengePromise = getChallengeByID({challengeID})
-      .then((value) => {
-        challenge = value;
-      })
-      .catch((err) => {
-        console.log('error fetching challenge by id', err);
-      });
-
-    await Promise.all([attemptPromise, challengePromise]);
-
-    if (attempt && challenge) {
-      const reviewObject = challengeAttemptToReviewObject(challenge, attempt);
-      this.setState({ reviewObject, challenge, attempt });
-    } else {
-      this.props.setErrorMessage('unable to get attempt');
-    }
-
-  }
-
-  render() {
-    const { attempt, reviewObject, boardLocation, moveIndex, phaseIndex } = this.state;
-
-    if (!reviewObject || !boardLocation) return null;
-
-    console.log('challenge object:', this.state.challenge);
-    console.log('attempt:', attempt);
-    console.log('review object:', reviewObject);
-
-    const reviewing = reviewObject[moveIndex];
+  // this is what we're actually displaying at any given moment
+  const [boardState, highlightPath, wordPath] = useMemo(() => {
+    if (!reviewObject) return [null, null, null];
+    const reviewing = reviewObject[currentMove.moveIndex];
 
     let boardState = reviewing.initialState.boardState;
     let highlightPath = [];
     let wordPath = [];
 
-    if (phaseIndex === 0) {
+    if (currentMove.phaseIndex === 0) {
       wordPath = reviewing.wordPath;
       highlightPath = reviewing.wordPath;
-    } else if (phaseIndex === 1) {
+    } else if (currentMove.phaseIndex === 1) {
       boardState = reviewing.thirdState.boardState;
       highlightPath = reviewing.pieceBoardSquares;
     }
 
-    console.log('highlighting:', highlightPath);
+    return [boardState, highlightPath, wordPath];
 
-    const displayBoardState = boardState.map( (row, rowIndex) => {
-      return row.map( (letter, columnIndex) => {
-        if (!letter) {
-          return {letter, status: SPACE_STATES.SPACE_EMPTY};
-        } else if (!this._checkSquareAvailable({rowIndex, columnIndex}, highlightPath)) {
-          return {letter, status: SPACE_STATES.SPACE_CONSUMED};
-        } else {
-          return {letter, status: SPACE_STATES.SPACE_FILLED};
-        }
-      });
-    });
+  }, [reviewObject, currentMove]);
 
-    const pieceSize = boardLocation ? boardLocation.width * .12 : null;
+  if (!boardState) return null;
 
-    return (
-      <View style={styles.reviewContainer}>
+  // this is dumb
+  const pieceSize = boardLocation ? boardLocation.width * .12 : null;
 
-        <View style={styles.boardSection}>
-          <View style={styles.board} ref={gameBoard => this.gameBoard = gameBoard} onLayout={() => this._onLayout()}>
-            <BoardDrawLetterGrid boardState={displayBoardState} boardSize={boardLocation.width}/>
-            <BoardPathCreator squares={wordPath} boardLocation={boardLocation}/>
-          </View>
-        </View>
+  return (
+    <View style={styles.reviewContainer}>
 
-        <View style={styles.movesSection}>
-          <ScrollView>
-            <ListItem title="Moves" containerStyle={styles.divider} />
-            {reviewObject.map( (move, index) =>
-              <View key={index}>
-                <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 0 })} >
-                  <ListItem
-                    containerStyle={(this.state.moveIndex === index && this.state.phaseIndex === 0) ? {backgroundColor: 'lightcoral'} : {}}
-                    title={ move.word.toUpperCase() }
-                    rightTitle={ move.wordValue + " points"}
-                  />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPressIn={() => this.setState({ moveIndex: index, phaseIndex: 1 })} >
-                  <ListItem
-                    containerStyle={(this.state.moveIndex === index && this.state.phaseIndex === 1) ? {backgroundColor: 'lightcoral'} : {}}
-                    title={
-                      <View style={styles.gamePieceContainer}>
-                        <Piece piece={move.piece} style={styles.gamePiece} pieceIndex={move.placementRef.pieceIndex} baseSize={pieceSize} allowDrag={false}/>
-                      </View>
-                    }
-                    rightTitle={ move.placementValue + " points"}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
-            )}
-          </ScrollView>
-        </View>
-
+      <View style={styles.boardSection}>
+        <MeasureView
+          style={styles.board}
+          onMeasure={(x, y, width, height) => setBoardLocation({width, height, rowHeight: height / 10, columnWidth: width / 10 }) }
+        >
+          <BoardDrawLetterGrid
+            boardState={boardState}
+            boardSize={boardLocation.width}
+            consumedSquares={highlightPath}
+          />
+          <BoardPathCreator squares={wordPath} boardLocation={boardLocation} />
+        </MeasureView>
       </View>
-    );
-  }
 
-  _checkSquareAvailable(square, wordPath) {
-    return wordPath.reduce( (squareAvailable, pathSquare) => {
-      if (square.rowIndex === pathSquare.rowIndex && square.columnIndex === pathSquare.columnIndex) {
-        return false;
-      } else {
-        return squareAvailable;
-      }
-    }, true);
-  }
+      <View style={styles.movesSection}>
+        <ScrollView>
+          <ListItem title="Moves" containerStyle={styles.divider} />
+          {reviewObject.map( (move, index) =>
+            <View key={index}>
+              <TouchableWithoutFeedback onPressIn={() => setCurrentMove({ moveIndex: index, phaseIndex: 0 })} >
+                <ListItem
+                  containerStyle={(currentMove.moveIndex === index && currentMove.phaseIndex === 0) ? {backgroundColor: 'lightcoral'} : {}}
+                  title={ move.word.toUpperCase() }
+                  rightTitle={ move.wordValue + " points"}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPressIn={() => setCurrentMove({ moveIndex: index, phaseIndex: 1 })} >
+                <ListItem
+                  containerStyle={(currentMove.moveIndex === index && currentMove.phaseIndex === 1) ? {backgroundColor: 'lightcoral'} : {}}
+                  title={
+                    <View style={styles.gamePieceContainer}>
+                      <PieceDrawLetterGrid
+                        style={styles.gamePiece}
+                        piece={move.piece}
+                        pieceSize={pieceSize}
+                      />
+                    </View>
+                  }
+                  rightTitle={ move.placementValue + " points"}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+          )}
+        </ScrollView>
+      </View>
 
-  _onLayout() {
-    this.gameBoard.measure((x, y, width, height) => {
-      this.setState({
-        boardLocation: {
-          x,
-          y,
-          width,
-          height,
-          rowHeight: height / 10,
-          columnWidth: width / 10,
-        }
-      });
-    });
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   reviewContainer: {
@@ -243,18 +170,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, ownProps) => {
-  const { attemptID, challengeID, attemptIndex } = ownProps.match.params;
-  return {
-    attemptID,
-    challengeID,
-    attemptIndex,
-    userID: state.user.uid,
-  };
-};
-
-const mapDispatchToProps = {
-  setErrorMessage,
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChallengeAttemptReview));
+export default ChallengeAttemptReview;

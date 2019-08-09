@@ -34,7 +34,7 @@ const Challenge = () => {
             title={ officialAttempt.score + " points" }
             rightTitle={ numWithSuffix(officialAttempt.rank) }
             rightSubtitle={ "of " + challenge.playerCount + " players" }
-            onPress={() => history.push(`/challengeAttemptReview/${officialAttempt.objectId}`)}
+            onPress={() => history.push(`/challengeAttemptReview/${challenge.objectId}/${officialAttempt.objectId}`)}
           />
         </View>
       }
@@ -47,7 +47,7 @@ const Challenge = () => {
               title={ attempt.user.username }
               rightTitle={ numWithSuffix(attempt.rank) }
               rightSubtitle={ attempt.score + " points" }
-              onPress={() => history.push(`/challengeAttemptReview/${attempt.objectId}`)}
+              onPress={() => history.push(`/challengeAttemptReview/${challenge.objectId}/${attempt.objectId}`)}
               bottomDivider={ index + 1 < challenge.winners.length }
             />
           )}
@@ -61,7 +61,7 @@ const Challenge = () => {
               key={index}
               title={ attempt.score + " points" }
               rightTitle={"tap to review"}
-              onPress={() => history.push(`/challengeAttemptReview/${challenge.objectId}/${index}`)}
+              onPress={() => history.push(`/challengeAttemptReview/local/${challenge.objectId}/${index}`)}
               bottomDivider={ index + 1 < localAttempts.length }
             />
           )}

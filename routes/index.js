@@ -46,8 +46,8 @@ const routes = {
     routeTitle: "Attempt Review",
     backRouteKey: "|previousPage|",
     path: [
-      "/challengeAttemptReview/:attemptID",
-      "/challengeAttemptReview/:challengeID/:attemptIndex"
+      "/challengeAttemptReview/:challengeID/:attemptID",
+      "/challengeAttemptReview/local/:challengeID/:attemptIndex"
     ],
     componentName: "ChallengeAttemptReview",
   },

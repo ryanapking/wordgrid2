@@ -170,7 +170,15 @@ export async function getChallengeByID({challengeID}) {
   throw new Error('challenge not found');
 }
 
-export async function getAttemptByID(attemptID) {
+/**
+ * Get a challenge attempt by ID.
+ *
+ * @param {Object} obj
+ * @param {string} obj.attemptID
+ *
+ * @returns {Promise<*>}
+ */
+export async function getAttemptByID({attemptID}) {
   // get attempt from local data store
   const localAttempt = await new Parse.Query(ChallengeAttemptObject)
     .fromLocalDatastore()
