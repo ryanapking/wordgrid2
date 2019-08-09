@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { Input } from "react-native-elements";
 import { useDispatch } from 'react-redux';
@@ -8,35 +8,64 @@ import validator from 'validator';
 import AccountLogoutButton from './AccountLogoutButton';
 import { updateAccount } from "../data/redux/thunkedUserActions";
 
+const initialState = {
+  saving: false,
+  updateUsername: false,
+  updateEmail: false,
+  updatePassword: false,
+  newUsername: "",
+  newEmail: "",
+  newPassword: "",
+  newRetypePassword: "",
+};
+
+const reducer = (state, action) => {
+  switch(action.type) {
+    case "setNewUsername":
+      return { ...state, newUsername: action.newUsername };
+    case "setNewEmail":
+      return { ...state, newEmail: action.newEmail };
+    case "setNewPassword":
+      return { ...state, newPassword: action.newPassword };
+    case "setNewRetypePassword":
+      return { ...state, newRetypePassword: action.newRetypePassword };
+    case "setUpdateUsername":
+      return {
+        ...state,
+        updateUsername: action.updateUsername,
+        newUsername: action.updateUsername ? state.newUsername : '',
+      };
+    case "setUpdateEmail":
+      return {
+        ...state,
+        updateEmail: action.updateEmail,
+        newEmail: action.updateEmail ? action.newEmail : '' ,
+      };
+    case "setUpdatePassword":
+      return {
+        ...state,
+        updatePassword: action.updatePassword,
+        newPassword: action.updatePassword ? state.newPassword : '',
+        newRetypePassword: action.updatePassword ? state.newRetypePassword : '',
+      };
+    case "reset":
+      return { ...initialState};
+    default:
+      return { ...state };
+  }
+};
+
 const AccountUpdateForm = props => {
-  const dispatch = useDispatch();
-  const initialState = {
-    updateUsername: false,
-    updateEmail: false,
-    updatePassword: false,
-    newUsername: "",
-    newEmail: "",
-    newPassword: "",
-    newRetypePassword: "",
-    saving: false,
-  };
+  const reduxDispatch = useDispatch();
 
-  const [state, setState] = useState(initialState);
-
-  const stateMerge = (stateUpdates) => {
-    const newState = {
-      ...state,
-      ...stateUpdates,
-    };
-    setState(newState);
-  };
+  const [state, localDispatch] = useReducer(reducer, initialState);
 
   const saveChanges = () => {
     const { newEmail, newUsername, newPassword, newRetypePassword } = state;
     if (newEmail && !validator.isEmail(newEmail)) return;
     if (newPassword && newPassword !== newRetypePassword) return;
-    dispatch(updateAccount(newEmail, newUsername, newPassword));
-    setState(initialState);
+    reduxDispatch(updateAccount(newEmail, newUsername, newPassword));
+    localDispatch({ type: "reset" });
   };
 
   const { updateUsername, updateEmail, updatePassword, newUsername, newEmail, newPassword, newRetypePassword } = state;
@@ -52,21 +81,21 @@ const AccountUpdateForm = props => {
       type: 'MaterialCommunityIcons',
       name: updateUsername ? 'lock-open' : 'lock',
       onPress: () => {
-        stateMerge({ updateUsername: true });
+        localDispatch({ type: "setUpdateUsername", updateUsername: !updateUsername });
       },
     },
     email: {
       type: 'MaterialCommunityIcons',
       name: updateEmail ? 'lock-open' : 'lock',
       onPress: () => {
-        stateMerge({ updateEmail: true });
+        localDispatch({ type: "setUpdateEmail", updateEmail: !updateEmail });
       },
     },
     password: {
       type: 'MaterialCommunityIcons',
       name: updatePassword ? 'lock-open' : 'lock',
       onPress: () => {
-        stateMerge({ updatePassword: true });
+        localDispatch({ type: "setUpdatePassword", updatePassword: !updatePassword });
       },
     }
   };
@@ -86,7 +115,7 @@ const AccountUpdateForm = props => {
             editable={true}
             textContentType="username"
             autoCapitalize="none"
-            onChangeText={ (newUsername) => stateMerge({newUsername}) }
+            onChangeText={ (newUsername) => localDispatch({ type: "setNewUsername", newUsername }) }
           />
           : null
         }
@@ -106,7 +135,7 @@ const AccountUpdateForm = props => {
             textContentType="emailAddress"
             keyboardType="email-address"
             autoCapitalize="none"
-            onChangeText={ (newEmail) => stateMerge({newEmail}) }
+            onChangeText={ (newEmail) => localDispatch({ type: "setNewEmail", newEmail }) }
           />
           : null
         }
@@ -120,7 +149,7 @@ const AccountUpdateForm = props => {
           editable={updatePassword}
           secureTextEntry={true}
           rightIcon={lockIcons.password}
-          onChangeText={ (newPassword) => stateMerge({newPassword}) }
+          onChangeText={ (newPassword) => localDispatch({ type: "setNewPassword", newPassword }) }
         />
         { updatePassword ?
           <Input
@@ -129,7 +158,7 @@ const AccountUpdateForm = props => {
             autoCapitalize="none"
             editable={true}
             secureTextEntry={true}
-            onChangeText={ (newRetypePassword) => stateMerge({newRetypePassword}) }
+            onChangeText={ (newRetypePassword) => localDispatch({ type: "setNewRetypePassword", newRetypePassword }) }
           />
           : null
         }
