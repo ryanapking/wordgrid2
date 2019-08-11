@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -8,30 +8,35 @@ import DrawLetter from "./DrawLetter";
 
 const BoardDrawLetterGrid = props => {
   const { boardState, boardSize, consumedSquares, hoveredSquares } = props;
-  const letterHeight = (boardSize > 0) ? (boardSize / 10) : 0;
 
-  const displayBoardState = boardState.map( (row, rowIndex) => {
-    return row.map( (letter, columnIndex) => {
+  const letterHeight = useMemo(() => {
+    return boardSize > 0 ? boardSize / 10 : 0;
+  }, [boardSize]);
 
-      let square = { rowIndex, columnIndex, letter };
-      const squareHovered = hoveredSquares && isSquareInArray(square, hoveredSquares);
-      const squareConsumed = consumedSquares && isSquareInArray(square, consumedSquares);
+  const displayBoardState = useMemo(() => {
+    return boardState.map( (row, rowIndex) => {
+      return row.map( (letter, columnIndex) => {
 
-      if (!letter && squareHovered) {
-        square.fillStyle = styles.emptySquareHovered;
-      } else if (!letter) {
-        square.fillStyle = styles.emptySquare;
-      } else if (squareConsumed) {
-        square.fillStyle = styles.consumedSquare;
-      } else if (squareHovered){
-        square.fillStyle = styles.filledSquareHovered;
-      } else {
-        square.fillStyle = styles.filledSquare;
-      }
+        let square = { rowIndex, columnIndex, letter };
+        const squareHovered = hoveredSquares && isSquareInArray(square, hoveredSquares);
+        const squareConsumed = consumedSquares && isSquareInArray(square, consumedSquares);
 
-      return square;
+        if (!letter && squareHovered) {
+          square.fillStyle = styles.emptySquareHovered;
+        } else if (!letter) {
+          square.fillStyle = styles.emptySquare;
+        } else if (squareConsumed) {
+          square.fillStyle = styles.consumedSquare;
+        } else if (squareHovered){
+          square.fillStyle = styles.filledSquareHovered;
+        } else {
+          square.fillStyle = styles.filledSquare;
+        }
+
+        return square;
+      });
     });
-  });
+  }, [boardState, hoveredSquares, consumedSquares]);
 
   return (
     <View style={styles.grid}>
