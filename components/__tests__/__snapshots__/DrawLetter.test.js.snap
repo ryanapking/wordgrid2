@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`DrawLetter renders correctly 1`] = `
 <View
   style={
     Array [
@@ -52,7 +52,7 @@ exports[`renders correctly 1`] = `
 </View>
 `;
 
-exports[`renders correctly 2`] = `
+exports[`DrawLetter renders correctly 2`] = `
 <View
   style={
     Array [
@@ -104,4 +104,4 @@ exports[`renders correctly 2`] = `
 </View>
 `;
 
-exports[`renders correctly 3`] = `null`;
+exports[`DrawLetter renders correctly 3`] = `null`;

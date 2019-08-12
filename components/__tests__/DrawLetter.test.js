@@ -3,7 +3,7 @@ import DrawLetter from "../DrawLetter";
 
 import renderer from 'react-test-renderer';
 
-test('renders correctly', () => {
+test('DrawLetter renders correctly', () => {
   const drawLetterWithSize = renderer.create(<DrawLetter letter="a" letterSize={25} />).toJSON();
   expect(drawLetterWithSize).toMatchSnapshot();
 
