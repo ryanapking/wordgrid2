@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "borderWidth": 0.375,
+      },
+      Object {
+        "backgroundColor": "#ffd27b",
+        "borderColor": "white",
+        "display": "flex",
+        "flexDirection": "column",
+        "height": "100%",
+        "justifyContent": "center",
+        "padding": "5%",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 18.75,
+        "textAlign": "center",
+      }
+    }
+  >
+    A
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "position": "absolute",
+          "right": 0,
+        },
+        Object {
+          "fontSize": 6.25,
+          "paddingBottom": 0.625,
+          "paddingRight": 1.25,
+        },
+      ]
+    }
+  >
+    1
+  </Text>
+</View>
+`;
+
+exports[`renders correctly 2`] = `
+<View
+  style={
+    Array [
+      Object {
+        "borderWidth": 0,
+      },
+      Object {
+        "backgroundColor": "#ffd27b",
+        "borderColor": "white",
+        "display": "flex",
+        "flexDirection": "column",
+        "height": "100%",
+        "justifyContent": "center",
+        "padding": "5%",
+        "width": "100%",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 0,
+        "textAlign": "center",
+      }
+    }
+  >
+    Q
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "position": "absolute",
+          "right": 0,
+        },
+        Object {
+          "fontSize": 0,
+          "paddingBottom": 1,
+          "paddingRight": 2,
+        },
+      ]
+    }
+  >
+    10
+  </Text>
+</View>
+`;
+
+exports[`renders correctly 3`] = `null`;
