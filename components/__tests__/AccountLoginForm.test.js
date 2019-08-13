@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent } from 'react-native-testing-library';
 
 import AccountLoginForm from "../AccountLoginForm";
 
@@ -22,6 +22,8 @@ describe('AccountLoginForm', () => {
     fireEvent.press(loginButton);
 
     expect(formActionProp).toBeCalledWith(testUsername, testPassword);
+
+    renderedComponent.unmount();
 
   });
 
