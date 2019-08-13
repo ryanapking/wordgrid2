@@ -1,134 +1,171 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DrawPieceSection renders correctly 1`] = `
-Array [
+exports[`DrawPieceSection renders with allowDrag 1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "row",
+        "height": "100%",
+        "justifyContent": "center",
+        "width": "100%",
+      },
+    ]
+  }
+>
   <View
     style={
-      Array [
-        undefined,
-        Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "row",
-          "height": "100%",
-          "justifyContent": "center",
-          "width": "100%",
-        },
-      ]
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
     }
   >
-    <View
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
-    >
-      <MeasureView
-        onMeasure={[Function]}
-        style={
-          Object {
-            "aspectRatio": 1,
-            "backgroundColor": "gray",
-            "maxHeight": "100%",
-            "maxWidth": "100%",
-          }
-        }
-      />
-    </View>
-    <View
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  >
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
-    >
-      <MeasureView
-        onMeasure={[Function]}
-        style={
-          Object {
-            "aspectRatio": 1,
-            "backgroundColor": "gray",
-            "maxHeight": "100%",
-            "maxWidth": "100%",
-          }
-        }
-      />
-    </View>
-    <View
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  >
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
-    >
-      <MeasureView
-        onMeasure={[Function]}
-        style={
-          Object {
-            "aspectRatio": 1,
-            "backgroundColor": "gray",
-            "maxHeight": "100%",
-            "maxWidth": "100%",
-          }
-        }
-      />
-    </View>
-  </View>,
-  ");",
-]
+    />
+  </View>
+</View>
 `;
 
-exports[`DrawPieceSection renders correctly 2`] = `
-Array [
+exports[`DrawPieceSection renders without allowDrag 1`] = `
+<View
+  style={
+    Array [
+      undefined,
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "row",
+        "height": "100%",
+        "justifyContent": "center",
+        "width": "100%",
+      },
+    ]
+  }
+>
   <View
     style={
-      Array [
-        undefined,
-        Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "row",
-          "height": "100%",
-          "justifyContent": "center",
-          "width": "100%",
-        },
-      ]
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
     }
   >
-    <View
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
     >
-      <MeasureView
-        onMeasure={[Function]}
+      <PieceDraggableView
+        allowDrag={false}
+        baseSize={0}
+        piece={
+          Array [
+            Array [
+              "",
+              "",
+              "",
+              "",
+            ],
+            Array [
+              "",
+              "",
+              "",
+              "",
+            ],
+            Array [
+              "",
+              "",
+              "d",
+              "s",
+            ],
+            Array [
+              "",
+              "",
+              "e",
+              "i",
+            ],
+          ]
+        }
+        pieceIndex={0}
         style={
           Object {
             "aspectRatio": 1,
@@ -138,9 +175,7 @@ Array [
           }
         }
       >
-        <PieceDraggableView
-          allowDrag={false}
-          baseSize={100}
+        <PieceDrawLetterGrid
           piece={
             Array [
               Array [
@@ -169,65 +204,67 @@ Array [
               ],
             ]
           }
-          pieceIndex={0}
-          style={
-            Object {
-              "aspectRatio": 1,
-              "backgroundColor": "gray",
-              "maxHeight": "100%",
-              "maxWidth": "100%",
-            }
-          }
-        >
-          <PieceDrawLetterGrid
-            piece={
-              Array [
-                Array [
-                  "",
-                  "",
-                  "",
-                  "",
-                ],
-                Array [
-                  "",
-                  "",
-                  "",
-                  "",
-                ],
-                Array [
-                  "",
-                  "",
-                  "d",
-                  "s",
-                ],
-                Array [
-                  "",
-                  "",
-                  "e",
-                  "i",
-                ],
-              ]
-            }
-            pieceSize={100}
-          />
-        </PieceDraggableView>
-      </MeasureView>
-    </View>
-    <View
+          pieceSize={0}
+        />
+      </PieceDraggableView>
+    </MeasureView>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  >
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
     >
-      <MeasureView
-        onMeasure={[Function]}
+      <PieceDraggableView
+        allowDrag={false}
+        baseSize={0}
+        piece={
+          Array [
+            Array [
+              "",
+              "",
+              "h",
+              "",
+            ],
+            Array [
+              "",
+              "",
+              "e",
+              "",
+            ],
+            Array [
+              "",
+              "",
+              "w",
+              "l",
+            ],
+            Array [
+              "",
+              "",
+              "",
+              "",
+            ],
+          ]
+        }
+        pieceIndex={1}
         style={
           Object {
             "aspectRatio": 1,
@@ -237,9 +274,7 @@ Array [
           }
         }
       >
-        <PieceDraggableView
-          allowDrag={false}
-          baseSize={100}
+        <PieceDrawLetterGrid
           piece={
             Array [
               Array [
@@ -268,65 +303,67 @@ Array [
               ],
             ]
           }
-          pieceIndex={1}
-          style={
-            Object {
-              "aspectRatio": 1,
-              "backgroundColor": "gray",
-              "maxHeight": "100%",
-              "maxWidth": "100%",
-            }
-          }
-        >
-          <PieceDrawLetterGrid
-            piece={
-              Array [
-                Array [
-                  "",
-                  "",
-                  "h",
-                  "",
-                ],
-                Array [
-                  "",
-                  "",
-                  "e",
-                  "",
-                ],
-                Array [
-                  "",
-                  "",
-                  "w",
-                  "l",
-                ],
-                Array [
-                  "",
-                  "",
-                  "",
-                  "",
-                ],
-              ]
-            }
-            pieceSize={100}
-          />
-        </PieceDraggableView>
-      </MeasureView>
-    </View>
-    <View
+          pieceSize={0}
+        />
+      </PieceDraggableView>
+    </MeasureView>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "margin": 2,
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  >
+    <MeasureView
+      onMeasure={[Function]}
       style={
         Object {
-          "display": "flex",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "margin": 2,
+          "aspectRatio": 1,
+          "backgroundColor": "gray",
           "maxHeight": "100%",
           "maxWidth": "100%",
         }
       }
     >
-      <MeasureView
-        onMeasure={[Function]}
+      <PieceDraggableView
+        allowDrag={false}
+        baseSize={0}
+        piece={
+          Array [
+            Array [
+              "",
+              "",
+              "",
+              "",
+            ],
+            Array [
+              "",
+              "",
+              "",
+              "",
+            ],
+            Array [
+              "l",
+              "c",
+              "r",
+              "",
+            ],
+            Array [
+              "",
+              "o",
+              "",
+              "",
+            ],
+          ]
+        }
+        pieceIndex={2}
         style={
           Object {
             "aspectRatio": 1,
@@ -336,9 +373,7 @@ Array [
           }
         }
       >
-        <PieceDraggableView
-          allowDrag={false}
-          baseSize={100}
+        <PieceDrawLetterGrid
           piece={
             Array [
               Array [
@@ -367,51 +402,10 @@ Array [
               ],
             ]
           }
-          pieceIndex={2}
-          style={
-            Object {
-              "aspectRatio": 1,
-              "backgroundColor": "gray",
-              "maxHeight": "100%",
-              "maxWidth": "100%",
-            }
-          }
-        >
-          <PieceDrawLetterGrid
-            piece={
-              Array [
-                Array [
-                  "",
-                  "",
-                  "",
-                  "",
-                ],
-                Array [
-                  "",
-                  "",
-                  "",
-                  "",
-                ],
-                Array [
-                  "l",
-                  "c",
-                  "r",
-                  "",
-                ],
-                Array [
-                  "",
-                  "o",
-                  "",
-                  "",
-                ],
-              ]
-            }
-            pieceSize={100}
-          />
-        </PieceDraggableView>
-      </MeasureView>
-    </View>
-  </View>,
-  ");",
-]
+          pieceSize={0}
+        />
+      </PieceDraggableView>
+    </MeasureView>
+  </View>
+</View>
 `;
