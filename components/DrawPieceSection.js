@@ -34,6 +34,7 @@ const DrawPieceSection = props => {
   // clear piece locations from redux on unmount
   useEffect(() => {
     return () => {
+      /* istanbul ignore else*/
       if (allowDrag) {
         dispatch(clearPieceLocations());
       }

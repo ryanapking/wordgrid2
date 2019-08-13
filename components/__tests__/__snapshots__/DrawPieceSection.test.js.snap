@@ -140,7 +140,7 @@ Array [
       >
         <PieceDraggableView
           allowDrag={false}
-          baseSize={0}
+          baseSize={100}
           piece={
             Array [
               Array [
@@ -208,7 +208,7 @@ Array [
                 ],
               ]
             }
-            pieceSize={0}
+            pieceSize={100}
           />
         </PieceDraggableView>
       </MeasureView>
@@ -239,7 +239,7 @@ Array [
       >
         <PieceDraggableView
           allowDrag={false}
-          baseSize={0}
+          baseSize={100}
           piece={
             Array [
               Array [
@@ -307,7 +307,7 @@ Array [
                 ],
               ]
             }
-            pieceSize={0}
+            pieceSize={100}
           />
         </PieceDraggableView>
       </MeasureView>
@@ -338,7 +338,7 @@ Array [
       >
         <PieceDraggableView
           allowDrag={false}
-          baseSize={0}
+          baseSize={100}
           piece={
             Array [
               Array [
@@ -406,7 +406,7 @@ Array [
                 ],
               ]
             }
-            pieceSize={0}
+            pieceSize={100}
           />
         </PieceDraggableView>
       </MeasureView>
