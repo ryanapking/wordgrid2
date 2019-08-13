@@ -12,6 +12,7 @@ const AccountLoginForm = props => {
         label="Username or Email"
         autoCapitalize="none"
         onChangeText={ username => setUsername(username) }
+        testID="usernameField"
       />
       <View style={{ marginTop: 10, marginBottom: 10 }}>
         <Input
@@ -19,12 +20,14 @@ const AccountLoginForm = props => {
           autoCapitalize="none"
           secureTextEntry={true}
           onChangeText={ password => setPassword(password) }
+          testID="passwordField"
         />
       </View>
       <Button
         disabled={!username || !password}
         title="Login"
         onPress={ () => props.formAction(username, password) }
+        testID="loginButton"
       />
     </View>
   );
