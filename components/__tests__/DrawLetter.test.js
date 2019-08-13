@@ -1,15 +1,21 @@
 import React from 'react';
 import DrawLetter from "../DrawLetter";
 
-import renderer from 'react-test-renderer';
+import { render } from 'react-native-testing-library';
 
-test('DrawLetter renders correctly', () => {
-  const drawLetterWithSize = renderer.create(<DrawLetter letter="a" letterSize={25} />).toJSON();
-  expect(drawLetterWithSize).toMatchSnapshot();
+describe("DrawLetter", () => {
+  it('renders with letter and letter size', () => {
+    const renderComponent = render(<DrawLetter letter="a" letterSize={25} />);
+    expect(renderComponent.toJSON()).toMatchSnapshot();
+  });
 
-  const drawLetterWithoutSize = renderer.create(<DrawLetter letter="q" />).toJSON();
-  expect (drawLetterWithoutSize).toMatchSnapshot();
+  it('renders without letterSize', () => {
+    const renderComponent = render(<DrawLetter letter="q" />);
+    expect (renderComponent.toJSON()).toMatchSnapshot();
+  });
 
-  const drawLetterWithoutLetter = renderer.create(<DrawLetter />).toJSON();
-  expect (drawLetterWithoutLetter).toMatchSnapshot();
+  it ('renders null without letter', () => {
+    const renderComponent = render(<DrawLetter />);
+    expect (renderComponent.toJSON()).toMatchSnapshot();
+  });
 });

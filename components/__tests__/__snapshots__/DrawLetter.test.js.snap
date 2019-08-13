@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DrawLetter renders correctly 1`] = `
+exports[`DrawLetter renders null without letter 1`] = `null`;
+
+exports[`DrawLetter renders with letter and letter size 1`] = `
 <View
   style={
     Array [
@@ -52,7 +54,7 @@ exports[`DrawLetter renders correctly 1`] = `
 </View>
 `;
 
-exports[`DrawLetter renders correctly 2`] = `
+exports[`DrawLetter renders without letterSize 1`] = `
 <View
   style={
     Array [
@@ -103,5 +105,3 @@ exports[`DrawLetter renders correctly 2`] = `
   </Text>
 </View>
 `;
-
-exports[`DrawLetter renders correctly 3`] = `null`;
