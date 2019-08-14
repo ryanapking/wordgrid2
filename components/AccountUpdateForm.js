@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 
-import AccountLogoutButton from './AccountLogoutButton';
-import { updateAccount } from "../data/redux/thunkedUserActions";
+import { updateAccount, userLogout } from "../data/redux/thunkedUserActions";
 
 const initialState = {
   saving: false,
@@ -174,7 +173,10 @@ const AccountUpdateForm = props => {
         : null
       }
       <View style={styles.button}>
-        <AccountLogoutButton />
+        <Button
+          title="Log Out"
+          onPress={ () => reduxDispatch(userLogout()) }
+        />
       </View>
 
     </View>
