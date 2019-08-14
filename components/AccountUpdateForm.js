@@ -49,8 +49,6 @@ const reducer = (state, action) => {
       };
     case "reset":
       return { ...initialState};
-    default:
-      return { ...state };
   }
 };
 
@@ -60,9 +58,7 @@ const AccountUpdateForm = props => {
   const [state, localDispatch] = useReducer(reducer, initialState);
 
   const saveChanges = () => {
-    const { newEmail, newUsername, newPassword, newRetypePassword } = state;
-    if (newEmail && !validator.isEmail(newEmail)) return;
-    if (newPassword && newPassword !== newRetypePassword) return;
+    const { newEmail, newUsername, newPassword } = state;
     reduxDispatch(updateAccount(newEmail, newUsername, newPassword));
     localDispatch({ type: "reset" });
   };
@@ -82,6 +78,7 @@ const AccountUpdateForm = props => {
       onPress: () => {
         localDispatch({ type: "setUpdateUsername", updateUsername: !updateUsername });
       },
+      testID: 'usernameLockIcon',
     },
     email: {
       type: 'MaterialCommunityIcons',
@@ -89,6 +86,7 @@ const AccountUpdateForm = props => {
       onPress: () => {
         localDispatch({ type: "setUpdateEmail", updateEmail: !updateEmail });
       },
+      testID: 'emailLockIcon',
     },
     password: {
       type: 'MaterialCommunityIcons',
@@ -96,6 +94,7 @@ const AccountUpdateForm = props => {
       onPress: () => {
         localDispatch({ type: "setUpdatePassword", updatePassword: !updatePassword });
       },
+      testID: 'passwordLockIcon',
     }
   };
 
@@ -115,6 +114,7 @@ const AccountUpdateForm = props => {
             textContentType="username"
             autoCapitalize="none"
             onChangeText={ (newUsername) => localDispatch({ type: "setNewUsername", newUsername }) }
+            testID="usernameField"
           />
           : null
         }
@@ -135,6 +135,7 @@ const AccountUpdateForm = props => {
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={ (newEmail) => localDispatch({ type: "setNewEmail", newEmail }) }
+            testID="emailField"
           />
           : null
         }
@@ -149,6 +150,7 @@ const AccountUpdateForm = props => {
           secureTextEntry={true}
           rightIcon={lockIcons.password}
           onChangeText={ (newPassword) => localDispatch({ type: "setNewPassword", newPassword }) }
+          testID="passwordField"
         />
         { updatePassword ?
           <Input
@@ -158,6 +160,7 @@ const AccountUpdateForm = props => {
             editable={true}
             secureTextEntry={true}
             onChangeText={ (newRetypePassword) => localDispatch({ type: "setNewRetypePassword", newRetypePassword }) }
+            testID="retypePasswordField"
           />
           : null
         }
@@ -168,6 +171,7 @@ const AccountUpdateForm = props => {
             disabled={!formReady}
             title="Save Changes"
             onPress={ () => saveChanges() }
+            testID="submitButton"
           />
         </View>
         : null
@@ -176,6 +180,7 @@ const AccountUpdateForm = props => {
         <Button
           title="Log Out"
           onPress={ () => reduxDispatch(userLogout()) }
+          testID="logoutButton"
         />
       </View>
 
