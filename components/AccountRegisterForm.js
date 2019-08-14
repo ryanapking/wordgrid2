@@ -22,12 +22,14 @@ const AccountRegisterForm = props => {
         keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={ email => setEmail(email) }
+        testID="emailField"
       />
       <Input
         label="Username"
         textContentType="username"
         autoCapitalize="none"
         onChangeText={ username => setUsername(username) }
+        testID="usernameField"
       />
       <Input
         label="Password"
@@ -35,6 +37,7 @@ const AccountRegisterForm = props => {
         autoCapitalize="none"
         secureTextEntry
         onChangeText={ password => setPassword(password) }
+        testID="passwordField"
       />
       <Input
         label="Retype Password"
@@ -42,11 +45,13 @@ const AccountRegisterForm = props => {
         autoCapitalize="none"
         secureTextEntry
         onChangeText={ retypePassword => setRetypePassword(retypePassword) }
+        testID="retypePasswordField"
       />
       <Button
         disabled={!passwordsMatch || !username || !email || !emailValid}
         title={props.buttonText}
         onPress={ () => props.formAction(email, username, password) }
+        testID="submitButton"
       />
     </View>
   );
