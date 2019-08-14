@@ -1,15 +1,12 @@
 import React from 'react';
-import { Provider } from "react-redux";
 import { render, fireEvent } from "react-native-testing-library";
+import * as redux from 'react-redux';
 
 import * as gameDisplay from "../../data/redux/gameDisplay";
 
 import MeasureView from "../MeasureView";
 import DrawPieceSection from "../DrawPieceSection";
 import PieceDrawLetterGrid from "../PieceDrawLetterGrid";
-
-import configureStore from '../../data/redux/configureStore';
-const store = configureStore();
 
 const testPieces = [
   [
@@ -37,8 +34,13 @@ jest.mock('../PieceDraggableView', () => 'PieceDraggableView');
 jest.mock('../PieceDrawLetterGrid', () => 'PieceDrawLetterGrid');
 jest.mock('../MeasureView', () => 'MeasureView');
 
-const setPieceLocationMock = jest.spyOn(gameDisplay, "setPieceLocation");
-const clearPieceLocationsMock = jest.spyOn(gameDisplay, "clearPieceLocations");
+// mock redux dispatch and useDispatch
+const dispatchMock = jest.fn((object) => {});
+const useDispatchSpy = jest.spyOn(redux, "useDispatch").mockImplementation( () => dispatchMock );
+
+// set spy on action creators
+const setPieceLocationSpy = jest.spyOn(gameDisplay, "setPieceLocation");
+const clearPieceLocationsSpy = jest.spyOn(gameDisplay, "clearPieceLocations");
 
 afterEach( () => {
   jest.clearAllMocks();
@@ -47,9 +49,7 @@ afterEach( () => {
 describe('DrawPieceSection', () => {
   it('renders with allowDrag', () => {
     const renderedComponent = render(
-      <Provider store={store}>
-        <DrawPieceSection pieces={testPieces} allowDrag={true} />
-      </Provider>
+      <DrawPieceSection pieces={testPieces} allowDrag={true} />
     );
 
     expect(renderedComponent.toJSON()).toMatchSnapshot();
@@ -57,9 +57,7 @@ describe('DrawPieceSection', () => {
 
   it('renders without allowDrag', () => {
     const renderedComponent = render(
-      <Provider store={store}>
-        <DrawPieceSection pieces={testPieces} allowDrag={false} />
-      </Provider>
+      <DrawPieceSection pieces={testPieces} allowDrag={false} />
     );
 
     expect(renderedComponent.toJSON()).toMatchSnapshot();
@@ -67,9 +65,7 @@ describe('DrawPieceSection', () => {
 
   it('calls redux setPieceLocations()', () => {
     const renderedComponent = render(
-      <Provider store={store}>
-        <DrawPieceSection pieces={testPieces} allowDrag={true} />
-      </Provider>
+      <DrawPieceSection pieces={testPieces} allowDrag={true} />
     );
 
     // fire onMeasure event for all MeasureView components
@@ -78,27 +74,23 @@ describe('DrawPieceSection', () => {
     });
 
     // spot check the setPieceLocation calls
-    expect(setPieceLocationMock).toBeCalledTimes(3);
-    expect(setPieceLocationMock).toBeCalledWith(2, expect.objectContaining({x: 5}));
+    expect(setPieceLocationSpy).toBeCalledTimes(3);
+    expect(setPieceLocationSpy).toBeCalledWith(2, expect.objectContaining({x: 5}));
   });
 
   it('calls redux clearPieceLocations on unmount', () => {
     const renderedComponent = render(
-      <Provider store={store}>
-        <DrawPieceSection pieces={testPieces} allowDrag={true} />
-      </Provider>
+      <DrawPieceSection pieces={testPieces} allowDrag={true} />
     );
 
     renderedComponent.unmount();
 
-    expect(clearPieceLocationsMock).toBeCalledTimes(1);
+    expect(clearPieceLocationsSpy).toBeCalledTimes(1);
   });
 
   it('sets children baseSize correctly', () => {
     const renderedComponent = render(
-      <Provider store={store}>
-        <DrawPieceSection testID="allowDrag" pieces={testPieces} allowDrag={false} />
-      </Provider>
+      <DrawPieceSection testID="allowDrag" pieces={testPieces} allowDrag={false} />
     );
 
     // fire onMeasure event for all MeasureView components
