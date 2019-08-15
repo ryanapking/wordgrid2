@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BoardDrawPath renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#5283ff",
+      "borderRadius": 1.9300000000000002,
+      "height": 3.8600000000000003,
+      "left": 159.62677634997064,
+      "position": "absolute",
+      "top": 268.27,
+      "transform": Array [
+        Object {
+          "rotate": "45.828133621083396deg",
+        },
+      ],
+      "width": 55.74644730005874,
+    }
+  }
+/>
+`;

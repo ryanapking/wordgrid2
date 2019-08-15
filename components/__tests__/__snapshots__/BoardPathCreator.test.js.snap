@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BoardPathCreator renders as expected 1`] = `
+<View
+  pointerEvents="none"
+  style={
+    Object {
+      "height": "100%",
+      "position": "absolute",
+      "width": "100%",
+    }
+  }
+>
+  <BoardDrawPath
+    boardLocation={
+      Object {
+        "columnWidth": 37.5,
+        "rowHeight": 38.6,
+      }
+    }
+    square1={
+      Object {
+        "columnIndex": 4,
+        "rowIndex": 6,
+      }
+    }
+    square2={
+      Object {
+        "columnIndex": 3,
+        "rowIndex": 6,
+      }
+    }
+  />
+  <BoardDrawPath
+    boardLocation={
+      Object {
+        "columnWidth": 37.5,
+        "rowHeight": 38.6,
+      }
+    }
+    square1={
+      Object {
+        "columnIndex": 3,
+        "rowIndex": 6,
+      }
+    }
+    square2={
+      Object {
+        "columnIndex": 3,
+        "rowIndex": 5,
+      }
+    }
+  />
+  <BoardDrawPath
+    boardLocation={
+      Object {
+        "columnWidth": 37.5,
+        "rowHeight": 38.6,
+      }
+    }
+    square1={
+      Object {
+        "columnIndex": 3,
+        "rowIndex": 5,
+      }
+    }
+    square2={
+      Object {
+        "columnIndex": 2,
+        "rowIndex": 5,
+      }
+    }
+  />
+  <BoardDrawPath
+    boardLocation={
+      Object {
+        "columnWidth": 37.5,
+        "rowHeight": 38.6,
+      }
+    }
+    square1={
+      Object {
+        "columnIndex": 2,
+        "rowIndex": 5,
+      }
+    }
+    square2={
+      Object {
+        "columnIndex": 2,
+        "rowIndex": 4,
+      }
+    }
+  />
+  <BoardDrawPath
+    boardLocation={
+      Object {
+        "columnWidth": 37.5,
+        "rowHeight": 38.6,
+      }
+    }
+    square1={
+      Object {
+        "columnIndex": 2,
+        "rowIndex": 4,
+      }
+    }
+    square2={
+      Object {
+        "columnIndex": 3,
+        "rowIndex": 3,
+      }
+    }
+  />
+</View>
+`;

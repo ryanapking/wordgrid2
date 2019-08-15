@@ -7,7 +7,7 @@ import BoardDrawPath from './BoardDrawPath';
 const BoardPathCreator = props => {
   const { squares, boardLocation } = props;
 
-  if (!boardLocation.rowHeight || !boardLocation.columnWidth) return null;
+  if (!boardLocation || !boardLocation.rowHeight || !boardLocation.columnWidth) return null;
 
   // split the consumedSquares into pairs, to allow a path section to be rendered
   const squarePairs = squares
