@@ -1,0 +1,5629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BoardDrawLetterGrid renders correctly with consumed squares 1`] = `
+<View
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="b"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="p"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="d"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="c"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="g"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="d"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="v"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffa487",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffa487",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="l"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="n"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="b"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="l"
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={15}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`BoardDrawLetterGrid renders correctly with hovered spaces 1`] = `
+<View
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="b"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="p"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="d"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="c"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="g"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="d"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="a"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="v"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="l"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="o"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="n"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="e"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="b"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "green",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "green",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "indianred",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="h"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "indianred",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "indianred",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="m"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "indianred",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="s"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="t"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="u"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="i"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "green",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "green",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="r"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#ffd27b",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter="l"
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#ffd27b",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "backgroundColor": "#9c9c9c",
+          },
+        ]
+      }
+    >
+      <DrawLetter
+        letter=""
+        letterSize={0}
+        style={
+          Object {
+            "backgroundColor": "#9c9c9c",
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
