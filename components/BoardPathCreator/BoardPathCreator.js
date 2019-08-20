@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from "prop-types";
 
-import BoardDrawPath from './BoardDrawPath';
+import BoardDrawPath from '../BoardDrawPath';
 
 const BoardPathCreator = props => {
   const { squares, boardLocation } = props;

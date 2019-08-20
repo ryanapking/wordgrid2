@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent } from "react-native-testing-library";
 import * as redux from 'react-redux';
 
-import AccountUpdateForm from "../AccountUpdateForm";
-import * as userActionCreators from "../../data/redux/thunkedUserActions";
+import AccountUpdateForm from "..";
+import * as userActionCreators from "../../../data/redux/thunkedUserActions";
 
 // values for testing
 const initialEmail = "jimothy@fake.com";

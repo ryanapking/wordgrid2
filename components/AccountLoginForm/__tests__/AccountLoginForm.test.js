@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from 'react-native-testing-library';
 
-import AccountLoginForm from "../AccountLoginForm";
+import AccountLoginForm from "..";
 
 describe('AccountLoginForm', () => {
   test('formAction called with entered username and password', () => {

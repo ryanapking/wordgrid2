@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, render} from 'react-native-testing-library';
 
-import AccountRegisterForm from "../AccountRegisterForm";
+import AccountRegisterForm from "..";
 
 describe('AccountRegisterForm', () => {
   it('calls formAction on button press', () => {

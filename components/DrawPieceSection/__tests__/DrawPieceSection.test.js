@@ -2,11 +2,11 @@ import React from 'react';
 import { render, fireEvent } from "react-native-testing-library";
 import * as redux from 'react-redux';
 
-import * as gameDisplay from "../../data/redux/gameDisplay";
+import * as gameDisplay from "../../../data/redux/gameDisplay";
 
-import MeasureView from "../MeasureView";
-import DrawPieceSection from "../DrawPieceSection";
-import PieceDrawLetterGrid from "../PieceDrawLetterGrid";
+import DrawPieceSection from "..";
+import MeasureView from "../../MeasureView";
+import PieceDrawLetterGrid from "../../PieceDrawLetterGrid";
 
 const testPieces = [
   [
@@ -30,9 +30,9 @@ const testPieces = [
 ];
 
 // Mock the nested components to avoid snapshotting components that are tested separately
-jest.mock('../PieceDraggableView', () => 'PieceDraggableView');
-jest.mock('../PieceDrawLetterGrid', () => 'PieceDrawLetterGrid');
-jest.mock('../MeasureView', () => 'MeasureView');
+jest.mock('../../PieceDraggableView', () => 'PieceDraggableView');
+jest.mock('../../PieceDrawLetterGrid', () => 'PieceDrawLetterGrid');
+jest.mock('../../MeasureView', () => 'MeasureView');
 
 // mock redux dispatch and useDispatch
 const dispatchMock = jest.fn((object) => {});

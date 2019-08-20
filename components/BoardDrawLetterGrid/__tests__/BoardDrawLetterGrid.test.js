@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
 
-import BoardDrawLetterGrid from "../BoardDrawLetterGrid";
+import BoardDrawLetterGrid from "..";
 
 // mock DrawLetter to reduce snapshot size
-jest.mock('../DrawLetter', () => 'DrawLetter');
+jest.mock('../../DrawLetter', () => 'DrawLetter');
 
 // prop values for render tests
 const testBoardSize = 150;

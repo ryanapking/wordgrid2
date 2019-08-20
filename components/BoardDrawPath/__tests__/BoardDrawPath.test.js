@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
 
-import BoardDrawPath from "../BoardDrawPath";
+import BoardDrawPath from "..";
 
 const testProps = {
   square1: {rowIndex: 7, columnIndex: 5, letter: "s"},

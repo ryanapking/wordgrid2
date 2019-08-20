@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import validator from 'validator';
 
-import { updateAccount, userLogout } from "../data/redux/thunkedUserActions";
+import { updateAccount, userLogout } from "../../data/redux/thunkedUserActions";
 
 const initialState = {
   saving: false,

@@ -1,7 +1,7 @@
 import React from 'react';
-import DrawLetter from "../DrawLetter";
-
 import { render } from 'react-native-testing-library';
+
+import DrawLetter from "..";
 
 describe("DrawLetter", () => {
   it('renders with letter and letter size', () => {

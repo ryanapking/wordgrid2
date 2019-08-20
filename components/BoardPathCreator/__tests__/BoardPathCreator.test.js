@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
 
-import BoardPathCreator from "../BoardPathCreator";
-import BoardDrawPath from "../BoardDrawPath";
+import BoardPathCreator from "..";
+import BoardDrawPath from "../../BoardDrawPath";
 
 // mock BoardDrawPath to reduce snapshot size
-jest.mock('../BoardDrawPath', () => 'BoardDrawPath');
+jest.mock('../../BoardDrawPath', () => 'BoardDrawPath');
 
 const testProps = {
   squares: [

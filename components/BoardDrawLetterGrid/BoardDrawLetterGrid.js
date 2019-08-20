@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { squaresArrayType, rowsType } from "../proptypes";
-import { isSquareInArray } from "../data/utilities/functions/checks";
-import DrawLetter from "./DrawLetter";
+import { squaresArrayType, rowsType } from "../../proptypes";
+import { isSquareInArray } from "../../data/utilities/functions/checks";
+import DrawLetter from "../DrawLetter";
 
 const BoardDrawLetterGrid = props => {
   const { boardState, boardSize, consumedSquares, hoveredSquares } = props;
