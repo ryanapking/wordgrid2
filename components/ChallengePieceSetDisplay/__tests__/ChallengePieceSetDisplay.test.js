@@ -6,6 +6,15 @@ import ChallengePieceSetDisplay from "..";
 // mock child components
 jest.mock('../../DrawPieceSection', () => 'DrawPieceSection');
 
+// mock View component with measure
+jest.mock('react-native/Libraries/Components/View/View', () => {
+  const mockComponent = require('react-native/jest/mockComponent');
+  const measure = (measureCallback) => {
+    measureCallback(1, 1, 10, 10, 6, 6);
+  };
+  return mockComponent('react-native/Libraries/Components/View/View', { measure });
+});
+
 describe('ChallengePieceSetDisplay', () => {
   it('renders correctly', () => {
     const { toJSON, unmount } = render(
@@ -15,7 +24,7 @@ describe('ChallengePieceSetDisplay', () => {
     unmount();
   });
 
-  it('renders null if word is passes to props', () => {
+  it('renders null if word is passed to props', () => {
     const { toJSON, unmount } = render(
       <ChallengePieceSetDisplay consumedSquares={testConsumedSquares} pieceSet={testPieceSet} word={'hello'} />
     );

@@ -20,7 +20,6 @@ exports[`ChallengePieceSetDisplay renders correctly 1`] = `
           "paddingTop": 10,
         }
       }
-      testID="pieceSectionContainer"
     >
       <DrawPieceSection
         allowDrag={false}
