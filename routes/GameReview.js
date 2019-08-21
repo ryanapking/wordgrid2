@@ -9,17 +9,11 @@ import {
   remoteToStartingGameState,
   arrayToString,
 } from "../data/utilities/functions/dataConversions";
-import {
-  calculateLongestWordLength,
-  calculateHighestWordValue,
-  calculateWordValue,
-} from '../data/utilities/functions/calculations';
+import { solveBoard } from "../data/board-solver";
 import { useAsyncFetcher } from "../hooks/useAsyncFetcher";
 import { useParams } from "../hooks/tempReactRouter";
 import { applyMove, } from '../data/utilities/functions/applyMoves';
-import { getWordPath } from '../data/utilities/functions/getters';
 import { getGameSourceData } from "../data/parse-client/getters";
-import Boggle from '../data/boggle-solver';
 
 import MeasureView from "../components/MeasureView";
 import BoardDrawLetterGrid from '../components/BoardDrawLetterGrid';
@@ -73,30 +67,10 @@ const GameReview = () => {
 
     const boardString = arrayToString(currentGameState.boardState);
 
-    new Boggle(boardString).solve( (words) => {
-      const longest = calculateLongestWordLength(words);
-      const mostValuable = calculateHighestWordValue(words);
-
-      const allWordsWithValues = words
-        .slice()
-        .sort()
-        .map( (word) => {
-          const value = calculateWordValue(word);
-          return {word, value};
-        })
-        .sort( (word1, word2) => {
-          return word2.value - word1.value;
-        });
-
-      setReviewResults({
-        displayingGameState: currentGameState,
-        availableWords: allWordsWithValues,
-        longestWords: longest.words,
-        longestLetterCount: longest.length,
-        mostValuableWords: mostValuable.words,
-        mostValuablePoints: mostValuable.value,
-        playerMovePath: move.wordPath,
-      });
+    setReviewResults({
+      displayingGameState: currentGameState,
+      playerMovePath: move.wordPath,
+      boardSolution: solveBoard(boardString),
     });
 
   }, [moveIndex, game, startingGameState, uid]);
@@ -166,46 +140,46 @@ const GameReview = () => {
 
           <ListItem
             title="Most Valuable Words"
-            rightTitle={ reviewResults.mostValuablePoints + " points" }
+            rightTitle={ reviewResults.boardSolution.highestValue + " points" }
             containerStyle={styles.divider}
           />
-          {reviewResults.mostValuableWords.map( (word, index) =>
+          {reviewResults.boardSolution.mostValuableWords.map( (word, index) =>
             <TouchableWithoutFeedback
               key={index}
-              onPressIn={() => setDisplayPath(getWordPath(word, boardState)) }
+              onPressIn={() => setDisplayPath(word.path) }
               onPressOut={() => setDisplayPath([])}
             >
-              <ListItem title={ word } />
+              <ListItem title={ word.string.toUpperCase() } />
             </TouchableWithoutFeedback>
           )}
 
           <ListItem
             title="Longest Words"
-            rightTitle={ reviewResults.longestLetterCount + " letters"}
+            rightTitle={ reviewResults.boardSolution.longestLength + " letters"}
             containerStyle={styles.divider}
           />
-          {reviewResults.longestWords.map( (word, index) =>
+          {reviewResults.boardSolution.longestWords.map( (word, index) =>
             <TouchableWithoutFeedback
               key={index}
-              onPressIn={() => setDisplayPath(getWordPath(word, boardState))}
+              onPressIn={() => setDisplayPath(word.path)}
               onPressOut={() => setDisplayPath([])}
             >
-              <ListItem title={word} />
+              <ListItem title={ word.string.toUpperCase() } />
             </TouchableWithoutFeedback>
           )}
 
           <ListItem
             title="All Available Words"
-            rightTitle={ reviewResults.availableWords.length + " words" }
+            rightTitle={ reviewResults.boardSolution.wordCount + " words" }
             containerStyle={styles.divider}
           />
-          {reviewResults.availableWords.map( (word, index) =>
+          {reviewResults.boardSolution.allWords.map( (word, index) =>
             <TouchableWithoutFeedback
               key={index}
-              onPressIn={() => setDisplayPath(getWordPath(word.word, boardState)) }
+              onPressIn={() => setDisplayPath(word.path) }
               onPressOut={() => setDisplayPath([]) }
             >
-              <ListItem title={word.word} rightTitle={ word.value + " points" } />
+              <ListItem title={ word.string.toUpperCase() } rightTitle={ word.value + " points" } />
             </TouchableWithoutFeedback>
           )}
 

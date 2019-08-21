@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
-import Boggle from '../data/boggle-solver';
 import routes from '../routes';
 import {
   setAvailableWordsData,
@@ -13,13 +12,10 @@ import {
   resetLocalGameDataByID,
   playWord,
 } from "../data/redux/gameData";
-import {
-  calculateHighestWordValue,
-  calculateLongestWordLength,
-} from "../data/utilities/functions/calculations";
 import { saveMove } from "../data/redux/thunkedGameActions";
 import { checkPieceFit } from "../data/utilities/functions/checks";
 import { useParams, useHistory } from "../hooks/tempReactRouter";
+import { solveBoard } from "../data/board-solver";
 
 import BoardTouchView from '../components/BoardTouchView';
 import GameMoveAnimation from '../components/GameMoveAnimation';
@@ -62,14 +58,8 @@ const Game = () => {
 
     // will need to be fixed later. removing history reference.
     const currentBoardString = game.sourceData.startingBoard;
-    let boggle = new Boggle(currentBoardString);
-
-    boggle.solve( (words) => {
-      const longest = calculateLongestWordLength(words).length;
-      const mostValuable = calculateHighestWordValue(words).value;
-
-      dispatch(setAvailableWordsData(gameID, longest, mostValuable, words.length));
-    });
+    const solution = solveBoard(currentBoardString);
+    dispatch(setAvailableWordsData(gameID, solution.longestLength, solution.highestValue, solution.wordCount));
   }, []);
 
   // redirect if needed

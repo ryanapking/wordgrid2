@@ -53,7 +53,7 @@ function validateChallengeAttempt(remoteChallengeObject, challengeAttempt) {
 
       // update score
       const placedPiece = challenge.pieces[placementRef.pieceIndex];
-      attemptScore += calculations.calculatePiecePlacementValue(placedPiece);;
+      attemptScore += calculations.calculatePiecePlacementValue(placedPiece);
 
       // remove placed piece from available pieces
       challenge.pieces = challenge.pieces.filter( (piece, pieceIndex) => {
@@ -190,18 +190,15 @@ function gameOverCheck(gameState) {
 
   // check that each player has taken their 5 moves
   const naturalMovesReached = (player1MoveCount >= 5 && player2MoveCount >= 5);
+  if (!naturalMovesReached) return false;
 
   // in case game is in overtime, check that both players have taken their additional moves
   const equalMoves = (player1MoveCount === player2MoveCount);
+  if (!equalMoves) return false;
 
   // check if one player is leading
   const gameTied = (gameState.player1Score === gameState.player2Score);
-
-  if (gameTied || !equalMoves || !naturalMovesReached) {
-    return false;
-  } else {
-    return true;
-  }
+  return !gameTied;
 }
 
 // returns false or the id of the winner
@@ -232,10 +229,9 @@ function getWinner(gameState) {
  */
 export function isSquareInArray(needleSquare, haystackSquares) {
   for (let i = 0; i < haystackSquares.length; i++) {
-    const currentSquare = haystackSquares[i];
-    if (currentSquare.rowIndex === needleSquare.rowIndex && currentSquare.columnIndex === needleSquare.columnIndex) {
-      return true;
-    }
+    if (haystackSquares[i].rowIndex !== needleSquare.rowIndex) continue;
+    if (haystackSquares[i].columnIndex !== needleSquare.columnIndex) continue;
+    return true;
   }
   return false;
 }
