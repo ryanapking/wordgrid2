@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { squaresArrayType } from "../proptypes";
-import DrawPieceSection from './DrawPieceSection';
+import { squaresArrayType } from "../../proptypes";
+import DrawPieceSection from '../DrawPieceSection';
 
 const ChallengePieceSetDisplay = props => {
   const { pieceSet, word, consumedSquares } = props;

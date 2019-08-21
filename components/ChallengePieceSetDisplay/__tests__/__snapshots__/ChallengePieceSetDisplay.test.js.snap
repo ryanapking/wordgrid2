@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChallengePieceSetDisplay renders correctly 1`] = `
+<RCTScrollView
+  horizontal={true}
+  style={
+    Object {
+      "height": "100%",
+      "width": "100%",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        Object {
+          "aspectRatio": 13,
+          "height": "100%",
+          "paddingBottom": 10,
+          "paddingTop": 10,
+        }
+      }
+      testID="pieceSectionContainer"
+    >
+      <DrawPieceSection
+        allowDrag={false}
+        pieces={
+          Array [
+            Array [
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "t",
+                "n",
+                "c",
+                "",
+              ],
+              Array [
+                "l",
+                "",
+                "",
+                "",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "",
+                "",
+                "d",
+              ],
+              Array [
+                "",
+                "",
+                "s",
+                "w",
+              ],
+              Array [
+                "",
+                "",
+                "s",
+                "o",
+              ],
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "t",
+                "a",
+                "g",
+                "i",
+              ],
+              Array [
+                "",
+                "",
+                "h",
+                "l",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "o",
+                "e",
+                "n",
+                "",
+              ],
+              Array [
+                "l",
+                "m",
+                "y",
+                "",
+              ],
+              Array [
+                "",
+                "",
+                "n",
+                "",
+              ],
+            ],
+            Array [
+              Array [
+                "e",
+                "i",
+                "",
+                "o",
+              ],
+              Array [
+                "",
+                "u",
+                "s",
+                "i",
+              ],
+              Array [
+                "",
+                "u",
+                "",
+                "o",
+              ],
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "",
+                "",
+                "",
+              ],
+              Array [
+                "",
+                "",
+                "h",
+                "h",
+              ],
+              Array [
+                "n",
+                "",
+                "f",
+                "u",
+              ],
+              Array [
+                "e",
+                "f",
+                "i",
+                "e",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "i",
+                "i",
+                "",
+              ],
+              Array [
+                "u",
+                "m",
+                "",
+                "",
+              ],
+              Array [
+                "",
+                "u",
+                "t",
+                "h",
+              ],
+              Array [
+                "",
+                "e",
+                "p",
+                "t",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "m",
+                "i",
+                "a",
+              ],
+              Array [
+                "",
+                "f",
+                "f",
+                "c",
+              ],
+              Array [
+                "",
+                "i",
+                "",
+                "n",
+              ],
+              Array [
+                "t",
+                "i",
+                "r",
+                "",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "g",
+                "d",
+                "",
+              ],
+              Array [
+                "n",
+                "h",
+                "",
+                "",
+              ],
+              Array [
+                "h",
+                "m",
+                "d",
+                "u",
+              ],
+              Array [
+                "d",
+                "e",
+                "d",
+                "i",
+              ],
+            ],
+            Array [
+              Array [
+                "",
+                "e",
+                "n",
+                "s",
+              ],
+              Array [
+                "",
+                "e",
+                "i",
+                "d",
+              ],
+              Array [
+                "",
+                "w",
+                "i",
+                "r",
+              ],
+              Array [
+                "n",
+                "b",
+                "d",
+                "e",
+              ],
+            ],
+            Array [
+              Array [
+                "h",
+                "",
+                "",
+                "s",
+              ],
+              Array [
+                "c",
+                "t",
+                "e",
+                "l",
+              ],
+              Array [
+                "l",
+                "f",
+                "f",
+                "p",
+              ],
+              Array [
+                "v",
+                "t",
+                "t",
+                "s",
+              ],
+            ],
+            Array [
+              Array [
+                "e",
+                "e",
+                "t",
+                "y",
+              ],
+              Array [
+                "",
+                "h",
+                "h",
+                "h",
+              ],
+              Array [
+                "t",
+                "d",
+                "r",
+                "m",
+              ],
+              Array [
+                "h",
+                "e",
+                "l",
+                "t",
+              ],
+            ],
+            Array [
+              Array [
+                "a",
+                "r",
+                "t",
+                "v",
+              ],
+              Array [
+                "i",
+                "h",
+                "u",
+                "t",
+              ],
+              Array [
+                "u",
+                "n",
+                "r",
+                "u",
+              ],
+              Array [
+                "d",
+                "r",
+                "e",
+                "d",
+              ],
+            ],
+          ]
+        }
+      />
+    </View>
+  </View>
+</RCTScrollView>
+`;
